@@ -1,0 +1,15 @@
+aniso8601==3.0.0
+click==6.7
+Flask==1.0.2
+Flask-JWT==0.3.2
+flask-restplus==0.11.0
+Flask-SQLAlchemy==2.3.2
+itsdangerous==0.24
+Jinja2==2.10
+jsonschema==2.6.0
+MarkupSafe==1.0
+PyJWT==1.4.2
+pytz==2018.4
+six==1.11.0
+SQLAlchemy==1.2.7
+Werkzeug==0.14.1
