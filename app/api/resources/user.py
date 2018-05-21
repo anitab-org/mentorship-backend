@@ -10,6 +10,9 @@ add_models_to_namespace(ns)
 
 DAO = UserDAO()  # User data access object
 
+#TODO login with email as well
+
+
 @ns.route('/')
 class UserList(Resource):
 
