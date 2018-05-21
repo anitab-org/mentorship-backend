@@ -15,6 +15,8 @@ class UserModel(db.Model):
     password = db.Column(db.String(30))
     email = db.Column(db.String(30))
 
+    #TODO security, save password as a hash
+
     # security
     security_question = db.Column(db.String(80))
     security_answer = db.Column(db.String(80))
@@ -25,6 +27,7 @@ class UserModel(db.Model):
 
     # admin
     is_admin = db.Column(db.Boolean)
+    #TODO 1º user is and admin
 
     # email verification
     is_email_verified = db.Column(db.Boolean)
