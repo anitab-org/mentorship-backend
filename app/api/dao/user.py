@@ -16,6 +16,7 @@ class UserDAO:
         security_answer = data['security_answer']
         terms_and_conditions_checked = data['terms_and_conditions_checked']
 
+        #todo email must be also unique
         existing_user = UserModel.find_by_username(data['username'])
         if existing_user:
             return existing_user

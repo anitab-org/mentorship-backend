@@ -1,7 +1,9 @@
 from werkzeug.security import safe_str_cmp
 from app.database.models.user import UserModel
 
+#TODO restrict actions to specific users
 
+#TODO use email as well for authentication
 def authenticate(username, password):
     user = UserModel.find_by_username(username)
     if user and safe_str_cmp(user.password, password):
