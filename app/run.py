@@ -39,8 +39,8 @@ def create_tables():
 # Adding namespaces
 def add_namespaces():
     # called here to avoid circular imports
-    from app.api.resources.user import ns as user_namespace
-    api.add_namespace(user_namespace, path='/users')
+    from app.api.resources.user import users_ns as user_namespace
+    api.add_namespace(user_namespace, path='/')
 
 
 if __name__ == "__main__":
