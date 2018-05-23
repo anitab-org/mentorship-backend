@@ -16,13 +16,17 @@ class UserDAO:
         security_answer = data['security_answer']
         terms_and_conditions_checked = data['terms_and_conditions_checked']
 
-        #todo email must be also unique
         existing_user = UserModel.find_by_username(data['username'])
         if existing_user:
             return existing_user
+        else:
+            existing_user = UserModel.find_by_email(data['email'])
+            if existing_user:
+                return existing_user
 
         user = UserModel(name, username, password, email,
-                         security_question, security_answer, terms_and_conditions_checked)
+                         security_question, security_answer,
+                         terms_and_conditions_checked)
 
         user.save_to_db()
 
@@ -39,9 +43,17 @@ class UserDAO:
     def get_user(self, user_id):
         return UserModel.find_by_id(user_id), 201
 
-    def list_users(self):
+    def list_users(self, is_verified = None):
         users_list = UserModel.query.all()
-        return [user.json() for user in users_list], 201
+        list_of_users = []
+        if is_verified:
+            for user in users_list:
+                if not user.is_email_verified:
+                    list_of_users += [user.json()]
+        else:
+            list_of_users = [user.json() for user in users_list]
+
+        return list_of_users, 201
 
     def update_user(self, user_id, data):
         user = UserModel.find_by_id(user_id)
@@ -51,6 +63,18 @@ class UserDAO:
         user.save_to_db()
 
         return {"message": "User was updated successfully"}, 201
+
+    def change_password(self, user_id, data):
+        current_password = data['current_password']
+        new_password = data['new_password']
+
+        user = UserModel.find_by_id(user_id)
+        if user.password == current_password:
+            user.password = new_password
+            user.save_to_db()
+            return {"message": "Password was updated successfully."}, 201
+
+        return {"message": "Current password is incorrect."}, 201
 
     def confirm_registration(self, user_id, data):
 

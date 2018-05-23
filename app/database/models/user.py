@@ -11,11 +11,11 @@ class UserModel(db.Model):
 
     # personal data
     name = db.Column(db.String(30))
-    username = db.Column(db.String(30))
+    username = db.Column(db.String(30), unique=True)
     password = db.Column(db.String(30))
-    email = db.Column(db.String(30))
+    email = db.Column(db.String(30), unique=True)
 
-    #TODO security, save password as a hash
+    # TODO security, save password as a hash
 
     # security
     security_question = db.Column(db.String(80))
@@ -27,7 +27,6 @@ class UserModel(db.Model):
 
     # admin
     is_admin = db.Column(db.Boolean)
-    #TODO 1º user is and admin
 
     # email verification
     is_email_verified = db.Column(db.Boolean)
@@ -44,7 +43,7 @@ class UserModel(db.Model):
         self.terms_and_conditions_checked = terms_and_conditions_checked
 
         # default values
-        self.is_admin = False
+        self.is_admin = True if self.is_empty() else False  # first user is admin
         self.is_email_verified = False
         self.registration_date = datetime.now()
 
@@ -72,8 +71,16 @@ class UserModel(db.Model):
         return cls.query.filter_by(username=username).first()
 
     @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def is_empty(cls):
+        return cls.query.first() is None
 
     def save_to_db(self):
         db.session.add(self)

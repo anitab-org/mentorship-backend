@@ -1,23 +1,24 @@
 from flask import request
 from flask_restplus import Resource, reqparse, fields
-from flask_jwt import jwt_required
+from flask_jwt import jwt_required, current_identity
 from app.run import api, jwt
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
 
-ns = api.namespace('users', description='Operations related to users')
-add_models_to_namespace(ns)
+users_ns = api.namespace('Users', description='Operations related to users')
+add_models_to_namespace(users_ns)
 
 DAO = UserDAO()  # User data access object
 
-#TODO login with email as well
+
+# TODO login with email as well
 
 
-@ns.route('/')
+@users_ns.route('users/')
 class UserList(Resource):
 
-    @ns.doc('list_users')
-    @ns.marshal_list_with(full_user_api_model)
+    @users_ns.doc('list_users')
+    @users_ns.marshal_list_with(full_user_api_model)
     def get(self):
         """
         Returns list of all the users.
@@ -34,55 +35,54 @@ class UserList(Resource):
         return DAO.list_users()
 
 
-@ns.route('/register')
+@users_ns.route('register')
 class UserRegister(Resource):
-
     parser = reqparse.RequestParser()
     parser.add_argument('name',
-        type=str,
-        required=True,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('username',
-        type=str,
-        required=True,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('password',
-        type=str,
-        required=True,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('email',
-        type=str,
-        required=True,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('security_question',
-        type=str,
-        required=True,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('security_answer',
-        type=str,
-        required=True,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('terms_and_conditions_checked',
-        type=bool,
-        required=True,
-        help="This field cannot be blank."
-    )
+                        type=bool,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
 
-    @ns.doc('create_user')
-    @ns.response(201, 'User successfully created.')
-    @ns.expect(register_user_api_model)
+    @users_ns.doc('create_user')
+    @users_ns.response(201, 'User successfully created.')
+    @users_ns.expect(register_user_api_model)
     def post(self):
         """
         Creates a new user.
         """
 
-        #data = api.payload
+        # data = api.payload
         data = UserRegister.parser.parse_args()
 
         user = DAO.create_user(data)
@@ -93,25 +93,41 @@ class UserRegister(Resource):
             return {"message": "A user with that username already exists"}, 400
 
 
-@ns.route('/<int:id>')
-@ns.response(404, 'User not found.')
-@ns.param('id', 'The user identifier')
-class User(Resource):
+@users_ns.route('users/<int:id>')
+@users_ns.response(404, 'User not found.')
+@users_ns.param('id', 'The user identifier')
+class OtherUser(Resource):
 
     @jwt_required()
-    @ns.doc('get_user')
-    @ns.marshal_with(public_user_api_model)  # , skip_none=True
+    @users_ns.doc('get_user')
+    @users_ns.marshal_with(public_user_api_model)  # , skip_none=True
     def get(self, id):
         """
         Returns a user.
         """
         return DAO.get_user(id)
 
-    @ns.doc('update_user')
-    @ns.expect(public_user_api_model)
-    #@ns.marshal_with(public_user_api_model)
-    @ns.response(204, 'User successfully updated.')
-    def put(self, id):
+
+@users_ns.route('user')
+@users_ns.response(404, 'User not found.')
+class MyUserProfile(Resource):
+
+    @jwt_required()
+    @users_ns.doc('get_user')
+    @users_ns.marshal_with(public_user_api_model)  # , skip_none=True
+    def get(self):
+        """
+        Returns a user.
+        """
+        user_id = current_identity.id
+        return DAO.get_user(user_id)
+
+    @jwt_required()
+    @users_ns.doc('update_user')
+    @users_ns.expect(public_user_api_model)
+    # @users_ns.marshal_with(public_user_api_model)
+    @users_ns.response(204, 'User successfully updated.')
+    def put(self):
         """
         Updates User
         JSON body
@@ -124,51 +140,107 @@ class User(Resource):
         ```
         """
 
-        data = User.parser.parse_args()
-        return DAO.update_user(id, data)
+        data = MyUserProfile.parser.parse_args()
+        user_id = current_identity.id
+        return DAO.update_user(user_id, data)
 
-    @ns.doc('delete_user')
-    @ns.response(204, 'User successfully deleted.')
-    def delete(self, id):
+    @jwt_required()
+    @users_ns.doc('update_user_profile')
+    @users_ns.expect(update_user_request_data_model)
+    @users_ns.response(204, 'User successfully updated.')
+    def put(self):
+        """
+        Updates My User Profile
+        JSON body
+        ```
+        {
+          "name": "User name",
+          "username": "User username",
+          "password": "User password"
+        }
+        ```
+        """
+
+        data = MyUserProfile.parser.parse_args()
+        user_id = current_identity.id
+        return DAO.update_user(user_id, data)
+
+    @jwt_required()
+    @users_ns.doc('delete_user')
+    @users_ns.response(204, 'User successfully deleted.')
+    def delete(self):
         """
         Deletes user.
         """
-        # delete_user(id)
-        return DAO.delete_user(id)
+        user_id = current_identity.id
+        return DAO.delete_user(user_id)
 
     parser = reqparse.RequestParser()
     parser.add_argument('name',
-        type=str,
-        required=False,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=False,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('username',
-        type=str,
-        required=False,
-        help="This field cannot be blank."
-    )
-    parser.add_argument('password',
-        type=str,
-        required=False,
-        help="This field cannot be blank."
-    )
-    parser.add_argument('email',
-        type=str,
-        required=False,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=False,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('security_question',
-        type=str,
-        required=False,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=False,
+                        help="This field cannot be blank."
+                        )
     parser.add_argument('security_answer',
-        type=str,
-        required=False,
-        help="This field cannot be blank."
-    )
-    parser.add_argument('terms_and_conditions_checked',
-        type=bool,
-        required=False,
-        help="This field cannot be blank."
-    )
+                        type=str,
+                        required=False,
+                        help="This field cannot be blank."
+                        )
+
+
+@users_ns.route('user/change_password')
+class ChangeUserPassword(Resource):
+
+    @jwt_required()
+    @users_ns.doc('update_user_password')
+    @users_ns.expect(change_password_request_data_model)
+    def put(self):
+        """
+        Updates the user's password
+
+        Request body:
+
+        ```
+        {
+          "current_password": "User current password",
+          "new_password": "User password"
+        }
+        ```
+        """
+        user_id = current_identity.id
+        data = ChangeUserPassword.parser.parse_args()
+        return DAO.change_password(user_id, data)
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('current_password',
+                        type=str,
+                        required=True,
+                        help="Current password field cannot be blank."
+                        )
+    parser.add_argument('new_password',
+                        type=str,
+                        required=True,
+                        help="New password field cannot be blank."
+                        )
+
+
+@users_ns.route('users/verified')
+class VerifiedUser(Resource):
+
+    @users_ns.doc('get_verified_users')
+    @users_ns.marshal_with(public_user_api_model)  # , skip_none=True
+    def get(self):
+        """
+        Returns all verified users.
+        """
+        return DAO.list_users(is_verified=True)
