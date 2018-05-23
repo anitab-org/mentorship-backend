@@ -69,8 +69,8 @@ class UserDAO:
         new_password = data['new_password']
 
         user = UserModel.find_by_id(user_id)
-        if user.password == current_password:
-            user.password = new_password
+        if user.check_password(current_password):
+            user.set_password(new_password)
             user.save_to_db()
             return {"message": "Password was updated successfully."}, 201
 
