@@ -46,9 +46,9 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=True,
         description='User email'
     ),
-    'password': fields.String(
+    'password_hash': fields.String(
         required=True,
-        description='User password'
+        description='User password hash'
     ),
     'security_question': fields.String(
         required=True,

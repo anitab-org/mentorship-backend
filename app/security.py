@@ -14,7 +14,7 @@ def authenticate(username_or_email, password):
     if not user:
         user = UserModel.find_by_email(username_or_email)
 
-    if user and safe_str_cmp(user.password, password):
+    if user and user.check_password(password):
         return user
 
 
