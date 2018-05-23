@@ -1,3 +1,6 @@
+import os
+import sys
+
 from datetime import timedelta
 
 from flask import Flask
@@ -6,21 +9,29 @@ from flask_jwt import JWT
 
 from app.security import authenticate, identity
 
+CONFIG_NAME_MAPPER = {
+    'development': 'config.DevelopmentConfig',
+    'testing': 'config.TestingConfig',
+    'production': 'config.ProductionConfig'
+}
+
+
 application = Flask(__name__)
-application.secret_key = 'SECRET_KEY'
+
+# setup application environment
+flask_config_name = os.getenv('FLASK_CONFIG')
+if flask_config_name is None:
+    flask_config_name = 'development'
+
+application.config.from_object(CONFIG_NAME_MAPPER[flask_config_name])
+
+#application.secret_key = 'SECRET_KEY'
 
 
 # returns 'access_token'
 jwt = JWT(application, authenticate, identity)
 application.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=300)
 #application.config['JWT_AUTH_URL_RULE'] = '/login'  # POST /auth is created by JWT (default)
-
-# Database settings
-# flask_application.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///data.db'
-application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-
 
 
 api = Api(
