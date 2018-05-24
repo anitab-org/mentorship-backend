@@ -17,8 +17,6 @@ class UserModel(db.Model):
 
     # security
     password_hash = db.Column(db.String(100))
-    security_question = db.Column(db.String(80))
-    security_answer = db.Column(db.String(80))
 
     # registration
     registration_date = db.Column(db.DateTime)
@@ -32,7 +30,8 @@ class UserModel(db.Model):
     email_verification_date = db.Column(db.DateTime)
 
     # other info
-    current_status = db.Column(db.Integer)
+    current_role = db.Column(db.Integer)
+    membership_status = db.Column(db.Integer)
 
     bio = db.Column(db.String(500))
     location = db.Column(db.String(80))
@@ -47,8 +46,7 @@ class UserModel(db.Model):
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
 
-    def __init__(self, name, username, password, email,
-                 security_question, security_answer, terms_and_conditions_checked):
+    def __init__(self, name, username, password, email, terms_and_conditions_checked):
 
         ## required fields
 
@@ -59,8 +57,6 @@ class UserModel(db.Model):
 
         # saving hash instead of saving password in plain text
         self.set_password(password)
-        self.security_question = security_question
-        self.security_answer = security_answer
 
         # default values
         self.is_admin = True if self.is_empty() else False  # first user is admin
@@ -81,14 +77,13 @@ class UserModel(db.Model):
             'username': self.username,
             'password_hash': self.password_hash,
             'email': self.email,
-            'security_question': self.security_question,
-            'security_answer': self.security_answer,
             'terms_and_conditions_checked': self.terms_and_conditions_checked,
             'registration_date': self.registration_date,
             'is_admin': self.is_admin,
             'is_email_verified': self.is_email_verified,
             'email_verification_date': self.email_verification_date,
-            'current_status': self.current_status,
+            'current_role': self.current_role,
+            'membership_status': self.membership_status,
             'bio': self.bio,
             'location': self.location,
             'occupation': self.occupation,

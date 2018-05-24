@@ -54,16 +54,6 @@ class UserRegister(Resource):
                         required=True,
                         help="This field cannot be blank."
                         )
-    parser.add_argument('security_question',
-                        type=str,
-                        required=True,
-                        help="This field cannot be blank."
-                        )
-    parser.add_argument('security_answer',
-                        type=str,
-                        required=True,
-                        help="This field cannot be blank."
-                        )
     parser.add_argument('terms_and_conditions_checked',
                         type=bool,
                         required=True,

@@ -50,14 +50,6 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=True,
         description='User password hash'
     ),
-    'security_question': fields.String(
-        required=True,
-        description='User security question'
-    ),
-    'security_answer': fields.String(
-        required=True,
-        description='User security answer'
-    ),
     'terms_and_conditions_checked': fields.Boolean(
         required=True,
         description='User Terms and Conditions check state'
@@ -100,7 +92,9 @@ full_user_api_model = Model('User Complete model used in listing', {
     'available_to_mentor': fields.Boolean(
         required=False,
         description='User availability to mentor indication'
-    )
+    ),
+    'current_role': fields.Integer(required=False, description='User current role'),
+    'membership_status': fields.Integer(required=False, description='User membershipstatus')
 })
 
 register_user_api_model = Model('User registration model', {
@@ -108,8 +102,6 @@ register_user_api_model = Model('User registration model', {
     'username': fields.String(required=True, description='User username'),
     'password': fields.String(required=True, description='User password'),
     'email': fields.String(required=True, description='User email'),
-    'security_question': fields.String(required=True, description='User\' security question'),
-    'security_answer': fields.String(required=True, description='User\' security answer'),
     'terms_and_conditions_checked': fields.Boolean(required=True, description='User check Terms and Conditions value')
 })
 
