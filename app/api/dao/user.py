@@ -1,6 +1,4 @@
 from app.database.models.user import UserModel
-from app.database import db
-
 
 class UserDAO:
 
@@ -12,8 +10,6 @@ class UserDAO:
         username = data['username']
         password = data['password']
         email = data['email']
-        security_question = data['security_question']
-        security_answer = data['security_answer']
         terms_and_conditions_checked = data['terms_and_conditions_checked']
 
         existing_user = UserModel.find_by_username(data['username'])
@@ -24,9 +20,7 @@ class UserDAO:
             if existing_user:
                 return existing_user
 
-        user = UserModel(name, username, password, email,
-                         security_question, security_answer,
-                         terms_and_conditions_checked)
+        user = UserModel(name, username, password, email, terms_and_conditions_checked)
 
         user.save_to_db()
 
