@@ -31,8 +31,27 @@ class UserModel(db.Model):
     is_email_verified = db.Column(db.Boolean)
     email_verification_date = db.Column(db.DateTime)
 
+    # other info
+    current_status = db.Column(db.Integer)
+
+    bio = db.Column(db.String(500))
+    location = db.Column(db.String(80))
+    occupation = db.Column(db.String(80))
+    slack_username = db.Column(db.String(80))
+    social_media_links = db.Column(db.String(500))
+    skills = db.Column(db.String(500))
+    interests = db.Column(db.String(200))
+    resume_url = db.Column(db.String(200))
+    photo_url = db.Column(db.String(200))
+
+    need_mentoring = db.Column(db.Boolean)
+    available_to_mentor = db.Column(db.Boolean)
+
     def __init__(self, name, username, password, email,
                  security_question, security_answer, terms_and_conditions_checked):
+
+        ## required fields
+
         self.name = name
         self.username = username
         self.email = email
@@ -48,6 +67,13 @@ class UserModel(db.Model):
         self.is_email_verified = False
         self.registration_date = datetime.now()
 
+        ## optional fields
+
+        self.need_mentoring = False
+        self.available_to_mentor = False
+
+
+
     def json(self):
         return {
             'id': self.id,
@@ -61,7 +87,19 @@ class UserModel(db.Model):
             'registration_date': self.registration_date,
             'is_admin': self.is_admin,
             'is_email_verified': self.is_email_verified,
-            'email_verification_date': self.email_verification_date
+            'email_verification_date': self.email_verification_date,
+            'current_status': self.current_status,
+            'bio': self.bio,
+            'location': self.location,
+            'occupation': self.occupation,
+            'slack_username': self.slack_username,
+            'social_media_links': self.social_media_links,
+            'skills': self.skills,
+            'interests': self.interests,
+            'resume_url': self.resume_url,
+            'photo_url': self.photo_url,
+            'need_mentoring': self.need_mentoring,
+            'available_to_mentor': self.available_to_mentor
         }
 
     def __repr__(self):

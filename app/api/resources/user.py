@@ -119,28 +119,6 @@ class MyUserProfile(Resource):
         return DAO.get_user(user_id)
 
     @jwt_required()
-    @users_ns.doc('update_user')
-    @users_ns.expect(public_user_api_model)
-    # @users_ns.marshal_with(public_user_api_model)
-    @users_ns.response(204, 'User successfully updated.')
-    def put(self):
-        """
-        Updates User
-        JSON body
-        ```
-        {
-          "name": "User name",
-          "username": "User username",
-          "password": "User password"
-        }
-        ```
-        """
-
-        data = MyUserProfile.parser.parse_args()
-        user_id = current_identity.id
-        return DAO.update_user(user_id, data)
-
-    @jwt_required()
     @users_ns.doc('update_user_profile')
     @users_ns.expect(update_user_request_data_model)
     @users_ns.response(204, 'User successfully updated.')
@@ -157,9 +135,9 @@ class MyUserProfile(Resource):
         ```
         """
 
-        data = MyUserProfile.parser.parse_args()
+        data = MyUserProfile.update_profile_parser.parse_args()
         user_id = current_identity.id
-        return DAO.update_user(user_id, data)
+        return DAO.update_user_profile(user_id, data)
 
     @jwt_required()
     @users_ns.doc('delete_user')
@@ -171,26 +149,84 @@ class MyUserProfile(Resource):
         user_id = current_identity.id
         return DAO.delete_user(user_id)
 
-    parser = reqparse.RequestParser()
-    parser.add_argument('name',
+    update_profile_parser = reqparse.RequestParser()
+    update_profile_parser.add_argument('name',
                         type=str,
                         required=False,
-                        help="This field cannot be blank."
+                        help="This field can be blank.",
+                        nullable=True
                         )
-    parser.add_argument('username',
+    update_profile_parser.add_argument('username',
                         type=str,
                         required=False,
-                        help="This field cannot be blank."
+                        help="This field can be blank.",
+                        nullable=True
                         )
-    parser.add_argument('security_question',
+    update_profile_parser.add_argument('bio',
                         type=str,
                         required=False,
-                        help="This field cannot be blank."
+                        help="This field can be blank.",
+                        nullable=True
                         )
-    parser.add_argument('security_answer',
+    update_profile_parser.add_argument('location',
                         type=str,
                         required=False,
-                        help="This field cannot be blank."
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('occupation',
+                        type=str,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('slack_username',
+                        type=str,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('social_media_links',
+                        type=str,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('skills',
+                        type=str,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('interests',
+                        type=str,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('resume_url',
+                        type=str,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('photo_url',
+                        type=str,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('need_mentoring',
+                        type=bool,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
+                        )
+    update_profile_parser.add_argument('available_to_mentor',
+                        type=bool,
+                        required=False,
+                        help="This field can be blank.",
+                        nullable=True
                         )
 
 
