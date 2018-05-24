@@ -10,6 +10,7 @@ add_models_to_namespace(admin_ns)
 
 DAO = AdminDAO()  # User data access object
 
+
 @admin_ns.route('admin/new/<int:new_admin_id>')
 @admin_ns.param('new_admin_id', 'The identifier of the user that is being assigned as an admin')
 class OtherUser(Resource):
