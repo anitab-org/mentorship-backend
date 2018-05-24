@@ -1,4 +1,4 @@
-from app.run import app
+import app.run
 import unittest
 
 class TestFlaskApp(unittest.TestCase):
@@ -6,8 +6,6 @@ class TestFlaskApp(unittest.TestCase):
     def setUp(self):
         # creates a test client
         self.app = app.test_client()
-        # propagate the exceptions to the test client
-        self.app.testing = True
 
     def tearDown(self):
         pass
