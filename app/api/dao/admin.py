@@ -3,9 +3,10 @@ from app.database.models.user import UserModel
 
 class AdminDAO:
 
-    def assign_new_user(self, new_admin_id):
+    def assign_new_user(self, data):
 
-        new_admin_user = UserModel.find_by_id(new_admin_id)
+        new_admin_user_id = data['user_id']
+        new_admin_user = UserModel.find_by_id(new_admin_user_id)
 
         if new_admin_user:
 
