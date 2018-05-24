@@ -1,8 +1,13 @@
 import unittest
 
-TEST_DB = 'test.db'
-LOCAL_ENDPOINT = 'http://localhost:5000'
+"""
+Testing User API resources
 
+TODO tests:
+    - authenticate when User table does not exist
+    - Users GET/POST/PUT/DELETE
+    - Check admin and non admin actions
+"""
 class TestUserApi(unittest.TestCase):
 
     """

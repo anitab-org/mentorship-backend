@@ -1,7 +1,13 @@
 import unittest
 from flask_sqlalchemy import SQLAlchemy
 
+"""
+Testing User database model
 
+TODO tests:
+    - User insertion/deletion/update/read
+    - Check if first user is an admin
+"""
 class TestUserDao(unittest.TestCase):
     """
         Setup and teardown of entire test
