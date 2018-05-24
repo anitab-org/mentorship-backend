@@ -1,4 +1,3 @@
-from werkzeug.security import safe_str_cmp
 from app.database.models.user import UserModel
 
 
