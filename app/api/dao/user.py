@@ -55,10 +55,53 @@ class UserDAO:
 
         return list_of_users, 201
 
-    def update_user(self, user_id, data):
+    def update_user_profile(self, user_id, data):
+
         user = UserModel.find_by_id(user_id)
-        if 'name' in data:
+
+        if not user:
+            return {"message": "User does not exist"}, 201
+
+        if 'name' in data and data['name']:
             user.name = data['name']
+
+        if 'username' in data and data['username']:
+            user.username = data['username']
+
+        if 'bio' in data and data['bio']:
+            user.bio = data['bio']
+
+        if 'location' in data and data['location']:
+            user.location = data['location']
+
+        if 'occupation' in data and data['occupation']:
+            user.occupation = data['occupation']
+
+        if 'slack_username' in data and data['slack_username']:
+            user.slack_username = data['slack_username']
+
+        if 'social_media_links' in data and data['social_media_links']:
+            user.social_media_links = data['social_media_links']
+
+        if 'skills' in data and data['skills']:
+            user.skills = data['skills']
+
+        if 'interests' in data and data['interests']:
+            user.interests = data['interests']
+
+        if 'resume_url' in data and data['resume_url']:
+            user.resume_url = data['resume_url']
+
+        if 'photo_url' in data and data['photo_url']:
+            user.photo_url = data['photo_url']
+
+        if 'need_mentoring' in data and data['need_mentoring']:
+            user.need_mentoring = data['need_mentoring']
+
+        if 'available_to_mentor' in data and data['available_to_mentor']:
+            user.available_to_mentor = data['available_to_mentor']
+
+        #print(data)
 
         user.save_to_db()
 
