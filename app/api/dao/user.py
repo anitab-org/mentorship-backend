@@ -1,11 +1,12 @@
 from app.database.models.user import UserModel
 
-class UserDAO:
 
+class UserDAO:
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
     SUCCESS_USER_CREATED = "SUCCESS_USER_CREATED"
 
-    def create_user(self, data):
+    @staticmethod
+    def create_user(data):
         name = data['name']
         username = data['username']
         password = data['password']
@@ -26,7 +27,8 @@ class UserDAO:
 
         return None
 
-    def delete_user(self, user_id):
+    @staticmethod
+    def delete_user(user_id):
         user = UserModel.find_by_id(user_id).one()
         if user:
             user.delete_from_db()
@@ -34,10 +36,12 @@ class UserDAO:
 
         return {"message": "User does not exist"}, 201
 
-    def get_user(self, user_id):
+    @staticmethod
+    def get_user(user_id):
         return UserModel.find_by_id(user_id), 201
 
-    def list_users(self, is_verified = None):
+    @staticmethod
+    def list_users(is_verified=None):
         users_list = UserModel.query.all()
         list_of_users = []
         if is_verified:
@@ -49,7 +53,8 @@ class UserDAO:
 
         return list_of_users, 201
 
-    def update_user_profile(self, user_id, data):
+    @staticmethod
+    def update_user_profile(user_id, data):
 
         user = UserModel.find_by_id(user_id)
 
@@ -95,13 +100,14 @@ class UserDAO:
         if 'available_to_mentor' in data and data['available_to_mentor']:
             user.available_to_mentor = data['available_to_mentor']
 
-        #print(data)
+        # print(data)
 
         user.save_to_db()
 
         return {"message": "User was updated successfully"}, 201
 
-    def change_password(self, user_id, data):
+    @staticmethod
+    def change_password(user_id, data):
         current_password = data['current_password']
         new_password = data['new_password']
 
@@ -113,7 +119,8 @@ class UserDAO:
 
         return {"message": "Current password is incorrect."}, 201
 
-    def confirm_registration(self, user_id, data):
+    @staticmethod
+    def confirm_registration(user_id, data):
 
         # Not implemented yet
         # set confirmation date

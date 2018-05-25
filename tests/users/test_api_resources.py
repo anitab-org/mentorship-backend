@@ -1,18 +1,17 @@
 import unittest
 
-"""
-Testing User API resources
 
-TODO tests:
-    - authenticate when User table does not exist
-    - Users GET/POST/PUT/DELETE
-    - Check admin and non admin actions
-"""
+# Testing User API resources
+#
+# TODO tests:
+#     - authenticate when User table does not exist
+#     - Users GET/POST/PUT/DELETE
+#     - Check admin and non admin actions
+
 class TestUserApi(unittest.TestCase):
 
-    """
-        Setup and teardown of test cases
-    """
+
+    # Setup and teardown of test cases
 
     def setUp(self):
         pass
@@ -20,9 +19,7 @@ class TestUserApi(unittest.TestCase):
     def tearDown(self):
         pass
 
-    """
-        Tests
-    """
+    # Tests
 
     def test_main_page(self):
         #response = self.app.get('/', follow_redirects=True)
