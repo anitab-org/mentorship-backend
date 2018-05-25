@@ -1,5 +1,4 @@
 import os
-import sys
 
 from datetime import timedelta
 
@@ -15,7 +14,6 @@ CONFIG_NAME_MAPPER = {
     'production': 'config.ProductionConfig'
 }
 
-
 application = Flask(__name__)
 
 # setup application environment
@@ -24,9 +22,6 @@ if flask_config_name is None:
     flask_config_name = 'development'
 
 application.config.from_object(CONFIG_NAME_MAPPER[flask_config_name])
-
-#application.secret_key = 'SECRET_KEY'
-
 
 # returns 'access_token'
 jwt = JWT(application, authenticate, identity)
@@ -60,4 +55,4 @@ if __name__ == "__main__":
     add_namespaces()
     from app.database.db import db
     db.init_app(application)
-    application.run(port=5000, debug=True)
+    application.run(port=5000)

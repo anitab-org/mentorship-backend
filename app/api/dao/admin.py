@@ -3,7 +3,8 @@ from app.database.models.user import UserModel
 
 class AdminDAO:
 
-    def assign_new_user(self, data):
+    @staticmethod
+    def assign_new_user(data):
 
         new_admin_user_id = data['user_id']
         new_admin_user = UserModel.find_by_id(new_admin_user_id)
