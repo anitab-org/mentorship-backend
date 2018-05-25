@@ -1,6 +1,6 @@
 from flask_restplus import Resource, reqparse
 from flask_jwt import jwt_required, current_identity
-from app.run import api, jwt
+from app.run import api
 from app.api.models.user import *
 from app.api.dao.admin import AdminDAO
 
@@ -13,9 +13,10 @@ DAO = AdminDAO()  # User data access object
 @admin_ns.route('admin/new')
 class AssignNewUserAdmin(Resource):
 
+    @classmethod
     @jwt_required()
     @admin_ns.doc('assign_new_admin_user')
-    def post(self):
+    def post(cls):
         """
         Assigns a User as a new Admin.
         """
