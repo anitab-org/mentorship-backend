@@ -1,0 +1,171 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Mentorship Backend",
+		"_postman_id": "9996d65b-3ee0-fba4-0598-26aee5d54b2a",
+		"description": "Mentorship Backend API testing\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST /users/register",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"Tatiana\",\n\t\"username\":\"Joana\",\n\t\"password\":\"lala\", \n\t\"email\":\"jo@email.com\",\n\t\"terms_and_conditions_checked\":true\n}"
+				},
+				"description": "get users"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /users/",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/users/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "List Users"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /auth",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/auth",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"username\":\"Bibi\",\n \"password\":\"lala\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET /users/{id}",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/users/1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzc4OTcsImlhdCI6MTUyNzE3NzU5NywibmJmIjoxNTI3MTc3NTk3LCJpZGVudGl0eSI6MX0.J3S7zQEgAH8KswlbLFxPH4fNiF5_rEdpvU4XrnTg50Q",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Get user by id"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /user",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/user",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzEyNTIsImlhdCI6MTUyNzE3MDk1MiwibmJmIjoxNTI3MTcwOTUyLCJpZGVudGl0eSI6MX0.Jfag8fh_zctCjF12_1uT3LU0Hg4ffomfLVU5mQrzPgo",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"shonda_rhimes\"\n}"
+				},
+				"description": "Updates user name"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/user",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzc4OTcsImlhdCI6MTUyNzE3NzU5NywibmJmIjoxNTI3MTc3NTk3LCJpZGVudGl0eSI6MX0.J3S7zQEgAH8KswlbLFxPH4fNiF5_rEdpvU4XrnTg50Q",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Get My profile"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /user/changepassword",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/user/change_password",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcwOTQ5MzgsImlhdCI6MTUyNzA5NDYzOCwibmJmIjoxNTI3MDk0NjM4LCJpZGVudGl0eSI6MX0.Vo_BL4txYqu88SwoK46FeAO9JUUGxwBvmF8YYIE8sR4",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"current_password\":\"lala\",\n \"new_password\":\"lala2\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST /admin/new",
+			"request": {
+				"url": "{{MAIN_ENDPOINT}}/admin/new",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzI0NTMsImlhdCI6MTUyNzE3MjE1MywibmJmIjoxNTI3MTcyMTUzLCJpZGVudGl0eSI6MX0.9ZHPvVUeJCp1ggHkXyWiP46KPL4-y7R3l4KlXdgfjM0",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_id\": 2\n}"
+				},
+				"description": "Assign a new user as an Admin"
+			},
+			"response": []
+		}
+	]
+}
