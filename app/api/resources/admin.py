@@ -1,6 +1,6 @@
 from flask_restplus import Resource, reqparse
 from flask_jwt import jwt_required, current_identity
-from app.run import api
+from run import api
 from app.api.models.user import *
 from app.api.dao.admin import AdminDAO
 
