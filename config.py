@@ -1,3 +1,5 @@
+
+
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
@@ -7,8 +9,9 @@ class BaseConfig(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
 class ProductionConfig(BaseConfig):
-    #SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/foo'
+    # SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/foo'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///prod_data.db'
 
 
@@ -19,6 +22,7 @@ class DevelopmentConfig(BaseConfig):
 
 
 class TestingConfig(BaseConfig):
+    DEBUG = True
     TESTING = True
 
     # Use in-memory SQLite database for testing
