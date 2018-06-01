@@ -1,8 +1,10 @@
-from flask_restplus import Resource, reqparse
+from flask import request
+from flask_restplus import Resource
 from flask_jwt import jwt_required, current_identity
 from run import api
-from app.api.models.user import *
+from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
+from app.api.resources.common import auth_header_parser
 
 admin_ns = api.namespace('Admins', description='Operations related to Admin users')
 add_models_to_namespace(admin_ns)
@@ -15,24 +17,17 @@ class AssignNewUserAdmin(Resource):
 
     @classmethod
     @jwt_required()
-    @admin_ns.doc('assign_new_admin_user')
+    @admin_ns.expect(auth_header_parser, assign_new_admin_request_body, validate=True)
     def post(cls):
         """
         Assigns a User as a new Admin.
         """
 
         if current_identity.is_admin:
-            data = AssignNewUserAdmin.assign_new_admin_parser.parse_args()
+            data = request.json
             return DAO.assign_new_user(data)
 
         else:
             return {
                        "message": "You don't have admin status. You can't assign another admin"
                    }, 401
-
-    assign_new_admin_parser = reqparse.RequestParser()
-    assign_new_admin_parser.add_argument('user_id',
-                        type=int,
-                        required=True,
-                        help="This field cannot be blank."
-                        )
