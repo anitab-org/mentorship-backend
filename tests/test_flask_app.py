@@ -1,21 +1,12 @@
-import app.run
+from tests.base_test_case import BaseTestCase
 import unittest
 
-class TestFlaskApp(unittest.TestCase):
+class TestFlaskApp(BaseTestCase):
 
-    def setUp(self):
-        # creates a test client
-        self.app = app.test_client()
+    def test_index(self):
+        response = self.client.get('/', follow_redirects=True)
+        self.assertTrue(response.status_code == 200)
 
-    def tearDown(self):
-        pass
-
-    def test_api_root_status_code(self):
-        # sends HTTP GET request the root of the API
-        result = self.app.get('/')
-
-        # assert the status code of the response
-        self.assertEqual(result.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()
