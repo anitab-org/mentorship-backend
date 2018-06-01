@@ -5,7 +5,7 @@ from datetime import timedelta
 from flask import Flask
 from flask_restplus import Api
 from flask_jwt import JWT
-
+from flask_sqlalchemy import SQLAlchemy
 from app.security import authenticate, identity
 
 CONFIG_NAME_MAPPER = {
@@ -23,10 +23,11 @@ if flask_config_name is None:
 
 application.config.from_object(CONFIG_NAME_MAPPER[flask_config_name])
 
+db = SQLAlchemy(application)
 # returns 'access_token'
 jwt = JWT(application, authenticate, identity)
 application.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=300)
-#application.config['JWT_AUTH_URL_RULE'] = '/login'  # POST /auth is created by JWT (default)
+# application.config['JWT_AUTH_URL_RULE'] = '/login'  # POST /auth is created by JWT (default)
 
 
 api = Api(
@@ -34,13 +35,16 @@ api = Api(
     title='Mentorship System API',
     version='1.0',
     description='API documentation for the backend of Mentorship System',
-    #doc='/docs/'
+    # doc='/docs/'
 )
+
 
 @application.before_first_request
 def create_tables():
-    #db.drop_all()
+    from app.database.db_utils import db
+    # db.drop_all()
     db.create_all()
+
 
 # Adding namespaces
 def add_namespaces():
@@ -53,6 +57,4 @@ def add_namespaces():
 
 if __name__ == "__main__":
     add_namespaces()
-    from app.database.db import db
-    db.init_app(application)
     application.run(port=5000)
