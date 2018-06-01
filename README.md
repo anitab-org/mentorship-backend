@@ -4,22 +4,22 @@ Backend REST API for Mentorship System.
 
 ## Setup and run
 
-### Setup environment
+The project runs on Python 3. 
 
-First you have to create a virtual environment using python 3.x:
-```
-virtualenv venv --python=python3
-```
+1. Create a virtual environment:
+`virtualenv venv --python=python3`
 
-1. Activate the virtual environment running on terminal `source ./venv/bin/activate` (to deactivate use `deactivate`).
-2. Then install all the dependencies in `requirements.txt` with `pip install requirements.txt`
+2. Activate the virtual environment:
+`source ./venv/bin/activate`
 
-### Run app
+3. Install all the dependencies in `requirements.txt` file:
+`pip install -r requirements.txt`
 
-To run the app type this on the terminal:
-```
-python -m app.run
-```
+4. Run the app:
+`python run.py`
+
+5. When you are done using the app, decativate the virtual environment:
+`deactivate`
 
 
 ### Run tests
