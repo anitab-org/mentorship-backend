@@ -1,5 +1,3 @@
-from app.database.models.user import UserModel
-
 
 def authenticate(username_or_email, password):
     """
@@ -7,7 +5,7 @@ def authenticate(username_or_email, password):
     -> username + password
     -> email + password
     """
-
+    from app.database.models.user import UserModel
     user = UserModel.find_by_username(username_or_email)
 
     if not user:
@@ -18,5 +16,6 @@ def authenticate(username_or_email, password):
 
 
 def identity(payload):
+    from app.database.models.user import UserModel
     user_id = payload['identity']
     return UserModel.find_by_id(user_id)
