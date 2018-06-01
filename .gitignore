@@ -103,7 +103,13 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-#PyCharm project settings
+# PyCharm project settings
 .idea/
 
+# vscode
+.vscode/
+
 *.db
+
+# aws-eb
+.elasticbeanstalk/
