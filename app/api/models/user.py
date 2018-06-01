@@ -6,7 +6,8 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[full_user_api_model.name] = full_user_api_model
     api_namespace.models[register_user_api_model.name] = register_user_api_model
     api_namespace.models[change_password_request_data_model.name] = change_password_request_data_model
-    api_namespace.models[update_user_request_data_model.name] = update_user_request_data_model
+    api_namespace.models[update_user_request_body_model.name] = update_user_request_body_model
+    api_namespace.models[login_request_body_model.name] = login_request_body_model
 
 
 public_user_api_model = Model('User list model', {
@@ -109,7 +110,12 @@ change_password_request_data_model = Model('Change password request data model',
     'new_password': fields.String(required=True, description='User\'s new password')
 })
 
-update_user_request_data_model = Model('Update User request data model', {
+login_request_body_model = Model('Login data model', {
+    'username': fields.String(required=True, description='User\'s username'),
+    'password': fields.String(required=True, description='User\'s password')
+})
+
+update_user_request_body_model = Model('Update User request data model', {
     'name': fields.String(required=False, description='User name'),
     'username': fields.String(required=False, description='User username'),
     'bio': fields.String(required=False, description='User bio'),

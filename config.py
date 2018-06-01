@@ -9,6 +9,8 @@ class BaseConfig(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Flask JWT settings
+    JWT_AUTH_URL_RULE = '/login'
 
 class ProductionConfig(BaseConfig):
     # SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/foo'
