@@ -1,0 +1,613 @@
+{
+    "swagger": "2.0",
+    "basePath": "/",
+    "paths": {
+        "/admin/new": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Assigns a User as a new Admin",
+                "operationId": "post_assign_new_user_admin",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Assign User model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Admins"
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Login user",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Login data model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/register": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "User successfully created."
+                    }
+                },
+                "summary": "Creates a new user",
+                "operationId": "create_user",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/User registration model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/user": {
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/User list model"
+                        }
+                    }
+                },
+                "summary": "Returns a user",
+                "operationId": "get_user",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully updated."
+                    }
+                },
+                "summary": "Updates user profile",
+                "operationId": "update_user_profile",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Update User request data model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully deleted."
+                    }
+                },
+                "summary": "Deletes user",
+                "operationId": "delete_user",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/user/change_password": {
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Updates the user's password",
+                "operationId": "update_user_password",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Change password request data model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/users/": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User Complete model used in listing"
+                            }
+                        }
+                    }
+                },
+                "summary": "Returns list of all the users",
+                "operationId": "list_users",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/users/verified": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/User list model"
+                        }
+                    }
+                },
+                "summary": "Returns all verified users",
+                "operationId": "get_verified_users",
+                "parameters": [
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/users/{user_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The user identifier",
+                    "name": "user_id",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/User list model"
+                        }
+                    }
+                },
+                "summary": "Returns a user",
+                "operationId": "get_user",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "Mentorship System API",
+        "version": "1.0",
+        "description": "API documentation for the backend of Mentorship System"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "default",
+            "description": "Default namespace"
+        },
+        {
+            "name": "Users",
+            "description": "Operations related to users"
+        },
+        {
+            "name": "Admins",
+            "description": "Operations related to Admin users"
+        }
+    ],
+    "definitions": {
+        "User Complete model used in listing": {
+            "required": [
+                "email",
+                "is_admin",
+                "is_email_verified",
+                "name",
+                "password_hash",
+                "registration_date",
+                "terms_and_conditions_checked",
+                "username"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "The unique identifier of a user"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User email"
+                },
+                "password_hash": {
+                    "type": "string",
+                    "description": "User password hash"
+                },
+                "terms_and_conditions_checked": {
+                    "type": "boolean",
+                    "description": "User Terms and Conditions check state"
+                },
+                "is_admin": {
+                    "type": "boolean",
+                    "description": "User admin status"
+                },
+                "registration_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "User registration date"
+                },
+                "is_email_verified": {
+                    "type": "boolean",
+                    "description": "User email verification status"
+                },
+                "email_verification_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "User email verification date"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "User bio"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "User location"
+                },
+                "occupation": {
+                    "type": "string",
+                    "description": "User occupation"
+                },
+                "slack_username": {
+                    "type": "string",
+                    "description": "User slack username"
+                },
+                "social_media_links": {
+                    "type": "string",
+                    "description": "User social media links"
+                },
+                "skills": {
+                    "type": "string",
+                    "description": "User skills"
+                },
+                "interests": {
+                    "type": "string",
+                    "description": "User interests"
+                },
+                "resume_url": {
+                    "type": "string",
+                    "description": "User resume url"
+                },
+                "photo_url": {
+                    "type": "string",
+                    "description": "User photo url"
+                },
+                "need_mentoring": {
+                    "type": "boolean",
+                    "description": "User need mentoring indication"
+                },
+                "available_to_mentor": {
+                    "type": "boolean",
+                    "description": "User availability to mentor indication"
+                },
+                "current_role": {
+                    "type": "integer",
+                    "description": "User current role"
+                },
+                "membership_status": {
+                    "type": "integer",
+                    "description": "User membershipstatus"
+                }
+            },
+            "type": "object"
+        },
+        "User list model": {
+            "required": [
+                "email",
+                "name",
+                "username"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "The unique identifier of a user"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User email"
+                }
+            },
+            "type": "object"
+        },
+        "Update User request data model": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "User bio"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "User location"
+                },
+                "occupation": {
+                    "type": "string",
+                    "description": "User occupation"
+                },
+                "slack_username": {
+                    "type": "string",
+                    "description": "User slack username"
+                },
+                "social_media_links": {
+                    "type": "string",
+                    "description": "User social media links"
+                },
+                "skills": {
+                    "type": "string",
+                    "description": "User skills"
+                },
+                "interests": {
+                    "type": "string",
+                    "description": "User interests"
+                },
+                "resume_url": {
+                    "type": "string",
+                    "description": "User resume url"
+                },
+                "photo_url": {
+                    "type": "string",
+                    "description": "User photo url"
+                },
+                "need_mentoring": {
+                    "type": "boolean",
+                    "description": "User need mentoring indication"
+                },
+                "available_to_mentor": {
+                    "type": "boolean",
+                    "description": "User availability to mentor indication"
+                }
+            },
+            "type": "object"
+        },
+        "Change password request data model": {
+            "required": [
+                "current_password",
+                "new_password"
+            ],
+            "properties": {
+                "current_password": {
+                    "type": "string",
+                    "description": "User's current password"
+                },
+                "new_password": {
+                    "type": "string",
+                    "description": "User's new password"
+                }
+            },
+            "type": "object"
+        },
+        "User registration model": {
+            "required": [
+                "email",
+                "name",
+                "password",
+                "terms_and_conditions_checked",
+                "username"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "User password"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User email"
+                },
+                "terms_and_conditions_checked": {
+                    "type": "boolean",
+                    "description": "User check Terms and Conditions value"
+                }
+            },
+            "type": "object"
+        },
+        "Login data model": {
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "User's username"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "User's password"
+                }
+            },
+            "type": "object"
+        },
+        "Assign User model": {
+            "required": [
+                "user_id"
+            ],
+            "properties": {
+                "user_id": {
+                    "type": "integer",
+                    "description": "The unique identifier of a user"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        }
+    }
+}

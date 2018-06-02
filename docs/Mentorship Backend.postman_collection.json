@@ -8,9 +8,9 @@
 	},
 	"item": [
 		{
-			"name": "POST /users/register",
+			"name": "POST /register",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/register",
+				"url": "http://127.0.0.1:5000/register",
 				"method": "POST",
 				"header": [
 					{
@@ -21,7 +21,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\":\"Tatiana\",\n\t\"username\":\"Joana\",\n\t\"password\":\"lala\", \n\t\"email\":\"jo@email.com\",\n\t\"terms_and_conditions_checked\":true\n}"
+					"raw": "{\n\t\"name\":\"tita maria\",\n\t\"username\":\"tita\",\n\t\"password\":\"lala\", \n\t\"email\":\"tita@email.com\",\n\t\"terms_and_conditions_checked\":true\n}"
 				},
 				"description": "get users"
 			},
@@ -30,7 +30,7 @@
 		{
 			"name": "GET /users/",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/users/",
+				"url": "http://127.0.0.1:5000/users/",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -39,9 +39,9 @@
 			"response": []
 		},
 		{
-			"name": "POST /auth",
+			"name": "POST /login",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/auth",
+				"url": "http://127.0.0.1:5000/login",
 				"method": "POST",
 				"header": [
 					{
@@ -52,7 +52,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n \"username\":\"Bibi\",\n \"password\":\"lala\"\n}"
+					"raw": "{\n \"username\":\"Joana\",\n \"password\":\"lala\"\n}"
 				},
 				"description": ""
 			},
@@ -61,12 +61,12 @@
 		{
 			"name": "GET /users/{id}",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/users/1",
+				"url": "http://127.0.0.1:5000/users/2",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzc4OTcsImlhdCI6MTUyNzE3NzU5NywibmJmIjoxNTI3MTc3NTk3LCJpZGVudGl0eSI6MX0.J3S7zQEgAH8KswlbLFxPH4fNiF5_rEdpvU4XrnTg50Q",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc3NzA0NDcsImlhdCI6MTUyNzc3MDE0NywibmJmIjoxNTI3NzcwMTQ3LCJpZGVudGl0eSI6MX0.lG_KS9NBE1Q9lvtdjkex_yNUrw8Vq4PgfaVH6S6BC_0",
 						"description": ""
 					}
 				],
@@ -78,7 +78,7 @@
 		{
 			"name": "PUT /user",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/user",
+				"url": "http://127.0.0.1:5000/user",
 				"method": "PUT",
 				"header": [
 					{
@@ -88,13 +88,13 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzEyNTIsImlhdCI6MTUyNzE3MDk1MiwibmJmIjoxNTI3MTcwOTUyLCJpZGVudGl0eSI6MX0.Jfag8fh_zctCjF12_1uT3LU0Hg4ffomfLVU5mQrzPgo",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc3NzA0NDcsImlhdCI6MTUyNzc3MDE0NywibmJmIjoxNTI3NzcwMTQ3LCJpZGVudGl0eSI6MX0.lG_KS9NBE1Q9lvtdjkex_yNUrw8Vq4PgfaVH6S6BC_0",
 						"description": ""
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\": \"shonda_rhimes\"\n}"
+					"raw": "{\n\t\"username\": \"mkira\"\n}"
 				},
 				"description": "Updates user name"
 			},
@@ -103,12 +103,12 @@
 		{
 			"name": "GET /user",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/user",
+				"url": "http://127.0.0.1:5000/user",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzc4OTcsImlhdCI6MTUyNzE3NzU5NywibmJmIjoxNTI3MTc3NTk3LCJpZGVudGl0eSI6MX0.J3S7zQEgAH8KswlbLFxPH4fNiF5_rEdpvU4XrnTg50Q",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc4MDAwODIsImlhdCI6MTUyNzc5OTc4MiwibmJmIjoxNTI3Nzk5NzgyLCJpZGVudGl0eSI6MX0.7f2td8S3JFbzSYqueDp9eTQhW-zmoDd4fe3yq3GeffY",
 						"description": ""
 					}
 				],
@@ -120,7 +120,7 @@
 		{
 			"name": "PUT /user/changepassword",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/user/change_password",
+				"url": "http://127.0.0.1:5000/user/change_password",
 				"method": "PUT",
 				"header": [
 					{
@@ -130,13 +130,13 @@
 					},
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcwOTQ5MzgsImlhdCI6MTUyNzA5NDYzOCwibmJmIjoxNTI3MDk0NjM4LCJpZGVudGl0eSI6MX0.Vo_BL4txYqu88SwoK46FeAO9JUUGxwBvmF8YYIE8sR4",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc3NzA3ODIsImlhdCI6MTUyNzc3MDQ4MiwibmJmIjoxNTI3NzcwNDgyLCJpZGVudGl0eSI6MX0.OoOKrvyqCik2N-jKHkp0018E5d4K0tmslbXC7H3HTyg",
 						"description": ""
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n \"current_password\":\"lala\",\n \"new_password\":\"lala2\"\n}"
+					"raw": "{\n \"current_password\":\"lala2\",\n \"new_password\":\"lala\"\n}"
 				},
 				"description": ""
 			},
@@ -145,12 +145,12 @@
 		{
 			"name": "POST /admin/new",
 			"request": {
-				"url": "{{MAIN_ENDPOINT}}/admin/new",
+				"url": "http://127.0.0.1:5000/admin/new",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzI0NTMsImlhdCI6MTUyNzE3MjE1MywibmJmIjoxNTI3MTcyMTUzLCJpZGVudGl0eSI6MX0.9ZHPvVUeJCp1ggHkXyWiP46KPL4-y7R3l4KlXdgfjM0",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc3NzA0NDcsImlhdCI6MTUyNzc3MDE0NywibmJmIjoxNTI3NzcwMTQ3LCJpZGVudGl0eSI6MX0.lG_KS9NBE1Q9lvtdjkex_yNUrw8Vq4PgfaVH6S6BC_0",
 						"description": ""
 					},
 					{

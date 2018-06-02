@@ -1,7 +1,5 @@
 import os
 
-from datetime import timedelta
-
 from flask import Flask
 from flask_restplus import Api
 from flask_jwt import JWT
@@ -26,9 +24,6 @@ application.config.from_object(CONFIG_NAME_MAPPER[flask_config_name])
 db = SQLAlchemy(application)
 # returns 'access_token'
 jwt = JWT(application, authenticate, identity)
-application.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=300)
-# application.config['JWT_AUTH_URL_RULE'] = '/login'  # POST /auth is created by JWT (default)
-
 
 api = Api(
     app=application,
