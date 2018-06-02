@@ -1,0 +1,11 @@
+language: python
+sudo: required
+python:
+  - '3.6'
+cache: pip
+install:
+  - pip3 install -r requirements.txt
+script:
+  - python -m unittest discover tests -v
+# after_success:
+#   - Do auto deployment
