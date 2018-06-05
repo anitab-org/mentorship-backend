@@ -141,12 +141,41 @@ class UserRegister(Resource):
         """
 
         data = request.json
+
+        is_valid = UserRegister.is_valid_data(data)
+
+        if is_valid != {}:
+            return is_valid, 400
+
         user = DAO.create_user(data)
 
         if user is None:
             return {"message": "User was created successfully"}, 201
         else:
             return {"message": "A user with that username already exists"}, 400
+
+    @staticmethod
+    def is_valid_data(data):
+
+        # Verify if request body has required fields
+        if 'name' not in data:
+            return {"message": "Name field is missing."}
+        if 'username' not in data:
+            return {"message": "Username field is missing."}
+        if 'password' not in data:
+            return {"message": "Password field is missing."}
+        if 'email' not in data:
+            return {"message": "Email field is missing."}
+        if 'terms_and_conditions_checked' not in data:
+            return {"message": "Terms and conditions field is missing."}
+
+        terms_and_conditions_checked = data['terms_and_conditions_checked']
+
+        # Verify business logic of request body
+        if terms_and_conditions_checked is False:
+            return {"message": "Terms and conditions are not checked."}
+
+        return {}
 
 
 @users_ns.route('login')
