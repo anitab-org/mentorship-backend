@@ -13,7 +13,7 @@
                 "operationId": "post_assign_new_user_admin",
                 "parameters": [
                     {
-                        "name": "access token",
+                        "name": "Authorization",
                         "in": "header",
                         "type": "string",
                         "required": true,
@@ -82,6 +82,38 @@
             }
         },
         "/user": {
+            "put": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully updated."
+                    }
+                },
+                "summary": "Updates user profile",
+                "operationId": "update_user_profile",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Update User request data model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
             "get": {
                 "responses": {
                     "404": {
@@ -98,7 +130,7 @@
                 "operationId": "get_user",
                 "parameters": [
                     {
-                        "name": "access token",
+                        "name": "Authorization",
                         "in": "header",
                         "type": "string",
                         "required": true,
@@ -110,38 +142,6 @@
                         "type": "string",
                         "format": "mask",
                         "description": "An optional fields mask"
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
-            "put": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "204": {
-                        "description": "User successfully updated."
-                    }
-                },
-                "summary": "Updates user profile",
-                "operationId": "update_user_profile",
-                "parameters": [
-                    {
-                        "name": "access token",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token"
-                    },
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Update User request data model"
-                        }
                     }
                 ],
                 "tags": [
@@ -161,7 +161,7 @@
                 "operationId": "delete_user",
                 "parameters": [
                     {
-                        "name": "access token",
+                        "name": "Authorization",
                         "in": "header",
                         "type": "string",
                         "required": true,
@@ -184,7 +184,7 @@
                 "operationId": "update_user_password",
                 "parameters": [
                     {
-                        "name": "access token",
+                        "name": "Authorization",
                         "in": "header",
                         "type": "string",
                         "required": true,
@@ -272,10 +272,13 @@
             "get": {
                 "responses": {
                     "404": {
-                        "description": "User not found."
+                        "description": "User does not exist."
                     },
-                    "200": {
-                        "description": "Success",
+                    "400": {
+                        "description": "User id is not valid."
+                    },
+                    "201": {
+                        "description": "Success.",
                         "schema": {
                             "$ref": "#/definitions/User list model"
                         }
@@ -285,18 +288,11 @@
                 "operationId": "get_user",
                 "parameters": [
                     {
-                        "name": "access token",
+                        "name": "Authorization",
                         "in": "header",
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token"
-                    },
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
                     }
                 ],
                 "tags": [
