@@ -38,7 +38,7 @@ class UserDAO:
 
     @staticmethod
     def get_user(user_id):
-        return UserModel.find_by_id(user_id), 201
+        return UserModel.find_by_id(user_id)
 
     @staticmethod
     def list_users(is_verified=None):
