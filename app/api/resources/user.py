@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource
+from flask_restplus import Resource, marshal
 from flask_jwt import jwt_required, current_identity
 from run import api, jwt
 from app.api.models.user import *
@@ -27,20 +27,33 @@ class UserList(Resource):
 
 
 @users_ns.route('users/<int:user_id>')
-@users_ns.response(404, 'User not found.')
 @users_ns.param('user_id', 'The user identifier')
 class OtherUser(Resource):
 
     @classmethod
     @jwt_required()
     @users_ns.doc('get_user')
-    @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.marshal_with(public_user_api_model)  # , skip_none=True
+    @users_ns.expect(auth_header_parser)
+    @api.response(201, 'Success.', public_user_api_model)
+    @api.response(400, 'User id is not valid.')
+    @api.response(404, 'User does not exist.')
     def get(cls, user_id):
         """
         Returns a user.
         """
-        return DAO.get_user(user_id)
+        # Validate arguments
+        if not OtherUser.validate_param(user_id):
+            return {"message": "User id is not valid."}, 400
+
+        requested_user = DAO.get_user(user_id)
+        if requested_user is None:
+            return {"message": "User does not exist."}, 404
+        else:
+            return marshal(requested_user, public_user_api_model), 201
+
+    @staticmethod
+    def validate_param(user_id):
+        return isinstance(user_id, int)
 
 
 @users_ns.route('user')
