@@ -186,7 +186,11 @@ class LoginUser(Resource):
     @users_ns.expect(login_request_body_model)  # , skip_none=True
     def post(cls):
         """
-        Login user.
+        Login user
+
+        The user can login with (username or email) + password.
+        Username field can be either the User's username or the email.
+        The return value is an access token valid for 1 week.
         """
         # pass
         return jwt.request_handler()
