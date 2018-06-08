@@ -1,3 +1,4 @@
+from datetime import timedelta
 
 
 class BaseConfig(object):
@@ -11,6 +12,8 @@ class BaseConfig(object):
 
     # Flask JWT settings
     JWT_AUTH_URL_RULE = '/login'
+    JWT_EXPIRATION_DELTA = timedelta(weeks=1)
+
 
 class ProductionConfig(BaseConfig):
     # SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/foo'
