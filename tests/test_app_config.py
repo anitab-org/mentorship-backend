@@ -21,6 +21,7 @@ class TestTestingConfig(TestCase):
 
         # testing JWT configurations
         self.assertTrue(application.config['JWT_AUTH_URL_RULE'] == '/login')
+        self.assertEqual(application.config['JWT_EXPIRATION_DELTA'], timedelta(weeks=1))
 
 
 class TestDevelopmentConfig(TestCase):
@@ -38,6 +39,7 @@ class TestDevelopmentConfig(TestCase):
 
         # testing JWT configurations
         self.assertEqual(application.config['JWT_AUTH_URL_RULE'], '/login')
+        self.assertEqual(application.config['JWT_EXPIRATION_DELTA'], timedelta(weeks=1))
 
 
 class TestProductionConfig(TestCase):
@@ -55,6 +57,7 @@ class TestProductionConfig(TestCase):
 
         # testing JWT configurations
         self.assertTrue(application.config['JWT_AUTH_URL_RULE'] == '/login')
+        self.assertEqual(application.config['JWT_EXPIRATION_DELTA'], timedelta(weeks=1))
 
 
 if __name__ == '__main__':

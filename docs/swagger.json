@@ -41,6 +41,7 @@
                     }
                 },
                 "summary": "Login user",
+                "description": "The user can login with (username or email) + password.\nUsername field can be either the User's username or the email.\nThe return value is an access token valid for 1 week.",
                 "operationId": "login",
                 "parameters": [
                     {
@@ -82,17 +83,17 @@
             }
         },
         "/user": {
-            "put": {
+            "delete": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
                     "204": {
-                        "description": "User successfully updated."
+                        "description": "User successfully deleted."
                     }
                 },
-                "summary": "Updates user profile",
-                "operationId": "update_user_profile",
+                "summary": "Deletes user",
+                "operationId": "delete_user",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -100,14 +101,6 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token"
-                    },
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Update User request data model"
-                        }
                     }
                 ],
                 "tags": [
@@ -148,17 +141,17 @@
                     "Users"
                 ]
             },
-            "delete": {
+            "put": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
                     "204": {
-                        "description": "User successfully deleted."
+                        "description": "User successfully updated."
                     }
                 },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
+                "summary": "Updates user profile",
+                "operationId": "update_user_profile",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -166,6 +159,14 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Update User request data model"
+                        }
                     }
                 ],
                 "tags": [
