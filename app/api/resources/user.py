@@ -1,6 +1,8 @@
 from flask import request
 from flask_restplus import Resource, marshal
 from flask_jwt import jwt_required, current_identity
+
+from app.utils.email_utils import is_email_valid
 from run import api, jwt
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
@@ -170,10 +172,14 @@ class UserRegister(Resource):
             return {"message": "Terms and conditions field is missing."}
 
         terms_and_conditions_checked = data['terms_and_conditions_checked']
+        email = data['email']
 
         # Verify business logic of request body
         if terms_and_conditions_checked is False:
             return {"message": "Terms and conditions are not checked."}
+
+        if not is_email_valid(email):
+            return {"message": "Your email is invalid."}
 
         return {}
 
