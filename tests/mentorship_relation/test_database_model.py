@@ -6,7 +6,7 @@ from app.database.models.user import UserModel
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from run import db
 
-from tests.utils import user1, user2
+from tests.test_data import user1, user2
 
 
 # Testing Mentorship Relation database model
@@ -99,7 +99,6 @@ class TestMentorshipRelationModel(BaseTestCase):
             'end_date': str(self.end_date_example),
             'notes': self.notes_example
         }
-        print(expected_json)
         self.assertEqual(expected_json, self.mentorship_relation.json())
 
     def test_mentorship_relation_update(self):
