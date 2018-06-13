@@ -17,7 +17,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token"
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     },
                     {
                         "name": "payload",
@@ -37,11 +37,14 @@
             "post": {
                 "responses": {
                     "200": {
-                        "description": "Success"
+                        "description": "Successful login",
+                        "schema": {
+                            "$ref": "#/definitions/Login response data model"
+                        }
                     }
                 },
                 "summary": "Login user",
-                "description": "The user can login with (username or email) + password.\nUsername field can be either the User's username or the email.\nThe return value is an access token valid for 1 week.",
+                "description": "The user can login with (username or email) + password.\nUsername field can be either the User's username or the email.\nThe return value is an access token and the expiry timestamp.\nThe token is valid for 1 week.",
                 "operationId": "login",
                 "parameters": [
                     {
@@ -49,7 +52,7 @@
                         "required": true,
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/Login data model"
+                            "$ref": "#/definitions/Login request data model"
                         }
                     }
                 ],
@@ -83,30 +86,6 @@
             }
         },
         "/user": {
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "204": {
-                        "description": "User successfully deleted."
-                    }
-                },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token"
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
             "get": {
                 "responses": {
                     "404": {
@@ -127,7 +106,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token"
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     },
                     {
                         "name": "X-Fields",
@@ -135,6 +114,30 @@
                         "type": "string",
                         "format": "mask",
                         "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully deleted."
+                    }
+                },
+                "summary": "Deletes user",
+                "operationId": "delete_user",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     }
                 ],
                 "tags": [
@@ -158,7 +161,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token"
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     },
                     {
                         "name": "payload",
@@ -189,7 +192,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token"
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     },
                     {
                         "name": "payload",
@@ -293,7 +296,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token"
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     }
                 ],
                 "tags": [
@@ -569,7 +572,7 @@
             },
             "type": "object"
         },
-        "Login data model": {
+        "Login request data model": {
             "required": [
                 "password",
                 "username"
@@ -582,6 +585,23 @@
                 "password": {
                     "type": "string",
                     "description": "User's password"
+                }
+            },
+            "type": "object"
+        },
+        "Login response data model": {
+            "required": [
+                "access_token",
+                "expiry"
+            ],
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "User's access token"
+                },
+                "expiry": {
+                    "type": "number",
+                    "description": "Access token expiry UNIX timestamp"
                 }
             },
             "type": "object"

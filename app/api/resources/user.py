@@ -189,6 +189,7 @@ class LoginUser(Resource):
 
     @classmethod
     @users_ns.doc('login')
+    @users_ns.response(200, 'Successful login', login_response_body_model)
     @users_ns.expect(login_request_body_model)  # , skip_none=True
     def post(cls):
         """
@@ -196,7 +197,8 @@ class LoginUser(Resource):
 
         The user can login with (username or email) + password.
         Username field can be either the User's username or the email.
-        The return value is an access token valid for 1 week.
+        The return value is an access token and the expiry timestamp.
+        The token is valid for 1 week.
         """
-        # pass
         return jwt.request_handler()
+

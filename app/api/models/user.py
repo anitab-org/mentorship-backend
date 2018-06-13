@@ -8,6 +8,7 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[change_password_request_data_model.name] = change_password_request_data_model
     api_namespace.models[update_user_request_body_model.name] = update_user_request_body_model
     api_namespace.models[login_request_body_model.name] = login_request_body_model
+    api_namespace.models[login_response_body_model.name] = login_response_body_model
 
 
 public_user_api_model = Model('User list model', {
@@ -110,9 +111,14 @@ change_password_request_data_model = Model('Change password request data model',
     'new_password': fields.String(required=True, description='User\'s new password')
 })
 
-login_request_body_model = Model('Login data model', {
+login_request_body_model = Model('Login request data model', {
     'username': fields.String(required=True, description='User\'s username'),
     'password': fields.String(required=True, description='User\'s password')
+})
+
+login_response_body_model = Model('Login response data model', {
+    'access_token': fields.String(required=True, description='User\'s access token'),
+    'expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp')
 })
 
 update_user_request_body_model = Model('Update User request data model', {
