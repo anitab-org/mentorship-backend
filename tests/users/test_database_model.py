@@ -6,7 +6,7 @@ from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
 from run import db
 
-from tests.utils import test_admin_user
+from tests.test_data import test_admin_user
 
 # Testing User database model
 #
