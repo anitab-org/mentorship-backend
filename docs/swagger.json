@@ -61,6 +61,73 @@
                 ]
             }
         },
+        "/mentorship-relation/send_request": {
+            "post": {
+                "responses": {
+                    "400": {
+                        "description": "Validation error."
+                    },
+                    "200": {
+                        "description": "Mentorship Relation request was sent successfully."
+                    }
+                },
+                "summary": "Creates a new mentorship relation request",
+                "operationId": "send_request",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Send mentorship relation request model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship-relations": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Return all user's mentorship relations was successfully.",
+                        "schema": {
+                            "$ref": "#/definitions/List mentorship relation request model"
+                        }
+                    }
+                },
+                "summary": "Lists all mentorship relations",
+                "operationId": "get_all_user_mentorship_relations",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
         "/register": {
             "post": {
                 "responses": {
@@ -120,30 +187,6 @@
                     "Users"
                 ]
             },
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "204": {
-                        "description": "User successfully deleted."
-                    }
-                },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
             "put": {
                 "responses": {
                     "404": {
@@ -170,6 +213,30 @@
                         "schema": {
                             "$ref": "#/definitions/Update User request data model"
                         }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully deleted."
+                    }
+                },
+                "summary": "Deletes user",
+                "operationId": "delete_user",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     }
                 ],
                 "tags": [
@@ -208,7 +275,7 @@
                 ]
             }
         },
-        "/users/": {
+        "/users": {
             "get": {
                 "responses": {
                     "200": {
@@ -328,6 +395,10 @@
         {
             "name": "Admins",
             "description": "Operations related to Admin users"
+        },
+        {
+            "name": "Mentorship Relation",
+            "description": "Operations related to mentorship relations between users"
         }
     ],
     "definitions": {
@@ -614,6 +685,90 @@
                 "user_id": {
                     "type": "integer",
                     "description": "The unique identifier of a user"
+                }
+            },
+            "type": "object"
+        },
+        "Send mentorship relation request model": {
+            "required": [
+                "end_date",
+                "mentee_id",
+                "mentor_id",
+                "notes"
+            ],
+            "properties": {
+                "mentor_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation mentor ID"
+                },
+                "mentee_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation mentee ID"
+                },
+                "end_date": {
+                    "type": "number",
+                    "description": "Mentorship relation end date in UNIX timestamp format"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Mentorship relation notes"
+                }
+            },
+            "type": "object"
+        },
+        "List mentorship relation request model": {
+            "required": [
+                "accept_date",
+                "action_user_id",
+                "creation_date",
+                "end_date",
+                "id",
+                "mentee_id",
+                "mentor_id",
+                "notes",
+                "start_date",
+                "state"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Mentorship relation ID"
+                },
+                "action_user_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation requester user ID"
+                },
+                "mentor_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation mentor ID"
+                },
+                "mentee_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation mentee ID"
+                },
+                "creation_date": {
+                    "type": "number",
+                    "description": "Mentorship relation creation date in UNIX timestamp format"
+                },
+                "accept_date": {
+                    "type": "number",
+                    "description": "Mentorship relation acceptance date in UNIX timestamp format"
+                },
+                "start_date": {
+                    "type": "number",
+                    "description": "Mentorship relation start date in UNIX timestamp format"
+                },
+                "end_date": {
+                    "type": "number",
+                    "description": "Mentorship relation end date in UNIX timestamp format"
+                },
+                "state": {
+                    "type": "integer",
+                    "description": "Mentorship relation state"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Mentorship relation notes"
                 }
             },
             "type": "object"
