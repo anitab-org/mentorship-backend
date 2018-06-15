@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime
 
+from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -42,20 +43,21 @@ class TestMentorshipRelationModel(BaseTestCase):
         self.notes_example = 'description of a good mentorship relation'
 
         now_datetime = datetime.now()
-        self.init_date_example = datetime(year=now_datetime.year + 1, month=3, day=1)
-        self.end_date_example = datetime(year=now_datetime.year + 1, month=5, day=1)
+        self.start_date_example = datetime(year=now_datetime.year + 1, month=3, day=1).timestamp()
+        self.end_date_example = datetime(year=now_datetime.year + 1, month=5, day=1).timestamp()
+        self.now_datetime = datetime.now().timestamp()
 
         db.session.add(self.first_user)
         db.session.add(self.second_user)
         db.session.commit()
 
         self.mentorship_relation = MentorshipRelationModel(
-            sender_id=self.first_user.id,
-            receiver_id=self.second_user.id,
+            action_user_id=self.first_user.id,
             mentor_user=self.first_user,
             mentee_user=self.second_user,
-            init_date=self.init_date_example,
+            creation_date=self.now_datetime,
             end_date=self.end_date_example,
+            state=MentorshipRelationState.PENDING,
             notes=self.notes_example
         )
         db.session.add(self.mentorship_relation)
@@ -66,14 +68,16 @@ class TestMentorshipRelationModel(BaseTestCase):
 
         self.assertTrue(query_mentorship_relation is not None)
 
-        self.assertEqual(query_mentorship_relation.id, 1)
+        self.assertEqual(1, query_mentorship_relation.id)
 
         # asserting relation extra fields
-        self.assertEqual(self.first_user.id, query_mentorship_relation.sender_id)
-        self.assertEqual(self.second_user.id, query_mentorship_relation.receiver_id)
-        self.assertEqual(self.init_date_example, query_mentorship_relation.init_date)
+        self.assertEqual(self.first_user.id, query_mentorship_relation.action_user_id)
+        self.assertEqual(self.now_datetime, query_mentorship_relation.creation_date)
+        self.assertIsNone(query_mentorship_relation.accept_date)
+        self.assertIsNone(query_mentorship_relation.start_date)
         self.assertEqual(self.end_date_example, query_mentorship_relation.end_date)
         self.assertEqual(self.notes_example, query_mentorship_relation.notes)
+        self.assertEqual(MentorshipRelationState.PENDING, query_mentorship_relation.state)
 
         # asserting mentor and mentees setup
         self.assertEqual(self.first_user.id, query_mentorship_relation.mentor_id)
@@ -91,12 +95,15 @@ class TestMentorshipRelationModel(BaseTestCase):
 
     def test_mentorship_relation_json_representation(self):
         expected_json = {
-            'sender_id': self.first_user.id,
-            'receiver_id': self.second_user.id,
+            'id': 1,
+            'action_user_id': self.first_user.id,
             'mentor_id': self.first_user.id,
             'mentee_id': self.second_user.id,
-            'init_date': str(self.init_date_example),
-            'end_date': str(self.end_date_example),
+            'creation_date': self.now_datetime,
+            'accept_date': None,
+            'start_date': None,
+            'end_date': self.end_date_example,
+            'state': MentorshipRelationState.PENDING,
             'notes': self.notes_example
         }
         self.assertEqual(expected_json, self.mentorship_relation.json())
@@ -130,8 +137,6 @@ class TestMentorshipRelationModel(BaseTestCase):
         db.session.delete(self.mentorship_relation)
         db.session.commit()
         self.assertTrue(MentorshipRelationModel.is_empty())
-
-
 
 
 if __name__ == '__main__':
