@@ -13,18 +13,17 @@ class BaseTestCase(TestCase):
         application.config.from_object('config.TestingConfig')
         return application
 
-    @classmethod
-    def setUp(cls):
+    def setUp(self):
         db.create_all()
 
-        user = UserModel(
+        self.admin_user = UserModel(
             name=test_admin_user['name'],
             email=test_admin_user['email'],
             username=test_admin_user['username'],
             password=test_admin_user['password'],
             terms_and_conditions_checked=test_admin_user['terms_and_conditions_checked']
         )
-        db.session.add(user)
+        db.session.add(self.admin_user)
         db.session.commit()
 
     @classmethod

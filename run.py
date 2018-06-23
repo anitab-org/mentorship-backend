@@ -30,14 +30,20 @@ api = Api(
     # doc='/docs/'
 )
 
+@application.before_first_request
+def create_tables():
+    from app.database.db_utils import db
+    db.create_all()
 
 # Adding namespaces
 def add_namespaces():
     # called here to avoid circular imports
     from app.api.resources.user import users_ns as user_namespace
-    from app.api.resources.admin import admin_ns as admin_namespace
     api.add_namespace(user_namespace, path='/')
+    from app.api.resources.admin import admin_ns as admin_namespace
     api.add_namespace(admin_namespace, path='/')
+    from app.api.resources.mentorship_relation import mentorship_relation_ns as mentorship_namespace
+    api.add_namespace(mentorship_namespace, path='/')
 
 
 jwt = JWT(application, authenticate, identity)
