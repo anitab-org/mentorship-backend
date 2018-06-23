@@ -15,12 +15,17 @@ The project runs on Python 3.
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`
 
-4. Run the app:
+4. Export the following environment variables:
+
+```
+export  SECRET_KEY=<your-secret-key>
+```
+
+5. Run the app:
 `python run.py`
 
-5. When you are done using the app, decativate the virtual environment:
+6. When you are done using the app, deactivate the virtual environment:
 `deactivate`
-
 
 ### Run tests
 
