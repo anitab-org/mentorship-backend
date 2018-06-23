@@ -168,6 +168,31 @@
 			"response": []
 		},
 		{
+			"name": "POST /admin/remove",
+			"request": {
+				"url": "http://127.0.0.1:5000/admin/new",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc4NTI3NzEsImlhdCI6MTUyNzg1MjQ3MSwibmJmIjoxNTI3ODUyNDcxLCJpZGVudGl0eSI6MX0.bXm5OrEvZnS6PxI4XQkOF4z-ZcFbYZreanutmYTUWyA",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user_id\": 2\n}"
+				},
+				"description": "Assign a new user as an Admin"
+			},
+			"response": []
+		},
+		{
 			"name": "GET /mentorship-relations",
 			"request": {
 				"url": "http://127.0.0.1:5000/mentorship-relations",

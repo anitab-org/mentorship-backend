@@ -113,6 +113,10 @@ class UserModel(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
+    def get_all_admins(cls, is_admin=True):
+        return cls.query.filter_by(is_admin=is_admin).all()
+
+    @classmethod
     def is_empty(cls):
         return cls.query.first() is None
 

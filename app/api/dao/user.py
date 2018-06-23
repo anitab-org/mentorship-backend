@@ -4,6 +4,7 @@ from app.database.models.user import UserModel
 class UserDAO:
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
     SUCCESS_USER_CREATED = "SUCCESS_USER_CREATED"
+    MIN_NUMBER_OF_ADMINS = 1
 
     @staticmethod
     def create_user(data):
@@ -29,12 +30,20 @@ class UserDAO:
 
     @staticmethod
     def delete_user(user_id):
-        user = UserModel.find_by_id(user_id).one()
+        user = UserModel.find_by_id(user_id)
+
+        # check if this user is the only admin
+        if user.is_admin:
+
+            admins_list_count = len(UserModel.get_all_admins())
+            if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
+                return {"message": "You cannot delete your account, since you are the only Admin left."}, 400
+
         if user:
             user.delete_from_db()
             return {"message": "User was deleted successfully"}, 201
 
-        return {"message": "User does not exist"}, 201
+        return {"message": "User does not exist"}, 404
 
     @staticmethod
     def get_user(user_id):
@@ -59,7 +68,7 @@ class UserDAO:
         user = UserModel.find_by_id(user_id)
 
         if not user:
-            return {"message": "User does not exist"}, 201
+            return {"message": "User does not exist"}, 404
 
         if 'name' in data and data['name']:
             user.name = data['name']
@@ -117,7 +126,7 @@ class UserDAO:
             user.save_to_db()
             return {"message": "Password was updated successfully."}, 201
 
-        return {"message": "Current password is incorrect."}, 201
+        return {"message": "Current password is incorrect."}, 400
 
     @staticmethod
     def confirm_registration(user_id, data):
