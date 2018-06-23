@@ -1,4 +1,6 @@
+
 from app.database.models.user import UserModel
+from app.utils.enum_utils import MentorshipRelationState
 from run import db
 
 
@@ -12,8 +14,7 @@ class MentorshipRelationModel(db.Model):
     # personal data
     mentor_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     mentee_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    sender_id = db.Column(db.Integer, nullable=False)
-    receiver_id = db.Column(db.Integer, nullable=False)
+    action_user_id = db.Column(db.Integer, nullable=False)
     mentor = db.relationship(UserModel,
                              backref='mentor_relations',
                              primaryjoin="MentorshipRelationModel.mentor_id == UserModel.id")
@@ -21,34 +22,41 @@ class MentorshipRelationModel(db.Model):
                              backref='mentee_relations',
                              primaryjoin="MentorshipRelationModel.mentee_id == UserModel.id")
 
-    init_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
+    creation_date = db.Column(db.Float, nullable=False)
+    accept_date = db.Column(db.Float)
+    start_date = db.Column(db.Float)
+    end_date = db.Column(db.Float)
+
+    state = db.Column(db.Enum(MentorshipRelationState), nullable=False)
     notes = db.Column(db.String(400))
 
-    def __init__(self, sender_id, receiver_id, mentor_user, mentee_user, init_date, end_date, notes):
+    def __init__(self, action_user_id, mentor_user, mentee_user, creation_date, end_date, state, notes):
 
-        self.sender_id = sender_id
-        self.receiver_id = receiver_id
+        self.action_user_id = action_user_id
         self.mentor = mentor_user
         self.mentee = mentee_user  # same as mentee_user.mentee_relations.append(self)
-        self.init_date = init_date
+        self.creation_date = creation_date
         self.end_date = end_date
+        self.state = state
         self.notes = notes
 
     def json(self):
         return {
-            'sender_id': self.sender_id,
-            'receiver_id': self.receiver_id,
+            'id': self.id,
+            'action_user_id': self.action_user_id,
             'mentor_id': self.mentor_id,
             'mentee_id': self.mentee_id,
-            'init_date': str(self.init_date),
-            'end_date': str(self.end_date),
+            'creation_date': self.creation_date,
+            'accept_date': self.accept_date,
+            'start_date': self.start_date,
+            'end_date': self.end_date,
+            'state': self.state,
             'notes': self.notes
         }
 
-    def __repr__(self):
-        return "Mentorship Relation with id = %s, Mentor has id = %s and Mentee has id = %d" \
-               % (self.id, self.mentor_id, self.mentee_id)
+    # def __repr__(self):
+    #     return "Mentorship Relation with id = %s, Mentor has id = %s and Mentee has id = %d" \
+    #            % (self.id, self.mentor_id, self.mentee_id)
 
     @classmethod
     def find_by_id(cls, _id):

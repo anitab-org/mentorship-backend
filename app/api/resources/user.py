@@ -14,7 +14,7 @@ add_models_to_namespace(users_ns)
 DAO = UserDAO()  # User data access object
 
 
-@users_ns.route('users/')
+@users_ns.route('users')
 class UserList(Resource):
 
     @classmethod
