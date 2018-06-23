@@ -6,21 +6,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt import JWT
 from app.security import authenticate, identity
 from datetime import datetime
-
-CONFIG_NAME_MAPPER = {
-    'development': 'config.DevelopmentConfig',
-    'testing': 'config.TestingConfig',
-    'production': 'config.ProductionConfig'
-}
+from config import get_env_config
 
 application = Flask(__name__)
 
 # setup application environment
-flask_config_name = os.getenv('FLASK_CONFIG')
-if flask_config_name is None:
-    flask_config_name = 'development'
-
-application.config.from_object(CONFIG_NAME_MAPPER[flask_config_name])
+application.config.from_object(get_env_config())
 
 api = Api(
     app=application,

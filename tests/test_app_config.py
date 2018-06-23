@@ -12,16 +12,16 @@ class TestTestingConfig(TestCase):
         return application
 
     def test_app_testing_config(self):
-        self.assertEqual(application.config['SECRET_KEY'], 'EXAMPLE_SECRET_KEY')
+        self.assertIsNone(application.config['SECRET_KEY'])
         self.assertTrue(application.config['DEBUG'])
         self.assertTrue(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual(application.config['SQLALCHEMY_DATABASE_URI'], 'sqlite://')
-        self.assertFalse(current_app is None)
+        self.assertEqual('sqlite://', application.config['SQLALCHEMY_DATABASE_URI'])
+        self.assertIsNotNone(current_app)
 
         # testing JWT configurations
-        self.assertTrue(application.config['JWT_AUTH_URL_RULE'] == '/login')
-        self.assertEqual(application.config['JWT_EXPIRATION_DELTA'], timedelta(weeks=1))
+        self.assertEqual('/login', application.config['JWT_AUTH_URL_RULE'])
+        self.assertEqual(timedelta(weeks=1), application.config['JWT_EXPIRATION_DELTA'])
 
 
 class TestDevelopmentConfig(TestCase):
@@ -30,16 +30,16 @@ class TestDevelopmentConfig(TestCase):
         return application
 
     def test_app_development_config(self):
-        self.assertEqual(application.config['SECRET_KEY'], 'EXAMPLE_SECRET_KEY')
+        self.assertIsNone(application.config['SECRET_KEY'])
         self.assertTrue(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual(application.config['SQLALCHEMY_DATABASE_URI'], 'sqlite:///dev_data.db')
-        self.assertFalse(current_app is None)
+        self.assertEqual('sqlite:///dev_data.db', application.config['SQLALCHEMY_DATABASE_URI'])
+        self.assertIsNotNone(current_app)
 
         # testing JWT configurations
-        self.assertEqual(application.config['JWT_AUTH_URL_RULE'], '/login')
-        self.assertEqual(application.config['JWT_EXPIRATION_DELTA'], timedelta(weeks=1))
+        self.assertEqual('/login', application.config['JWT_AUTH_URL_RULE'])
+        self.assertEqual(timedelta(weeks=1), application.config['JWT_EXPIRATION_DELTA'])
 
 
 class TestProductionConfig(TestCase):
@@ -48,16 +48,16 @@ class TestProductionConfig(TestCase):
         return application
 
     def test_app_production_config(self):
-        self.assertEqual(application.config['SECRET_KEY'], 'EXAMPLE_SECRET_KEY')
+        self.assertIsNone(application.config['SECRET_KEY'])
         self.assertFalse(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual(application.config['SQLALCHEMY_DATABASE_URI'], 'sqlite:///prod_data.db')
-        self.assertFalse(current_app is None)
+        self.assertEqual('sqlite:///prod_data.db', application.config['SQLALCHEMY_DATABASE_URI'])
+        self.assertIsNotNone(current_app)
 
         # testing JWT configurations
-        self.assertTrue(application.config['JWT_AUTH_URL_RULE'] == '/login')
-        self.assertEqual(application.config['JWT_EXPIRATION_DELTA'], timedelta(weeks=1))
+        self.assertEqual('/login', application.config['JWT_AUTH_URL_RULE'])
+        self.assertEqual(timedelta(weeks=1), application.config['JWT_EXPIRATION_DELTA'])
 
 
 if __name__ == '__main__':
