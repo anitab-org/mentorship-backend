@@ -32,7 +32,8 @@ Describe the tests you ran to verify your changes. Provide instructions or GIFs 
 - [ ] I have made corresponding changes to the documentation
 - [ ] Any dependent changes have been merged
 - [ ] Update Postman API at /docs folder
-- [ ] Update Swagger documentation and the exported exported file at /docs folder
+- [ ] Update Swagger documentation and the exported file at /docs folder
+- [ ] Update requirements.txt
 
 **Code/Quality Assurance Only**
 - [ ] My changes generate no new warnings 
