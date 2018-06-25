@@ -33,6 +33,37 @@
                 ]
             }
         },
+        "/admin/remove": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "summary": "Revoke admin status from another User Admin",
+                "operationId": "post_revoke_user_admin",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Assign User model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Admins"
+                ]
+            }
+        },
         "/login": {
             "post": {
                 "responses": {
@@ -153,20 +184,17 @@
             }
         },
         "/user": {
-            "get": {
+            "delete": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/User list model"
-                        }
+                    "204": {
+                        "description": "User successfully deleted."
                     }
                 },
-                "summary": "Returns a user",
-                "operationId": "get_user",
+                "summary": "Deletes user",
+                "operationId": "delete_user",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -174,13 +202,6 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: JWT <access_token>"
-                    },
-                    {
-                        "name": "X-Fields",
-                        "in": "header",
-                        "type": "string",
-                        "format": "mask",
-                        "description": "An optional fields mask"
                     }
                 ],
                 "tags": [
@@ -219,17 +240,20 @@
                     "Users"
                 ]
             },
-            "delete": {
+            "get": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
-                    "204": {
-                        "description": "User successfully deleted."
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/User list model"
+                        }
                     }
                 },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
+                "summary": "Returns a user",
+                "operationId": "get_user",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -237,6 +261,13 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: JWT <access_token>"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
                     }
                 ],
                 "tags": [
