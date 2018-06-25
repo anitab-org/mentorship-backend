@@ -1,3 +1,4 @@
+
 test_admin_user = dict(
     name="Admin",
     email="admin@email.com",
