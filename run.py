@@ -1,43 +1,37 @@
-import os
 
 from flask import Flask, jsonify
-from flask_restplus import Api
-from flask_sqlalchemy import SQLAlchemy
 from flask_jwt import JWT
 from app.security import authenticate, identity
 from datetime import datetime
 from config import get_env_config
 
-application = Flask(__name__)
+jwt = JWT(authentication_handler=authenticate, identity_handler=identity)
 
-# setup application environment
-application.config.from_object(get_env_config())
 
-api = Api(
-    app=application,
-    title='Mentorship System API',
-    version='1.0',
-    description='API documentation for the backend of Mentorship System',
-    # doc='/docs/'
-)
+def create_app(config_filename):
+    app = Flask(__name__)
+
+    # setup application environment
+    app.config.from_object(config_filename)
+
+    from app.database import db
+    db.init_app(app)
+
+    jwt.init_app(app)
+
+    from app.api import api
+    api.init_app(app)
+
+    return app
+
+
+application = create_app(get_env_config())
 
 @application.before_first_request
 def create_tables():
-    from app.database.db_utils import db
+    from app.database import db
     db.create_all()
 
-# Adding namespaces
-def add_namespaces():
-    # called here to avoid circular imports
-    from app.api.resources.user import users_ns as user_namespace
-    api.add_namespace(user_namespace, path='/')
-    from app.api.resources.admin import admin_ns as admin_namespace
-    api.add_namespace(admin_namespace, path='/')
-    from app.api.resources.mentorship_relation import mentorship_relation_ns as mentorship_namespace
-    api.add_namespace(mentorship_namespace, path='/')
-
-
-jwt = JWT(application, authenticate, identity)
 
 
 @jwt.auth_response_handler
@@ -55,15 +49,5 @@ def custom_jwt_response_handler(access_token, identity):
     })
 
 
-db = SQLAlchemy(application)
-
-
-@application.before_first_request
-def create_tables():
-    # db.drop_all()
-    db.create_all()
-
-
 if __name__ == "__main__":
-    add_namespaces()
     application.run(port=5000)

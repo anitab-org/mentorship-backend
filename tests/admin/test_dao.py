@@ -4,7 +4,7 @@ from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 from app.database.models.user import UserModel
 from app.api.dao.admin import AdminDAO
-from run import db
+from app.database import db
 
 
 class TestAdminDao(BaseTestCase):

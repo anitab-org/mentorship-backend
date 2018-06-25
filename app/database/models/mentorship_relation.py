@@ -1,7 +1,7 @@
 
 from app.database.models.user import UserModel
+from app.database import db
 from app.utils.enum_utils import MentorshipRelationState
-from run import db
 
 
 class MentorshipRelationModel(db.Model):
