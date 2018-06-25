@@ -1,13 +1,12 @@
 from flask import request
-from flask_restplus import Resource
+from flask_restplus import Resource, Namespace
 from flask_jwt import jwt_required, current_identity
 
-from run import api
 from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
 from app.api.resources.common import auth_header_parser
 
-admin_ns = api.namespace('Admins', description='Operations related to Admin users')
+admin_ns = Namespace('Admins', description='Operations related to Admin users')
 add_models_to_namespace(admin_ns)
 
 DAO = AdminDAO()  # User data access object
