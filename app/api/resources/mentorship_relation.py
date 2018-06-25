@@ -76,3 +76,24 @@ class GetAllMyMentorshipRelation(Resource):
         response = DAO.list_mentorship_relations(user_id=user_id)
 
         return response
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/reject')
+class RejectMentorshipRelation(Resource):
+
+    @classmethod
+    @jwt_required()
+    @mentorship_relation_ns.doc('reject_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Rejected mentorship relations with success.')
+    def put(cls, request_id):
+        """
+        Reject a mentorship relation.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = current_identity.id
+        response = DAO.reject_request(user_id=user_id, request_id=request_id)
+
+        return response

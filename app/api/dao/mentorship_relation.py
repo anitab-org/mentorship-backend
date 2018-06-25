@@ -44,7 +44,7 @@ class MentorshipRelationDAO:
         # validate if mentor user exists
         mentor_user = UserModel.find_by_id(mentor_id)
         if mentor_user is None:
-            return {'message': 'Mentor user does not exist.'}, 404
+            return {'message': 'Mentor user does not exist.'}, 400
 
         # validate if mentor is available to mentor
         if not mentor_user.available_to_mentor:
@@ -53,7 +53,7 @@ class MentorshipRelationDAO:
         # validate if mentee user exists
         mentee_user = UserModel.find_by_id(mentee_id)
         if mentee_user is None:
-            return {'message': 'Mentee user does not exist.'}, 404
+            return {'message': 'Mentee user does not exist.'}, 400
 
         # validate if mentee is wants to be mentored
         if not mentee_user.need_mentoring:
@@ -103,3 +103,37 @@ class MentorshipRelationDAO:
         all_relations = user.mentor_relations + user.mentee_relations
 
         return all_relations
+
+    @staticmethod
+    def reject_request(user_id, request_id):
+
+        user = UserModel.find_by_id(user_id)
+
+        # verify if user exists
+        if user is None:
+            return {'message': 'User does not exist.'}, 404
+
+        request = MentorshipRelationModel.find_by_id(request_id)
+
+        # verify if request exists
+        if request is None:
+            return {'message': 'This mentorship relation request does not exist.'}, 404
+
+        # verify if request is in pending state
+        if request.state is not MentorshipRelationState.PENDING:
+            return {'message': 'This mentorship relation is not in the pending state.'}, 400
+
+        # verify if I'm the receiver of the request
+        if request.action_user_id is user_id:
+            return {'message': 'You cannot reject a mentorship request sent by yourself.'}, 400
+
+        # verify if I'm involved in this relation
+        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+            return {'message': 'You cannot reject a mentorship relation where you are not involved.'}, 400
+
+        # All was checked
+        request.state = MentorshipRelationState.REJECTED
+        request.save_to_db()
+
+        return {'message': 'Mentorship relation was rejected successfully.'}, 200
+
