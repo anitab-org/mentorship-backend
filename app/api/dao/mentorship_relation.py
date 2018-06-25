@@ -44,7 +44,7 @@ class MentorshipRelationDAO:
         # validate if mentor user exists
         mentor_user = UserModel.find_by_id(mentor_id)
         if mentor_user is None:
-            return {'message': 'Mentor user does not exist.'}, 400
+            return {'message': 'Mentor user does not exist.'}, 404
 
         # validate if mentor is available to mentor
         if not mentor_user.available_to_mentor:
@@ -53,7 +53,7 @@ class MentorshipRelationDAO:
         # validate if mentee user exists
         mentee_user = UserModel.find_by_id(mentee_id)
         if mentee_user is None:
-            return {'message': 'Mentee user does not exist.'}, 400
+            return {'message': 'Mentee user does not exist.'}, 404
 
         # validate if mentee is wants to be mentored
         if not mentee_user.need_mentoring:
