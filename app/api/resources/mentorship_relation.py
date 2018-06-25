@@ -1,13 +1,12 @@
 from flask import request
-from flask_restplus import Resource
+from flask_restplus import Resource, Namespace
 from flask_jwt import jwt_required, current_identity
 
-from run import api
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
 
-mentorship_relation_ns = api.namespace('Mentorship Relation',
+mentorship_relation_ns = Namespace('Mentorship Relation',
                                        description='Operations related to '
                                                    'mentorship relations '
                                                    'between users')

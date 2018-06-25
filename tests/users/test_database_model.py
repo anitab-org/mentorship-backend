@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 
 from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
-from run import db
+from app.database import db
 
 from tests.test_data import test_admin_user
 

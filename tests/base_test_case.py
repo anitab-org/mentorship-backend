@@ -1,7 +1,8 @@
 from flask_testing import TestCase
 
 from app.database.models.user import UserModel
-from run import application, db
+from run import application
+from app.database import db
 
 from tests.test_data import test_admin_user
 
