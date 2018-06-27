@@ -1,4 +1,4 @@
-from run import db
+from . import db
 
 
 def reset_database():
