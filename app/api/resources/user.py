@@ -1,14 +1,14 @@
 from flask import request
-from flask_restplus import Resource, marshal
+from flask_restplus import Resource, marshal, Namespace
 from flask_jwt import jwt_required, current_identity
 
 from app.utils.email_utils import is_email_valid
-from run import api, jwt
+
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
 from app.api.resources.common import auth_header_parser
 
-users_ns = api.namespace('Users', description='Operations related to users')
+users_ns = Namespace('Users', description='Operations related to users')
 add_models_to_namespace(users_ns)
 
 DAO = UserDAO()  # User data access object
@@ -36,9 +36,9 @@ class OtherUser(Resource):
     @jwt_required()
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser)
-    @api.response(201, 'Success.', public_user_api_model)
-    @api.response(400, 'User id is not valid.')
-    @api.response(404, 'User does not exist.')
+    @users_ns.response(201, 'Success.', public_user_api_model)
+    @users_ns.response(400, 'User id is not valid.')
+    @users_ns.response(404, 'User does not exist.')
     def get(cls, user_id):
         """
         Returns a user.
@@ -200,5 +200,6 @@ class LoginUser(Resource):
         The return value is an access token and the expiry timestamp.
         The token is valid for 1 week.
         """
+        from run import jwt
         return jwt.request_handler()
 
