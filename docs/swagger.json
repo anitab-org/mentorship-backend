@@ -92,7 +92,7 @@
                 ]
             }
         },
-        "/mentorship-relation/send_request": {
+        "/mentorship_relation/send_request": {
             "post": {
                 "responses": {
                     "400": {
@@ -126,7 +126,38 @@
                 ]
             }
         },
-        "/mentorship-relations": {
+        "/mentorship_relation/{request_id}/accept": {
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Accept mentorship relations with success."
+                    }
+                },
+                "summary": "Accept a mentorship relation",
+                "operationId": "accept_mentorship_relation",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship_relations": {
             "get": {
                 "responses": {
                     "200": {
@@ -208,38 +239,6 @@
                     "Users"
                 ]
             },
-            "put": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "204": {
-                        "description": "User successfully updated."
-                    }
-                },
-                "summary": "Updates user profile",
-                "operationId": "update_user_profile",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
-                    },
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Update User request data model"
-                        }
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
             "get": {
                 "responses": {
                     "404": {
@@ -268,6 +267,38 @@
                         "type": "string",
                         "format": "mask",
                         "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully updated."
+                    }
+                },
+                "summary": "Updates user profile",
+                "operationId": "update_user_profile",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Update User request data model"
+                        }
                     }
                 ],
                 "tags": [
@@ -306,7 +337,7 @@
                 ]
             }
         },
-        "/users": {
+        "/users/": {
             "get": {
                 "responses": {
                     "200": {

@@ -15,7 +15,7 @@ add_models_to_namespace(mentorship_relation_ns)
 DAO = MentorshipRelationDAO()
 
 
-@mentorship_relation_ns.route('mentorship-relation/send_request')
+@mentorship_relation_ns.route('mentorship_relation/send_request')
 class SendRequest(Resource):
 
     @classmethod
@@ -57,7 +57,7 @@ class SendRequest(Resource):
         return {}
 
 
-@mentorship_relation_ns.route('mentorship-relations')
+@mentorship_relation_ns.route('mentorship_relations')
 class GetAllMyMentorshipRelation(Resource):
 
     @classmethod
@@ -75,3 +75,29 @@ class GetAllMyMentorshipRelation(Resource):
         response = DAO.list_mentorship_relations(user_id=user_id)
 
         return response
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/accept')
+class AcceptMentorshipRelation(Resource):
+
+    @classmethod
+    @jwt_required()
+    @mentorship_relation_ns.doc('accept_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Accept mentorship relations with success.')
+    # @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    def put(cls, request_id):
+        """
+        Accept a mentorship relation.
+        """
+
+        # check if user id is well parsed
+        # if it is an integer
+
+
+        user_id = current_identity.id
+        response = DAO.accept_request(user_id=user_id, request_id=request_id)
+
+        return response
+
+

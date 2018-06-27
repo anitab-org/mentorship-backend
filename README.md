@@ -19,6 +19,7 @@ The project runs on Python 3.
 
 ```
 export  SECRET_KEY=<your-secret-key>
+export  FLASK_ENVIRONMENT_CONFIG=<dev-or-test-or-prod>
 ```
 
 5. Run the app:
