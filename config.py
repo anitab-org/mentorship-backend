@@ -6,7 +6,9 @@ class BaseConfig(object):
     DEBUG = False
     TESTING = False
 
-    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECRET_KEY = os.getenv('SECRET_KEY', None)
+    # if not SECRET_KEY:
+    #     raise ValueError('You need to export SECRET_KEY set for Flask application')
 
     # SQLAlchemy settings
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'

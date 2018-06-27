@@ -13,6 +13,7 @@ def create_app(config_filename):
 
     # setup application environment
     app.config.from_object(config_filename)
+    app.url_map.strict_slashes = False
 
     from app.database import db
     db.init_app(app)
