@@ -103,3 +103,43 @@ class MentorshipRelationDAO:
         all_relations = user.mentor_relations + user.mentee_relations
 
         return all_relations
+
+    @staticmethod
+    def accept_request(user_id, request_id):
+
+        user = UserModel.find_by_id(user_id)
+
+        # verify if user exists
+        if user is None:
+            return {'message': 'User does not exist.'}, 404
+
+        request = MentorshipRelationModel.find_by_id(request_id)
+
+        # verify if request exists
+        if request is None:
+            return {'message': 'This mentorship relation request does not exist.'}, 404
+
+        # verify if request is in pending state
+        if request.state is not MentorshipRelationState.PENDING:
+            return {'message': 'This mentorship relation is not in the pending state.'}, 400
+
+        # verify if I'm the receiver of the request
+        if request.action_user_id is user_id:
+            return {'message': 'You cannot accept a mentorship request sent by yourself.'}, 400
+
+        # verify if I'm involved in this relation
+        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+            return {'message': 'You cannot accept a mentorship relation where you are not involved.'}, 400
+
+        requests = user.mentee_relations + user.mentor_relations
+
+        # verify if I'm on a current relation
+        for request in requests:
+            if request.state is MentorshipRelationState.ACCEPTED:
+                return {'message': 'You are currently involved in a mentorship relation.'}, 400
+
+        # All was checked
+        request.state = MentorshipRelationState.ACCEPTED
+        request.save_to_db()
+
+        return {'message': 'Mentorship relation was accepted successfully.'}, 200
