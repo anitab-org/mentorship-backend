@@ -9,6 +9,7 @@ from app.database.models.user import UserModel
 from tests.test_data import user1, user2
 from app.database import db
 
+
 # TODO test combination of parameters while listing relations
 
 class TestMentorshipRelationListingDAO(BaseTestCase):
@@ -63,7 +64,6 @@ class TestMentorshipRelationListingDAO(BaseTestCase):
         db.session.commit()
 
     def test_dao_list_mentorship_relation_accepted(self):
-
         DAO = MentorshipRelationDAO()
 
         self.mentorship_relation.state = MentorshipRelationState.ACCEPTED
@@ -75,7 +75,6 @@ class TestMentorshipRelationListingDAO(BaseTestCase):
         self.assertEqual(({'message': 'Not implemented.'}, 200), result)
 
     def test_dao_list_mentorship_relation_cancelled(self):
-
         DAO = MentorshipRelationDAO()
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
@@ -87,7 +86,6 @@ class TestMentorshipRelationListingDAO(BaseTestCase):
         self.assertEqual(({'message': 'Not implemented.'}, 200), result)
 
     def test_dao_list_mentorship_relation_rejected(self):
-
         DAO = MentorshipRelationDAO()
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
@@ -99,7 +97,6 @@ class TestMentorshipRelationListingDAO(BaseTestCase):
         self.assertEqual(({'message': 'Not implemented.'}, 200), result)
 
     def test_dao_list_mentorship_relation_completed(self):
-
         DAO = MentorshipRelationDAO()
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
@@ -111,7 +108,6 @@ class TestMentorshipRelationListingDAO(BaseTestCase):
         self.assertEqual(({'message': 'Not implemented.'}, 200), result)
 
     def test_dao_list_mentorship_relation_pending(self):
-
         DAO = MentorshipRelationDAO()
 
         self.mentorship_relation.state = MentorshipRelationState.PENDING
@@ -123,7 +119,6 @@ class TestMentorshipRelationListingDAO(BaseTestCase):
         self.assertEqual(({'message': 'Not implemented.'}, 200), result)
 
     def test_dao_list_mentorship_relation_all(self):
-
         DAO = MentorshipRelationDAO()
 
         self.mentorship_relation.state = MentorshipRelationState.PENDING
