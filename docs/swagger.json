@@ -157,6 +157,37 @@
                 ]
             }
         },
+        "/mentorship_relation/{request_id}/reject": {
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Rejected mentorship relations with success."
+                    }
+                },
+                "summary": "Reject a mentorship relation",
+                "operationId": "reject_mentorship_relation",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
         "/mentorship_relations": {
             "get": {
                 "responses": {
@@ -215,17 +246,17 @@
             }
         },
         "/user": {
-            "delete": {
+            "put": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
                     "204": {
-                        "description": "User successfully deleted."
+                        "description": "User successfully updated."
                     }
                 },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
+                "summary": "Updates user profile",
+                "operationId": "update_user_profile",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -233,6 +264,14 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: JWT <access_token>"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Update User request data model"
+                        }
                     }
                 ],
                 "tags": [
@@ -273,17 +312,17 @@
                     "Users"
                 ]
             },
-            "put": {
+            "delete": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
                     "204": {
-                        "description": "User successfully updated."
+                        "description": "User successfully deleted."
                     }
                 },
-                "summary": "Updates user profile",
-                "operationId": "update_user_profile",
+                "summary": "Deletes user",
+                "operationId": "delete_user",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -291,14 +330,6 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: JWT <access_token>"
-                    },
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Update User request data model"
-                        }
                     }
                 ],
                 "tags": [
@@ -337,7 +368,7 @@
                 ]
             }
         },
-        "/users/": {
+        "/users": {
             "get": {
                 "responses": {
                     "200": {
