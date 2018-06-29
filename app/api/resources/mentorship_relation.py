@@ -7,9 +7,9 @@ from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
-                                   description='Operations related to '
-                                               'mentorship relations '
-                                               'between users')
+                                       description='Operations related to '
+                                                   'mentorship relations '
+                                                   'between users')
 add_models_to_namespace(mentorship_relation_ns)
 
 DAO = MentorshipRelationDAO()
@@ -94,6 +94,7 @@ class AcceptMentorshipRelation(Resource):
         # check if user id is well parsed
         # if it is an integer
 
+
         user_id = current_identity.id
         response = DAO.accept_request(user_id=user_id, request_id=request_id)
 
@@ -117,26 +118,5 @@ class RejectMentorshipRelation(Resource):
 
         user_id = current_identity.id
         response = DAO.reject_request(user_id=user_id, request_id=request_id)
-
-        return response
-
-
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/cancel')
-class CancelMentorshipRelation(Resource):
-
-    @classmethod
-    @jwt_required()
-    @mentorship_relation_ns.doc('cancel_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
-    def put(cls, request_id):
-        """
-        Cancel a mentorship relation.
-        """
-
-        # TODO check if user id is well parsed, if it is an integer
-
-        user_id = current_identity.id
-        response = DAO.cancel_relation(user_id=user_id, relation_id=request_id)
 
         return response

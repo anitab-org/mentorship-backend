@@ -6,6 +6,7 @@ from app.utils.enum_utils import MentorshipRelationState
 
 
 class MentorshipRelationDAO:
+
     MAXIMUM_MENTORSHIP_DURATION = timedelta(weeks=24)  # 6 months = approximately 6*4
     MINIMUM_MENTORSHIP_DURATION = timedelta(weeks=4)
 
@@ -58,6 +59,7 @@ class MentorshipRelationDAO:
         if not mentee_user.need_mentoring:
             return {'message': 'Mentee user is not available to be mentored.'}, 400
 
+
         # TODO add tests for this portion
 
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
@@ -85,8 +87,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was sent successfully.'}, 200
 
     @staticmethod
-    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None,
-                                  rejected=None):
+    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
         if pending is not None:
             return {'message': 'Not implemented.'}, 200
         if completed is not None:
@@ -175,32 +176,3 @@ class MentorshipRelationDAO:
         request.save_to_db()
 
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
-
-    @staticmethod
-    def cancel_relation(user_id, relation_id):
-
-        user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
-        request = MentorshipRelationModel.find_by_id(relation_id)
-
-        # verify if request exists
-        if request is None:
-            return {'message': 'This mentorship relation request does not exist.'}, 404
-
-        # verify if request is in pending state
-        if request.state is not MentorshipRelationState.ACCEPTED:
-            return {'message': 'This mentorship relation is not in the accepted state.'}, 400
-
-        # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
-            return {'message': 'You cannot cancel a mentorship relation where you are not involved.'}, 400
-
-        # All was checked
-        request.state = MentorshipRelationState.CANCELLED
-        request.save_to_db()
-
-        return {'message': 'Mentorship relation was cancelled successfully.'}, 200
