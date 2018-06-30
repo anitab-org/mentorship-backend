@@ -1,6 +1,12 @@
 # mentorship-backend
 
-Backend REST API for Mentorship System.
+Backend REST API for Mentorship System. Depending on branches the following instances of application are running
+
+| Branch | Server |
+| :---: | :---: |
+| [gsoc18-code](https://github.com/systers/mentorship-backend/tree/gsoc18-code) | [Development](http://systers-mentorship-test.zsgdmpswrc.eu-central-1.elasticbeanstalk.com/) |
+| [develop](https://github.com/systers/mentorship-backend/tree/develop) | Staging |
+| [master](https://github.com/systers/mentorship-backend/tree/master) | Production |
 
 ## Setup and run
 
@@ -30,7 +36,6 @@ export  FLASK_ENVIRONMENT_CONFIG=<dev-or-test-or-prod>
 
 ### Run tests
 
-To run the unitests type this on the terminal:
-```
-python -m unittest discover tests
-```
+To run the unitests run the following command in the terminal (while the virtual environment is activated):
+
+`python -m unittest discover tests`
