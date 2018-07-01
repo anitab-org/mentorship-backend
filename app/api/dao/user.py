@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
 
 
@@ -16,17 +19,19 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data['username'])
         if existing_user:
-            return existing_user
+            return {"message": "A user with that username already exists"}, 400
         else:
             existing_user = UserModel.find_by_email(data['email'])
             if existing_user:
-                return existing_user
+                return {"message": "A user with that email already exists"}, 400
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
 
         user.save_to_db()
 
-        return None
+        return {"message": "User was created successfully. "
+                           "A confirmation email has been sent via email. "
+                           "After confirming your email you can login."}, 200
 
     @staticmethod
     def delete_user(user_id):
@@ -50,17 +55,25 @@ class UserDAO:
         return UserModel.find_by_id(user_id)
 
     @staticmethod
+    def get_user_by_email(email):
+        return UserModel.find_by_email(email)
+
+    @staticmethod
+    def get_user_by_username(username):
+        return UserModel.find_by_username(username)
+
+    @staticmethod
     def list_users(is_verified=None):
         users_list = UserModel.query.all()
         list_of_users = []
         if is_verified:
             for user in users_list:
-                if not user.is_email_verified:
+                if user.is_email_verified:
                     list_of_users += [user.json()]
         else:
             list_of_users = [user.json() for user in users_list]
 
-        return list_of_users, 201
+        return list_of_users, 200
 
     @staticmethod
     def update_user_profile(user_id, data):
@@ -129,10 +142,18 @@ class UserDAO:
         return {"message": "Current password is incorrect."}, 400
 
     @staticmethod
-    def confirm_registration(user_id, data):
+    def confirm_registration(token):
 
-        # Not implemented yet
-        # set confirmation date
-        # set confirmation value
+        email_from_token = confirm_token(token)
 
-        return {"message": "User was updated successfully"}, 201
+        if email_from_token is False or email_from_token is None:
+            return {'message': 'The confirmation link is invalid or the token has expired.'}, 400
+
+        user = UserModel.find_by_email(email_from_token)
+        if user.is_email_verified:
+            return {'message': 'Account already confirmed.'}, 200
+        else:
+            user.is_email_verified = True
+            user.email_verification_date = datetime.now()
+            user.save_to_db()
+            return {'message': 'You have confirmed your account. Thanks!'}, 200

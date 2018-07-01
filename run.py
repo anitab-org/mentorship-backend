@@ -23,6 +23,9 @@ def create_app(config_filename):
     from app.api import api
     api.init_app(app)
 
+    from app.api.mail_extension import mail
+    mail.init_app(app)
+
     return app
 
 
