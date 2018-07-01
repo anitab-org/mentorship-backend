@@ -1,3 +1,5 @@
+from app.utils.email_utils import is_email_valid
+
 
 def authenticate(username_or_email, password):
     """
@@ -6,10 +8,11 @@ def authenticate(username_or_email, password):
     -> email + password
     """
     from app.database.models.user import UserModel
-    user = UserModel.find_by_username(username_or_email)
 
-    if not user:
+    if is_email_valid(username_or_email):
         user = UserModel.find_by_email(username_or_email)
+    else:
+        user = UserModel.find_by_username(username_or_email)
 
     if user and user.check_password(password):
         return user
