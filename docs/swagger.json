@@ -399,7 +399,52 @@
                 ]
             }
         },
-        "/users": {
+        "/user/confirm_email/{token}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Token sent to the user's email",
+                    "name": "token",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "operationId": "get_user_email_confirmation",
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/user/resend_email": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "operationId": "post_user_resend_email_confirmation",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Resend email request data model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            }
+        },
+        "/users/": {
             "get": {
                 "responses": {
                     "200": {
@@ -763,6 +808,18 @@
                 "terms_and_conditions_checked": {
                     "type": "boolean",
                     "description": "User check Terms and Conditions value"
+                }
+            },
+            "type": "object"
+        },
+        "Resend email request data model": {
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "User's email"
                 }
             },
             "type": "object"
