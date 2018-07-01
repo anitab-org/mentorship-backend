@@ -3,7 +3,7 @@ from flask_restplus import Resource, marshal, Namespace
 from flask_jwt import jwt_required, current_identity
 
 from app.utils.email_utils import is_email_valid
-
+from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
 from app.api.resources.common import auth_header_parser
@@ -14,7 +14,7 @@ add_models_to_namespace(users_ns)
 DAO = UserDAO()  # User data access object
 
 
-@users_ns.route('users')
+@users_ns.route('users/')
 class UserList(Resource):
 
     @classmethod
@@ -144,17 +144,17 @@ class UserRegister(Resource):
 
         data = request.json
 
-        is_valid = UserRegister.is_valid_data(data)
+        is_valid = cls.is_valid_data(data)
 
         if is_valid != {}:
             return is_valid, 400
 
-        user = DAO.create_user(data)
+        result = DAO.create_user(data)
 
-        if user is None:
-            return {"message": "User was created successfully"}, 201
-        else:
-            return {"message": "A user with that username already exists"}, 400
+        if result[1] is 200:
+            send_email_verification_message(data['name'], data['email'])
+
+        return result
 
     @staticmethod
     def is_valid_data(data):
@@ -184,13 +184,61 @@ class UserRegister(Resource):
         return {}
 
 
+@users_ns.route('user/confirm_email/<string:token>')
+@users_ns.param('token', 'Token sent to the user\'s email')
+class UserEmailConfirmation(Resource):
+
+    @classmethod
+    def get(cls, token):
+        return DAO.confirm_registration(token)
+
+
+@users_ns.route('user/resend_email')
+class UserResendEmailConfirmation(Resource):
+
+    @classmethod
+    @users_ns.expect(resend_email_request_body_model)
+    def post(cls):
+
+        data = request.json
+
+        is_valid = cls.is_valid_data(data)
+
+        if is_valid != {}:
+            return is_valid, 400
+
+        user = DAO.get_user_by_email(data['email'])
+        if user is None:
+            return {"message": "You are not registered in the system."}, 404
+
+        if user.is_email_verified:
+            return {"message": "You already confirm your email."}, 403
+
+        send_email_verification_message(user.name, data['email'])
+
+        return {"message": "Check your email, a new verification email was sent."}, 200
+
+    @staticmethod
+    def is_valid_data(data):
+
+        # Verify if request body has required fields
+        if 'email' not in data:
+            return {"message": "Email field is missing."}
+
+        email = data['email']
+        if not is_email_valid(email):
+            return {"message": "Your email is invalid."}
+
+        return {}
+
+
 @users_ns.route('login')
 class LoginUser(Resource):
 
     @classmethod
     @users_ns.doc('login')
     @users_ns.response(200, 'Successful login', login_response_body_model)
-    @users_ns.expect(login_request_body_model)  # , skip_none=True
+    @users_ns.expect(login_request_body_model)
     def post(cls):
         """
         Login user
