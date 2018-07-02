@@ -1,4 +1,5 @@
 import unittest
+import os
 from datetime import timedelta
 
 from flask import current_app
@@ -9,10 +10,13 @@ from run import application
 class TestTestingConfig(TestCase):
     def create_app(self):
         application.config.from_object('config.TestingConfig')
+
+        secret_key = os.getenv('SECRET_KEY', None)
+        application.config['SECRET_KEY'] = secret_key if secret_key else 'TEST_SECRET_KEY'
         return application
 
     def test_app_testing_config(self):
-        self.assertIsNone(application.config['SECRET_KEY'])
+        self.assertIsNotNone(application.config['SECRET_KEY'])
         self.assertTrue(application.config['DEBUG'])
         self.assertTrue(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
@@ -27,10 +31,13 @@ class TestTestingConfig(TestCase):
 class TestDevelopmentConfig(TestCase):
     def create_app(self):
         application.config.from_object('config.DevelopmentConfig')
+
+        secret_key = os.getenv('SECRET_KEY', None)
+        application.config['SECRET_KEY'] = secret_key if secret_key else 'TEST_SECRET_KEY'
         return application
 
     def test_app_development_config(self):
-        self.assertIsNone(application.config['SECRET_KEY'])
+        self.assertIsNotNone(application.config['SECRET_KEY'])
         self.assertTrue(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
@@ -45,10 +52,13 @@ class TestDevelopmentConfig(TestCase):
 class TestProductionConfig(TestCase):
     def create_app(self):
         application.config.from_object('config.ProductionConfig')
+
+        secret_key = os.getenv('SECRET_KEY', None)
+        application.config['SECRET_KEY'] = secret_key if secret_key else 'TEST_SECRET_KEY'
         return application
 
     def test_app_production_config(self):
-        self.assertIsNone(application.config['SECRET_KEY'])
+        self.assertIsNotNone(application.config['SECRET_KEY'])
         self.assertFalse(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
