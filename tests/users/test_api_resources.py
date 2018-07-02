@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from flask import json
 
@@ -17,10 +18,13 @@ from tests.test_data import user1
 
 class TestUserApi(BaseTestCase):
 
-    # Tests
+    def mail_send_mocked(self):
+        return self
 
-    def test_user_registration(self):
-        # Ensure user registration behaves correctly.
+    # mocking mail.send function which connects with smtp server
+    @patch('flask_mail._MailMixin.send', side_effect=mail_send_mocked)
+    def test_user_registration(self, send_email_function):
+        # Ensure user registration behaves correctly
 
         with self.client:
             response = self.client.post('/register', data=json.dumps(dict(
@@ -43,11 +47,12 @@ class TestUserApi(BaseTestCase):
                 self.assertEqual(user1['email'], user.email)
                 self.assertEqual(user1['terms_and_conditions_checked'], user.terms_and_conditions_checked)
                 self.assertFalse(user.is_admin)
+                self.assertFalse(user.is_email_verified)
 
     def test_list_users_api_resource(self):
 
         response = self.client.get('/users', follow_redirects=True)
-        self.assertTrue(response.status_code == 201)
+        self.assertEqual(200, response.status_code)
         # print(response)
         # print(response.data)
 
