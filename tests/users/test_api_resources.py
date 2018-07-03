@@ -57,6 +57,5 @@ class TestUserApi(BaseTestCase):
         # print(response.data)
 
 
-
 if __name__ == "__main__":
     unittest.main()

@@ -17,7 +17,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
                         "name": "payload",
@@ -48,7 +48,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
                         "name": "payload",
@@ -110,7 +110,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
                         "name": "payload",
@@ -149,7 +149,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     }
                 ],
                 "tags": [
@@ -180,7 +180,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     }
                 ],
                 "tags": [
@@ -211,7 +211,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     }
                 ],
                 "tags": [
@@ -237,7 +237,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
                         "name": "X-Fields",
@@ -277,6 +277,30 @@
             }
         },
         "/user": {
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully deleted."
+                    }
+                },
+                "summary": "Deletes user",
+                "operationId": "delete_user",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
             "get": {
                 "responses": {
                     "404": {
@@ -297,7 +321,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
                         "name": "X-Fields",
@@ -328,7 +352,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
                         "name": "payload",
@@ -337,30 +361,6 @@
                         "schema": {
                             "$ref": "#/definitions/Update User request data model"
                         }
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "204": {
-                        "description": "User successfully deleted."
-                    }
-                },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
                     }
                 ],
                 "tags": [
@@ -383,7 +383,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
                         "name": "payload",
@@ -532,7 +532,7 @@
                         "in": "header",
                         "type": "string",
                         "required": true,
-                        "description": "Authentication access token. E.g.: JWT <access_token>"
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     }
                 ],
                 "tags": [
@@ -961,6 +961,17 @@
         },
         "MaskError": {
             "description": "When any error occurs on mask"
-        }
+        },
+        "NoAuthorizationError": {},
+        "CSRFError": {},
+        "ExpiredSignatureError": {},
+        "InvalidHeaderError": {},
+        "InvalidTokenError": {},
+        "JWTDecodeError": {},
+        "WrongTokenError": {},
+        "RevokedTokenError": {},
+        "FreshTokenRequired": {},
+        "UserLoadError": {},
+        "UserClaimsVerificationError": {}
     }
 }

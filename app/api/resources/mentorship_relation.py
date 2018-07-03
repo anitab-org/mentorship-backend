@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Resource, Namespace
-from flask_jwt import jwt_required, current_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -19,7 +19,7 @@ DAO = MentorshipRelationDAO()
 class SendRequest(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @mentorship_relation_ns.doc('send_request')
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(200, 'Mentorship Relation request was sent successfully.')
@@ -29,7 +29,7 @@ class SendRequest(Resource):
         Creates a new mentorship relation request.
         """
 
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         data = request.json
 
         is_valid = SendRequest.is_valid_data(data)
@@ -61,7 +61,7 @@ class SendRequest(Resource):
 class GetAllMyMentorshipRelation(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @mentorship_relation_ns.doc('get_all_user_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations was successfully.',
@@ -72,7 +72,7 @@ class GetAllMyMentorshipRelation(Resource):
         Lists all mentorship relations.
         """
 
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         response = DAO.list_mentorship_relations(user_id=user_id)
 
         return response
@@ -82,7 +82,7 @@ class GetAllMyMentorshipRelation(Resource):
 class AcceptMentorshipRelation(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @mentorship_relation_ns.doc('accept_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Accept mentorship relations with success.')
@@ -94,7 +94,7 @@ class AcceptMentorshipRelation(Resource):
         # check if user id is well parsed
         # if it is an integer
 
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         response = DAO.accept_request(user_id=user_id, request_id=request_id)
 
         return response
@@ -104,7 +104,7 @@ class AcceptMentorshipRelation(Resource):
 class RejectMentorshipRelation(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @mentorship_relation_ns.doc('reject_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Rejected mentorship relations with success.')
@@ -115,7 +115,7 @@ class RejectMentorshipRelation(Resource):
 
         # TODO check if user id is well parsed, if it is an integer
 
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         response = DAO.reject_request(user_id=user_id, request_id=request_id)
 
         return response
@@ -125,7 +125,7 @@ class RejectMentorshipRelation(Resource):
 class CancelMentorshipRelation(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @mentorship_relation_ns.doc('cancel_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
@@ -136,7 +136,7 @@ class CancelMentorshipRelation(Resource):
 
         # TODO check if user id is well parsed, if it is an integer
 
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         response = DAO.cancel_relation(user_id=user_id, relation_id=request_id)
 
         return response
