@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from app.database import db
+from app.database.sqlalchemy_extension import db
 
 
 class UserModel(db.Model):

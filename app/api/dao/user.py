@@ -2,6 +2,7 @@ from datetime import datetime
 
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
+from app.utils.email_utils import is_email_valid
 
 
 class UserDAO:
@@ -157,3 +158,21 @@ class UserDAO:
             user.email_verification_date = datetime.now()
             user.save_to_db()
             return {'message': 'You have confirmed your account. Thanks!'}, 200
+
+    @staticmethod
+    def authenticate(username_or_email, password):
+        """
+        The user can login with two options:
+        -> username + password
+        -> email + password
+        """
+
+        if is_email_valid(username_or_email):
+            user = UserModel.find_by_email(username_or_email)
+        else:
+            user = UserModel.find_by_username(username_or_email)
+
+        if user and user.check_password(password):
+            return user
+
+        return None

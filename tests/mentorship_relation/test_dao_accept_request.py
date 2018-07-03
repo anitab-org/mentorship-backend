@@ -6,7 +6,7 @@ from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
 from tests.test_data import user1, user2
-from app.database import db
+from app.database.sqlalchemy_extension import db
 
 
 # TODO test when a user is in a current relation and tries to accept another relation

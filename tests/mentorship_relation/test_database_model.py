@@ -5,7 +5,7 @@ from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.database import db
+from app.database.sqlalchemy_extension import db
 
 from tests.test_data import user1, user2
 
