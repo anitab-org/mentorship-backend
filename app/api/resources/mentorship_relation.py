@@ -140,3 +140,24 @@ class CancelMentorshipRelation(Resource):
         response = DAO.cancel_relation(user_id=user_id, relation_id=request_id)
 
         return response
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>')
+class DeleteMentorshipRelation(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('delete_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Deleted mentorship relation with success.')
+    def delete(cls, request_id):
+        """
+        Delete a mentorship request.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+        response = DAO.delete_request(user_id=user_id, request_id=request_id)
+
+        return response
