@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from flask import request
+from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_restplus import Resource, marshal, Namespace
-from flask_jwt import jwt_required, current_identity
 
 from app.utils.email_utils import is_email_valid
 from app.api.email_utils import send_email_verification_message
@@ -33,7 +35,7 @@ class UserList(Resource):
 class OtherUser(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser)
     @users_ns.response(201, 'Success.', public_user_api_model)
@@ -63,7 +65,7 @@ class OtherUser(Resource):
 class MyUserProfile(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser, validate=True)
     @users_ns.marshal_with(public_user_api_model)  # , skip_none=True
@@ -71,11 +73,11 @@ class MyUserProfile(Resource):
         """
         Returns a user.
         """
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         return DAO.get_user(user_id)
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @users_ns.doc('update_user_profile')
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(204, 'User successfully updated.')
@@ -85,11 +87,11 @@ class MyUserProfile(Resource):
         """
 
         data = request.json
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         return DAO.update_user_profile(user_id, data)
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @users_ns.doc('delete_user')
     @users_ns.expect(auth_header_parser, validate=True)
     @users_ns.response(204, 'User successfully deleted.')
@@ -97,7 +99,7 @@ class MyUserProfile(Resource):
         """
         Deletes user.
         """
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         return DAO.delete_user(user_id)
 
 
@@ -105,14 +107,14 @@ class MyUserProfile(Resource):
 class ChangeUserPassword(Resource):
 
     @classmethod
-    @jwt_required()
+    @jwt_required
     @users_ns.doc('update_user_password')
     @users_ns.expect(auth_header_parser, change_password_request_data_model, validate=True)
     def put(cls):
         """
         Updates the user's password
         """
-        user_id = current_identity.id
+        user_id = get_jwt_identity()
         data = request.json
         return DAO.change_password(user_id, data)
 
@@ -248,6 +250,32 @@ class LoginUser(Resource):
         The return value is an access token and the expiry timestamp.
         The token is valid for 1 week.
         """
-        from run import jwt
-        return jwt.request_handler()
+        # if not request.is_json:
+        #     return {'msg': 'Missing JSON in request'}, 400
+
+        username = request.json.get('username', None)
+        password = request.json.get('password', None)
+
+        if not username:
+            return {'message': 'The field username is missing.'}, 400
+        if not password:
+            return {'message': 'The field password is missing.'}, 400
+
+        user = DAO.authenticate(username, password)
+
+        if not user:
+            return {'message': 'Username or password is wrong.'}, 404
+
+        if not user.is_email_verified:
+            return {'message': 'Please verify your email before login.'}, 403
+
+        access_token = create_access_token(identity=user.id)
+
+        from run import application
+        expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+
+        return {
+            'access_token': access_token,
+            'expiry': expiry.timestamp()
+        }, 200
 

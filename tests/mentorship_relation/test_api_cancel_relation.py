@@ -1,14 +1,14 @@
 import json
 import unittest
 from datetime import datetime, timedelta
-from unittest.mock import patch
 
-from app.database import db
+from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.user import UserModel
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1, user2
+from tests.test_utils import get_test_request_header
 
 
 class TestCancelMentorshipRelationApi(BaseTestCase):
@@ -64,29 +64,22 @@ class TestCancelMentorshipRelationApi(BaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-    def mock_jwt_required(self):
-        return self
-
-    @patch('flask_jwt._jwt_required', side_effect=mock_jwt_required)
-    @patch('flask_jwt._request_ctx_stack')
-    def test__mentor_cancel_mentorship_relation(self, mock_request_ctx_stack, jwt_required_fn):
+    def test__mentor_cancel_mentorship_relation(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
-        mock_request_ctx_stack.top.current_identity = self.first_user
         with self.client:
-            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id)
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
+                                       headers=get_test_request_header(self.first_user.id))
 
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
             self.assertEqual({'message': 'Mentorship relation was cancelled successfully.'},
                              json.loads(response.data))
 
-    @patch('flask_jwt._jwt_required', side_effect=mock_jwt_required)
-    @patch('flask_jwt._request_ctx_stack')
-    def test__mentee_cancel_mentorship_relation(self, mock_request_ctx_stack, jwt_required_fn):
+    def test__mentee_cancel_mentorship_relation(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
-        mock_request_ctx_stack.top.current_identity = self.second_user
         with self.client:
-            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id)
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
+                                       headers=get_test_request_header(self.second_user.id))
 
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
