@@ -42,7 +42,7 @@ def send_email(recipient, subject, template):
 def send_email_verification_message(user_name, email):
     confirmation_token = generate_confirmation_token(email)
     from app.api.resources.user import UserEmailConfirmation  # import here to avoid circular imports
-    from app.api import api
+    from app.api.api_extension import api
     confirm_url = api.url_for(UserEmailConfirmation, token=confirmation_token, _external=True)
     html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
     subject = "Mentorship System - Please confirm your email"

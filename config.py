@@ -11,8 +11,7 @@ class BaseConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Flask JWT settings
-    JWT_AUTH_URL_RULE = '/login'
-    JWT_EXPIRATION_DELTA = timedelta(weeks=1)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)
 
     # Security
     SECRET_KEY = os.getenv('SECRET_KEY', None)
