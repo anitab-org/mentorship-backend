@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash
 
 from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
-from app.database import db
+from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user2
