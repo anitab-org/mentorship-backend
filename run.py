@@ -21,6 +21,9 @@ def create_app(config_filename):
     from app.api.mail_extension import mail
     mail.init_app(app)
 
+    from app.schedulers.background_scheduler import init_scheduler
+    init_scheduler()
+
     return app
 
 
