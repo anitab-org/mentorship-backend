@@ -1,8 +1,8 @@
 branch-defaults:
-  gsoc18-code:
-    environment: systers-mentorship-test
-    group_suffix: null
   develop:
+    environment: systers-mentorship-staging
+    group_suffix: null
+  gsoc18-code:
     environment: systers-mentorship-dev
     group_suffix: null
   master:
