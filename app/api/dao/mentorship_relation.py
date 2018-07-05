@@ -205,3 +205,31 @@ class MentorshipRelationDAO:
         request.save_to_db()
 
         return {'message': 'Mentorship relation was cancelled successfully.'}, 200
+
+    @staticmethod
+    def delete_request(user_id, request_id):
+
+        user = UserModel.find_by_id(user_id)
+
+        # verify if user exists
+        if user is None:
+            return {'message': 'User does not exist.'}, 404
+
+        request = MentorshipRelationModel.find_by_id(request_id)
+
+        # verify if request exists
+        if request is None:
+            return {'message': 'This mentorship relation request does not exist.'}, 404
+
+        # verify if request is in pending state
+        if request.state is not MentorshipRelationState.PENDING:
+            return {'message': 'This mentorship relation is not in the pending state.'}, 400
+
+        # verify if user created the mentorship request
+        if request.action_user_id is not user_id:
+            return {'message': 'You cannot delete a mentorship request that you did not create.'}, 400
+
+        # All was checked
+        request.delete_from_db()
+
+        return {'message': 'Mentorship relation was deleted successfully.'}, 200
