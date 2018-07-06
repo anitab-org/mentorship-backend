@@ -260,8 +260,100 @@
                         }
                     }
                 },
-                "summary": "Lists all mentorship relations",
+                "summary": "Lists all mentorship relations of current user",
                 "operationId": "get_all_user_mentorship_relations",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship_relations/current": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Returned current mentorship relation with success.",
+                        "schema": {
+                            "$ref": "#/definitions/List mentorship relation request model"
+                        }
+                    }
+                },
+                "summary": "Lists current mentorship relation of the current user",
+                "operationId": "get_current_mentorship_relation",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship_relations/past": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Returned past mentorship relations with success.",
+                        "schema": {
+                            "$ref": "#/definitions/List mentorship relation request model"
+                        }
+                    }
+                },
+                "summary": "Lists past mentorship relations of the current user",
+                "operationId": "get_past_mentorship_relations",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship_relations/pending": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Returned pending mentorship relation with success.",
+                        "schema": {
+                            "$ref": "#/definitions/List mentorship relation request model"
+                        }
+                    }
+                },
+                "summary": "Lists pending mentorship requests of the current user",
+                "operationId": "get_pending_mentorship_relations",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -308,30 +400,6 @@
             }
         },
         "/user": {
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "204": {
-                        "description": "User successfully deleted."
-                    }
-                },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token. E.g.: Bearer <access_token>"
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
             "put": {
                 "responses": {
                     "404": {
@@ -358,6 +426,30 @@
                         "schema": {
                             "$ref": "#/definitions/Update User request data model"
                         }
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully deleted."
+                    }
+                },
+                "summary": "Deletes user",
+                "operationId": "delete_user",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     }
                 ],
                 "tags": [
