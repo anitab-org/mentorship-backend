@@ -233,3 +233,58 @@ class MentorshipRelationDAO:
         request.delete_from_db()
 
         return {'message': 'Mentorship relation was deleted successfully.'}, 200
+
+    @staticmethod
+    def list_past_mentorship_relations(user_id):
+
+        user = UserModel.find_by_id(user_id)
+
+        # verify if user exists
+        if user is None:
+            return {'message': 'User does not exist.'}, 404
+
+        now_timestamp = datetime.now().timestamp()
+        past_relations = []
+        all_relations = user.mentor_relations + user.mentee_relations
+
+        for relation in all_relations:
+            if relation.end_date < now_timestamp:
+                past_relations += [relation]
+
+        return past_relations, 200
+
+    @staticmethod
+    def list_current_mentorship_relation(user_id):
+
+        user = UserModel.find_by_id(user_id)
+
+        # verify if user exists
+        if user is None:
+            return {'message': 'User does not exist.'}, 404
+
+        all_relations = user.mentor_relations + user.mentee_relations
+
+        for relation in all_relations:
+            if relation.state is MentorshipRelationState.ACCEPTED:
+                return relation
+
+        return {'message': 'You are not in a current mentorship relation.'}, 200
+
+    @staticmethod
+    def list_pending_mentorship_relations(user_id):
+
+        user = UserModel.find_by_id(user_id)
+
+        # verify if user exists
+        if user is None:
+            return {'message': 'User does not exist.'}, 404
+
+        now_timestamp = datetime.now().timestamp()
+        pending_requests = []
+        all_relations = user.mentor_relations + user.mentee_relations
+
+        for relation in all_relations:
+            if relation.state is MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
+                pending_requests += [relation]
+
+        return pending_requests, 200
