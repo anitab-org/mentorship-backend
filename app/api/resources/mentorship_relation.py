@@ -1,10 +1,11 @@
 from flask import request
-from flask_restplus import Resource, Namespace
+from flask_restplus import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
+from app.database.models.mentorship_relation import MentorshipRelationModel
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
                                    description='Operations related to '
@@ -69,7 +70,7 @@ class GetAllMyMentorshipRelation(Resource):
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
         """
-        Lists all mentorship relations.
+        Lists all mentorship relations of current user.
         """
 
         user_id = get_jwt_identity()
@@ -159,5 +160,70 @@ class DeleteMentorshipRelation(Resource):
 
         user_id = get_jwt_identity()
         response = DAO.delete_request(user_id=user_id, request_id=request_id)
+
+        return response
+
+
+@mentorship_relation_ns.route('mentorship_relations/past')
+class ListPastMentorshipRelations(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('get_past_mentorship_relations')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Returned past mentorship relations with success.',
+                                     model=mentorship_request_response_body)
+    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    def get(cls):
+        """
+        Lists past mentorship relations of the current user.
+        """
+
+        user_id = get_jwt_identity()
+        response = DAO.list_past_mentorship_relations(user_id)
+
+        return response
+
+
+@mentorship_relation_ns.route('mentorship_relations/current')
+class ListCurrentMentorshipRelation(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('get_current_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Returned current mentorship relation with success.',
+                                     model=mentorship_request_response_body)
+    def get(cls):
+        """
+        Lists current mentorship relation of the current user.
+        """
+
+        user_id = get_jwt_identity()
+        response = DAO.list_current_mentorship_relation(user_id)
+
+        if isinstance(response, MentorshipRelationModel):
+            return marshal(response, mentorship_request_response_body), 200
+        else:
+            return response
+
+
+@mentorship_relation_ns.route('mentorship_relations/pending')
+class ListPendingMentorshipRequests(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('get_pending_mentorship_relations')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Returned pending mentorship relation with success.',
+                                     model=mentorship_request_response_body)
+    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    def get(cls):
+        """
+        Lists pending mentorship requests of the current user.
+        """
+
+        user_id = get_jwt_identity()
+        response = DAO.list_pending_mentorship_relations(user_id)
 
         return response
