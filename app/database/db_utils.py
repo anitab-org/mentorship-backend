@@ -1,4 +1,4 @@
-from . import db
+from app.database.sqlalchemy_extension import db
 
 
 def reset_database():
