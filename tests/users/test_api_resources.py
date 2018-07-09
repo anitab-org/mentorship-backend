@@ -16,7 +16,7 @@ from app.database.models.user import UserModel
 from tests.test_data import user1
 
 
-class TestUserApi(BaseTestCase):
+class TestUserRegistrationApi(BaseTestCase):
 
     def mail_send_mocked(self):
         return self
@@ -48,13 +48,6 @@ class TestUserApi(BaseTestCase):
                 self.assertEqual(user1['terms_and_conditions_checked'], user.terms_and_conditions_checked)
                 self.assertFalse(user.is_admin)
                 self.assertFalse(user.is_email_verified)
-
-    def test_list_users_api_resource(self):
-
-        response = self.client.get('/users', follow_redirects=True)
-        self.assertEqual(200, response.status_code)
-        # print(response)
-        # print(response.data)
 
 
 if __name__ == "__main__":

@@ -16,12 +16,14 @@ add_models_to_namespace(users_ns)
 DAO = UserDAO()  # User data access object
 
 
-@users_ns.route('users/')
+@users_ns.route('users')
 class UserList(Resource):
 
     @classmethod
+    @jwt_required
     @users_ns.doc('list_users')
-    @users_ns.marshal_list_with(full_user_api_model)
+    @users_ns.marshal_list_with(public_user_api_model)
+    @users_ns.expect(auth_header_parser)
     def get(cls):
         """
         Returns list of all the users.
@@ -68,7 +70,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.marshal_with(public_user_api_model)  # , skip_none=True
+    @users_ns.marshal_with(full_user_api_model)  # , skip_none=True
     def get(cls):
         """
         Returns a user.
@@ -123,8 +125,10 @@ class ChangeUserPassword(Resource):
 class VerifiedUser(Resource):
 
     @classmethod
+    @jwt_required
     @users_ns.doc('get_verified_users')
-    @users_ns.marshal_with(public_user_api_model)  # , skip_none=True
+    @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
+    @users_ns.expect(auth_header_parser)
     def get(cls):
         """
         Returns all verified users.
