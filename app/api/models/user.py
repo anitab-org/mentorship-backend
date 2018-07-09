@@ -17,17 +17,41 @@ public_user_api_model = Model('User list model', {
         readOnly=True,
         description='The unique identifier of a user'
     ),
-    'name': fields.String(
-        required=True,
-        description='User name'
-    ),
     'username': fields.String(
         required=True,
         description='User username'
     ),
-    'email': fields.String(
+    'name': fields.String(
         required=True,
-        description='User email'
+        description='User name'
+    ),
+    'slack_username': fields.String(
+        required=True,
+        description='User Slack username'
+    ),
+    'bio': fields.String(
+        required=True,
+        description='User bio'
+    ),
+    'location': fields.String(
+        required=True,
+        description='User location'
+    ),
+    'interests': fields.String(
+        required=True,
+        description='User interests'
+    ),
+    'skills': fields.String(
+        required=True,
+        description='User skills'
+    ),
+    'need_mentoring': fields.Boolean(
+        required=True,
+        description='User need to be mentored indication'
+    ),
+    'available_to_mentor': fields.Boolean(
+        required=True,
+        description='User availability to mentor indication'
     )
 })
 

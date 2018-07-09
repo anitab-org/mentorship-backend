@@ -432,30 +432,6 @@
                     "Users"
                 ]
             },
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "204": {
-                        "description": "User successfully deleted."
-                    }
-                },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token. E.g.: Bearer <access_token>"
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
             "get": {
                 "responses": {
                     "404": {
@@ -464,7 +440,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/User list model"
+                            "$ref": "#/definitions/User Complete model used in listing"
                         }
                     }
                 },
@@ -484,6 +460,30 @@
                         "type": "string",
                         "format": "mask",
                         "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "204": {
+                        "description": "User successfully deleted."
+                    }
+                },
+                "summary": "Deletes user",
+                "operationId": "delete_user",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     }
                 ],
                 "tags": [
@@ -567,7 +567,7 @@
                 ]
             }
         },
-        "/users/": {
+        "/users": {
             "get": {
                 "responses": {
                     "200": {
@@ -575,7 +575,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/User Complete model used in listing"
+                                "$ref": "#/definitions/User list model"
                             }
                         }
                     }
@@ -583,6 +583,13 @@
                 "summary": "Returns list of all the users",
                 "operationId": "list_users",
                 "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -602,13 +609,23 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/User list model"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User list model"
+                            }
                         }
                     }
                 },
                 "summary": "Returns all verified users",
                 "operationId": "get_verified_users",
                 "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
                     {
                         "name": "X-Fields",
                         "in": "header",
@@ -694,6 +711,119 @@
         }
     ],
     "definitions": {
+        "User list model": {
+            "required": [
+                "available_to_mentor",
+                "bio",
+                "interests",
+                "location",
+                "name",
+                "need_mentoring",
+                "skills",
+                "slack_username",
+                "username"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "The unique identifier of a user"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "slack_username": {
+                    "type": "string",
+                    "description": "User Slack username"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "User bio"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "User location"
+                },
+                "interests": {
+                    "type": "string",
+                    "description": "User interests"
+                },
+                "skills": {
+                    "type": "string",
+                    "description": "User skills"
+                },
+                "need_mentoring": {
+                    "type": "boolean",
+                    "description": "User need to be mentored indication"
+                },
+                "available_to_mentor": {
+                    "type": "boolean",
+                    "description": "User availability to mentor indication"
+                }
+            },
+            "type": "object"
+        },
+        "Update User request data model": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "User bio"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "User location"
+                },
+                "occupation": {
+                    "type": "string",
+                    "description": "User occupation"
+                },
+                "slack_username": {
+                    "type": "string",
+                    "description": "User slack username"
+                },
+                "social_media_links": {
+                    "type": "string",
+                    "description": "User social media links"
+                },
+                "skills": {
+                    "type": "string",
+                    "description": "User skills"
+                },
+                "interests": {
+                    "type": "string",
+                    "description": "User interests"
+                },
+                "resume_url": {
+                    "type": "string",
+                    "description": "User resume url"
+                },
+                "photo_url": {
+                    "type": "string",
+                    "description": "User photo url"
+                },
+                "need_mentoring": {
+                    "type": "boolean",
+                    "description": "User need mentoring indication"
+                },
+                "available_to_mentor": {
+                    "type": "boolean",
+                    "description": "User availability to mentor indication"
+                }
+            },
+            "type": "object"
+        },
         "User Complete model used in listing": {
             "required": [
                 "email",
@@ -799,89 +929,6 @@
                 "membership_status": {
                     "type": "integer",
                     "description": "User membershipstatus"
-                }
-            },
-            "type": "object"
-        },
-        "User list model": {
-            "required": [
-                "email",
-                "name",
-                "username"
-            ],
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "description": "The unique identifier of a user"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "User name"
-                },
-                "username": {
-                    "type": "string",
-                    "description": "User username"
-                },
-                "email": {
-                    "type": "string",
-                    "description": "User email"
-                }
-            },
-            "type": "object"
-        },
-        "Update User request data model": {
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "User name"
-                },
-                "username": {
-                    "type": "string",
-                    "description": "User username"
-                },
-                "bio": {
-                    "type": "string",
-                    "description": "User bio"
-                },
-                "location": {
-                    "type": "string",
-                    "description": "User location"
-                },
-                "occupation": {
-                    "type": "string",
-                    "description": "User occupation"
-                },
-                "slack_username": {
-                    "type": "string",
-                    "description": "User slack username"
-                },
-                "social_media_links": {
-                    "type": "string",
-                    "description": "User social media links"
-                },
-                "skills": {
-                    "type": "string",
-                    "description": "User skills"
-                },
-                "interests": {
-                    "type": "string",
-                    "description": "User interests"
-                },
-                "resume_url": {
-                    "type": "string",
-                    "description": "User resume url"
-                },
-                "photo_url": {
-                    "type": "string",
-                    "description": "User photo url"
-                },
-                "need_mentoring": {
-                    "type": "boolean",
-                    "description": "User need mentoring indication"
-                },
-                "available_to_mentor": {
-                    "type": "boolean",
-                    "description": "User availability to mentor indication"
                 }
             },
             "type": "object"

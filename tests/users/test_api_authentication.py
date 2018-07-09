@@ -4,7 +4,7 @@ from datetime import timedelta
 from flask import json
 from flask_restplus import marshal
 
-from app.api.models.user import public_user_api_model
+from app.api.models.user import full_user_api_model
 from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
 from tests.base_test_case import BaseTestCase
@@ -32,7 +32,7 @@ class TestProtectedApi(BaseTestCase):
 
     def test_user_profile_with_header_api(self):
         auth_header = get_test_request_header(self.first_user.id)
-        expected_response = marshal(self.first_user, public_user_api_model)
+        expected_response = marshal(self.first_user, full_user_api_model)
         actual_response = self.client.get('/user', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
