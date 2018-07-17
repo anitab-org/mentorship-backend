@@ -17,7 +17,7 @@ class TestTestingConfig(TestCase):
 
     def test_app_testing_config(self):
         self.assertIsNotNone(application.config['SECRET_KEY'])
-        self.assertTrue(application.config['DEBUG'])
+        self.assertFalse(application.config['DEBUG'])
         self.assertTrue(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
         self.assertEqual('sqlite://', application.config['SQLALCHEMY_DATABASE_URI'])
@@ -33,6 +33,7 @@ class TestDevelopmentConfig(TestCase):
 
         secret_key = os.getenv('SECRET_KEY', None)
         application.config['SECRET_KEY'] = secret_key if secret_key else 'TEST_SECRET_KEY'
+
         return application
 
     def test_app_development_config(self):
@@ -40,7 +41,48 @@ class TestDevelopmentConfig(TestCase):
         self.assertTrue(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual('sqlite:///dev_data.db', application.config['SQLALCHEMY_DATABASE_URI'])
+        self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
+        self.assertIsNotNone(current_app)
+
+        # testing JWT configurations
+        self.assertEqual(timedelta(weeks=1), application.config['JWT_ACCESS_TOKEN_EXPIRES'])
+
+
+class TestStagingConfig(TestCase):
+    def create_app(self):
+        application.config.from_object('config.StagingConfig')
+
+        secret_key = os.getenv('SECRET_KEY', None)
+        application.config['SECRET_KEY'] = secret_key if secret_key else 'TEST_SECRET_KEY'
+
+        return application
+
+    def test_app_development_config(self):
+        self.assertIsNotNone(application.config['SECRET_KEY'])
+        self.assertTrue(application.config['DEBUG'])
+        self.assertFalse(application.config['TESTING'])
+        self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
+        self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
+        self.assertIsNotNone(current_app)
+
+        # testing JWT configurations
+        self.assertEqual(timedelta(weeks=1), application.config['JWT_ACCESS_TOKEN_EXPIRES'])
+
+
+class TestLocalConfig(TestCase):
+    def create_app(self):
+        application.config.from_object('config.LocalConfig')
+
+        secret_key = os.getenv('SECRET_KEY', None)
+        application.config['SECRET_KEY'] = secret_key if secret_key else 'TEST_SECRET_KEY'
+        return application
+
+    def test_app_development_config(self):
+        self.assertIsNotNone(application.config['SECRET_KEY'])
+        self.assertTrue(application.config['DEBUG'])
+        self.assertFalse(application.config['TESTING'])
+        self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
+        self.assertEqual('sqlite:///local_data.db', application.config['SQLALCHEMY_DATABASE_URI'])
         self.assertIsNotNone(current_app)
 
         # testing JWT configurations
@@ -53,6 +95,7 @@ class TestProductionConfig(TestCase):
 
         secret_key = os.getenv('SECRET_KEY', None)
         application.config['SECRET_KEY'] = secret_key if secret_key else 'TEST_SECRET_KEY'
+
         return application
 
     def test_app_production_config(self):
@@ -60,7 +103,7 @@ class TestProductionConfig(TestCase):
         self.assertFalse(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual('sqlite:///prod_data.db', application.config['SQLALCHEMY_DATABASE_URI'])
+        self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
         self.assertIsNotNone(current_app)
 
         # testing JWT configurations
