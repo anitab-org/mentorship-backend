@@ -47,7 +47,7 @@ class UserDAO:
 
         if user:
             user.delete_from_db()
-            return {"message": "User was deleted successfully"}, 201
+            return {"message": "User was deleted successfully"}, 200
 
         return {"message": "User does not exist"}, 404
 
@@ -80,15 +80,21 @@ class UserDAO:
     def update_user_profile(user_id, data):
 
         user = UserModel.find_by_id(user_id)
-
         if not user:
             return {"message": "User does not exist"}, 404
 
+        username = data.get('username', None)
+        if username:
+            user_with_same_username = UserModel.find_by_username(username)
+
+            # username should be unique
+            if user_with_same_username:
+                return {"message": "That username is already taken by another user."}, 400
+
+            user.username = username
+
         if 'name' in data and data['name']:
             user.name = data['name']
-
-        if 'username' in data and data['username']:
-            user.username = data['username']
 
         if 'bio' in data and data['bio']:
             user.bio = data['bio']
@@ -127,7 +133,7 @@ class UserDAO:
 
         user.save_to_db()
 
-        return {"message": "User was updated successfully"}, 201
+        return {"message": "User was updated successfully"}, 200
 
     @staticmethod
     def change_password(user_id, data):
