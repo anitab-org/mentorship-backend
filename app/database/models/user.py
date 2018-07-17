@@ -30,12 +30,13 @@ class UserModel(db.Model):
     email_verification_date = db.Column(db.DateTime)
 
     # other info
-    current_role = db.Column(db.Integer)
+    current_mentorship_role = db.Column(db.Integer)
     membership_status = db.Column(db.Integer)
 
     bio = db.Column(db.String(500))
     location = db.Column(db.String(80))
     occupation = db.Column(db.String(80))
+    organization = db.Column(db.String(80))
     slack_username = db.Column(db.String(80))
     social_media_links = db.Column(db.String(500))
     skills = db.Column(db.String(500))
@@ -47,7 +48,6 @@ class UserModel(db.Model):
     available_to_mentor = db.Column(db.Boolean)
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
-
         ## required fields
 
         self.name = name
@@ -68,8 +68,6 @@ class UserModel(db.Model):
         self.need_mentoring = False
         self.available_to_mentor = False
 
-
-
     def json(self):
         return {
             'id': self.id,
@@ -82,11 +80,12 @@ class UserModel(db.Model):
             'is_admin': self.is_admin,
             'is_email_verified': self.is_email_verified,
             'email_verification_date': self.email_verification_date,
-            'current_role': self.current_role,
+            'current_mentorship_role': self.current_mentorship_role,
             'membership_status': self.membership_status,
             'bio': self.bio,
             'location': self.location,
             'occupation': self.occupation,
+            'organization': self.organization,
             'slack_username': self.slack_username,
             'social_media_links': self.social_media_links,
             'skills': self.skills,
