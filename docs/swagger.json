@@ -400,17 +400,17 @@
             }
         },
         "/user": {
-            "put": {
+            "delete": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
-                    "204": {
-                        "description": "User successfully updated."
+                    "200": {
+                        "description": "User successfully deleted."
                     }
                 },
-                "summary": "Updates user profile",
-                "operationId": "update_user_profile",
+                "summary": "Deletes user",
+                "operationId": "delete_user",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -418,14 +418,6 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
-                    },
-                    {
-                        "name": "payload",
-                        "required": true,
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Update User request data model"
-                        }
                     }
                 ],
                 "tags": [
@@ -466,17 +458,17 @@
                     "Users"
                 ]
             },
-            "delete": {
+            "put": {
                 "responses": {
                     "404": {
                         "description": "User not found."
                     },
-                    "204": {
-                        "description": "User successfully deleted."
+                    "200": {
+                        "description": "User successfully updated."
                     }
                 },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
+                "summary": "Updates user profile",
+                "operationId": "update_user_profile",
                 "parameters": [
                     {
                         "name": "Authorization",
@@ -484,6 +476,14 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Update User request data model"
+                        }
                     }
                 ],
                 "tags": [
