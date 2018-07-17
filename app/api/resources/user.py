@@ -82,7 +82,8 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('update_user_profile')
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(204, 'User successfully updated.')
+    @users_ns.response(200, 'User successfully updated.')
+    @users_ns.response(404, 'User not found.')
     def put(cls):
         """
         Updates user profile
@@ -96,7 +97,8 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('delete_user')
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.response(204, 'User successfully deleted.')
+    @users_ns.response(200, 'User successfully deleted.')
+    @users_ns.response(404, 'User not found.')
     def delete(cls):
         """
         Deletes user.
