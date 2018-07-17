@@ -719,6 +719,8 @@
                 "location",
                 "name",
                 "need_mentoring",
+                "occupation",
+                "organization",
                 "skills",
                 "slack_username",
                 "username"
@@ -747,6 +749,14 @@
                 "location": {
                     "type": "string",
                     "description": "User location"
+                },
+                "occupation": {
+                    "type": "string",
+                    "description": "User occupation"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "User organization"
                 },
                 "interests": {
                     "type": "string",
@@ -788,6 +798,10 @@
                 "occupation": {
                     "type": "string",
                     "description": "User occupation"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "User organization"
                 },
                 "slack_username": {
                     "type": "string",
@@ -890,6 +904,10 @@
                     "type": "string",
                     "description": "User occupation"
                 },
+                "organization": {
+                    "type": "string",
+                    "description": "User organization"
+                },
                 "slack_username": {
                     "type": "string",
                     "description": "User slack username"
@@ -922,7 +940,7 @@
                     "type": "boolean",
                     "description": "User availability to mentor indication"
                 },
-                "current_role": {
+                "current_mentorship_role": {
                     "type": "integer",
                     "description": "User current role"
                 },
