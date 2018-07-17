@@ -105,6 +105,9 @@ class UserDAO:
         if 'occupation' in data and data['occupation']:
             user.occupation = data['occupation']
 
+        if 'organization' in data and data['organization']:
+            user.organization = data['organization']
+
         if 'slack_username' in data and data['slack_username']:
             user.slack_username = data['slack_username']
 
