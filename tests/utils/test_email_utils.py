@@ -1,8 +1,8 @@
 import unittest
-from app.utils.validation_utils import is_email_valid
+from app.utils.email_utils import is_email_valid
 
 
-class TestEmailValidation(unittest.TestCase):
+class TestEmailUtils(unittest.TestCase):
 
     def test_empty_email(self):
         email = ""

@@ -4,7 +4,7 @@ from flask import request
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_restplus import Resource, marshal, Namespace
 
-from app.api.validations.user import validate_user_registration_request_data, validate_resend_email_request_data
+from app.utils.email_utils import is_email_valid
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
@@ -152,7 +152,7 @@ class UserRegister(Resource):
 
         data = request.json
 
-        is_valid = validate_user_registration_request_data(data)
+        is_valid = cls.is_valid_data(data)
 
         if is_valid != {}:
             return is_valid, 400
@@ -163,6 +163,33 @@ class UserRegister(Resource):
             send_email_verification_message(data['name'], data['email'])
 
         return result
+
+    @staticmethod
+    def is_valid_data(data):
+
+        # Verify if request body has required fields
+        if 'name' not in data:
+            return {"message": "Name field is missing."}
+        if 'username' not in data:
+            return {"message": "Username field is missing."}
+        if 'password' not in data:
+            return {"message": "Password field is missing."}
+        if 'email' not in data:
+            return {"message": "Email field is missing."}
+        if 'terms_and_conditions_checked' not in data:
+            return {"message": "Terms and conditions field is missing."}
+
+        terms_and_conditions_checked = data['terms_and_conditions_checked']
+        email = data['email']
+
+        # Verify business logic of request body
+        if terms_and_conditions_checked is False:
+            return {"message": "Terms and conditions are not checked."}
+
+        if not is_email_valid(email):
+            return {"message": "Your email is invalid."}
+
+        return {}
 
 
 @users_ns.route('user/confirm_email/<string:token>')
@@ -183,7 +210,7 @@ class UserResendEmailConfirmation(Resource):
 
         data = request.json
 
-        is_valid = validate_resend_email_request_data(data)
+        is_valid = cls.is_valid_data(data)
 
         if is_valid != {}:
             return is_valid, 400
@@ -198,6 +225,19 @@ class UserResendEmailConfirmation(Resource):
         send_email_verification_message(user.name, data['email'])
 
         return {"message": "Check your email, a new verification email was sent."}, 200
+
+    @staticmethod
+    def is_valid_data(data):
+
+        # Verify if request body has required fields
+        if 'email' not in data:
+            return {"message": "Email field is missing."}
+
+        email = data['email']
+        if not is_email_valid(email):
+            return {"message": "Your email is invalid."}
+
+        return {}
 
 
 @users_ns.route('login')
