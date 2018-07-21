@@ -4,7 +4,8 @@ from flask import request
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_restplus import Resource, marshal, Namespace
 
-from app.api.validations.user import validate_user_registration_request_data, validate_resend_email_request_data
+from app.api.validations.user import (validate_user_registration_request_data, validate_resend_email_request_data,
+                                      validate_new_password)
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
@@ -120,6 +121,9 @@ class ChangeUserPassword(Resource):
         """
         user_id = get_jwt_identity()
         data = request.json
+        is_valid = validate_new_password(data)
+        if is_valid != {}:
+            return is_valid, 400
         return DAO.change_password(user_id, data)
 
 
