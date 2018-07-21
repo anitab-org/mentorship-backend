@@ -3,7 +3,7 @@ from random import SystemRandom
 from string import ascii_lowercase
 
 from app.api.validations.user import validate_user_registration_request_data, NAME_MIN_LENGTH, NAME_MAX_LENGTH, \
-    USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH
+    USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, validate_new_password
 from tests.test_data import user1
 
 
@@ -182,6 +182,26 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
                 terms_and_conditions_checked=user1['terms_and_conditions_checked'])
         actual_result = validate_user_registration_request_data(request_body)
 
+        self.assertEqual(expected_result, actual_result)
+
+    def test_user_password_change_request_password_inferior_to_limit(self):
+        secure_random = SystemRandom()
+        expected_result = {"message": "The password field has to be longer than {min_limit} "
+                           "characters and shorter than {max_limit} characters.".format(min_limit=PASSWORD_MIN_LENGTH-1,
+                                                                                        max_limit=PASSWORD_MAX_LENGTH+1)}
+        random_generated_password = "".join(secure_random.choice(ascii_lowercase) for x in range(PASSWORD_MIN_LENGTH-1))
+        data = dict(new_password=random_generated_password, current_password=random_generated_password)
+        actual_result = validate_new_password(data)
+        self.assertEqual(expected_result, actual_result)
+
+    def test_user_password_change_request_password_superior_to_limit(self):
+        secure_random = SystemRandom()
+        expected_result = {"message": "The password field has to be longer than {min_limit} "
+                           "characters and shorter than {max_limit} characters.".format(min_limit=PASSWORD_MIN_LENGTH-1,
+                                                                                        max_limit=PASSWORD_MAX_LENGTH+1)}
+        random_generated_password = "".join(secure_random.choice(ascii_lowercase) for x in range(PASSWORD_MAX_LENGTH+1))
+        data = dict(new_password=random_generated_password, current_password=random_generated_password)
+        actual_result = validate_new_password(data)
         self.assertEqual(expected_result, actual_result)
 
 

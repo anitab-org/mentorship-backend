@@ -71,3 +71,18 @@ def validate_resend_email_request_data(data):
         return {"message": "Your email is invalid."}
 
     return {}
+
+
+def validate_new_password(data):
+    if 'current_password' not in data:
+        return {"message": "Current password field is missing."}
+    if 'new_password' not in data:
+        return {"message": "New password field is missing."}
+    new_password = data['new_password']
+    if not (PASSWORD_MIN_LENGTH <= len(new_password) <= PASSWORD_MAX_LENGTH):
+        return {"message":"The password field has to be longer than {min_limit} "
+                          "characters and shorter than {max_limit} characters.".format(min_limit=PASSWORD_MIN_LENGTH-1,
+                                                                                       max_limit=PASSWORD_MAX_LENGTH+1)}
+    if " " in new_password:
+        return {"message": "Password shouldn't contain spaces"}
+    return {}
