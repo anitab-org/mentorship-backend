@@ -9,6 +9,11 @@ class TestUsernameValidation(unittest.TestCase):
         is_valid = is_username_valid(username)
         self.assertFalse(is_valid)
 
+    def test_username_with_just_spaces(self):
+        username = "   "
+        is_valid = is_username_valid(username)
+        self.assertFalse(is_valid)
+
     def test_valid_username_without_underscore(self):
         username = "validusername"
         is_valid = is_username_valid(username)
@@ -22,7 +27,7 @@ class TestUsernameValidation(unittest.TestCase):
     def test_invalid_username_with_underscore(self):
         username = "valid_username"
         is_valid = is_username_valid(username)
-        self.assertFalse(is_valid)
+        self.assertTrue(is_valid)
 
     def test_invalid_username_with_spaces(self):
         username = "username with spaces"
