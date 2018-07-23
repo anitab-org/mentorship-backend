@@ -2,7 +2,7 @@ from datetime import datetime
 
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
-from app.utils.email_utils import is_email_valid
+from app.utils.validation_utils import is_email_valid
 
 
 class UserDAO:
