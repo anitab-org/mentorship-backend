@@ -13,7 +13,7 @@ class TestUpdateUserDao(BaseTestCase):
 
         data = dict(
             occupation='good_developer',
-            organization='good_org',
+            organization='good_org'
         )
         UserDAO.update_user_profile(self.admin_user.id, data)
 
