@@ -4,8 +4,7 @@ from flask import request
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
 from flask_restplus import Resource, marshal, Namespace
 
-from app.api.validations.user import (validate_user_registration_request_data, validate_resend_email_request_data,
-                                      validate_new_password)
+from app.api.validations.user import *
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
@@ -91,6 +90,12 @@ class MyUserProfile(Resource):
         """
 
         data = request.json
+
+        is_valid = validate_update_profile_request_data(data)
+
+        if is_valid != {}:
+            return is_valid, 400
+
         user_id = get_jwt_identity()
         return DAO.update_user_profile(user_id, data)
 
