@@ -48,22 +48,39 @@ class BaseConfig(object):
     # mail accounts
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
+    @staticmethod
+    def get_db_uri(db_user_arg, db_password_arg, db_endpoint_arg, db_name_arg):
+        return 'mysql+pymysql://{db_user}:{db_password}@{db_endpoint}/{db_name}'\
+            .format(db_user=db_user_arg,
+                    db_password=db_password_arg,
+                    db_endpoint=db_endpoint_arg,
+                    db_name=db_name_arg)
+
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
-    SQLALCHEMY_DATABASE_URI = 'mysql_something'
+    SQLALCHEMY_DATABASE_URI = BaseConfig.get_db_uri(db_user_arg=BaseConfig.ENV_DB_USERNAME,
+                                                    db_password_arg=BaseConfig.ENV_DB_PASSWORD,
+                                                    db_endpoint_arg='something',
+                                                    db_name_arg='systers-mentorship-production')
 
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql_something'
+    SQLALCHEMY_DATABASE_URI = BaseConfig.get_db_uri(db_user_arg=BaseConfig.ENV_DB_USERNAME,
+                                                    db_password_arg=BaseConfig.ENV_DB_PASSWORD,
+                                                    db_endpoint_arg='something',
+                                                    db_name_arg='systers-mentorship-development')
 
 
 class StagingConfig(BaseConfig):
     """Staging configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql_something'
+    SQLALCHEMY_DATABASE_URI = BaseConfig.get_db_uri(db_user_arg=BaseConfig.ENV_DB_USERNAME,
+                                                    db_password_arg=BaseConfig.ENV_DB_PASSWORD,
+                                                    db_endpoint_arg='something',
+                                                    db_name_arg='systers-mentorship-staging')
 
 
 class LocalConfig(BaseConfig):

@@ -4,6 +4,8 @@ from datetime import timedelta
 
 from flask import current_app
 from flask_testing import TestCase
+
+from config import BaseConfig
 from run import application
 
 
@@ -26,6 +28,15 @@ class TestTestingConfig(TestCase):
         # testing JWT configurations
         self.assertEqual(timedelta(weeks=1), application.config['JWT_ACCESS_TOKEN_EXPIRES'])
 
+    def test_get_bd_uri_function(self):
+
+        expected_result = 'mysql+pymysql://db_user_example:db_password_example@db_endpoint_example/db_name_example'
+        actual_result = BaseConfig.get_db_uri(db_user_arg='db_user_example',
+                                              db_password_arg='db_password_example',
+                                              db_endpoint_arg='db_endpoint_example',
+                                              db_name_arg='db_name_example')
+        self.assertEqual(expected_result, actual_result)
+
 
 class TestDevelopmentConfig(TestCase):
     def create_app(self):
@@ -41,7 +52,7 @@ class TestDevelopmentConfig(TestCase):
         self.assertTrue(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
+        # self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
         self.assertIsNotNone(current_app)
 
         # testing JWT configurations
@@ -62,7 +73,7 @@ class TestStagingConfig(TestCase):
         self.assertTrue(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
+        # self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
         self.assertIsNotNone(current_app)
 
         # testing JWT configurations
@@ -103,7 +114,7 @@ class TestProductionConfig(TestCase):
         self.assertFalse(application.config['DEBUG'])
         self.assertFalse(application.config['TESTING'])
         self.assertFalse(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-        self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
+        # self.assertEqual('mysql_something', application.config['SQLALCHEMY_DATABASE_URI'])
         self.assertIsNotNone(current_app)
 
         # testing JWT configurations
