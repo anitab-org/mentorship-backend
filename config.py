@@ -79,7 +79,7 @@ class StagingConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = BaseConfig.get_db_uri(db_user_arg=BaseConfig.ENV_DB_USERNAME,
                                                     db_password_arg=BaseConfig.ENV_DB_PASSWORD,
-                                                    db_endpoint_arg='something',
+                                                    db_endpoint_arg='systers-mentorship-staging.cq6nzcssjayz.eu-central-1.rds.amazonaws.com:3306/',
                                                     db_name_arg='systers-mentorship-staging')
 
 
