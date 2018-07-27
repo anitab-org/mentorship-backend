@@ -1,7 +1,6 @@
 ## Description
 This issue is to test all the test cases of features in the project.
 
-
 ## Test Cases
 You can check the following document for test cases: 
 
