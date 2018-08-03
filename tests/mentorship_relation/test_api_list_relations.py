@@ -2,6 +2,9 @@ import json
 import unittest
 from datetime import datetime, timedelta
 
+from flask_restplus import marshal
+
+from app.api.models.mentorship_relation import mentorship_request_response_body
 from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
@@ -93,7 +96,7 @@ class TestListMentorshipRelationsApi(BaseTestCase):
                                        headers=get_test_request_header(self.second_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual([self.past_mentorship_relation.json()], json.loads(response.data))
+            self.assertEqual([marshal(self.past_mentorship_relation, mentorship_request_response_body)], json.loads(response.data))
 
     def test_list_pending_mentorship_relations(self):
         with self.client:
@@ -101,7 +104,7 @@ class TestListMentorshipRelationsApi(BaseTestCase):
                                        headers=get_test_request_header(self.second_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual([self.future_pending_mentorship_relation.json()],
+            self.assertEqual([marshal(self.future_pending_mentorship_relation, mentorship_request_response_body)],
                              json.loads(response.data))
 
     def test_list_current_mentorship_relation(self):
@@ -110,7 +113,7 @@ class TestListMentorshipRelationsApi(BaseTestCase):
                                        headers=get_test_request_header(self.second_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual(self.future_accepted_mentorship_relation.json(),
+            self.assertEqual(marshal(self.future_accepted_mentorship_relation, mentorship_request_response_body),
                              json.loads(response.data))
 
 
