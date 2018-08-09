@@ -24,6 +24,7 @@ relation_user_response_body = Model('User', {
 mentorship_request_response_body = Model('List mentorship relation request model', {
     'id': fields.Integer(required=True, description='Mentorship relation ID'),
     'action_user_id': fields.Integer(required=True, description='Mentorship relation requester user ID'),
+    'sent_by_me': fields.Boolean(required=True, description='Mentorship relation sent by current user indication'),
     'mentor': fields.Nested(relation_user_response_body),
     'mentee': fields.Nested(relation_user_response_body),
     'creation_date': fields.Float(required=True, description='Mentorship relation creation date in UNIX timestamp format'),
