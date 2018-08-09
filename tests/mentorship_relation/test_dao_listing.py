@@ -126,7 +126,7 @@ class TestMentorshipRelationListingDAO(BaseTestCase):
         db.session.commit()
 
         result = DAO.list_mentorship_relations(user_id=self.first_user.id)
-        expected_response = [self.mentorship_relation]
+        expected_response = [self.mentorship_relation], 200
 
         self.assertIsNotNone(result)
         self.assertEqual(expected_response, result)

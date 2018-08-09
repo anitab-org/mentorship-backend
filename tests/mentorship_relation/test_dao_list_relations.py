@@ -84,7 +84,7 @@ class TestListMentorshipRelationsDAO(BaseTestCase):
         db.session.add(self.future_accepted_mentorship_relation)
         db.session.commit()
 
-    def test_dao_list_past_mentorship_relations_all(self):
+    def test_dao_list_past_mentorship_relations(self):
 
         result = MentorshipRelationDAO.list_past_mentorship_relations(user_id=self.first_user.id)
 
