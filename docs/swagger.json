@@ -400,30 +400,6 @@
             }
         },
         "/user": {
-            "delete": {
-                "responses": {
-                    "404": {
-                        "description": "User not found."
-                    },
-                    "200": {
-                        "description": "User successfully deleted."
-                    }
-                },
-                "summary": "Deletes user",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "Authorization",
-                        "in": "header",
-                        "type": "string",
-                        "required": true,
-                        "description": "Authentication access token. E.g.: Bearer <access_token>"
-                    }
-                ],
-                "tags": [
-                    "Users"
-                ]
-            },
             "get": {
                 "responses": {
                     "404": {
@@ -452,6 +428,30 @@
                         "type": "string",
                         "format": "mask",
                         "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Users"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "User not found."
+                    },
+                    "200": {
+                        "description": "User successfully deleted."
+                    }
+                },
+                "summary": "Deletes user",
+                "operationId": "delete_user",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
                     }
                 ],
                 "tags": [
@@ -1092,9 +1092,8 @@
                 "creation_date",
                 "end_date",
                 "id",
-                "mentee_id",
-                "mentor_id",
                 "notes",
+                "sent_by_me",
                 "start_date",
                 "state"
             ],
@@ -1107,13 +1106,15 @@
                     "type": "integer",
                     "description": "Mentorship relation requester user ID"
                 },
-                "mentor_id": {
-                    "type": "integer",
-                    "description": "Mentorship relation mentor ID"
+                "sent_by_me": {
+                    "type": "boolean",
+                    "description": "Mentorship relation sent by current user indication"
                 },
-                "mentee_id": {
-                    "type": "integer",
-                    "description": "Mentorship relation mentee ID"
+                "mentor": {
+                    "$ref": "#/definitions/User"
+                },
+                "mentee": {
+                    "$ref": "#/definitions/User"
                 },
                 "creation_date": {
                     "type": "number",
@@ -1138,6 +1139,23 @@
                 "notes": {
                     "type": "string",
                     "description": "Mentorship relation notes"
+                }
+            },
+            "type": "object"
+        },
+        "User": {
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "User ID"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
                 }
             },
             "type": "object"
