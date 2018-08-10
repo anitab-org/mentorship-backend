@@ -100,9 +100,17 @@ class MentorshipRelationDAO:
             return {'message': 'Not implemented.'}, 200
 
         user = UserModel.find_by_id(user_id)
+
+        if user is None:
+            return {'message': 'User does not exist.'}, 404
+
         all_relations = user.mentor_relations + user.mentee_relations
 
-        return all_relations
+        # add extra field for api response
+        for relation in all_relations:
+            setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
+
+        return all_relations, 200
 
     @staticmethod
     def accept_request(user_id, request_id):
@@ -249,6 +257,7 @@ class MentorshipRelationDAO:
 
         for relation in all_relations:
             if relation.end_date < now_timestamp:
+                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 past_relations += [relation]
 
         return past_relations, 200
@@ -266,6 +275,7 @@ class MentorshipRelationDAO:
 
         for relation in all_relations:
             if relation.state is MentorshipRelationState.ACCEPTED:
+                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 return relation
 
         return {'message': 'You are not in a current mentorship relation.'}, 200
@@ -285,6 +295,7 @@ class MentorshipRelationDAO:
 
         for relation in all_relations:
             if relation.state is MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
+                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 pending_requests += [relation]
 
         return pending_requests, 200
