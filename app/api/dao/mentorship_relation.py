@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.utils.enum_utils import MentorshipRelationState
 
@@ -74,13 +75,17 @@ class MentorshipRelationDAO:
 
         # All validations were checked
 
+        tasks_list = TasksListModel()
+        tasks_list.save_to_db()
+
         mentorship_relation = MentorshipRelationModel(action_user_id=action_user_id,
                                                       mentor_user=mentor_user,
                                                       mentee_user=mentee_user,
                                                       creation_date=datetime.now().timestamp(),
                                                       end_date=end_date_timestamp,
                                                       state=MentorshipRelationState.PENDING,
-                                                      notes=notes)
+                                                      notes=notes,
+                                                      tasks_list=tasks_list)
 
         mentorship_relation.save_to_db()
 
