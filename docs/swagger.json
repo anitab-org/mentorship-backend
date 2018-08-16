@@ -250,6 +250,153 @@
                 ]
             }
         },
+        "/mentorship_relation/{request_id}/task": {
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Created task with success."
+                    }
+                },
+                "summary": "Create a task",
+                "operationId": "create_task_in_mentorship_relation",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Create task request model"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship_relation/{request_id}/task/{task_id}": {
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                },
+                {
+                    "name": "task_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Delete task with success."
+                    }
+                },
+                "summary": "Delete a task",
+                "operationId": "delete_task_in_mentorship_relation",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship_relation/{request_id}/task/{task_id}/complete": {
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                },
+                {
+                    "name": "task_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Updated task with success."
+                    }
+                },
+                "summary": "Update a task",
+                "operationId": "update_task_in_mentorship_relation",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
+        "/mentorship_relation/{request_id}/tasks": {
+            "parameters": [
+                {
+                    "name": "request_id",
+                    "in": "path",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "List tasks from a mentorship relation with success.",
+                        "schema": {
+                            "$ref": "#/definitions/List tasks response model"
+                        }
+                    }
+                },
+                "summary": "List all tasks from a mentorship relation",
+                "operationId": "list_tasks_in_mentorship_relation",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
         "/mentorship_relations": {
             "get": {
                 "responses": {
@@ -1156,6 +1303,49 @@
                 "name": {
                     "type": "string",
                     "description": "User name"
+                }
+            },
+            "type": "object"
+        },
+        "Create task request model": {
+            "required": [
+                "description"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Mentorship relation task description"
+                }
+            },
+            "type": "object"
+        },
+        "List tasks response model": {
+            "required": [
+                "created_at",
+                "description",
+                "id",
+                "is_done"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Task ID"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Mentorship relation task description"
+                },
+                "is_done": {
+                    "type": "boolean",
+                    "description": "Mentorship relation task is done indication"
+                },
+                "created_at": {
+                    "type": "number",
+                    "description": "Task creation date in UNIX timestamp format"
+                },
+                "completed_at": {
+                    "type": "number",
+                    "description": "Task completion date in UNIX timestamp format"
                 }
             },
             "type": "object"
