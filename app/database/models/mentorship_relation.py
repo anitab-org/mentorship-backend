@@ -1,4 +1,4 @@
-
+from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
@@ -30,7 +30,10 @@ class MentorshipRelationModel(db.Model):
     state = db.Column(db.Enum(MentorshipRelationState), nullable=False)
     notes = db.Column(db.String(400))
 
-    def __init__(self, action_user_id, mentor_user, mentee_user, creation_date, end_date, state, notes):
+    tasks_list_id = db.Column(db.Integer, db.ForeignKey('tasks_list.id'))
+    tasks_list = db.relationship(TasksListModel, uselist=False, backref="mentorship_relation")
+
+    def __init__(self, action_user_id, mentor_user, mentee_user, creation_date, end_date, state, notes, tasks_list):
 
         self.action_user_id = action_user_id
         self.mentor = mentor_user
@@ -39,6 +42,7 @@ class MentorshipRelationModel(db.Model):
         self.end_date = end_date
         self.state = state
         self.notes = notes
+        self.tasks_list = tasks_list
 
     def json(self):
         return {
@@ -71,5 +75,6 @@ class MentorshipRelationModel(db.Model):
         db.session.commit()
 
     def delete_from_db(self):
+        self.tasks_list.delete_from_db()
         db.session.delete(self)
         db.session.commit()
