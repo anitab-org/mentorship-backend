@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
+from app.database.models.tasks_list import TasksListModel
 from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
@@ -56,7 +57,8 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
             creation_date=self.now_datetime.timestamp(),
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.PENDING,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         db.session.add(self.mentorship_relation)
