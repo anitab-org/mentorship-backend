@@ -13,17 +13,14 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
 fi
 
 # Checking branch
-if [ "$TRAVIS_BRANCH" == "gsoc18-code" ]; then
+if [ "$TRAVIS_BRANCH" == "develop" ]; then
     FLASK_ENVIRONMENT_CONFIG="dev"
     SERVER="Development"
-elif [ "$TRAVIS_BRANCH" == "develop" ]; then
-    FLASK_ENVIRONMENT_CONFIG="dev"
-    SERVER="Staging"
 elif [ "$TRAVIS_BRANCH" == "master" ]; then
     FLASK_ENVIRONMENT_CONFIG="prod"
     SERVER="Production"
 else 
-    echo "Skip publishing, we don't publish for '$TRAVIS_BRANCH' branch"
+    echo "Skip publishing, we don't publish for branches other than develop and master."
     exit 0
 fi
 
@@ -39,13 +36,7 @@ echo "aws_access_key_id = $AWS_ACCESS_ID" >> ~/.aws/config
 echo "aws_secret_access_key = $AWS_SECRET_KEY" >> ~/.aws/config
 
 # Add environment variables
-eb setenv FLASK_ENVIRONMENT_CONFIG=$FLASK_ENVIRONMENT_CONFIG 
-eb setenv MAIL_DEFAULT_SENDER=$MAIL_DEFAULT_SENDER 
-eb setenv MAIL_SERVER=$MAIL_SERVER 
-eb setenv APP_MAIL_USERNAME=$APP_MAIL_USERNAME 
-eb setenv APP_MAIL_PASSWORD=$APP_MAIL_PASSWORD 
-eb setenv SECRET_KEY=$SECRET_KEY 
-eb setenv SECURITY_PASSWORD_SALT=$SECURITY_PASSWORD_SALT
+eb setenv FLASK_ENVIRONMENT_CONFIG=$FLASK_ENVIRONMENT_CONFIG MAIL_DEFAULT_SENDER=$MAIL_DEFAULT_SENDER MAIL_SERVER=$MAIL_SERVER APP_MAIL_USERNAME=$APP_MAIL_USERNAME APP_MAIL_PASSWORD=$APP_MAIL_PASSWORD SECRET_KEY=$SECRET_KEY SECURITY_PASSWORD_SALT=$SECURITY_PASSWORD_SALT
 
 # Publishing
 echo "Publishing to '$SERVER' server"

@@ -4,9 +4,8 @@ Backend REST API for Mentorship System. Depending on branches the following inst
 
 | Branch | Server |
 | :---: | :---: |
-| [gsoc18-code](https://github.com/systers/mentorship-backend/tree/gsoc18-code) | [Development](http://systers-mentorship-dev.eu-central-1.elasticbeanstalk.com/) |
-| [develop](https://github.com/systers/mentorship-backend/tree/develop) | Staging |
-| [master](https://github.com/systers/mentorship-backend/tree/master) | Production |
+| [develop](https://github.com/systers/mentorship-backend/tree/develop) | [Development](http://systers-mentorship-dev.eu-central-1.elasticbeanstalk.com/) |
+| [master](https://github.com/systers/mentorship-backend/tree/master) | [Production](http://systers-mentorship.eu-central-1.elasticbeanstalk.com/) |
 
 ## Setup and run
 
