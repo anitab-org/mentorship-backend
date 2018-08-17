@@ -1,4 +1,4 @@
-from app.utils.validation_utils import is_email_valid, is_username_valid, validate_length, get_stripped_string
+from app.utils.validation_utils import is_name_valid, is_email_valid, is_username_valid, validate_length, get_stripped_string
 
 # Field character limit
 
@@ -57,6 +57,9 @@ def validate_user_registration_request_data(data):
     if terms_and_conditions_checked is False:
         return {"message": "Terms and conditions are not checked."}
 
+    if not is_name_valid(name):
+        return {"message": "Your name is invalid."}
+
     if not is_email_valid(email):
         return {"message": "Your email is invalid."}
 
@@ -99,6 +102,9 @@ def validate_update_profile_request_data(data):
         is_valid = validate_length(len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, 'name')
         if not is_valid[0]:
             return is_valid[1]
+
+        if not is_name_valid(name):
+            return {"message": "Your name is invalid."}
 
     bio = data.get('bio', None)
     if bio:
