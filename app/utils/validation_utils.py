@@ -1,7 +1,12 @@
 import re
 
+name_regex = r"(^[a-zA-Z\s\-]+$)"
 email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
 username_regex = r"(^[a-zA-Z0-9_]+$)"
+
+
+def is_name_valid(name):
+    return re.match(name_regex, name)
 
 
 def is_email_valid(email):
