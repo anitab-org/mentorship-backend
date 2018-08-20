@@ -8,14 +8,14 @@ test_admin_user = dict(
 )
 
 user1 = dict(
-    name="User1",
+    name="User",
     email="user1@email.com",
     username="user1",
     password="user1_pwd",
     terms_and_conditions_checked=True
 )
 user2 = dict(
-    name="User2",
+    name="Userb",
     email="user2@email.com",
     username="user2",
     password="user2_pwd",
