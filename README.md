@@ -43,3 +43,9 @@ export APP_MAIL_PASSWORD=<app-mail-password>
 To run the unitests run the following command in the terminal (while the virtual environment is activated):
 
 `python -m unittest discover tests`
+
+## Contact
+
+You can reach maintainers team @mentorship-team on [Systers Open Source Slack](http://systers.io/slack-systers-opensource/) or @systers/maintainers-mentorship-backend on GitHub.
+
+We use [#mentorship-system](https://systers-opensource.slack.com/messages/CAE8QK41L/) channel on Slack to discuss this project. If you're interested in contributing to this project, join us there!
