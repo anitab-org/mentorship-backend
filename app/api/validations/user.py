@@ -156,6 +156,12 @@ def validate_update_profile_request_data(data):
         if not is_valid[0]:
             return is_valid[1]
 
+    if 'need_mentoring' in data and data['need_mentoring'] is None:
+        return {"message": "Field need_mentoring is not valid."}
+
+    if 'available_to_mentor' in data and data['available_to_mentor'] is None:
+        return {"message": "Field available_to_mentor is not valid."}
+
     return {}
 
 

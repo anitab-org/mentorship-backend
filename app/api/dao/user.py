@@ -126,13 +126,11 @@ class UserDAO:
         if 'photo_url' in data and data['photo_url']:
             user.photo_url = data['photo_url']
 
-        if 'need_mentoring' in data and data['need_mentoring']:
+        if 'need_mentoring' in data:
             user.need_mentoring = data['need_mentoring']
 
-        if 'available_to_mentor' in data and data['available_to_mentor']:
+        if 'available_to_mentor' in data:
             user.available_to_mentor = data['available_to_mentor']
-
-        # print(data)
 
         user.save_to_db()
 
