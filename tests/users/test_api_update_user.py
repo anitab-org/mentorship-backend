@@ -103,6 +103,76 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertNotEqual(random_generated_username, self.first_user.username)
         self.assertEqual(user1['username'], self.first_user.username)
 
+    def test_update_availability_to_mentor_more_than_once(self):
+
+        self.first_user = UserModel(
+            name=user1['name'],
+            email=user1['email'],
+            username=user1['username'],
+            password=user1['password'],
+            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+        )
+        self.first_user.is_email_verified = True
+
+        db.session.add(self.first_user)
+        db.session.commit()
+
+        expected_response = {"message": "User was updated successfully"}
+        test_mentor_availability = True
+        auth_header = get_test_request_header(self.first_user.id)
+
+        self.assertEqual(False, self.first_user.available_to_mentor)
+
+        actual_response = self.client.put('/user', follow_redirects=True,
+                                          headers=auth_header,
+                                          data=json.dumps(dict(available_to_mentor=test_mentor_availability)),
+                                          content_type='application/json')
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+        self.assertEqual(test_mentor_availability, self.first_user.available_to_mentor)
+
+        actual_response = self.client.put('/user', follow_redirects=True,
+                                          headers=auth_header,
+                                          data=json.dumps(dict(available_to_mentor=not test_mentor_availability)),
+                                          content_type='application/json')
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+        self.assertEqual(not test_mentor_availability, self.first_user.available_to_mentor)
+
+    def test_update_availability_to_be_mentee_to_false(self):
+
+        self.first_user = UserModel(
+            name=user1['name'],
+            email=user1['email'],
+            username=user1['username'],
+            password=user1['password'],
+            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+        )
+        self.first_user.is_email_verified = True
+        self.first_user.need_mentoring = True
+
+        db.session.add(self.first_user)
+        db.session.commit()
+
+        expected_response = {"message": "User was updated successfully"}
+        test_need_mentoring = False
+        auth_header = get_test_request_header(self.first_user.id)
+
+        self.assertEqual(True, self.first_user.need_mentoring)
+
+        actual_response = self.client.put('/user', follow_redirects=True,
+                                          headers=auth_header,
+                                          data=json.dumps(dict(need_mentoring=test_need_mentoring)),
+                                          content_type='application/json')
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+        self.assertEqual(test_need_mentoring, self.first_user.need_mentoring)
+
 
 if __name__ == "__main__":
     unittest.main()
