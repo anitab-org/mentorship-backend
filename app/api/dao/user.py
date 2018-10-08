@@ -64,8 +64,8 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(is_verified=None):
-        users_list = UserModel.query.all()
+    def list_users(user_id, is_verified=None):
+        users_list = UserModel.query.filter(UserModel.id!=user_id).all()
         list_of_users = []
         if is_verified:
             for user in users_list:
