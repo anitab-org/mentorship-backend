@@ -28,8 +28,8 @@ class UserList(Resource):
         """
         Returns list of all the users.
         """
-
-        return DAO.list_users()
+        user_id = get_jwt_identity()
+        return DAO.list_users(user_id)
 
 
 @users_ns.route('users/<int:user_id>')
@@ -144,7 +144,8 @@ class VerifiedUser(Resource):
         """
         Returns all verified users.
         """
-        return DAO.list_users(is_verified=True)
+        user_id = get_jwt_identity()
+        return DAO.list_users(user_id, is_verified=True)
 
 
 @users_ns.route('register')
