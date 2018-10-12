@@ -154,7 +154,7 @@ class UserRegister(Resource):
     @classmethod
     @users_ns.doc('create_user')
     @users_ns.response(201, 'User successfully created.')
-    @users_ns.expect(register_user_api_model)
+    @users_ns.expect(register_user_api_model, validate=True)
     def post(cls):
         """
         Creates a new user.
