@@ -12,7 +12,9 @@ user1 = dict(
     email="user1@email.com",
     username="user1",
     password="user1_pwd",
-    terms_and_conditions_checked=True
+    terms_and_conditions_checked=True,
+    available_to_mentor=True,
+    need_mentoring=True
 )
 user2 = dict(
     name="Userb",
