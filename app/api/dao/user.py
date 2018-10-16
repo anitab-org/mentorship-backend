@@ -27,6 +27,11 @@ class UserDAO:
                 return {"message": "A user with that email already exists"}, 400
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
+        if 'need_mentoring' in data:
+            user.need_mentoring = data['need_mentoring']
+
+        if 'available_to_mentor' in data:
+            user.available_to_mentor = data['available_to_mentor']
 
         user.save_to_db()
 
