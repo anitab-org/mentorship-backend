@@ -1,5 +1,4 @@
 import unittest
-import datetime
 from werkzeug.security import check_password_hash
 
 from app.api.email_utils import generate_confirmation_token
@@ -34,7 +33,7 @@ class TestUserDao(BaseTestCase):
         self.assertFalse(user.password_hash == 'test_password')
         self.assertTrue(check_password_hash(user.password_hash, 'test_password'))
         self.assertTrue(user.terms_and_conditions_checked)
-        self.assertIsInstance(user.registration_date, datetime.datetime)
+        self.assertIsInstance(user.registration_date, float)
         self.assertFalse(user.is_email_verified)
 
     def test_dao_confirm_registration_good_token(self):

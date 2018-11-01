@@ -1026,8 +1026,7 @@
                     "description": "User admin status"
                 },
                 "registration_date": {
-                    "type": "string",
-                    "format": "date-time",
+                    "type": "float",
                     "description": "User registration date"
                 },
                 "is_email_verified": {

@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+import time
 from app.database.sqlalchemy_extension import db
 
 
@@ -19,7 +19,7 @@ class UserModel(db.Model):
     password_hash = db.Column(db.String(100))
 
     # registration
-    registration_date = db.Column(db.DateTime)
+    registration_date = db.Column(db.Float)
     terms_and_conditions_checked = db.Column(db.Boolean)
 
     # admin
@@ -61,7 +61,7 @@ class UserModel(db.Model):
         # default values
         self.is_admin = True if self.is_empty() else False  # first user is admin
         self.is_email_verified = False
-        self.registration_date = datetime.now()
+        self.registration_date = time.time()
 
         ## optional fields
 
