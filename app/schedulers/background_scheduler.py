@@ -8,7 +8,7 @@ def init_scheduler():
     # This cron job runs every day at 23:59h
     # Purpose: complete overdue accepted mentorship relations
     scheduler.add_job(id='complete_mentorship_relations_cron', func=complete_overdue_mentorship_relations_job,
-                      trigger='cron', hour=23, minute=59, second=0, day='*',
+                      trigger='cron', hour=23, minute=59, second=0, day='*', timezone='Etc/UTC',
                       replace_existing=True)
 
     # for tests purposes
