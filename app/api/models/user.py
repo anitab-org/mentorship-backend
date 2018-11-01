@@ -92,7 +92,7 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=True,
         description='User admin status'
     ),
-    'registration_date': fields.DateTime(
+    'registration_date': fields.Float(
         required=True,
         description='User registration date'
     ),
