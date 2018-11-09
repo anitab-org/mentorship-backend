@@ -129,7 +129,7 @@ class CancelMentorshipRelation(Resource):
     @classmethod
     @jwt_required
     @mentorship_relation_ns.doc('cancel_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.expect(auth_header_parser, mentorship_cancellation_request_body)
     @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
     def put(cls, request_id):
         """
@@ -139,7 +139,8 @@ class CancelMentorshipRelation(Resource):
         # TODO check if user id is well parsed, if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.cancel_relation(user_id=user_id, relation_id=request_id)
+        data = request.json
+        response = DAO.cancel_relation(user_id=user_id, relation_id=request_id, data=data)
 
         return response
 

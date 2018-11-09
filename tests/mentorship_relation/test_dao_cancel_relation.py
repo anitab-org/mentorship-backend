@@ -41,7 +41,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
     def test_dao_cancel_non_existing_mentorship_request(self):
         DAO = MentorshipRelationDAO()
 
-        result = DAO.cancel_relation(self.first_user.id, 123)
+        result = DAO.cancel_relation(self.first_user.id, 123, 'Some reason to cancel the relation.')
 
         self.assertEqual(({'message': 'This mentorship relation request does not exist.'}, 404), result)
         self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
@@ -49,7 +49,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
     def test_dao_sender_does_not_exist_mentorship_request(self):
         DAO = MentorshipRelationDAO()
 
-        result = DAO.cancel_relation(123, self.mentorship_relation.id)
+        result = DAO.cancel_relation(123, self.mentorship_relation.id, 'Some reason to cancel the relation.')
 
         self.assertEqual(({'message': 'User does not exist.'}, 404), result)
         self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
@@ -60,7 +60,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         DAO = MentorshipRelationDAO()
-        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id, 'Some reason to cancel the relation.')
 
         self.assertEqual(({'message': 'Mentorship relation was cancelled successfully.'}, 200), result)
         self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
@@ -71,7 +71,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         DAO = MentorshipRelationDAO()
-        result = DAO.cancel_relation(self.first_user.id, self.mentorship_relation.id)
+        result = DAO.cancel_relation(self.first_user.id, self.mentorship_relation.id, 'Some reason to cancel the relation.')
 
         self.assertEqual(({'message': 'Mentorship relation was cancelled successfully.'}, 200), result)
         self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
@@ -83,26 +83,26 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id, 'Some reason to cancel the relation.')
         self.assertEqual(({'message': 'This mentorship relation is not in the accepted state.'}, 400), result)
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id, 'Some reason to cancel the relation.')
         self.assertEqual(({'message': 'This mentorship relation is not in the accepted state.'}, 400), result)
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id, 'Some reason to cancel the relation.')
         self.assertEqual(({'message': 'This mentorship relation is not in the accepted state.'}, 400), result)
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id, 'Some reason to cancel the relation.')
         self.assertEqual(({'message': 'This mentorship relation is not in the accepted state.'}, 400), result)

@@ -191,7 +191,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
 
     @staticmethod
-    def cancel_relation(user_id, relation_id):
+    def cancel_relation(user_id, relation_id, data=None):
 
         user = UserModel.find_by_id(user_id)
 
@@ -215,6 +215,8 @@ class MentorshipRelationDAO:
 
         # All was checked
         request.state = MentorshipRelationState.CANCELLED
+        if data and 'cancellation_reason' in data:
+            request.cancellation_reason = data['cancellation_reason']
         request.save_to_db()
 
         return {'message': 'Mentorship relation was cancelled successfully.'}, 200

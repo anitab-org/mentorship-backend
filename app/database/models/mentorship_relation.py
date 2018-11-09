@@ -29,6 +29,7 @@ class MentorshipRelationModel(db.Model):
 
     state = db.Column(db.Enum(MentorshipRelationState), nullable=False)
     notes = db.Column(db.String(400))
+    cancellation_reason = db.Column(db.String(400))
 
     tasks_list_id = db.Column(db.Integer, db.ForeignKey('tasks_list.id'))
     tasks_list = db.relationship(TasksListModel, uselist=False, backref="mentorship_relation")
