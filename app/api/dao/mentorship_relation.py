@@ -7,11 +7,41 @@ from app.utils.enum_utils import MentorshipRelationState
 
 
 class MentorshipRelationDAO:
+    """ Class definition for MentorshipRelationDAO.
+    
+    Provides various functions pertaining to mentorship.
+
+    Attributes:
+        MAXIMUM_MENTORSHIP_DURATION
+        MINIMUM_MENTORSHIP_DURATION
+
+    Functions:
+        create_mentorship_relation()
+        list_mentorship_relations()
+        accept_request()
+        reject_request()
+        cancel_relation()
+        delete_request()
+        list_past_mentorship_relations()
+        list_current_mentorship_relation()
+        list_pending_mentorship_relations()
+    """ 
 
     MAXIMUM_MENTORSHIP_DURATION = timedelta(weeks=24)  # 6 months = approximately 6*4
     MINIMUM_MENTORSHIP_DURATION = timedelta(weeks=4)
 
     def create_mentorship_relation(self, user_id, data):
+        """Creates a relationship between two users.
+
+        Establishes the mentor-mentee relationship
+
+        Args:
+            user_id: The id of the user initiating this request. Has to be either the mentor or the mentee.
+            data: List contating the mentor_id, mentee_id, end_date_timestamp and notes
+
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
         action_user_id = user_id
         mentor_id = data['mentor_id']
         mentee_id = data['mentee_id']
@@ -93,6 +123,20 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
+        """Lists all relationships of a given user.
+
+        Lists all relationships of a given user. Support for filtering not yet implemented.
+
+        Args:
+            user_id: ID of user
+            accepted: This section is not complete yet...
+            pending: This section is not complete yet...
+            completed: This section is not complete yet...
+            cancelled: This section is not complete yet...
+            rejected: This section is not complete yet...
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
         if pending is not None:
             return {'message': 'Not implemented.'}, 200
         if completed is not None:
@@ -119,6 +163,14 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def accept_request(user_id, request_id):
+        """Allows a given user to accept a particular request.
+
+        Args:
+            user_id: ID of user
+            request_id: The ID of the request
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
 
         user = UserModel.find_by_id(user_id)
 
@@ -159,6 +211,14 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def reject_request(user_id, request_id):
+        """Allows a given user to reject a particular request.
+
+        Args:
+            user_id: ID of user
+            request_id: The ID of the request
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
 
         user = UserModel.find_by_id(user_id)
 
@@ -192,6 +252,14 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def cancel_relation(user_id, relation_id):
+        """Allows a given user to terminate a particular relationship.
+
+        Args:
+            user_id: ID of user
+            relation_id: The ID of the relationship
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
 
         user = UserModel.find_by_id(user_id)
 
@@ -221,6 +289,16 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def delete_request(user_id, request_id):
+        """Allows a given user to delete a relationship request.
+
+        Possible if the user created the request and it is in the pending state.
+
+        Args:
+            user_id: ID of user
+            request_id: The ID of the request
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
 
         user = UserModel.find_by_id(user_id)
 
@@ -249,6 +327,13 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def list_past_mentorship_relations(user_id):
+        """Allows a given user to list all mentor-mentee relationships they have previously been into.
+
+        Args:
+            user_id: ID of user
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
 
         user = UserModel.find_by_id(user_id)
 
@@ -269,6 +354,13 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def list_current_mentorship_relation(user_id):
+        """Allows a given user to list all mentor-mentee relationships they are currently in.
+
+        Args:
+            user_id: ID of user
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
 
         user = UserModel.find_by_id(user_id)
 
@@ -287,6 +379,13 @@ class MentorshipRelationDAO:
 
     @staticmethod
     def list_pending_mentorship_relations(user_id):
+        """Allows a given user to list all mentor-mentee relationships regarding them which are in the pending state.
+
+        Args:
+            user_id: ID of user
+        Returns:
+            message: A message corresponding to the completed action; success or failure.
+        """
 
         user = UserModel.find_by_id(user_id)
 
