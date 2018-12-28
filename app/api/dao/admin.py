@@ -2,9 +2,22 @@ from app.database.models.user import UserModel
 
 
 class AdminDAO:
+    """ Data Access Object for Admin functionalities.
 
+    """
     @staticmethod
     def assign_new_user(assigner_user_id, data):
+        """Creates a new admin.
+
+        Creates a new admin if the assigned user exists and is assigned by another user. Otherwise returns a message.
+
+        Args:
+            assigner_user_id: The user id of the assigner.
+            data: A list containing the details of the assigned user.
+
+        Returns:
+            message: A message corresponding to the completed action.
+        """
 
         new_admin_user_id = data['user_id']
 
@@ -27,7 +40,17 @@ class AdminDAO:
 
     @staticmethod
     def revoke_admin_user(revoker_user_id, data):
+        """Revokes the admin status of an user.
 
+        Revokes the admin status of an user if the user exists, is an admin and another user requests for this action. Otherwise returns a message.
+
+        Args:
+            revoker_user_id: The user id of the revoker.
+            data: A list containing the details of the user whose admin status is to be revoked.
+
+        Returns:
+            message: A message corresponding to the completed action.
+        """
         admin_user_id = data['user_id']
 
         if revoker_user_id is admin_user_id:
