@@ -255,3 +255,24 @@ class LoginUser(Resource):
             'expiry': expiry.timestamp()
         }, 200
 
+
+@users_ns.route('home')
+@users_ns.expect(auth_header_parser, validate=True)
+@users_ns.response(200, home_response_body_model)
+@users_ns.response(404, 'User not found')
+class UserHomeStatistics(Resource):
+    @classmethod
+    @jwt_required
+    @users_ns.expect(auth_header_parser)
+    def get(cls):
+        """Get Statistics regarding the current user
+
+        Returns:
+            A dict containing user stats
+        """
+        user_id = get_jwt_identity()
+        stats = DAO.get_user_statistics(user_id)
+        if not stats:
+            return {'message': 'User not found'}, 404
+
+        return stats, 200

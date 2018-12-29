@@ -1,7 +1,9 @@
 from datetime import datetime
+from operator import itemgetter
 
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
+from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
 
 
@@ -188,3 +190,81 @@ class UserDAO:
             return user
 
         return None
+
+    @staticmethod
+    def get_achievements(user_id):
+        """Shows a subset of the user's achievements
+
+        Gets all the completed tasks of the user and
+        return them in a list. Achievements are completed tasks
+
+        Args:
+            user_id: The ID of the user for whom tasks are
+                requested.
+
+        Returns:
+            achievements: A list containing the user's achievements
+        """
+        user = UserModel.find_by_id(user_id)
+        all_relations = user.mentor_relations + user.mentee_relations
+        tasks = []
+        for relation in all_relations:
+            tasks += relation.tasks_list.tasks
+        achievements = [task for task in tasks if task.get("is_done")]
+        return achievements
+
+    @staticmethod
+    def get_user_statistics(user_id):
+        """Shows some basic user statistics
+
+        Gets the following statistics of the user:
+        -> Pending Requests
+        -> Accepted Requests
+        -> Rejected Requests
+        -> Completed Relations
+        -> Cancelled Relations
+        -> Up to 3 recent achievements
+
+        Args:
+            user_id: The id of the user for whom stats are requested
+
+        Returns:
+            A dict containing the stats (if the user ID is valid)
+            If user ID is invalid, returns None
+        """
+        user = UserModel.find_by_id(user_id)
+
+        if not user:
+            return None
+
+        all_relations = user.mentor_relations + user.mentee_relations
+        (pending_requests, accepted_requests, rejected_requests, completed_relations, cancelled_relations) = (
+            0, 0, 0, 0, 0)
+        for relation in all_relations:
+            if relation.state == MentorshipRelationState.PENDING:
+                pending_requests += 1
+            elif relation.state == MentorshipRelationState.ACCEPTED:
+                accepted_requests += 1
+            elif relation.state == MentorshipRelationState.REJECTED:
+                rejected_requests += 1
+            elif relation.state == MentorshipRelationState.COMPLETED:
+                completed_relations += 1
+            elif relation.state == MentorshipRelationState.CANCELLED:
+                cancelled_relations += 1
+
+        achievements = UserDAO.get_achievements(user_id)
+        if achievements:
+            # We only need the first three of these achievements
+            achievements = achievements[0:3]
+            sorted(achievements, key=itemgetter("created_at"))
+
+        response = {
+            'name': user.name,
+            'pending_requests': pending_requests,
+            'accepted_requests': accepted_requests,
+            'rejected_requests': rejected_requests,
+            'completed_relations': completed_relations,
+            'cancelled_relations': cancelled_relations,
+            'achievements': achievements
+        }
+        return response
