@@ -1,4 +1,5 @@
 from flask_restplus import fields, Model
+from app.api.models.mentorship_relation import list_tasks_response_body
 
 
 def add_models_to_namespace(api_namespace):
@@ -10,6 +11,7 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[login_request_body_model.name] = login_request_body_model
     api_namespace.models[login_response_body_model.name] = login_response_body_model
     api_namespace.models[resend_email_request_body_model.name] = resend_email_request_body_model
+    api_namespace.models[home_response_body_model.name] = home_response_body_model
 
 
 public_user_api_model = Model('User list model', {
@@ -178,4 +180,14 @@ update_user_request_body_model = Model('Update User request data model', {
 
 resend_email_request_body_model = Model('Resend email request data model', {
     'email': fields.String(required=True, description='User\'s email'),
+})
+
+home_response_body_model = Model('Get statistics on the app usage of the current user', {
+    'name': fields.String(required=True, description='The name of the user'),
+    'pending_requests': fields.Integer(required=True, description='Number of pending requests'),
+    'accepted_requests': fields.Integer(required=True, description='Number of accepted requests'),
+    'completed_relations': fields.Integer(required=True, description='Number of completed relations'),
+    'cancelled_relations': fields.Integer(required=True, description='Number of cancelled relations'),
+    'rejected_requests': fields.Integer(required=True, description='Number of rejected relations'),
+    'achievements': fields.List(fields.Nested(list_tasks_response_body))
 })
