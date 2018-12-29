@@ -58,7 +58,7 @@ class TestProtectedApi(BaseTestCase):
 
     def test_user_profile_with_token_expired_api(self):
         auth_header = get_test_request_header(self.first_user.id, token_expiration_delta=timedelta(minutes=-5))
-        expected_response = {'message': 'The token has expired! Please, login again.'}
+        expected_response = {'message': 'The token has expired! Please, login again or refresh it.'}
         actual_response = self.client.get('/user', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(401, actual_response.status_code)

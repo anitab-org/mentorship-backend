@@ -51,7 +51,9 @@ class TestUserLoginApi(BaseTestCase):
             )), follow_redirects=True, content_type='application/json')
 
             self.assertIsNone(response.json.get('access_token'))
-            self.assertIsNone(response.json.get('expiry'))
+            self.assertIsNone(response.json.get('access_expiry'))
+            self.assertIsNone(response.json.get('refresh_token'))
+            self.assertIsNone(response.json.get('refresh_expiry'))
             self.assertEqual(1, len(response.json))
             self.assertEqual('Please verify your email before login.', response.json.get('message', None))
             self.assertEqual(403, response.status_code)
@@ -63,8 +65,10 @@ class TestUserLoginApi(BaseTestCase):
                 password=user2['password']
             )), follow_redirects=True, content_type='application/json')
             self.assertIsNotNone(response.json.get('access_token'))
-            self.assertIsNotNone(response.json.get('expiry'))
-            self.assertEqual(2, len(response.json))
+            self.assertIsNotNone(response.json.get('access_expiry'))
+            self.assertIsNotNone(response.json.get('refresh_token'))
+            self.assertIsNotNone(response.json.get('refresh_expiry'))
+            self.assertEqual(4, len(response.json))
             self.assertEqual(200, response.status_code)
 
 

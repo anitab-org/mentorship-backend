@@ -10,7 +10,7 @@ jwt._set_error_handler_callbacks(api)
 @jwt.expired_token_loader
 def my_expired_token_callback():
     return {
-               'message': 'The token has expired! Please, login again.'
+               'message': 'The token has expired! Please, login again or refresh it.'
            }, 401
 
 
