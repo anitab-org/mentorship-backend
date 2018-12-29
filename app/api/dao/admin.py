@@ -2,9 +2,8 @@ from app.database.models.user import UserModel
 
 
 class AdminDAO:
-    """ Data Access Object for Admin functionalities.
-
-    """
+    """Data Access Object for Admin functionalities."""
+    
     @staticmethod
     def assign_new_user(assigner_user_id, data):
         """Creates a new admin.
