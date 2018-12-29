@@ -25,6 +25,7 @@ class TestTestingConfig(TestCase):
 
         # testing JWT configurations
         self.assertEqual(timedelta(weeks=1), application.config['JWT_ACCESS_TOKEN_EXPIRES'])
+        self.assertEqual(timedelta(weeks=4), application.config['JWT_REFRESH_TOKEN_EXPIRES'])
 
 
 class TestDevelopmentConfig(TestCase):
@@ -45,6 +46,7 @@ class TestDevelopmentConfig(TestCase):
 
         # testing JWT configurations
         self.assertEqual(timedelta(weeks=1), application.config['JWT_ACCESS_TOKEN_EXPIRES'])
+        self.assertEqual(timedelta(weeks=4), application.config['JWT_REFRESH_TOKEN_EXPIRES'])
 
 
 class TestProductionConfig(TestCase):
@@ -65,6 +67,7 @@ class TestProductionConfig(TestCase):
 
         # testing JWT configurations
         self.assertEqual(timedelta(weeks=1), application.config['JWT_ACCESS_TOKEN_EXPIRES'])
+        self.assertEqual(timedelta(weeks=4), application.config['JWT_REFRESH_TOKEN_EXPIRES'])
 
 
 if __name__ == '__main__':
