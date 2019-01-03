@@ -181,6 +181,8 @@ class UserEmailConfirmation(Resource):
 
     @classmethod
     def get(cls, token):
+        """Confirms the user's account."""
+
         return DAO.confirm_registration(token)
 
 
@@ -190,6 +192,7 @@ class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
     def post(cls):
+        """Sends the user a new verification email."""
 
         data = request.json
 
