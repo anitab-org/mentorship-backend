@@ -261,7 +261,7 @@ class LoginUser(Resource):
 
 @users_ns.route('home')
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(200, home_response_body_model)
+@users_ns.response(200, 'Successful response', home_response_body_model)
 @users_ns.response(404, 'User not found')
 class UserHomeStatistics(Resource):
     @classmethod
