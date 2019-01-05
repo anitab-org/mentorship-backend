@@ -3,20 +3,26 @@ from flask_restplus import Resource, Namespace
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.api.dao.user import UserDAO
-from app.api.models.admin import *
+from app.api.models.admin import (
+    add_models_to_namespace,
+    ASSIGN_AND_REVOKE_USER_ADMIN_REQUEST_BODY,
+)
 from app.api.dao.admin import AdminDAO
-from app.api.resources.common import auth_header_parser
+from app.api.resources.common import AUTH_HEADER_PARSER
 
-admin_ns = Namespace('Admins', description='Operations related to Admin users')
-add_models_to_namespace(admin_ns)
+ADMIN_NS = Namespace("Admins", description="Operations related to Admin users")
+add_models_to_namespace(ADMIN_NS)
 
 
-@admin_ns.route('admin/new')
+@ADMIN_NS.route("admin/new")
 class AssignNewUserAdmin(Resource):
-
     @classmethod
     @jwt_required
-    @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @ADMIN_NS.expect(
+        AUTH_HEADER_PARSER,
+        ASSIGN_AND_REVOKE_USER_ADMIN_REQUEST_BODY,
+        validate=True,
+    )
     def post(cls):
         """
         Assigns a User as a new Admin.
@@ -27,18 +33,24 @@ class AssignNewUserAdmin(Resource):
             data = request.json
             return AdminDAO.assign_new_user(user.id, data)
 
-        else:
-            return {
-                       "message": "You don't have admin status. You can't assign other user as admin."
-                   }, 403
+        return (
+            {
+                "message": "You don't have admin status. "
+                           "You can't assign other user as admin."
+            },
+            403,
+        )
 
 
-@admin_ns.route('admin/remove')
+@ADMIN_NS.route("admin/remove")
 class RevokeUserAdmin(Resource):
-
     @classmethod
     @jwt_required
-    @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @ADMIN_NS.expect(
+        AUTH_HEADER_PARSER,
+        ASSIGN_AND_REVOKE_USER_ADMIN_REQUEST_BODY,
+        validate=True,
+    )
     def post(cls):
         """
         Revoke admin status from another User Admin.
@@ -49,7 +61,10 @@ class RevokeUserAdmin(Resource):
             data = request.json
             return AdminDAO.revoke_admin_user(user.id, data)
 
-        else:
-            return {
-                       "message": "You don't have admin status. You can't revoke other admin user."
-                   }, 403
+        return (
+            {
+                "message": "You don't have admin status. "
+                           "You can't revoke other admin user."
+            },
+            403,
+        )

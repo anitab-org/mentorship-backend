@@ -14,32 +14,45 @@ class UserDAO:
 
     @staticmethod
     def create_user(data):
-        name = data['name']
-        username = data['username']
-        password = data['password']
-        email = data['email']
-        terms_and_conditions_checked = data['terms_and_conditions_checked']
+        name = data["name"]
+        username = data["username"]
+        password = data["password"]
+        email = data["email"]
+        terms_and_conditions_checked = data["terms_and_conditions_checked"]
 
-        existing_user = UserModel.find_by_username(data['username'])
+        existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
-            return {"message": "A user with that username already exists"}, 400
-        else:
-            existing_user = UserModel.find_by_email(data['email'])
-            if existing_user:
-                return {"message": "A user with that email already exists"}, 400
+            return (
+                {"message": "A user with that username already exists"},
+                400,
+            )
 
-        user = UserModel(name, username, password, email, terms_and_conditions_checked)
-        if 'need_mentoring' in data:
-            user.need_mentoring = data['need_mentoring']
+        existing_user = UserModel.find_by_email(data["email"])
+        if existing_user:
+            return (
+                {"message": "A user with that email already exists"},
+                400,
+            )
 
-        if 'available_to_mentor' in data:
-            user.available_to_mentor = data['available_to_mentor']
+        user = UserModel(
+            name, username, password, email, terms_and_conditions_checked
+        )
+        if "need_mentoring" in data:
+            user.need_mentoring = data["need_mentoring"]
+
+        if "available_to_mentor" in data:
+            user.available_to_mentor = data["available_to_mentor"]
 
         user.save_to_db()
 
-        return {"message": "User was created successfully. "
+        return (
+            {
+                "message": "User was created successfully. "
                            "A confirmation email has been sent via email. "
-                           "After confirming your email you can login."}, 200
+                           "After confirming your email you can login."
+            },
+            200,
+        )
 
     @staticmethod
     def delete_user(user_id):
@@ -50,7 +63,15 @@ class UserDAO:
 
             admins_list_count = len(UserModel.get_all_admins())
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
-                return {"message": "You cannot delete your account, since you are the only Admin left."}, 400
+                return (
+                    {
+                        "message": (
+                            "You cannot delete your account, "
+                            "since you are the only Admin left."
+                        )
+                    },
+                    400,
+                )
 
         if user:
             user.delete_from_db()
@@ -72,7 +93,7 @@ class UserDAO:
 
     @staticmethod
     def list_users(user_id, is_verified=None):
-        users_list = UserModel.query.filter(UserModel.id!=user_id).all()
+        users_list = UserModel.query.filter(UserModel.id != user_id).all()
         list_of_users = []
         if is_verified:
             for user in users_list:
@@ -85,59 +106,66 @@ class UserDAO:
 
     @staticmethod
     def update_user_profile(user_id, data):
+        # pylint: disable=too-many-branches
 
         user = UserModel.find_by_id(user_id)
         if not user:
             return {"message": "User does not exist"}, 404
 
-        username = data.get('username', None)
+        username = data.get("username", None)
         if username:
             user_with_same_username = UserModel.find_by_username(username)
 
             # username should be unique
             if user_with_same_username:
-                return {"message": "That username is already taken by another user."}, 400
+                return (
+                    {
+                        "message": "That username "
+                                   "is already taken by another user."
+                    },
+                    400,
+                )
 
             user.username = username
 
-        if 'name' in data and data['name']:
-            user.name = data['name']
+        if "name" in data and data["name"]:
+            user.name = data["name"]
 
-        if 'bio' in data and data['bio']:
-            user.bio = data['bio']
+        if "bio" in data and data["bio"]:
+            user.bio = data["bio"]
 
-        if 'location' in data and data['location']:
-            user.location = data['location']
+        if "location" in data and data["location"]:
+            user.location = data["location"]
 
-        if 'occupation' in data and data['occupation']:
-            user.occupation = data['occupation']
+        if "occupation" in data and data["occupation"]:
+            user.occupation = data["occupation"]
 
-        if 'organization' in data and data['organization']:
-            user.organization = data['organization']
+        if "organization" in data and data["organization"]:
+            user.organization = data["organization"]
 
-        if 'slack_username' in data and data['slack_username']:
-            user.slack_username = data['slack_username']
+        if "slack_username" in data and data["slack_username"]:
+            user.slack_username = data["slack_username"]
 
-        if 'social_media_links' in data and data['social_media_links']:
-            user.social_media_links = data['social_media_links']
+        if "social_media_links" in data and data["social_media_links"]:
+            user.social_media_links = data["social_media_links"]
 
-        if 'skills' in data and data['skills']:
-            user.skills = data['skills']
+        if "skills" in data and data["skills"]:
+            user.skills = data["skills"]
 
-        if 'interests' in data and data['interests']:
-            user.interests = data['interests']
+        if "interests" in data and data["interests"]:
+            user.interests = data["interests"]
 
-        if 'resume_url' in data and data['resume_url']:
-            user.resume_url = data['resume_url']
+        if "resume_url" in data and data["resume_url"]:
+            user.resume_url = data["resume_url"]
 
-        if 'photo_url' in data and data['photo_url']:
-            user.photo_url = data['photo_url']
+        if "photo_url" in data and data["photo_url"]:
+            user.photo_url = data["photo_url"]
 
-        if 'need_mentoring' in data:
-            user.need_mentoring = data['need_mentoring']
+        if "need_mentoring" in data:
+            user.need_mentoring = data["need_mentoring"]
 
-        if 'available_to_mentor' in data:
-            user.available_to_mentor = data['available_to_mentor']
+        if "available_to_mentor" in data:
+            user.available_to_mentor = data["available_to_mentor"]
 
         user.save_to_db()
 
@@ -145,8 +173,8 @@ class UserDAO:
 
     @staticmethod
     def change_password(user_id, data):
-        current_password = data['current_password']
-        new_password = data['new_password']
+        current_password = data["current_password"]
+        new_password = data["new_password"]
 
         user = UserModel.find_by_id(user_id)
         if user.check_password(current_password):
@@ -162,16 +190,27 @@ class UserDAO:
         email_from_token = confirm_token(token)
 
         if email_from_token is False or email_from_token is None:
-            return {'message': 'The confirmation link is invalid or the token has expired.'}, 400
+            return (
+                {
+                    "message": (
+                        "The confirmation link is invalid "
+                        "or the token has expired."
+                    )
+                },
+                400,
+            )
 
         user = UserModel.find_by_email(email_from_token)
         if user.is_email_verified:
-            return {'message': 'Account already confirmed.'}, 200
-        else:
-            user.is_email_verified = True
-            user.email_verification_date = datetime.now()
-            user.save_to_db()
-            return {'message': 'You have confirmed your account. Thanks!'}, 200
+            return {"message": "Account already confirmed."}, 200
+
+        user.is_email_verified = True
+        user.email_verification_date = datetime.now()
+        user.save_to_db()
+        return (
+            {"message": "You have confirmed your account. Thanks!"},
+            200,
+        )
 
     @staticmethod
     def authenticate(username_or_email, password):
@@ -238,8 +277,13 @@ class UserDAO:
             return None
 
         all_relations = user.mentor_relations + user.mentee_relations
-        (pending_requests, accepted_requests, rejected_requests, completed_relations, cancelled_relations) = (
-            0, 0, 0, 0, 0)
+        (
+            pending_requests,
+            accepted_requests,
+            rejected_requests,
+            completed_relations,
+            cancelled_relations,
+        ) = (0, 0, 0, 0, 0)
         for relation in all_relations:
             if relation.state == MentorshipRelationState.PENDING:
                 pending_requests += 1
@@ -259,12 +303,12 @@ class UserDAO:
             sorted(achievements, key=itemgetter("created_at"))
 
         response = {
-            'name': user.name,
-            'pending_requests': pending_requests,
-            'accepted_requests': accepted_requests,
-            'rejected_requests': rejected_requests,
-            'completed_relations': completed_relations,
-            'cancelled_relations': cancelled_relations,
-            'achievements': achievements
+            "name": user.name,
+            "pending_requests": pending_requests,
+            "accepted_requests": accepted_requests,
+            "rejected_requests": rejected_requests,
+            "completed_relations": completed_relations,
+            "cancelled_relations": cancelled_relations,
+            "achievements": achievements,
         }
         return response

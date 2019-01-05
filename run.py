@@ -9,31 +9,37 @@ def create_app(config_filename):
     app.config.from_object(config_filename)
     app.url_map.strict_slashes = False
 
-    from app.database.sqlalchemy_extension import db
-    db.init_app(app)
+    from app.database.sqlalchemy_extension import DB
 
-    from app.api.jwt_extension import jwt
-    jwt.init_app(app)
+    DB.init_app(app)
 
-    from app.api.api_extension import api
-    api.init_app(app)
+    from app.api.jwt_extension import JWT
 
-    from app.api.mail_extension import mail
-    mail.init_app(app)
+    JWT.init_app(app)
+
+    from app.api.api_extension import API
+
+    API.init_app(app)
+
+    from app.api.mail_extension import MAIL
+
+    MAIL.init_app(app)
 
     from app.schedulers.background_scheduler import init_scheduler
+
     init_scheduler()
 
     return app
 
 
-application = create_app(get_env_config())
+application = create_app(get_env_config())  # pylint: disable=invalid-name
 
 
 @application.before_first_request
 def create_tables():
-    from app.database.sqlalchemy_extension import db
-    db.create_all()
+    from app.database.sqlalchemy_extension import DB
+
+    DB.create_all()
 
 
 if __name__ == "__main__":

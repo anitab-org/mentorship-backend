@@ -1,7 +1,7 @@
 from app.database.models.user import UserModel
-from app.database.sqlalchemy_extension import db
+from app.database.sqlalchemy_extension import DB
 from tests.base_test_case import BaseTestCase
-from tests.test_data import *
+from tests.test_data import USER1, USER2
 
 
 class MentorshipRelationBaseTestCase(BaseTestCase):
@@ -13,18 +13,18 @@ class MentorshipRelationBaseTestCase(BaseTestCase):
         super(MentorshipRelationBaseTestCase, self).setUp()
 
         self.first_user = UserModel(
-            name=user1['name'],
-            email=user1['email'],
-            username=user1['username'],
-            password=user1['password'],
-            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+            name=USER1["name"],
+            email=USER1["email"],
+            username=USER1["username"],
+            password=USER1["password"],
+            terms_and_conditions_checked=USER1["terms_and_conditions_checked"],
         )
         self.second_user = UserModel(
-            name=user2['name'],
-            email=user2['email'],
-            username=user2['username'],
-            password=user2['password'],
-            terms_and_conditions_checked=user2['terms_and_conditions_checked']
+            name=USER2["name"],
+            email=USER2["email"],
+            username=USER2["username"],
+            password=USER2["password"],
+            terms_and_conditions_checked=USER2["terms_and_conditions_checked"],
         )
 
         # making sure both are available to be mentor or mentee
@@ -33,6 +33,6 @@ class MentorshipRelationBaseTestCase(BaseTestCase):
         self.second_user.need_mentoring = True
         self.second_user.available_to_mentor = True
 
-        db.session.add(self.first_user)
-        db.session.add(self.second_user)
-        db.session.commit()
+        DB.session.add(self.first_user)
+        DB.session.add(self.second_user)
+        DB.session.commit()

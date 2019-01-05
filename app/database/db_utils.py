@@ -1,6 +1,6 @@
-from app.database.sqlalchemy_extension import db
+from app.database.sqlalchemy_extension import DB
 
 
 def reset_database():
-    db.drop_all()
-    db.create_all()
+    DB.drop_all()
+    DB.create_all()

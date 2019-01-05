@@ -3,29 +3,40 @@ from flask_restplus import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.api.dao.task import TaskDAO
-from app.api.resources.common import auth_header_parser
+from app.api.resources.common import AUTH_HEADER_PARSER
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
-from app.api.models.mentorship_relation import *
+from app.api.models.mentorship_relation import (
+    add_models_to_namespace,
+    CREATE_TASK_REQUEST_BODY,
+    LIST_TASKS_RESPONSE_BODY,
+    MENTORSHIP_REQUEST_RESPONSE_BODY,
+    SEND_MENTORSHIP_REQUEST_BODY,
+)
 from app.database.models.mentorship_relation import MentorshipRelationModel
 
-mentorship_relation_ns = Namespace('Mentorship Relation',
-                                   description='Operations related to '
-                                               'mentorship relations '
-                                               'between users')
-add_models_to_namespace(mentorship_relation_ns)
+MENTORSHIP_RELATION_NS = Namespace(
+    "Mentorship Relation",
+    description="Operations related to "
+    "mentorship relations "
+    "between users",
+)
+add_models_to_namespace(MENTORSHIP_RELATION_NS)
 
 DAO = MentorshipRelationDAO()
 
 
-@mentorship_relation_ns.route('mentorship_relation/send_request')
+@MENTORSHIP_RELATION_NS.route("mentorship_relation/send_request")
 class SendRequest(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('send_request')
-    @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
-    @mentorship_relation_ns.response(200, 'Mentorship Relation request was sent successfully.')
-    @mentorship_relation_ns.response(400, 'Validation error.')
+    @MENTORSHIP_RELATION_NS.doc("send_request")
+    @MENTORSHIP_RELATION_NS.expect(
+        AUTH_HEADER_PARSER, SEND_MENTORSHIP_REQUEST_BODY
+    )
+    @MENTORSHIP_RELATION_NS.response(
+        200, "Mentorship Relation request was sent successfully."
+    )
+    @MENTORSHIP_RELATION_NS.response(400, "Validation error.")
     def post(cls):
         """
         Creates a new mentorship relation request.
@@ -47,28 +58,30 @@ class SendRequest(Resource):
     def is_valid_data(data):
 
         # Verify if request body has required fields
-        if 'mentor_id' not in data:
+        if "mentor_id" not in data:
             return {"message": "Mentor ID field is missing."}
-        if 'mentee_id' not in data:
+        if "mentee_id" not in data:
             return {"message": "Mentee ID field is missing."}
-        if 'end_date' not in data:
+        if "end_date" not in data:
             return {"message": "End date field is missing."}
-        if 'notes' not in data:
+        if "notes" not in data:
             return {"message": "Notes field is missing."}
 
         return {}
 
 
-@mentorship_relation_ns.route('mentorship_relations')
+@MENTORSHIP_RELATION_NS.route("mentorship_relations")
 class GetAllMyMentorshipRelation(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('get_all_user_mentorship_relations')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations was successfully.',
-                                     model=mentorship_request_response_body)
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @MENTORSHIP_RELATION_NS.doc("get_all_user_mentorship_relations")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200,
+        "Return all user's mentorship relations was successfully.",
+        model=MENTORSHIP_REQUEST_RESPONSE_BODY,
+    )
+    @MENTORSHIP_RELATION_NS.marshal_list_with(MENTORSHIP_REQUEST_RESPONSE_BODY)
     def get(cls):
         """
         Lists all mentorship relations of current user.
@@ -80,14 +93,15 @@ class GetAllMyMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/accept')
+@MENTORSHIP_RELATION_NS.route("mentorship_relation/<int:request_id>/accept")
 class AcceptMentorshipRelation(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('accept_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Accept mentorship relations with success.')
+    @MENTORSHIP_RELATION_NS.doc("accept_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200, "Accept mentorship relations with success."
+    )
     def put(cls, request_id):
         """
         Accept a mentorship relation.
@@ -102,14 +116,15 @@ class AcceptMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/reject')
+@MENTORSHIP_RELATION_NS.route("mentorship_relation/<int:request_id>/reject")
 class RejectMentorshipRelation(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('reject_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Rejected mentorship relations with success.')
+    @MENTORSHIP_RELATION_NS.doc("reject_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200, "Rejected mentorship relations with success."
+    )
     def put(cls, request_id):
         """
         Reject a mentorship relation.
@@ -123,14 +138,15 @@ class RejectMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/cancel')
+@MENTORSHIP_RELATION_NS.route("mentorship_relation/<int:request_id>/cancel")
 class CancelMentorshipRelation(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('cancel_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
+    @MENTORSHIP_RELATION_NS.doc("cancel_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200, "Cancelled mentorship relations with success."
+    )
     def put(cls, request_id):
         """
         Cancel a mentorship relation.
@@ -144,14 +160,15 @@ class CancelMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>')
+@MENTORSHIP_RELATION_NS.route("mentorship_relation/<int:request_id>")
 class DeleteMentorshipRelation(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('delete_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Deleted mentorship relation with success.')
+    @MENTORSHIP_RELATION_NS.doc("delete_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200, "Deleted mentorship relation with success."
+    )
     def delete(cls, request_id):
         """
         Delete a mentorship request.
@@ -165,16 +182,18 @@ class DeleteMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relations/past')
+@MENTORSHIP_RELATION_NS.route("mentorship_relations/past")
 class ListPastMentorshipRelations(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('get_past_mentorship_relations')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned past mentorship relations with success.',
-                                     model=mentorship_request_response_body)
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @MENTORSHIP_RELATION_NS.doc("get_past_mentorship_relations")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200,
+        "Returned past mentorship relations with success.",
+        model=MENTORSHIP_REQUEST_RESPONSE_BODY,
+    )
+    @MENTORSHIP_RELATION_NS.marshal_list_with(MENTORSHIP_REQUEST_RESPONSE_BODY)
     def get(cls):
         """
         Lists past mentorship relations of the current user.
@@ -186,15 +205,17 @@ class ListPastMentorshipRelations(Resource):
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relations/current')
+@MENTORSHIP_RELATION_NS.route("mentorship_relations/current")
 class ListCurrentMentorshipRelation(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('get_current_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned current mentorship relation with success.',
-                                     model=mentorship_request_response_body)
+    @MENTORSHIP_RELATION_NS.doc("get_current_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200,
+        "Returned current mentorship relation with success.",
+        model=MENTORSHIP_REQUEST_RESPONSE_BODY,
+    )
     def get(cls):
         """
         Lists current mentorship relation of the current user.
@@ -204,21 +225,22 @@ class ListCurrentMentorshipRelation(Resource):
         response = DAO.list_current_mentorship_relation(user_id)
 
         if isinstance(response, MentorshipRelationModel):
-            return marshal(response, mentorship_request_response_body), 200
-        else:
-            return response
+            return marshal(response, MENTORSHIP_REQUEST_RESPONSE_BODY), 200
+        return response
 
 
-@mentorship_relation_ns.route('mentorship_relations/pending')
+@MENTORSHIP_RELATION_NS.route("mentorship_relations/pending")
 class ListPendingMentorshipRequests(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('get_pending_mentorship_relations')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned pending mentorship relation with success.',
-                                     model=mentorship_request_response_body)
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @MENTORSHIP_RELATION_NS.doc("get_pending_mentorship_relations")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200,
+        "Returned pending mentorship relation with success.",
+        model=MENTORSHIP_REQUEST_RESPONSE_BODY,
+    )
+    @MENTORSHIP_RELATION_NS.marshal_list_with(MENTORSHIP_REQUEST_RESPONSE_BODY)
     def get(cls):
         """
         Lists pending mentorship requests of the current user.
@@ -230,14 +252,15 @@ class ListPendingMentorshipRequests(Resource):
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task')
+@MENTORSHIP_RELATION_NS.route("mentorship_relation/<int:request_id>/task")
 class CreateTask(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('create_task_in_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
-    @mentorship_relation_ns.response(200, 'Created task with success.')
+    @MENTORSHIP_RELATION_NS.doc("create_task_in_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(
+        AUTH_HEADER_PARSER, CREATE_TASK_REQUEST_BODY
+    )
+    @MENTORSHIP_RELATION_NS.response(200, "Created task with success.")
     def post(cls, request_id):
         """
         Create a task.
@@ -253,27 +276,32 @@ class CreateTask(Resource):
         if is_valid != {}:
             return is_valid, 400
 
-        response = TaskDAO.create_task(user_id=user_id, mentorship_relation_id=request_id, data=request_body)
+        response = TaskDAO.create_task(
+            user_id=user_id,
+            mentorship_relation_id=request_id,
+            data=request_body,
+        )
 
         return response
 
     @staticmethod
     def is_valid_data(data):
 
-        if 'description' not in data:
+        if "description" not in data:
             return {"message": "Description field is missing."}
 
         return {}
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>')
+@MENTORSHIP_RELATION_NS.route(
+    "mentorship_relation/<int:request_id>/task/<int:task_id>"
+)
 class DeleteTask(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('delete_task_in_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Delete task with success.')
+    @MENTORSHIP_RELATION_NS.doc("delete_task_in_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(200, "Delete task with success.")
     def delete(cls, request_id, task_id):
         """
         Delete a task.
@@ -283,20 +311,24 @@ class DeleteTask(Resource):
 
         user_id = get_jwt_identity()
 
-        response = TaskDAO.delete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
+        response = TaskDAO.delete_task(
+            user_id=user_id, mentorship_relation_id=request_id, task_id=task_id
+        )
 
         return response
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/tasks')
+@MENTORSHIP_RELATION_NS.route("mentorship_relation/<int:request_id>/tasks")
 class ListTasks(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('list_tasks_in_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'List tasks from a mentorship relation with success.',
-                                     model=list_tasks_response_body)
+    @MENTORSHIP_RELATION_NS.doc("list_tasks_in_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(
+        200,
+        "List tasks from a mentorship relation with success.",
+        model=LIST_TASKS_RESPONSE_BODY,
+    )
     def get(cls, request_id):
         """
         List all tasks from a mentorship relation.
@@ -306,22 +338,24 @@ class ListTasks(Resource):
 
         user_id = get_jwt_identity()
 
-        response = TaskDAO.list_tasks(user_id=user_id, mentorship_relation_id=request_id)
+        response = TaskDAO.list_tasks(
+            user_id=user_id, mentorship_relation_id=request_id
+        )
 
         if isinstance(response, tuple):
             return response
-        else:
-            return marshal(response, list_tasks_response_body), 200
+        return marshal(response, LIST_TASKS_RESPONSE_BODY), 200
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/complete')
+@MENTORSHIP_RELATION_NS.route(
+    "mentorship_relation/<int:request_id>/task/<int:task_id>/complete"
+)
 class UpdateTask(Resource):
-
     @classmethod
     @jwt_required
-    @mentorship_relation_ns.doc('update_task_in_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Updated task with success.')
+    @MENTORSHIP_RELATION_NS.doc("update_task_in_mentorship_relation")
+    @MENTORSHIP_RELATION_NS.expect(AUTH_HEADER_PARSER)
+    @MENTORSHIP_RELATION_NS.response(200, "Updated task with success.")
     def put(cls, request_id, task_id):
         """
         Update a task.
@@ -331,6 +365,8 @@ class UpdateTask(Resource):
 
         user_id = get_jwt_identity()
 
-        response = TaskDAO.complete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
+        response = TaskDAO.complete_task(
+            user_id=user_id, mentorship_relation_id=request_id, task_id=task_id
+        )
 
         return response

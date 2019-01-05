@@ -2,24 +2,23 @@ import unittest
 from datetime import datetime
 
 from app.database.models.tasks_list import TasksListModel
-from app.database.sqlalchemy_extension import db
+from app.database.sqlalchemy_extension import DB
 from tests.base_test_case import BaseTestCase
 
 
 class TestTasksListModel(BaseTestCase):
-
     def setUp(self):
         super(TestTasksListModel, self).setUp()
 
         self.empty_tasks_list = TasksListModel()
         self.tasks_list_1 = TasksListModel()
-        db.session.add(self.empty_tasks_list)
-        db.session.add(self.tasks_list_1)
-        db.session.commit()
+        DB.session.add(self.empty_tasks_list)
+        DB.session.add(self.tasks_list_1)
+        DB.session.commit()
 
         self.now_timestamp = datetime.now().timestamp()
-        self.test_description_1 = 'test description number one'
-        self.test_description_2 = 'test description number two'
+        self.test_description_1 = "test description number one"
+        self.test_description_2 = "test description number two"
 
         self.tasks_list_1.add_task(self.test_description_1, self.now_timestamp)
 
@@ -45,7 +44,7 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
         )
 
         self.assertEqual([expected_task_1], tasks_list_one.tasks)
@@ -57,10 +56,12 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=2,
-            is_done=False
+            is_done=False,
         )
 
-        self.assertEqual([expected_task_1, expected_task_2], tasks_list_one.tasks)
+        self.assertEqual(
+            [expected_task_1, expected_task_2], tasks_list_one.tasks
+        )
 
     def test_remove_task_from_tasks_list(self):
 
@@ -75,7 +76,7 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
         )
 
         self.assertEqual([expected_task_1], tasks_list_one.tasks)
@@ -93,7 +94,7 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
         )
 
         self.assertEqual([expected_task_1], tasks_list_two.tasks)
@@ -118,14 +119,14 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
         )
         expected_task_2 = dict(
             completed_at=None,
             created_at=self.now_timestamp,
             description=self.test_description_2,
             id=2,
-            is_done=False
+            is_done=False,
         )
 
         tasks_list_one.add_task(self.test_description_1, self.now_timestamp)
@@ -149,13 +150,13 @@ class TestTasksListModel(BaseTestCase):
 
         task_1 = tasks_list_one.find_task_by_id(task_id=1)
         self.assertIsNotNone(task_1)
-        self.assertFalse(task_1.get('is_done'))
+        self.assertFalse(task_1.get("is_done"))
 
         tasks_list_one.update_task(task_id=1, is_done=True)
 
         new_task_1 = tasks_list_one.find_task_by_id(task_id=1)
-        self.assertTrue(new_task_1.get('is_done'))
+        self.assertTrue(new_task_1.get("is_done"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

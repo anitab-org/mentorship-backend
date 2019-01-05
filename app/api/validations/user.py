@@ -1,4 +1,10 @@
-from app.utils.validation_utils import is_name_valid, is_email_valid, is_username_valid, validate_length, get_stripped_string
+from app.utils.validation_utils import (
+    is_name_valid,
+    is_email_valid,
+    is_username_valid,
+    validate_length,
+    get_stripped_string,
+)
 
 # Field character limit
 
@@ -21,35 +27,57 @@ SOCIALS_MAX_LENGTH = 400
 
 def validate_user_registration_request_data(data):
     # Verify if request body has required fields
-    if 'name' not in data:
+    # pylint: disable=too-many-return-statements,too-many-branches
+    if "name" not in data:
         return {"message": "Name field is missing."}
-    if 'username' not in data:
+    if "username" not in data:
         return {"message": "Username field is missing."}
-    if 'password' not in data:
+    if "password" not in data:
         return {"message": "Password field is missing."}
-    if 'email' not in data:
+    if "email" not in data:
         return {"message": "Email field is missing."}
-    if 'terms_and_conditions_checked' not in data:
+    if "terms_and_conditions_checked" not in data:
         return {"message": "Terms and conditions field is missing."}
 
-    name = data['name']
-    username = data['username']
-    password = data['password']
-    email = data['email']
-    terms_and_conditions_checked = data['terms_and_conditions_checked']
+    name = data["name"]
+    username = data["username"]
+    password = data["password"]
+    email = data["email"]
+    terms_and_conditions_checked = data["terms_and_conditions_checked"]
 
-    if not (isinstance(name, str) and isinstance(username, str) and isinstance(password, str)):
-        return {"message": "Name, username and password must be in string format."}
+    if not (
+            isinstance(name, str)
+            and isinstance(username, str)
+            and isinstance(password, str)
+    ):
+        return {
+            "message": "Name, username and password must be in string format."
+        }
 
-    is_valid = validate_length(len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, 'name')
+    is_valid = validate_length(
+        len(get_stripped_string(name)),
+        NAME_MIN_LENGTH,
+        NAME_MAX_LENGTH,
+        "name",
+    )
     if not is_valid[0]:
         return is_valid[1]
 
-    is_valid = validate_length(len(get_stripped_string(username)), USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, 'username')
+    is_valid = validate_length(
+        len(get_stripped_string(username)),
+        USERNAME_MIN_LENGTH,
+        USERNAME_MAX_LENGTH,
+        "username",
+    )
     if not is_valid[0]:
         return is_valid[1]
 
-    is_valid = validate_length(len(get_stripped_string(password)), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, 'password')
+    is_valid = validate_length(
+        len(get_stripped_string(password)),
+        PASSWORD_MIN_LENGTH,
+        PASSWORD_MAX_LENGTH,
+        "password",
+    )
     if not is_valid[0]:
         return is_valid[1]
 
@@ -71,10 +99,10 @@ def validate_user_registration_request_data(data):
 
 def validate_resend_email_request_data(data):
     # Verify if request body has required fields
-    if 'email' not in data:
+    if "email" not in data:
         return {"message": "Email field is missing."}
 
-    email = data['email']
+    email = data["email"]
     if not is_email_valid(email):
         return {"message": "Your email is invalid."}
 
@@ -82,102 +110,148 @@ def validate_resend_email_request_data(data):
 
 
 def validate_update_profile_request_data(data):
+    # pylint: disable=too-many-branches,too-many-return-statements
     # todo this does not check if non expected fields are being sent
 
     if not data:
         return {"message": "No data for updating profile was sent."}
 
-    username = data.get('username', None)
+    username = data.get("username", None)
     if username:
-        is_valid = validate_length(len(get_stripped_string(username)), USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH,
-                                   'username')
+        is_valid = validate_length(
+            len(get_stripped_string(username)),
+            USERNAME_MIN_LENGTH,
+            USERNAME_MAX_LENGTH,
+            "username",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
         if not is_username_valid(username):
             return {"message": "Your new username is invalid."}
 
-    name = data.get('name', None)
+    name = data.get("name", None)
     if name:
-        is_valid = validate_length(len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, 'name')
+        is_valid = validate_length(
+            len(get_stripped_string(name)),
+            NAME_MIN_LENGTH,
+            NAME_MAX_LENGTH,
+            "name",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
         if not is_name_valid(name):
             return {"message": "Your name is invalid."}
 
-    bio = data.get('bio', None)
+    bio = data.get("bio", None)
     if bio:
-        is_valid = validate_length(len(get_stripped_string(bio)), 0, BIO_MAX_LENGTH, 'bio')
+        is_valid = validate_length(
+            len(get_stripped_string(bio)), 0, BIO_MAX_LENGTH, "bio"
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    location = data.get('location', None)
+    location = data.get("location", None)
     if location:
-        is_valid = validate_length(len(get_stripped_string(location)), 0, LOCATION_MAX_LENGTH, 'location')
+        is_valid = validate_length(
+            len(get_stripped_string(location)),
+            0,
+            LOCATION_MAX_LENGTH,
+            "location",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    occupation = data.get('occupation', None)
+    occupation = data.get("occupation", None)
     if occupation:
-        is_valid = validate_length(len(get_stripped_string(occupation)), 0, OCCUPATION_MAX_LENGTH, 'occupation')
+        is_valid = validate_length(
+            len(get_stripped_string(occupation)),
+            0,
+            OCCUPATION_MAX_LENGTH,
+            "occupation",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    organization = data.get('organization', None)
+    organization = data.get("organization", None)
     if organization:
-        is_valid = validate_length(len(get_stripped_string(organization)), 0, ORGANIZATION_MAX_LENGTH, 'organization')
+        is_valid = validate_length(
+            len(get_stripped_string(organization)),
+            0,
+            ORGANIZATION_MAX_LENGTH,
+            "organization",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    slack_username = data.get('slack_username', None)
+    slack_username = data.get("slack_username", None)
     if slack_username:
-        is_valid = validate_length(len(get_stripped_string(slack_username)), 0, SLACK_USERNAME_MAX_LENGTH,
-                                   'slack_username')
+        is_valid = validate_length(
+            len(get_stripped_string(slack_username)),
+            0,
+            SLACK_USERNAME_MAX_LENGTH,
+            "slack_username",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    social_media_links = data.get('social_media_links', None)
+    social_media_links = data.get("social_media_links", None)
     if social_media_links:
-        is_valid = validate_length(len(get_stripped_string(social_media_links)), 0, SOCIALS_MAX_LENGTH,
-                                   'social_media_links')
+        is_valid = validate_length(
+            len(get_stripped_string(social_media_links)),
+            0,
+            SOCIALS_MAX_LENGTH,
+            "social_media_links",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    skills = data.get('skills', None)
+    skills = data.get("skills", None)
     if skills:
-        is_valid = validate_length(len(get_stripped_string(skills)), 0, SKILLS_MAX_LENGTH, 'skills')
+        is_valid = validate_length(
+            len(get_stripped_string(skills)), 0, SKILLS_MAX_LENGTH, "skills"
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    interests = data.get('interests', None)
+    interests = data.get("interests", None)
     if interests:
-        is_valid = validate_length(len(get_stripped_string(interests)), 0, INTERESTS_MAX_LENGTH, 'interests')
+        is_valid = validate_length(
+            len(get_stripped_string(interests)),
+            0,
+            INTERESTS_MAX_LENGTH,
+            "interests",
+        )
         if not is_valid[0]:
             return is_valid[1]
 
-    if 'need_mentoring' in data and data['need_mentoring'] is None:
+    if "need_mentoring" in data and data["need_mentoring"] is None:
         return {"message": "Field need_mentoring is not valid."}
 
-    if 'available_to_mentor' in data and data['available_to_mentor'] is None:
+    if "available_to_mentor" in data and data["available_to_mentor"] is None:
         return {"message": "Field available_to_mentor is not valid."}
 
     return {}
 
 
 def validate_new_password(data):
-    if 'current_password' not in data:
+    if "current_password" not in data:
         return {"message": "Current password field is missing."}
-    if 'new_password' not in data:
+    if "new_password" not in data:
         return {"message": "New password field is missing."}
 
-    new_password = data['new_password']
+    new_password = data["new_password"]
 
     if " " in new_password:
         return {"message": "Password shouldn't contain spaces."}
 
-    is_valid = validate_length(len(get_stripped_string(new_password)), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH,
-                               'new_password')
+    is_valid = validate_length(
+        len(get_stripped_string(new_password)),
+        PASSWORD_MIN_LENGTH,
+        PASSWORD_MAX_LENGTH,
+        "new_password",
+    )
     if not is_valid[0]:
         return is_valid[1]
 
