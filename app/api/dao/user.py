@@ -7,7 +7,7 @@ from app.utils.validation_utils import is_email_valid
 
 class UserDAO:
     """ Class definition for UserDAO.
-    
+
     Provides various functions pertaining to user.
 
     Attributes:
@@ -42,7 +42,7 @@ class UserDAO:
 
         Returns:
             message: A message corresponding to the completed action; success or failure.
-        """   
+        """
         name = data['name']
         username = data['username']
         password = data['password']
