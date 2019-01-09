@@ -6,26 +6,15 @@ from app.utils.validation_utils import is_email_valid
 
 
 class UserDAO:
-    """ Class definition for UserDAO.
+    """ Data Access Object for User related functionalities.
 
-    Provides various functions pertaining to user.
+    Provides functions that interact with the User data model, handling create, read, update and delete operations among other util functions.
 
     Attributes:
         FAIL_USER_ALREADY_EXISTS
         SUCCESS_USER_CREATED
         MIN_NUMBER_OF_ADMINS
 
-    Functions:
-        create_user()
-        delete_user()
-        get_user()
-        get_user_by_email()
-        get_user_by_username()
-        list_users()
-        update_user_profile()
-        change_password()
-        confirm_registration()
-        authenticate()
     """ 
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
     SUCCESS_USER_CREATED = "SUCCESS_USER_CREATED"
@@ -33,7 +22,7 @@ class UserDAO:
 
     @staticmethod
     def create_user(data):
-        """Creates a user.
+        """Creates a new user if the current username or email is not taken.
 
         Creates a new user if the current username is not taken. Otherwise returns a message.
 
@@ -41,7 +30,7 @@ class UserDAO:
             data: A list containing the name, username, password, email and terms_and_conditions_checked.
 
         Returns:
-            message: A message corresponding to the completed action; success or failure.
+            message: A message indicating the success or failure status of this action.
         """
         name = data['name']
         username = data['username']
@@ -77,10 +66,10 @@ class UserDAO:
         Deletes a user provided the latter exists and deleting them will not cause the number of admins to go below the minimum threshold.
 
         Args:
-            user_id : The user id of the user being deleted.
+            user_id : id of the user being deleted.
 
         Returns:
-            message: A message containg a description of the action performed.
+            message: A message indicating the success or failure status of this action.
         """
 
         user = UserModel.find_by_id(user_id)
@@ -100,12 +89,12 @@ class UserDAO:
 
     @staticmethod
     def get_user(user_id):
-        """Finds a user.
+        """Finds a user by id.
 
         Returns a user which has been searched by their id.
 
         Args:
-            user_id : The user id of the required user.
+            user_id: The id of the required user.
 
         Returns:
             user: The corresponding user.
@@ -120,7 +109,7 @@ class UserDAO:
         Returns a user which has been searched by their email.
 
         Args:
-            email : The email of the required user.
+            email: The email of the required user.
 
         Returns:
             user: The corresponding user.
@@ -135,7 +124,7 @@ class UserDAO:
         Returns a user which has been searched by their username.
 
         Args:
-            username : The username of the required user.
+            username: The username of the required user.
 
         Returns:
             user: The corresponding user.
@@ -147,10 +136,10 @@ class UserDAO:
     def list_users(user_id, is_verified=None):
         """Lists users.
 
-        Returns a list of users which has been searched by their user_id.
+        Returns a list of all users excluding the user which has the user_id.
 
         Args:
-            list_of_users : List of user ids.
+            list_of_users : List of users.
             is_verified: whether or not the results should contain only verified users.
 
         Returns:
@@ -172,14 +161,14 @@ class UserDAO:
     def update_user_profile(user_id, data):
         """Updates a user's profile.
 
-        Updates the information pertaining to a given user and saves it to the database.
+        Updates the information belonging to a given user and saves it to the database.
 
         Args:
-            user_id : user_id of the user whose details are to be updated.
+            user_id : The id of the user that requires an update.
             data: List containing the fields to be updated and their corresponding values.
 
         Returns:
-            message: A message corresponding to the performed action.
+            message: A message indicating success or failure of the update action.
         """
 
         user = UserModel.find_by_id(user_id)
@@ -246,11 +235,11 @@ class UserDAO:
         Changes the password of a given user and saves it to the database.
 
         Args:
-            user_id : user_id of the user whose details are to be updated.
+            user_id : The id of the user whose password is to be updated.
             data: List containing the current and new password and their corresponding values.
 
         Returns:
-            message: A message corresponding to the performed action.
+            message: A message indicating the success or failure status of this action.
         """
 
         current_password = data['current_password']
@@ -271,10 +260,10 @@ class UserDAO:
         Sets the is_email_verified of a user to True if it is not already the case and saves to the database.
 
         Args:
-            token : Token which has been emailed.
+            token: Token which has been emailed for confirmation.
 
         Returns:
-            message: A message corresponding to the performed action.
+            message: A message indicating the success or failure status of this action.
         """
 
         email_from_token = confirm_token(token)
