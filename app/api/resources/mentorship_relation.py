@@ -7,6 +7,7 @@ from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.utils.responses import ResponseMessages
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
                                    description='Operations related to '
@@ -48,13 +49,13 @@ class SendRequest(Resource):
 
         # Verify if request body has required fields
         if 'mentor_id' not in data:
-            return {"message": "Mentor ID field is missing."}
+            return {"message": ResponseMessages.MENTOR_ID_FIELD_IS_MISSING}
         if 'mentee_id' not in data:
-            return {"message": "Mentee ID field is missing."}
+            return {"message": ResponseMessages.MENTEE_ID_FIELD_IS_MISSING}
         if 'end_date' not in data:
-            return {"message": "End date field is missing."}
+            return {"message": ResponseMessages.END_DATE_FIELD_IS_MISSING}
         if 'notes' not in data:
-            return {"message": "Notes field is missing."}
+            return {"message": ResponseMessages.NOTES_FIELD_IS_MISSING}
 
         return {}
 
@@ -261,7 +262,7 @@ class CreateTask(Resource):
     def is_valid_data(data):
 
         if 'description' not in data:
-            return {"message": "Description field is missing."}
+            return {"message": ResponseMessages.DESCRIPTION_FIELD_IS_MISSING}
 
         return {}
 
@@ -321,7 +322,7 @@ class UpdateTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('update_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Updated task with success.')
+    @mentorship_relation_ns.response(200, ResponseMessages.UPDATED_TASK_WITH_SUCCESS)
     def put(cls, request_id, task_id):
         """
         Update a task.

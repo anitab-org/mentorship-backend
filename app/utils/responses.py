@@ -8,6 +8,7 @@ class ResponseMessages:
     MENTORSHIP_RELATION_DOES_NOT_EXIST = "Mentorship relation does not exist."
     TASK_DOES_NOT_EXIST = "Task does not exist."
     USER_DOES_NOT_EXIST = "User does not exist."
+    USER_NOT_FOUND = ["User not found.", "User not found"]
 
     # Invalid fields
     NAME_INPUTTED_BY_USER_IS_INVALID = "Your name is invalid."
@@ -15,7 +16,6 @@ class ResponseMessages:
     USERNAME_INPUTTED_BY_USER_IS_INVALID = "Your username is invalid."
     TOKEN_IS_INVALID = "The token is invalid!"
     USER_ID_IS_NOT_VALID = "User id is not valid."
-    TOKEN_IS_MISSING = "The authorization token is missing!"
     NO_DATA_SENT_FOR_UPDATING_PROFILE = "No data for updating profile was sent."
     NEW_USERNAME_INPUTTED_BY_USER_IS_INVALID = "Your new username is invalid."
     NEED_MENTORING_FIELD_IS_INVALID = "Field need_mentoring is not valid."
@@ -35,6 +35,8 @@ class ResponseMessages:
     CURRENT_PASSWORD_FIELD_IS_MISSING = "Current password field is missing."
     NEW_PASSWORD_FIELD_IS_MISSING = "New password field is missing."
     AUTHORISATION_TOKEN_IS_MISSING = "The authorization token is missing!"
+    DESCRIPTION_FIELD_IS_MISSING = "Description field is missing."
+    THE_PASSWORD_FIELD_IS_MISSING = "The field password is missing."
 
     # Admin 
     USER_IS_ALREADY_AN_ADMIN = "User is already an Admin."
@@ -43,8 +45,6 @@ class ResponseMessages:
     USER_TRIES_TO_DELETE_HIS_ACCOUNT_WHILE_HE_IS_THE_ONLY_ADMIN_LEFT = "You cannot delete your account, since you are the only Admin left."
     USER_IS_NOT_AN_ADMIN = "User is not an Admin."
     USER_CANNOT_REVOKE_ADMIN_STATUS = "You cannot revoke your admin status."
-
-    # MENTORSHIP_RELATION_DOES_NOT_EXIST = "This mentorship relation request does not exist."
     USER_TRIES_TO_ASSIGN_SOMEONE_ELSE_AS_ADMIN_WHEN_HE_HIMSELF_IS_NOT_AN_ADMIN = "You don't have admin status. You can't assign other user as admin."
     USER_TRIES_TO_REVOKE_SOMEONE_ELSE_AS_ADMIN_WHEN_HE_HIMSELF_IS_NOT_AN_ADMIN = "You don't have admin status. You can't revoke other admin user."
     USER_IS_NOW_AN_ADMIN = "User is now an Admin."
@@ -63,7 +63,7 @@ class ResponseMessages:
     USER_INPUTS_INCORRECT_MENTOR_ID_OR_MENTEE_ID = "Your ID has to match either Mentor or Mentee IDs."
     MENTEE_USER_IS_ALREADY_IN_A_RELATIONSHIP = "Mentee user is already in a relationship."
 
-    # Relation constraints
+    # Relation constraints  
     USER_INPUTS_MENTOR_ID_SAME_AS_MENTEE_ID = "You cannot have a mentorship relation with yourself."
     USER_INPUTS_END_TIME_BEFORE_PRESENT_TIME = "End date is invalid since date has passed."
     USER_INPUTS_MENTORSHIP_TIME_GREATER_THAN_MAXIMUM_TIME = "Mentorship relation maximum duration is 6 months."
@@ -104,6 +104,7 @@ class ResponseMessages:
     TOKEN_SENT_TO_EMAIL_OF_USER = "Token sent to the user's email"
     EMAIL_VERIFICATION_MESSAGE = "Check your email, a new verification email was sent."
     ACCOUNT_ALREADY_CONFIRMED = "Account already confirmed."
+    EMAIL_ALREADY_CONFIRMED = "You already confirm your email."
 
     # Success messages
     TASK_WAS_ALREADY_ACHIEVED = "Task was already achieved."
@@ -128,6 +129,7 @@ class ResponseMessages:
     USER_UPDATED_SUCCESSFULLY = "User was updated successfully"
     PASSWORD_UPDATED_SUCCESSFULLY = "Password was updated successfully."
     ACCOUNT_CONFIRMED_SUCCESSFULLY = "You have confirmed your account. Thanks!"
+    UPDATE_TASK_IN_MENTORSHIP_RELATION = "update_task_in_mentorship_relation"
 
     # Miscellaneous
     NOT_IMPLEMENTED = "Not implemented."
