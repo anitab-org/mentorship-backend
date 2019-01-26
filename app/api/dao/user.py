@@ -5,6 +5,7 @@ from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
+from app.utils.responses import ResponseMessages
 
 
 class UserDAO:
@@ -22,11 +23,11 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data['username'])
         if existing_user:
-            return {"message": "A user with that username already exists"}, 400
+            return {"message": ResponseMessages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS[0]}, 400
         else:
             existing_user = UserModel.find_by_email(data['email'])
             if existing_user:
-                return {"message": "A user with that email already exists"}, 400
+                return {"message": ResponseMessages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS}, 400
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if 'need_mentoring' in data:
@@ -37,9 +38,7 @@ class UserDAO:
 
         user.save_to_db()
 
-        return {"message": "User was created successfully. "
-                           "A confirmation email has been sent via email. "
-                           "After confirming your email you can login."}, 200
+        return {"message": ResponseMessages.USER_WAS_CREATED_SUCCESSFULLY}, 200
 
     @staticmethod
     def delete_user(user_id):
@@ -50,13 +49,13 @@ class UserDAO:
 
             admins_list_count = len(UserModel.get_all_admins())
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
-                return {"message": "You cannot delete your account, since you are the only Admin left."}, 400
+                return {"message": ResponseMessages.USER_TRIES_TO_DELETE_HIS_ACCOUNT_WHILE_HE_IS_THE_ONLY_ADMIN_LEFT}, 400
 
         if user:
             user.delete_from_db()
-            return {"message": "User was deleted successfully"}, 200
+            return {"message": ResponseMessages.USER_SUCCESSFULLY_DELETED}, 200
 
-        return {"message": "User does not exist"}, 404
+        return {"message": ResponseMessages.USER_DOES_NOT_EXIST}, 404
 
     @staticmethod
     def get_user(user_id):
@@ -88,7 +87,7 @@ class UserDAO:
 
         user = UserModel.find_by_id(user_id)
         if not user:
-            return {"message": "User does not exist"}, 404
+            return {"message": ResponseMessages. USER_DOES_NOT_EXIST}, 404
 
         username = data.get('username', None)
         if username:
@@ -96,7 +95,7 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return {"message": "That username is already taken by another user."}, 400
+                return {"message": ResponseMessages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS[1]}, 400
 
             user.username = username
 
@@ -141,7 +140,7 @@ class UserDAO:
 
         user.save_to_db()
 
-        return {"message": "User was updated successfully"}, 200
+        return {"message": ResponseMessages.USER_UPDATED_SUCCESSFULLY }, 200
 
     @staticmethod
     def change_password(user_id, data):
@@ -152,9 +151,9 @@ class UserDAO:
         if user.check_password(current_password):
             user.set_password(new_password)
             user.save_to_db()
-            return {"message": "Password was updated successfully."}, 201
+            return {"message": ResponseMessages.PASSWORD_UPDATED_SUCCESSFULLY}, 201
 
-        return {"message": "Current password is incorrect."}, 400
+        return {"message": ResponseMessages.USER_ENTERS_INCORRECT_PASSWORD}, 400
 
     @staticmethod
     def confirm_registration(token):
@@ -162,16 +161,16 @@ class UserDAO:
         email_from_token = confirm_token(token)
 
         if email_from_token is False or email_from_token is None:
-            return {'message': 'The confirmation link is invalid or the token has expired.'}, 400
+            return {'message': ResponseMessages.EMAIL_FROM_TOKEN_HAS_EXPIRED_OR_IS_INVALID}, 400
 
         user = UserModel.find_by_email(email_from_token)
         if user.is_email_verified:
-            return {'message': 'Account already confirmed.'}, 200
+            return {'message': ResponseMessages.ACCOUNT_ALREADY_CONFIRMED}, 200
         else:
             user.is_email_verified = True
             user.email_verification_date = datetime.now()
             user.save_to_db()
-            return {'message': 'You have confirmed your account. Thanks!'}, 200
+            return {'message': ResponseMessages.ACCOUNT_CONFIRMED_SUCCESSFULLY}, 200
 
     @staticmethod
     def authenticate(username_or_email, password):

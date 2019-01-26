@@ -39,6 +39,7 @@ class ResponseMessages:
     USER_TRIES_TO_DELETE_HIS_ACCOUNT_WHILE_HE_IS_THE_ONLY_ADMIN_LEFT = "You cannot delete your account, since you are the only Admin left."
     USER_IS_NOT_AN_ADMIN = "User is not an Admin."
     USER_CANNOT_REVOKE_ADMIN_STATUS = "You cannot revoke your admin status."
+
     # MENTORSHIP_RELATION_DOES_NOT_EXIST = "This mentorship relation request does not exist."
     USER_TRIES_TO_ASSIGN_SOMEONE_ELSE_AS_ADMIN_WHEN_HE_HIMSELF_IS_NOT_AN_ADMIN = "You don't have admin status. You can't assign other user as admin."
     USER_TRIES_TO_REVOKE_SOMEONE_ELSE_AS_ADMIN_WHEN_HE_HIMSELF_IS_NOT_AN_ADMIN = "You don't have admin status. You can't revoke other admin user."
@@ -71,7 +72,7 @@ class ResponseMessages:
     USER_CANNOT_DELETE_A_RELATIONSHIP_REQUEST_WHICH_HE_DID_NOT_CREATE="You cannot delete a mentorship request that you did not create."
     USER_IS_NOT_IN_A_MENTORED_RELATIONSHIP_CURRENTLY = "You are not in a current mentorship relation."
     USER_IS_NOT_INVOLVED_IN_THIS_MENTORSHIP_RELATION = "You are not involved in this mentorship relation."
-    USER_USES_A_USERNAME_THAT_ALREADY_EXISTS = ["A user with that username already exists","That username is already taken by another user."]
+    USER_USES_A_USERNAME_THAT_ALREADY_EXISTS = ["A user with that username already exists", "That username is already taken by another user."]
     USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS = "A user with that email already exists"
     USER_IS_NOT_REGISTERED_IN_THE_SYSTEM = "You are not registered in the system."
     USER_USES_A_NAME_OF_LENGTH_GREATER_THAN_MAXIMUM_LIMIT = "The {field_name} field has to be shorter than {max_limit} characters."
@@ -98,6 +99,7 @@ class ResponseMessages:
     TOKEN_HAS_EXPIRED = "The token has expired! Please, login again."
     TOKEN_SENT_TO_EMAIL_OF_USER = "Token sent to the user's email"
     EMAIL_VERIFICATION_MESSAGE = "Check your email, a new verification email was sent."
+    ACCOUNT_ALREADY_CONFIRMED = "Account already confirmed."
 
     # Success messages
     TASK_WAS_ALREADY_ACHIEVED = "Task was already achieved."
@@ -118,8 +120,12 @@ class ResponseMessages:
     DELETE_TASK_WITH_SUCCESS = "Delete task with success."
     UPDATED_TASK_WITH_SUCCESS = "Updated task with success."
     USER_SUCCESSFULLY_CREATED = "User successfully created."
+    USER_SUCCESSFULLY_DELETED = "User was deleted successfully"
+    USER_UPDATED_SUCCESSFULLY = "User was updated successfully"
+    PASSWORD_UPDATED_SUCCESSFULLY = "Password was updated successfully."
+    ACCOUNT_CONFIRMED_SUCCESSFULLY = "You have confirmed your account. Thanks!"
 
     # Miscellaneous
     NOT_IMPLEMENTED = "Not implemented."
     VALIDATION_ERROR = "Validation error."
-    NOT_IMPLEMENTED = "Not implemented."
+    
