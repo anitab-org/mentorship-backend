@@ -36,8 +36,8 @@ class ResponseMessages:
     NEW_PASSWORD_FIELD_IS_MISSING = "New password field is missing."
     AUTHORISATION_TOKEN_IS_MISSING = "The authorization token is missing!"
     DESCRIPTION_FIELD_IS_MISSING = "Description field is missing."
- 
-    #Admin 
+
+    #Admin
     USER_IS_ALREADY_AN_ADMIN = "User is already an Admin."
     USER_CANNOT_ASSIGN_HIMSELF_AS_ADMIN ="You cannot assign yourself as an Admin."
     USER_ADMIN_STATUS_WAS_REVOKED ="User admin status was revoked."
@@ -60,7 +60,7 @@ class ResponseMessages:
     USER_INPUTS_INCORRECT_MENTOR_ID_OR_MENTEE_ID = "Your ID has to match either Mentor or Mentee IDs."
     MENTEE_USER_IS_ALREADY_IN_A_RELATIONSHIP = "Mentee user is already in a relationship."
 
-    #Relation constraints  
+    #Relation constraints
     USER_INPUTS_MENTOR_ID_SAME_AS_MENTEE_ID = "You cannot have a mentorship relation with yourself."
     USER_INPUTS_END_TIME_BEFORE_PRESENT_TIME = "End date is invalid since date has passed."
     USER_INPUTS_MENTORSHIP_TIME_GREATER_THAN_MAXIMUM_TIME = "Mentorship relation maximum duration is 6 months."
