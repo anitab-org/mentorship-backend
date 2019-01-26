@@ -16,6 +16,10 @@ class ResponseMessages:
     TOKEN_IS_INVALID = "The token is invalid!"
     USER_ID_IS_NOT_VALID = "User id is not valid."
     TOKEN_IS_MISSING = "The authorization token is missing!"
+    NO_DATA_SENT_FOR_UPDATING_PROFILE = "No data for updating profile was sent."
+    NEW_USERNAME_INPUTTED_BY_USER_IS_INVALID = "Your new username is invalid."
+    NEED_MENTORING_FIELD_IS_INVALID = "Field need_mentoring is not valid."
+    AVAILABLE_TO_MENTOR_FIELD_IS_INVALID = "Field available_to_mentor is not valid."
 
     # Missing fields
     MENTOR_ID_FIELD_IS_MISSING = "Mentor ID field is missing."
@@ -32,7 +36,7 @@ class ResponseMessages:
     NEW_PASSWORD_FIELD_IS_MISSING = "New password field is missing."
     AUTHORISATION_TOKEN_IS_MISSING = "The authorization token is missing!"
 
-    # Admin
+    # Admin 
     USER_IS_ALREADY_AN_ADMIN = "User is already an Admin."
     USER_CANNOT_ASSIGN_HIMSELF_AS_ADMIN ="You cannot assign yourself as an Admin."
     USER_ADMIN_STATUS_WAS_REVOKED ="User admin status was revoked."
