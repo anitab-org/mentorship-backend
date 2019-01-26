@@ -130,9 +130,8 @@ class ResponseMessages:
     LOGIN_SUCCESSFUL = "Successful login"
     SUCCESFUL_RESPONSE = "Successful response"
     MENTORSHIP_RELATION_DELETED_SUCCESSFULLY = "Deleted mentorship relation with success."
-    LIST_TASKS_FROM_A_MENTORSHIP_RELATION_SUCCESSFULLY = "List tasks from a mentorship relation with success."       
+    LIST_TASKS_FROM_A_MENTORSHIP_RELATION_SUCCESSFULLY = "List tasks from a mentorship relation with success."
 
     #Miscellaneous
     NOT_IMPLEMENTED = "Not implemented."
     VALIDATION_ERROR = "Validation error."
-    
