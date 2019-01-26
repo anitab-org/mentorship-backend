@@ -1,7 +1,7 @@
 
 class ResponseMessages:
 
-    # Not found
+    #Not found
     MENTOR_USER_DOES_NOT_EXIST = "Mentor user does not exist."
     MENTEE_USER_DOES_NOT_EXIST = "Mentee user does not exist."
     MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = "This mentorship relation request does not exist."
@@ -10,7 +10,7 @@ class ResponseMessages:
     USER_DOES_NOT_EXIST = "User does not exist."
     USER_NOT_FOUND = ["User not found.", "User not found"]
 
-    # Invalid fields
+    #Invalid fields
     NAME_INPUTTED_BY_USER_IS_INVALID = "Your name is invalid."
     EMAIL_INPUTTED_BY_USER_IS_INVALID = "Your email is invalid."
     USERNAME_INPUTTED_BY_USER_IS_INVALID = "Your username is invalid."
@@ -21,7 +21,7 @@ class ResponseMessages:
     NEED_MENTORING_FIELD_IS_INVALID = "Field need_mentoring is not valid."
     AVAILABLE_TO_MENTOR_FIELD_IS_INVALID = "Field available_to_mentor is not valid."
 
-    # Missing fields
+    #Missing fields
     MENTOR_ID_FIELD_IS_MISSING = "Mentor ID field is missing."
     MENTEE_ID_FIELD_IS_MISSING = "Mentee ID field is missing."
     END_DATE_FIELD_IS_MISSING = "End date field is missing."
@@ -37,8 +37,7 @@ class ResponseMessages:
     AUTHORISATION_TOKEN_IS_MISSING = "The authorization token is missing!"
     DESCRIPTION_FIELD_IS_MISSING = "Description field is missing."
  
-
-    # Admin 
+    #Admin 
     USER_IS_ALREADY_AN_ADMIN = "User is already an Admin."
     USER_CANNOT_ASSIGN_HIMSELF_AS_ADMIN ="You cannot assign yourself as an Admin."
     USER_ADMIN_STATUS_WAS_REVOKED ="User admin status was revoked."
@@ -49,21 +48,19 @@ class ResponseMessages:
     USER_TRIES_TO_REVOKE_SOMEONE_ELSE_AS_ADMIN_WHEN_HE_HIMSELF_IS_NOT_AN_ADMIN = "You don't have admin status. You can't revoke other admin user."
     USER_IS_NOW_AN_ADMIN = "User is now an Admin."
 
-    # Mentor availability
+    #Mentor availability
     MENTOR_USER_IS_NOT_AVAILABLE_TO_MENTOR = "Mentor user is not available to mentor."
     MENTOR_USER_IS_ALREADY_IN_A_RELATIONSHIP = "Mentor user is already in a relationship."
 
-
-    # Mentee availability
+    #Mentee availability
     MENTEE_USER_IS_NOT_AVAILABLE_TO_BE_MENTORED = "Mentee user is not available to be mentored."
     MENTEE_IS_ALREADY_IN_A_RELATIONSHIP = "Mentee user is already in a relationship."
 
-
-    # Mismatch of fields
+    #Mismatch of fields
     USER_INPUTS_INCORRECT_MENTOR_ID_OR_MENTEE_ID = "Your ID has to match either Mentor or Mentee IDs."
     MENTEE_USER_IS_ALREADY_IN_A_RELATIONSHIP = "Mentee user is already in a relationship."
 
-    # Relation constraints  
+    #Relation constraints  
     USER_INPUTS_MENTOR_ID_SAME_AS_MENTEE_ID = "You cannot have a mentorship relation with yourself."
     USER_INPUTS_END_TIME_BEFORE_PRESENT_TIME = "End date is invalid since date has passed."
     USER_INPUTS_MENTORSHIP_TIME_GREATER_THAN_MAXIMUM_TIME = "Mentorship relation maximum duration is 6 months."
@@ -83,7 +80,7 @@ class ResponseMessages:
     USER_USES_A_NAME_OF_LENGTH_LESSER_THAN_MINIMUM_LIMIT = "The {field_name} field has to be longer than {min_limit} characters and shorter than {max_limit} characters."
     USER_INPUTS_INCORRECT_CONFIGURATION_VALUE = "The environment config value has to be within these values: prod, dev, test."
 
-    # Mentorship state
+    #Mentorship state
     MENTOR_RELATIONSHIP_IS_NOT_IN_PENDING_STATE = "This mentorship relation is not in the pending state."
     USER_RELATIONSHIP_STATUS_IS_NOT_IN_ACCEPTED_STATE = "This mentorship relation is not in the accepted state."
     MENTORSHIP_RELATION_IS_NOT_IN_ACCEPTED_STATE = "Mentorship relation is not in the accepted state."
@@ -91,8 +88,7 @@ class ResponseMessages:
     MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY = "Mentorship relation was rejected successfully."
     MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY = "Mentorship relation was cancelled successfully."
 
-
-    # Login errors
+    #Login errors
     USER_ENTERS_INCORRECT_PASSWORD = "Current password is incorrect."
     EMAIL_FROM_TOKEN_HAS_EXPIRED_OR_IS_INVALID = "The confirmation link is invalid or the token has expired."
     USERNAME_OR_PASSWORD_FIELD_IS_INCORRECTLY_FILLED_UP = "Username or password is wrong."
@@ -106,7 +102,7 @@ class ResponseMessages:
     ACCOUNT_ALREADY_CONFIRMED = "Account already confirmed."
     EMAIL_ALREADY_CONFIRMED = "You already confirm your email."
 
-    # Success messages
+    #Success messages
     SUCCESS = "Success."
     TASK_WAS_ALREADY_ACHIEVED = "Task was already achieved."
     MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY = ["Mentorship relation was sent successfully.","Mentorship Relation request was sent successfully."]
@@ -134,11 +130,9 @@ class ResponseMessages:
     LOGIN_SUCCESSFUL = "Successful login"
     SUCCESFUL_RESPONSE = "Successful response"
     MENTORSHIP_RELATION_DELETED_SUCCESSFULLY = "Deleted mentorship relation with success."
-    LIST_TASKS_FROM_A_MENTORSHIP_RELATION_SUCCESSFULLY = "List tasks from a mentorship relation with success."
-    
-    
+    LIST_TASKS_FROM_A_MENTORSHIP_RELATION_SUCCESSFULLY = "List tasks from a mentorship relation with success."       
 
-    # Miscellaneous
+    #Miscellaneous
     NOT_IMPLEMENTED = "Not implemented."
     VALIDATION_ERROR = "Validation error."
     
