@@ -25,8 +25,8 @@ class SendRequest(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('send_request')
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
-    @mentorship_relation_ns.response(200, 'Mentorship Relation request was sent successfully.')
-    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(200, ResponseMessages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY[1])
+    @mentorship_relation_ns.response(400, ResponseMessages.VALIDATION_ERROR)
     def post(cls):
         """
         Creates a new mentorship relation request.
@@ -88,7 +88,7 @@ class AcceptMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('accept_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Accept mentorship relations with success.')
+    @mentorship_relation_ns.response(200, ResponseMessages.ACCEPT_MENTORSHIP_RELATIONS_WITH_SUCCESS)
     def put(cls, request_id):
         """
         Accept a mentorship relation.
@@ -110,7 +110,7 @@ class RejectMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('reject_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Rejected mentorship relations with success.')
+    @mentorship_relation_ns.response(200, ResponseMessages.REJECTED_MENTORSHIP_RELATIONS_WITH_SUCCESS)
     def put(cls, request_id):
         """
         Reject a mentorship relation.
@@ -131,7 +131,7 @@ class CancelMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('cancel_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
+    @mentorship_relation_ns.response(200, ResponseMessages.CANCELLED_MENTORSHIP_RELATIONS_WITH_SUCCESS)
     def put(cls, request_id):
         """
         Cancel a mentorship relation.
@@ -152,7 +152,7 @@ class DeleteMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('delete_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Deleted mentorship relation with success.')
+    @mentorship_relation_ns.response(200, ResponseMessages.MENTORSHIP_RELATION_DELETED_SUCCESSFULLY)
     def delete(cls, request_id):
         """
         Delete a mentorship request.
@@ -173,7 +173,7 @@ class ListPastMentorshipRelations(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_past_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned past mentorship relations with success.',
+    @mentorship_relation_ns.response(200, ResponseMessages.RETURNED_PAST_MENTORSHIP_RELATIONS_WITH_SUCCESS,
                                      model=mentorship_request_response_body)
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
@@ -194,7 +194,7 @@ class ListCurrentMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_current_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned current mentorship relation with success.',
+    @mentorship_relation_ns.response(200, ResponseMessages.RETURNED_CURRENT_MENTORSHIP_RELATIONS_WITH_SUCCESS,
                                      model=mentorship_request_response_body)
     def get(cls):
         """
@@ -217,7 +217,7 @@ class ListPendingMentorshipRequests(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_pending_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned pending mentorship relation with success.',
+    @mentorship_relation_ns.response(200, ResponseMessages.RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS,
                                      model=mentorship_request_response_body)
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
@@ -238,7 +238,7 @@ class CreateTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('create_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
-    @mentorship_relation_ns.response(200, 'Created task with success.')
+    @mentorship_relation_ns.response(200, ResponseMessages.TASK_WAS_CREATED_SUCCESSFULLY[1])
     def post(cls, request_id):
         """
         Create a task.
@@ -274,7 +274,7 @@ class DeleteTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('delete_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Delete task with success.')
+    @mentorship_relation_ns.response(200, ResponseMessages.DELETE_TASK_WITH_SUCCESS)
     def delete(cls, request_id, task_id):
         """
         Delete a task.
@@ -296,7 +296,7 @@ class ListTasks(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('list_tasks_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'List tasks from a mentorship relation with success.',
+    @mentorship_relation_ns.response(200, ResponseMessages.LIST_TASKS_FROM_A_MENTORSHIP_RELATION_SUCCESSFULLY,
                                      model=list_tasks_response_body)
     def get(cls, request_id):
         """

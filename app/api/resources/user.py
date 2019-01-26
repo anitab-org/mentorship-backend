@@ -41,9 +41,9 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(201, 'Success.', public_user_api_model)
-    @users_ns.response(400, 'User id is not valid.')
-    @users_ns.response(404, 'User does not exist.')
+    @users_ns.response(201, ResponseMessages.SUCCESS, public_user_api_model)
+    @users_ns.response(400, ResponseMessages.USER_ID_IS_NOT_VALID)
+    @users_ns.response(404, ResponseMessages.USER_DOES_NOT_EXIST)
     def get(cls, user_id):
         """
         Returns a user.
@@ -83,8 +83,8 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('update_user_profile')
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(200, 'User successfully updated.')
-    @users_ns.response(404, 'User not found.')
+    @users_ns.response(200, ResponseMessages.USER_SUCCESSFULLY_UPDATED)
+    @users_ns.response(404, ResponseMessages.USER_NOT_FOUND[0])
     def put(cls):
         """
         Updates user profile
@@ -104,8 +104,8 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('delete_user')
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.response(200, 'User successfully deleted.')
-    @users_ns.response(404, 'User not found.')
+    @users_ns.response(200, ResponseMessages.USER_SUCCESSFULLY_DELETED[1])
+    @users_ns.response(404, ResponseMessages.USER_NOT_FOUND[0])
     def delete(cls):
         """
         Deletes user.
@@ -154,7 +154,7 @@ class UserRegister(Resource):
 
     @classmethod
     @users_ns.doc('create_user')
-    @users_ns.response(201, 'User successfully created.')
+    @users_ns.response(201, ResponseMessages.USER_SUCCESSFULLY_CREATED)
     @users_ns.expect(register_user_api_model, validate=True)
     def post(cls):
         """
@@ -219,7 +219,7 @@ class LoginUser(Resource):
 
     @classmethod
     @users_ns.doc('login')
-    @users_ns.response(200, 'Successful login', login_response_body_model)
+    @users_ns.response(200, ResponseMessages.LOGIN_SUCCESSFUL , login_response_body_model)
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -239,7 +239,7 @@ class LoginUser(Resource):
         if not username:
             return {'message': ResponseMessages.USERNAME_FIELD_IS_MISSING}, 400
         if not password:
-            return {'message': ResponseMessages.THE_PASSWORD_FIELD_IS_MISSING}, 400
+            return {'message': ResponseMessages.PASSWORD_FIELD_IS_MISSING[1]}, 400
 
         user = DAO.authenticate(username, password)
 
@@ -262,8 +262,8 @@ class LoginUser(Resource):
 
 @users_ns.route('home')
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(200, 'Successful response', home_response_body_model)
-@users_ns.response(404, 'User not found')
+@users_ns.response(200, ResponseMessages.SUCCESFUL_RESPONSE, home_response_body_model)
+@users_ns.response(404, ResponseMessages.USER_NOT_FOUND[1])
 class UserHomeStatistics(Resource):
     @classmethod
     @jwt_required

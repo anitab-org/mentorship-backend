@@ -26,7 +26,7 @@ def validate_user_registration_request_data(data):
     if 'username' not in data:
         return {"message": ResponseMessages.USERNAME_NOT_IN_DATA}
     if 'password' not in data:
-        return {"message": ResponseMessages.PASSWORD_FIELD_IS_MISSING}
+        return {"message": ResponseMessages.PASSWORD_FIELD_IS_MISSING[0]}
     if 'email' not in data:
         return {"message": ResponseMessages.EMAIL_FIELD_IS_MISSING}
     if 'terms_and_conditions_checked' not in data:
@@ -167,9 +167,9 @@ def validate_update_profile_request_data(data):
 
 def validate_new_password(data):
     if 'current_password' not in data:
-        return {"message": ResponseMessages.CURRENT_PASSWORD_FIELD_IS_MISSING}
+        return {"message": ResponseMessages.CURRENT_PASSWORD_FIELD_IS_MISSING[0]}
     if 'new_password' not in data:
-        return {"message": ResponseMessages.NEW_PASSWORD_FIELD_IS_MISSING}
+        return {"message": ResponseMessages.NEW_PASSWORD_FIELD_IS_MISSING[0]}
 
     new_password = data['new_password']
 

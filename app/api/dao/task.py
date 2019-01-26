@@ -26,7 +26,7 @@ class TaskDAO:
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
         relation.tasks_list.save_to_db()
 
-        return {"message": ResponseMessages.TASK_WAS_CREATED_SUCCESSFULLY}, 200
+        return {"message": ResponseMessages.TASK_WAS_CREATED_SUCCESSFULLY[0]}, 200
 
     @staticmethod
     def list_tasks(user_id, mentorship_relation_id):

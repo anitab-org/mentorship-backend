@@ -27,7 +27,7 @@ class ResponseMessages:
     END_DATE_FIELD_IS_MISSING = "End date field is missing."
     NOTES_FIELD_IS_MISSING = "Notes field is missing."
     USERNAME_FIELD_IS_MISSING = "The field username is missing."
-    PASSWORD_FIELD_IS_MISSING = "Password field is missing."
+    PASSWORD_FIELD_IS_MISSING = ["Password field is missing.","The field password is missing."]
     NAME_NOT_IN_DATA = "Name field is missing."
     USERNAME_NOT_IN_DATA = "Username field is missing."
     EMAIL_FIELD_IS_MISSING = "Email field is missing."
@@ -36,7 +36,7 @@ class ResponseMessages:
     NEW_PASSWORD_FIELD_IS_MISSING = "New password field is missing."
     AUTHORISATION_TOKEN_IS_MISSING = "The authorization token is missing!"
     DESCRIPTION_FIELD_IS_MISSING = "Description field is missing."
-    THE_PASSWORD_FIELD_IS_MISSING = "The field password is missing."
+ 
 
     # Admin 
     USER_IS_ALREADY_AN_ADMIN = "User is already an Admin."
@@ -107,29 +107,36 @@ class ResponseMessages:
     EMAIL_ALREADY_CONFIRMED = "You already confirm your email."
 
     # Success messages
+    SUCCESS = "Success."
     TASK_WAS_ALREADY_ACHIEVED = "Task was already achieved."
-    MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY = "Mentorship relation was sent successfully."
+    MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY = ["Mentorship relation was sent successfully.","Mentorship Relation request was sent successfully."]
     MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY = "Mentorship relation was accepted successfully."
     MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY = "Mentorship relation was deleted successfully."
-    TASK_WAS_CREATED_SUCCESSFULLY = "Task was created successfully."
+    TASK_WAS_CREATED_SUCCESSFULLY = ["Task was created successfully.","Created task with success."]
     TASK_WAS_DELETED_SUCCESSFULLY = "Task was deleted successfully."
     TASK_WAS_ALREADY_ACHIEVED_SUCCESSFULLY = "Task was achieved successfully."
     USER_WAS_CREATED_SUCCESSFULLY = "User was created successfully.A confirmation email has been sent via email.After confirming your email you can login."
     ACCEPT_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Accept mentorship relations with success."
     REJECTED_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Rejected mentorship relations with success."
     CANCELLED_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Cancelled mentorship relations with success."
-    DELETED_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Deleted mentorship relations with success."
     RETURNED_PAST_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Returned past mentorship relations with success."
     RETURNED_CURRENT_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Returned current mentorship relation with success."
-    RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Returned pending mentorship relations with success."
+    RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS = "Returned pending mentorship relation with success."
     DELETE_TASK_WITH_SUCCESS = "Delete task with success."
     UPDATED_TASK_WITH_SUCCESS = "Updated task with success."
     USER_SUCCESSFULLY_CREATED = "User successfully created."
-    USER_SUCCESSFULLY_DELETED = "User was deleted successfully"
+    USER_SUCCESSFULLY_DELETED = ["User was deleted successfully", "User successfully deleted."]
     USER_UPDATED_SUCCESSFULLY = "User was updated successfully"
     PASSWORD_UPDATED_SUCCESSFULLY = "Password was updated successfully."
     ACCOUNT_CONFIRMED_SUCCESSFULLY = "You have confirmed your account. Thanks!"
     UPDATE_TASK_IN_MENTORSHIP_RELATION = "update_task_in_mentorship_relation"
+    USER_SUCCESSFULLY_UPDATED = "User successfully updated"
+    LOGIN_SUCCESSFUL = "Successful login"
+    SUCCESFUL_RESPONSE = "Successful response"
+    MENTORSHIP_RELATION_DELETED_SUCCESSFULLY = "Deleted mentorship relation with success."
+    LIST_TASKS_FROM_A_MENTORSHIP_RELATION_SUCCESSFULLY = "List tasks from a mentorship relation with success."
+    
+    
 
     # Miscellaneous
     NOT_IMPLEMENTED = "Not implemented."

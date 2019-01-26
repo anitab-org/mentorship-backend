@@ -90,7 +90,7 @@ class MentorshipRelationDAO:
 
         mentorship_relation.save_to_db()
 
-        return {'message': ResponseMessages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY}, 200
+        return {'message': ResponseMessages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY[0]}, 200
 
     @staticmethod
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
