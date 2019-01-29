@@ -9,6 +9,7 @@ from app.api.resources.common import auth_header_parser
 
 admin_ns = Namespace('Admins', description='Operations related to Admin users')
 add_models_to_namespace(admin_ns)
+from app import constants
 
 
 @admin_ns.route('admin/new')
@@ -29,7 +30,7 @@ class AssignNewUserAdmin(Resource):
 
         else:
             return {
-                       "message": "You don't have admin status. You can't assign other user as admin."
+                       "message": USER_TRIED_TO_ASSIGN_SOMEONE_ELSE_AS_ADMIN_WHEN_HE_HIMSELF_IS_NOT_AN_ADMIN
                    }, 403
 
 
@@ -51,5 +52,5 @@ class RevokeUserAdmin(Resource):
 
         else:
             return {
-                       "message": "You don't have admin status. You can't revoke other admin user."
+                       "message": USER_TRIED_TO_REVOKE_SOMEONE_ELSE_AS_ADMIN_WHEN_HE_HIMSELF_IS_NOT_AN_ADMIN 
                    }, 403
