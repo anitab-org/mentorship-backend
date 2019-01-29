@@ -2,6 +2,7 @@ import datetime
 import unittest
 from werkzeug.security import check_password_hash
 
+from app import messages
 from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -65,8 +66,7 @@ class TestUserDao(BaseTestCase):
 
         self.assertTrue(user.is_email_verified)
         self.assertIsNotNone(user.email_verification_date)
-        self.assertEqual(({'message': 'You have confirmed your account. Thanks!'}, 200),
-                         actual_result)
+        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200), actual_result)
 
     def test_dao_confirm_registration_bad_token(self):
         dao = UserDAO()
@@ -94,8 +94,7 @@ class TestUserDao(BaseTestCase):
 
         self.assertFalse(user.is_email_verified)
         self.assertIsNone(user.email_verification_date)
-        self.assertEqual(({'message': 'The confirmation link is invalid or the token has expired.'}, 400),
-                         actual_result)
+        self.assertEqual((messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400), actual_result)
 
     def test_dao_confirm_registration_of_already_verified_user(self):
         dao = UserDAO()
@@ -122,8 +121,7 @@ class TestUserDao(BaseTestCase):
         actual_result = dao.confirm_registration(good_token)
 
         self.assertTrue(user.is_email_verified)
-        self.assertEqual(({'message': 'Account already confirmed.'}, 200),
-                         actual_result)
+        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED, 200), actual_result)
 
     def test_dao_delete_only_user_admin(self):
         dao = UserDAO()
@@ -139,8 +137,7 @@ class TestUserDao(BaseTestCase):
         self.assertTrue(after_delete_user.is_admin)
         self.assertIsNotNone(after_delete_user)
         self.assertEqual(1, after_delete_user.id)
-        self.assertEqual(({"message": "You cannot delete your account, since you are the only Admin left."}, 400),
-                         dao_result)
+        self.assertEqual((messages.USER_CANT_DELETE, 400), dao_result)
 
     def test_get_achievements(self):
         dao = UserDAO()

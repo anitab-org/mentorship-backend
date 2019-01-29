@@ -2,6 +2,7 @@ import json
 import unittest
 from datetime import datetime, timedelta
 
+from app import messages
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -46,7 +47,7 @@ class TestRejectMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.REJECTED, self.mentorship_relation.state)
-            self.assertEqual({'message': 'Mentorship relation was rejected successfully.'},
+            self.assertEqual(messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY,
                              json.loads(response.data))
 
 

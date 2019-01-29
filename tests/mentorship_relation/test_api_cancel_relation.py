@@ -2,6 +2,7 @@ import json
 import unittest
 from datetime import datetime, timedelta
 
+from app import messages
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -47,7 +48,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
 
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
-            self.assertEqual({'message': 'Mentorship relation was cancelled successfully.'},
+            self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
                              json.loads(response.data))
 
     def test__mentee_cancel_mentorship_relation(self):
@@ -58,7 +59,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
 
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
-            self.assertEqual({'message': 'Mentorship relation was cancelled successfully.'},
+            self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
                              json.loads(response.data))
 
 
