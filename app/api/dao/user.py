@@ -6,7 +6,7 @@ from app.utils.validation_utils import is_email_valid
 
 
 class UserDAO:
-    """ Data Access Object for User related functionalities.
+    """Data Access Object for User related functionalities.
 
     Provides functions that interact with the User data model, handling create, read, update and delete operations among other util functions.
 
@@ -63,7 +63,7 @@ class UserDAO:
     def delete_user(user_id):
         """Deletes a user.
 
-        Deletes a user provided the latter exists and deleting them will not cause the number of admins to go below the minimum threshold.
+        Deletes a user if this user is not the only admin.
 
         Args:
             user_id : id of the user being deleted.
@@ -90,8 +90,6 @@ class UserDAO:
     @staticmethod
     def get_user(user_id):
         """Finds a user by id.
-
-        Returns a user which has been searched by their id.
 
         Args:
             user_id: The id of the required user.
@@ -120,8 +118,6 @@ class UserDAO:
     @staticmethod
     def get_user_by_username(username):
         """Finds a user by username.
-
-        Returns a user which has been searched by their username.
 
         Args:
             username: The username of the required user.
@@ -292,6 +288,9 @@ class UserDAO:
         Args:
             username_or_email : username or email of the user being authenticated.
             password: List containing the current and new password and their corresponding values.
+            
+        Returns:
+            user: Returns a user if a valid username or email and the corresponding password is provided. Otherwise returns none.
         """
 
         if is_email_valid(username_or_email):
