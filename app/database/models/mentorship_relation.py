@@ -47,6 +47,13 @@ class MentorshipRelationModel(db.Model):
         self.tasks_list = tasks_list
 
     def json(self):
+        """ 
+            Get information of mentorship as a json file
+            Args:
+            
+            Returns:
+            The information of mentorship as a json file.
+        """
         return {
             'id': self.id,
             'action_user_id': self.action_user_id,
