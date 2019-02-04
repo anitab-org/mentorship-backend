@@ -5,6 +5,8 @@ from app.utils.enum_utils import MentorshipRelationState
 
 
 class MentorshipRelationModel(db.Model):
+    """ Create a Mentorship Relational Model """
+
     # Specifying database table used for MentorshipRelationModel
     __tablename__ = 'mentorship_relations'
     __table_args__ = {'extend_existing': True}
@@ -64,17 +66,45 @@ class MentorshipRelationModel(db.Model):
 
     @classmethod
     def find_by_id(cls, _id):
+        """ 
+            Find name of person with given id.
+            Args:
+            _id: The id of a person.
+            Returns:
+            the name of the person with the given id.
+        """
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def is_empty(cls):
+        """ 
+            Find if the database if empty or not.
+            Args:
+            
+            Returns:
+            True if the database if empty and false if it is not.
+        """
         return cls.query.first() is None
 
     def save_to_db(self):
+        """ 
+            .
+            Args:
+            
+            Returns:
+            
+        """
         db.session.add(self)
         db.session.commit()
 
     def delete_from_db(self):
+        """ 
+            Delete a person from the database.
+            Args:
+            
+            Returns:
+            
+        """
         self.tasks_list.delete_from_db()
         db.session.delete(self)
         db.session.commit()
