@@ -1,5 +1,4 @@
 from app.database.models.user import UserModel
-from flask_jwt_extended import get_jwt_identity
 
 def check_mail_confirmation(f):
 
