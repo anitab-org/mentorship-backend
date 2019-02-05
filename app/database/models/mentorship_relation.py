@@ -5,7 +5,24 @@ from app.utils.enum_utils import MentorshipRelationState
 
 
 class MentorshipRelationModel(db.Model):
-    """ Create a Mentorship Relational Model """
+    """A relatioal model the represents a mentorship.
+    
+    Attributes:
+        id: integer primary key that defines the mentorships.
+        mentor_id: integer indicates the id of the mentor.
+        mentee_id: integer indicates the id of the mentee.
+        action_user_id: integer indicates id of action user.
+        mentor: relationship between UserModel and mentorship_relation.
+        mentee: relationship between UserModel and mentorship_relation.
+        creation_date: float that defines the date of creation of the mentorship.
+        accept_date: float that indicates the date of acceptance of mentorship.
+        start_date: float that indicates the starting date of mentorship.
+        end_date: float that indicates the ending date of mentorship.
+        state: enumeration that indicates state of mentorship.
+        notes: string that indicates any notes.
+        tasks_list_id: integer indicates the id of the tasks_list
+        tasks_list: relationship between TasksListModel and mentorship_relation.
+    """
 
     # Specifying database table used for MentorshipRelationModel
     __tablename__ = 'mentorship_relations'
@@ -47,13 +64,7 @@ class MentorshipRelationModel(db.Model):
         self.tasks_list = tasks_list
 
     def json(self):
-        """ 
-            Get information of mentorship as a json file
-            Args:
-                None.
-            Returns:
-                The information of mentorship as a json file.
-        """
+        """ Returns information of mentorship as a json file. """
         return {
             'id': self.id,
             'action_user_id': self.action_user_id,
@@ -74,44 +85,24 @@ class MentorshipRelationModel(db.Model):
     @classmethod
     def find_by_id(cls, _id):
         """ 
-            Find the mentorship with given id.
+            Returns the mentorship that has the passed id.
             Args:
                 _id: The id of a mentorship.
-            Returns:
-                The mentorship with the given id.
         """
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def is_empty(cls):
-        """ 
-            Is the mentorship database empty or not.
-            Args:
-                None.
-            Returns:
-                True if the database is empty, False otherwise.
-        """
+        """ Returns True if the mentorship model is empty, and False otherwise. """
         return cls.query.first() is None
 
     def save_to_db(self):
-        """ 
-            Save the model to database.
-            Args:
-                None.
-            Returns:
-                None.
-        """
+        """ Saves the model to the database. """
         db.session.add(self)
         db.session.commit()
 
     def delete_from_db(self):
-        """ 
-            Delete the model from the database.
-            Args:
-                None.
-            Returns:
-                None.
-        """
+        """ Deletes the model from the database. """
         self.tasks_list.delete_from_db()
         db.session.delete(self)
         db.session.commit()
