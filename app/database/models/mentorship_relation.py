@@ -50,9 +50,9 @@ class MentorshipRelationModel(db.Model):
         """ 
             Get information of mentorship as a json file
             Args:
-            None.
+                None.
             Returns:
-            The information of mentorship as a json file.
+                The information of mentorship as a json file.
         """
         return {
             'id': self.id,
@@ -76,41 +76,41 @@ class MentorshipRelationModel(db.Model):
         """ 
             Find the mentorship with given id.
             Args:
-            _id: The id of a mentorship.
+                _id: The id of a mentorship.
             Returns:
-            The mentorship with the given id.
+                The mentorship with the given id.
         """
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def is_empty(cls):
         """ 
-            Find if the database if empty or not.
+            Is the mentorship database empty or not.
             Args:
-            None.
+                None.
             Returns:
-            True if the database, False otherwise.
+                True if the database is empty, False otherwise.
         """
         return cls.query.first() is None
 
     def save_to_db(self):
         """ 
-            .
+            Save the model to database.
             Args:
-            
+                None.
             Returns:
-            
+                None.
         """
         db.session.add(self)
         db.session.commit()
 
     def delete_from_db(self):
         """ 
-            Delete a mentorship from the database.
+            Delete the model from the database.
             Args:
-            None.
+                None.
             Returns:
-            None.
+                None.
         """
         self.tasks_list.delete_from_db()
         db.session.delete(self)
