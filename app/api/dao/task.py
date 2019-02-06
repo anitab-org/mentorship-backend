@@ -6,9 +6,25 @@ from app.utils.enum_utils import MentorshipRelationState
 
 
 class TaskDAO:
+    """Data Access Object for Task functionalities."""
 
     @staticmethod
     def create_task(user_id, mentorship_relation_id, data):
+        """Creates a new task.
+
+        Creates a new task in a mentorship relation if the specified user is already involved in it.
+
+        Args:
+            user_id: The id of the user.
+            mentorship_relation_id: The id of the mentorship relation.
+            data: A list containing the description of the task.
+
+        Returns:
+            A two element list where the first element is a dictionary containing a key 'message' indicating
+            in its value if the task creation was succesful or not as a string. The last element is the HTTP
+            response code.
+        """
+
         description = data['description']
 
         user = UserModel.find_by_id(user_id)
@@ -30,6 +46,19 @@ class TaskDAO:
 
     @staticmethod
     def list_tasks(user_id, mentorship_relation_id):
+        """Retrieves all tasks of a user in a mentorship relation.
+
+        Lists all tasks from a mentorship relation for the specified user if the user is involved in a current mentorship relation.
+
+        Args:
+            user_id: The id of the user.
+            mentorship_relation_id: The id of the mentorship relation.
+
+        Returns:
+            A list containing all the tasks one user has in a mentorship relation. otherwise, it returns a two element list where the first element is
+            a dictionary containing a key 'message' indicating in its value if there were any problem finding user's tasks in the specified
+            mentorship relation as a string. The last element is the HTTP response code
+        """
 
         user = UserModel.find_by_id(user_id)
         if user is None:
@@ -48,6 +77,20 @@ class TaskDAO:
 
     @staticmethod
     def delete_task(user_id, mentorship_relation_id, task_id):
+        """Deletes a specified task from a mentorship relation.
+
+        Deletes a task that belongs to a user who is involved in the specified
+        mentorship relation.
+
+        Args:
+            user_id: The id of the user.
+            mentorship_relation_id: The id of the mentorship relation.
+            task_id: The id of the task.
+
+        Returns:
+            A two element list where the first element is a dictionary containing a key 'message' indicating in its value if the
+            task was deleted succesfully or not as a string. The last element is the HTTP response code.
+        """
 
         user = UserModel.find_by_id(user_id)
         if user is None:
@@ -70,6 +113,20 @@ class TaskDAO:
 
     @staticmethod
     def complete_task(user_id, mentorship_relation_id, task_id):
+        """Marks a task as completed.
+
+        Updates the task that belongs to a user who is involved in the specified
+        mentorship relation to finished task status.
+
+        Args:
+            user_id: The id of the user.
+            mentorship_relation_id: The id of the mentorship relation.
+            task_id: The id of the task.
+
+        Returns:
+            A two element list where the first element is a dictionary containing a key 'message' indicating in its value
+            if the task was set to complete succesfully or not as a string. The last element is the HTTP response code.
+        """
 
         user = UserModel.find_by_id(user_id)
         if user is None:
