@@ -6,7 +6,6 @@ from app.utils.enum_utils import MentorshipRelationState
 
 class MentorshipRelationModel(db.Model):
     """A relatioal model the represents a mentorship.
-    
     Attributes:
         id: integer primary key that defines the mentorships.
         mentor_id: integer indicates the id of the mentor.
