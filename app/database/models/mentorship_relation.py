@@ -64,7 +64,7 @@ class MentorshipRelationModel(db.Model):
         self.tasks_list = tasks_list
 
     def json(self):
-        """ Returns information of mentorship as a json file. """
+        """ Returns information of mentorship as a json object. """
         return {
             'id': self.id,
             'action_user_id': self.action_user_id,
@@ -84,8 +84,7 @@ class MentorshipRelationModel(db.Model):
 
     @classmethod
     def find_by_id(cls, _id):
-        """ 
-            Returns the mentorship that has the passed id.
+        """Returns the mentorship that has the passed id.
             Args:
                 _id: The id of a mentorship.
         """
