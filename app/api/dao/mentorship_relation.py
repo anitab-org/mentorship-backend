@@ -24,11 +24,6 @@ class MentorshipRelationDAO:
         if not is_valid_user_ids:
             return {'message': 'Your ID has to match either Mentor or Mentee IDs.'}, 400
 
-        # user has to verify its email account before performing any action
-        is_email_verified = UserModel.find_by_id(user_id).is_email_verified
-        if not is_email_verified:
-            return {'message': "Your email isn't verified yet.Please verify it first."}, 400
-
         # mentor_id has to be different from mentee_id
         if mentor_id == mentee_id:
             return {'message': 'You cannot have a mentorship relation with yourself.'}, 400
