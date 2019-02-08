@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from app.utils.decorator_utils import check_mail_confirmation
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
@@ -22,6 +23,11 @@ class MentorshipRelationDAO:
         is_valid_user_ids = action_user_id == mentor_id or action_user_id == mentee_id
         if not is_valid_user_ids:
             return {'message': 'Your ID has to match either Mentor or Mentee IDs.'}, 400
+
+        # user has to verify its email account before performing any action
+        is_email_verified = UserModel.find_by_id(user_id).is_email_verified
+        if not is_email_verified:
+            return {'message': "Your email isn't verified yet.Please verify it first."}, 400
 
         # mentor_id has to be different from mentee_id
         if mentor_id == mentee_id:
@@ -60,9 +66,7 @@ class MentorshipRelationDAO:
         if not mentee_user.need_mentoring:
             return {'message': 'Mentee user is not available to be mentored.'}, 400
 
-
         # TODO add tests for this portion
-
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
         for relation in all_mentor_relations:
             if relation.state is MentorshipRelationState.ACCEPTED:
@@ -92,6 +96,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was sent successfully.'}, 200
 
     @staticmethod
+    @check_mail_confirmation
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
         if pending is not None:
             return {'message': 'Not implemented.'}, 200
@@ -118,6 +123,7 @@ class MentorshipRelationDAO:
         return all_relations, 200
 
     @staticmethod
+    @check_mail_confirmation
     def accept_request(user_id, request_id):
 
         user = UserModel.find_by_id(user_id)
@@ -158,6 +164,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was accepted successfully.'}, 200
 
     @staticmethod
+    @check_mail_confirmation
     def reject_request(user_id, request_id):
 
         user = UserModel.find_by_id(user_id)
@@ -191,6 +198,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
 
     @staticmethod
+    @check_mail_confirmation
     def cancel_relation(user_id, relation_id):
 
         user = UserModel.find_by_id(user_id)
@@ -220,6 +228,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was cancelled successfully.'}, 200
 
     @staticmethod
+    @check_mail_confirmation
     def delete_request(user_id, request_id):
 
         user = UserModel.find_by_id(user_id)
@@ -248,6 +257,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was deleted successfully.'}, 200
 
     @staticmethod
+    @check_mail_confirmation
     def list_past_mentorship_relations(user_id):
 
         user = UserModel.find_by_id(user_id)
@@ -268,6 +278,7 @@ class MentorshipRelationDAO:
         return past_relations, 200
 
     @staticmethod
+    @check_mail_confirmation
     def list_current_mentorship_relation(user_id):
 
         user = UserModel.find_by_id(user_id)
@@ -286,6 +297,7 @@ class MentorshipRelationDAO:
         return {'message': 'You are not in a current mentorship relation.'}, 200
 
     @staticmethod
+    @check_mail_confirmation
     def list_pending_mentorship_relations(user_id):
 
         user = UserModel.find_by_id(user_id)

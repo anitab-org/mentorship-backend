@@ -1,7 +1,6 @@
 from datetime import datetime
 from operator import itemgetter
 
-
 from app.utils.decorator_utils import check_mail_confirmation
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
@@ -74,7 +73,7 @@ class UserDAO:
 
     @staticmethod
     def list_users(user_id, is_verified=None):
-        users_list = UserModel.query.filter(UserModel.id!=user_id).all()
+        users_list = UserModel.query.filter(UserModel.id != user_id).all()
         list_of_users = []
         if is_verified:
             for user in users_list:
