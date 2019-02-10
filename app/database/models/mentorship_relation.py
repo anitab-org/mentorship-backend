@@ -84,7 +84,7 @@ class MentorshipRelationModel(db.Model):
     @classmethod
     def find_by_id(cls, _id):
         """Returns the mentorship that has the passed id.
-            Args:
+           Args:
                 _id: The id of a mentorship.
         """
         return cls.query.filter_by(id=_id).first()
