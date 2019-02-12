@@ -48,7 +48,7 @@ class UserModel(db.Model):
     available_to_mentor = db.Column(db.Boolean)
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
-        ## required fields
+        # required fields
 
         self.name = name
         self.username = username
@@ -63,7 +63,7 @@ class UserModel(db.Model):
         self.is_email_verified = False
         self.registration_date = time.time()
 
-        ## optional fields
+        # optional fields
 
         self.need_mentoring = False
         self.available_to_mentor = False

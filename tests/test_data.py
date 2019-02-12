@@ -16,6 +16,7 @@ user1 = dict(
     available_to_mentor=True,
     need_mentoring=True
 )
+
 user2 = dict(
     name="Userb",
     email="user2@email.com",

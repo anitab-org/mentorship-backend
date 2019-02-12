@@ -33,6 +33,10 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
             terms_and_conditions_checked=user2['terms_and_conditions_checked']
         )
 
+        # making sure that users have verified their email
+        self.first_user.is_email_verified = True
+        self.second_user.is_email_verified = True
+
         # making sure both are available to be mentor or mentee
         self.first_user.need_mentoring = True
         self.first_user.available_to_mentor = True
