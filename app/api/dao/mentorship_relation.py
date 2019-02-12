@@ -61,6 +61,16 @@ class MentorshipRelationDAO:
         if not mentee_user.need_mentoring:
             return {'message': 'Mentee user is not available to be mentored.'}, 400
 
+        # check if both users(mentor and mentee) have verified their email
+        if mentee_user.is_email_verified:
+            pass
+        else:
+            return {'message': 'Mentee has not confirmed his email.'}, 400
+        if mentor_user.is_email_verified:
+            pass
+        else:
+            return {'message': 'Mentor has not confirmed his email.'}, 400
+
         # TODO add tests for this portion
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
         for relation in all_mentor_relations:
