@@ -1,7 +1,7 @@
 from datetime import datetime
 from operator import itemgetter
 
-from app.utils.decorator_utils import check_mail_confirmation
+from app.utils.decorator_utils import user_validation
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
 from app.utils.enum_utils import MentorshipRelationState
@@ -85,7 +85,7 @@ class UserDAO:
         return list_of_users, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def update_user_profile(user_id, data):
 
         user = UserModel.find_by_id(user_id)

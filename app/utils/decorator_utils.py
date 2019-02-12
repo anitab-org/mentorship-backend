@@ -1,9 +1,9 @@
 from app.database.models.user import UserModel
 
 
-def check_mail_confirmation(func_to_validate):
+def user_validation(user_function):
 
-    def to_validate_user(*args, **kwargs):
+    def validator(*args, **kwargs):
 
         if len(kwargs) != 0:
             user = UserModel.find_by_id(kwargs['user_id'])
@@ -11,10 +11,10 @@ def check_mail_confirmation(func_to_validate):
             user = UserModel.find_by_id(args[0])
         if user:
             if user.is_email_verified:
-                return func_to_validate(*args, **kwargs)
+                return user_function(*args, **kwargs)
             else:
-                return {'message': 'You have not confirmed your email.'}, 200
+                return {'message': 'You have not confirmed your email.'}, 400
         else:
             return {'message': 'User does not exist.'}, 404
 
-    return to_validate_user
+    return validator

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from app.utils.decorator_utils import check_mail_confirmation
+from app.utils.decorator_utils import user_validation
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
@@ -101,7 +101,7 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was sent successfully.'}, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
         if pending is not None:
             return {'message': 'Not implemented.'}, 200
@@ -128,15 +128,10 @@ class MentorshipRelationDAO:
         return all_relations, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def accept_request(user_id, request_id):
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -169,15 +164,10 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was accepted successfully.'}, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def reject_request(user_id, request_id):
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -203,15 +193,10 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def cancel_relation(user_id, relation_id):
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
         request = MentorshipRelationModel.find_by_id(relation_id)
 
         # verify if request exists
@@ -233,15 +218,10 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was cancelled successfully.'}, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def delete_request(user_id, request_id):
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -262,15 +242,10 @@ class MentorshipRelationDAO:
         return {'message': 'Mentorship relation was deleted successfully.'}, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def list_past_mentorship_relations(user_id):
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
         now_timestamp = datetime.now().timestamp()
         past_relations = []
         all_relations = user.mentor_relations + user.mentee_relations
@@ -283,15 +258,10 @@ class MentorshipRelationDAO:
         return past_relations, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def list_current_mentorship_relation(user_id):
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
@@ -302,14 +272,11 @@ class MentorshipRelationDAO:
         return {'message': 'You are not in a current mentorship relation.'}, 200
 
     @staticmethod
-    @check_mail_confirmation
+    @user_validation
     def list_pending_mentorship_relations(user_id):
 
         user = UserModel.find_by_id(user_id)
 
-        # verify if user exists
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
 
         now_timestamp = datetime.now().timestamp()
         pending_requests = []
