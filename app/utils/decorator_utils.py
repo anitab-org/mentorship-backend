@@ -7,7 +7,7 @@ def user_validation(user_function):
     def validator(*args, **kwargs):
 
         #  check if the given paramenters are in form of dict (to get user_id)
-        if len(kwargs) != 0:
+        if kwargs:
 
             # if parameters are given in form of dict
             user = UserModel.find_by_id(kwargs['user_id'])

@@ -65,11 +65,11 @@ class MentorshipRelationDAO:
         if mentee_user.is_email_verified:
             pass
         else:
-            return {'message': 'Mentee has not confirmed his email.'}, 400
+            return {'message': 'Mentee has not confirmed email.'}, 400
         if mentor_user.is_email_verified:
             pass
         else:
-            return {'message': 'Mentor has not confirmed his email.'}, 400
+            return {'message': 'Mentor has not confirmed email.'}, 400
 
         # TODO add tests for this portion
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
