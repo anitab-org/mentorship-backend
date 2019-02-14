@@ -21,44 +21,63 @@ class MentorshipRelationDAO:
 
         # user_id has to match either mentee_id or mentor_id
         is_valid_user_ids = action_user_id == mentor_id or action_user_id == mentee_id
-        if not is_valid_user_ids:
+        if is_valid_user_ids:
+            pass
+        else:
             return {'message': 'Your ID has to match either Mentor or Mentee IDs.'}, 400
 
         # mentor_id has to be different from mentee_id
-        if mentor_id == mentee_id:
+        if mentor_id != mentee_id:
+            pass
+        else:
             return {'message': 'You cannot have a mentorship relation with yourself.'}, 400
+
 
         end_date_datetime = datetime.fromtimestamp(end_date_timestamp)
 
         now_datetime = datetime.now()
-        if end_date_datetime < now_datetime:
+        if end_date_datetime > now_datetime:
+            pass
+        else:
             return {'message': 'End date is invalid since date has passed.'}, 400
 
         # business logic constraints
 
         max_relation_duration = end_date_datetime - now_datetime
-        if max_relation_duration > self.MAXIMUM_MENTORSHIP_DURATION:
+        if max_relation_duration < self.MAXIMUM_MENTORSHIP_DURATION:
+            pass
+        else:
             return {'message': 'Mentorship relation maximum duration is 6 months.'}, 400
 
-        if max_relation_duration < self.MINIMUM_MENTORSHIP_DURATION:
+        if max_relation_duration > self.MINIMUM_MENTORSHIP_DURATION:
+            pass
+        else:
             return {'message': 'Mentorship relation minimum duration is 4 week.'}, 400
 
         # validate if mentor user exists
         mentor_user = UserModel.find_by_id(mentor_id)
-        if mentor_user is None:
+        if mentor_user:
+            pass
+        else:
             return {'message': 'Mentor user does not exist.'}, 404
 
         # validate if mentor is available to mentor
-        if not mentor_user.available_to_mentor:
+        if mentor_user.available_to_mentor:
+            pass
+        else:
             return {'message': 'Mentor user is not available to mentor.'}, 400
 
         # validate if mentee user exists
         mentee_user = UserModel.find_by_id(mentee_id)
-        if mentee_user is None:
+        if mentee_user:
+            pass
+        else:
             return {'message': 'Mentee user does not exist.'}, 404
 
         # validate if mentee is wants to be mentored
-        if not mentee_user.need_mentoring:
+        if mentee_user.need_mentoring:
+            pass
+        else:
             return {'message': 'Mentee user is not available to be mentored.'}, 400
 
         # check if both users(mentor and mentee) have verified their email
@@ -103,22 +122,28 @@ class MentorshipRelationDAO:
     @staticmethod
     @user_validation
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
-        if pending is not None:
+        if pending is None:
+            pass
+        else:
             return {'message': 'Not implemented.'}, 200
-        if completed is not None:
+        if completed is None:
+            pass
+        else:
             return {'message': 'Not implemented.'}, 200
-        if cancelled is not None:
+        if cancelled is None:
+            pass
+        else:
             return {'message': 'Not implemented.'}, 200
-        if accepted is not None:
+        if accepted is None:
+            pass
+        else:
             return {'message': 'Not implemented.'}, 200
-        if rejected is not None:
+        if rejected is None:
+            pass
+        else:
             return {'message': 'Not implemented.'}, 200
 
         user = UserModel.find_by_id(user_id)
-
-        if user is None:
-            return {'message': 'User does not exist.'}, 404
-
         all_relations = user.mentor_relations + user.mentee_relations
 
         # add extra field for api response
@@ -135,19 +160,27 @@ class MentorshipRelationDAO:
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if request is None:
+        if request:
+            pass
+        else:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state is MentorshipRelationState.PENDING:
+            pass
+        else:
             return {'message': 'This mentorship relation is not in the pending state.'}, 400
 
         # verify if I'm the receiver of the request
-        if request.action_user_id is user_id:
+        if request.action_user_id != user_id:
+            pass
+        else:
             return {'message': 'You cannot accept a mentorship request sent by yourself.'}, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if (request.mentee_id is user_id or request.mentor_id is user_id):
+            pass
+        else:
             return {'message': 'You cannot accept a mentorship relation where you are not involved.'}, 400
 
         requests = user.mentee_relations + user.mentor_relations
@@ -171,19 +204,27 @@ class MentorshipRelationDAO:
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if request is None:
+        if request:
+            pass
+        else:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state is MentorshipRelationState.PENDING:
+            pass
+        else:
             return {'message': 'This mentorship relation is not in the pending state.'}, 400
 
         # verify if I'm the receiver of the request
-        if request.action_user_id is user_id:
+        if request.action_user_id != user_id:
+            pass
+        else:
             return {'message': 'You cannot reject a mentorship request sent by yourself.'}, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if (request.mentee_id is user_id or request.mentor_id is user_id):
+            pass
+        else:
             return {'message': 'You cannot reject a mentorship relation where you are not involved.'}, 400
 
         # All was checked
@@ -200,15 +241,21 @@ class MentorshipRelationDAO:
         request = MentorshipRelationModel.find_by_id(relation_id)
 
         # verify if request exists
-        if request is None:
+        if request:
+            pass
+        else:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.ACCEPTED:
+        if request.state is MentorshipRelationState.ACCEPTED:
+            pass
+        else:
             return {'message': 'This mentorship relation is not in the accepted state.'}, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if (request.mentee_id is user_id or request.mentor_id is user_id):
+            pass
+        else:
             return {'message': 'You cannot cancel a mentorship relation where you are not involved.'}, 400
 
         # All was checked
@@ -225,15 +272,21 @@ class MentorshipRelationDAO:
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if request is None:
+        if request:
+            pass
+        else:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state is MentorshipRelationState.PENDING:
+            pass
+        else:
             return {'message': 'This mentorship relation is not in the pending state.'}, 400
 
         # verify if user created the mentorship request
-        if request.action_user_id is not user_id:
+        if request.action_user_id is user_id:
+            pass
+        else:
             return {'message': 'You cannot delete a mentorship request that you did not create.'}, 400
 
         # All was checked
