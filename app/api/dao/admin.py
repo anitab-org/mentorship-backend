@@ -1,10 +1,11 @@
 from app.database.models.user import UserModel
-
+from app.utils.decorator_utils import email_verification_required
 
 class AdminDAO:
     """Data Access Object for Admin functionalities."""
 
     @staticmethod
+    @email_verification_required
     def assign_new_user(assigner_user_id, data):
         """Creates a new admin.
 
@@ -38,6 +39,7 @@ class AdminDAO:
         return {"message": "User does not exist."}, 404
 
     @staticmethod
+    @email_verification_required
     def revoke_admin_user(revoker_user_id, data):
         """Revokes the admin status of an user.
 
