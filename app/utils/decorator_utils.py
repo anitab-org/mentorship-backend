@@ -4,8 +4,7 @@ This module is used to define decorators for the app
 from app.database.models.user import UserModel
 
 
-# definition of decorator to validate user
-def user_validation(user_function):
+def email_verification_required(user_function):
     """
     This function is used to validate the input function i.e. user_function
     It will check if the user given as a parameter to user_function
@@ -13,7 +12,7 @@ def user_validation(user_function):
     """
 
     # function to validate the input function i.e. user_function
-    def validator(*args, **kwargs):
+    def check_verification(*args, **kwargs):
 
         #  check if the given paramenters are in form of dict (to get user_id)
         if kwargs:
@@ -22,6 +21,7 @@ def user_validation(user_function):
         else:
             # if parameters are given as args
             user = UserModel.find_by_id(args[0])
+
         # verify if user exists
         if user:
             # verify if user has verified his/her email
@@ -33,4 +33,4 @@ def user_validation(user_function):
         else:
             return {'message': 'User does not exist.'}, 404
 
-    return validator
+    return check_verification
