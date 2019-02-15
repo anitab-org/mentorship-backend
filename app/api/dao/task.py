@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from app.utils.decorator_utils import email_verification_required
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.enum_utils import MentorshipRelationState
@@ -8,6 +9,7 @@ from app.utils.enum_utils import MentorshipRelationState
 class TaskDAO:
 
     @staticmethod
+    @email_verification_required
     def create_task(user_id, mentorship_relation_id, data):
         description = data['description']
 
@@ -29,6 +31,7 @@ class TaskDAO:
         return {"message": "Task was created successfully."}, 200
 
     @staticmethod
+    @email_verification_required
     def list_tasks(user_id, mentorship_relation_id):
 
         user = UserModel.find_by_id(user_id)
@@ -47,6 +50,7 @@ class TaskDAO:
         return all_tasks
 
     @staticmethod
+    @email_verification_required
     def delete_task(user_id, mentorship_relation_id, task_id):
 
         user = UserModel.find_by_id(user_id)
@@ -69,6 +73,7 @@ class TaskDAO:
         return {'message': 'Task was deleted successfully.'}, 200
 
     @staticmethod
+    @email_verification_required
     def complete_task(user_id, mentorship_relation_id, task_id):
 
         user = UserModel.find_by_id(user_id)
