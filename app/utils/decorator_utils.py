@@ -1,11 +1,16 @@
-'''
+"""
 This module is used to define decorators for the app
-'''
+"""
 from app.database.models.user import UserModel
 
 
 # definition of decorator to validate user
 def user_validation(user_function):
+    """
+    This function is used to validate the input function i.e. user_function
+    It will check if the user given as a parameter to user_function
+    exists and have its email verified.
+    """
 
     # function to validate the input function i.e. user_function
     def validator(*args, **kwargs):
