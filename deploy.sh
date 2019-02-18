@@ -47,3 +47,14 @@ else
     echo "Publishing failed."
     exit 2
 fi
+
+# Running Pylint
+find *.py -depth -exec pylint {} \; | 
+grep -oE "\-?[0-9]+\.[0-9]+" | 
+awk 'NR==1 || NR % 4 == 0' | 
+sed 's/...$//' |
+while read line ; do
+   if (( $(echo "$line > 7.00" |bc -l) )); then
+   exit 2
+   fi
+done
