@@ -5,7 +5,6 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.enum_utils import MentorshipRelationState
 
-
 class TaskDAO:
 
     @staticmethod
