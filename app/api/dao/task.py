@@ -20,7 +20,7 @@ class TaskDAO:
         if relation is None:
             return {'message': 'Mentorship relation does not exist.'}, 404
 
-        if relation.state is not MentorshipRelationState.ACCEPTED:
+        if relation.state != MentorshipRelationState.ACCEPTED:
             return {'message': 'Mentorship relation is not in the accepted state.'}, 400
 
         now_timestamp = datetime.now().timestamp()

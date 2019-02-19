@@ -95,15 +95,15 @@ class MentorshipRelationDAO:
     @staticmethod
     @email_verification_required
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
-        if pending is not None:
+        if pending != None:
             return {'message': 'Not implemented.'}, 200
-        if completed is not None:
+        if completed != None:
             return {'message': 'Not implemented.'}, 200
-        if cancelled is not None:
+        if cancelled != None:
             return {'message': 'Not implemented.'}, 200
-        if accepted is not None:
+        if accepted != None:
             return {'message': 'Not implemented.'}, 200
-        if rejected is not None:
+        if rejected != None:
             return {'message': 'Not implemented.'}, 200
 
         user = UserModel.find_by_id(user_id)
@@ -127,22 +127,22 @@ class MentorshipRelationDAO:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return {'message': 'This mentorship relation is not in the pending state.'}, 400
 
         # verify if I'm the receiver of the request
-        if request.action_user_id is user_id:
+        if request.action_user_id == user_id:
             return {'message': 'You cannot accept a mentorship request sent by yourself.'}, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return {'message': 'You cannot accept a mentorship relation where you are not involved.'}, 400
 
         requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
         for request in requests:
-            if request.state is MentorshipRelationState.ACCEPTED:
+            if request.state == MentorshipRelationState.ACCEPTED:
                 return {'message': 'You are currently involved in a mentorship relation.'}, 400
 
         # All was checked
@@ -163,15 +163,15 @@ class MentorshipRelationDAO:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return {'message': 'This mentorship relation is not in the pending state.'}, 400
 
         # verify if I'm the receiver of the request
-        if request.action_user_id is user_id:
+        if request.action_user_id == user_id:
             return {'message': 'You cannot reject a mentorship request sent by yourself.'}, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return {'message': 'You cannot reject a mentorship relation where you are not involved.'}, 400
 
         # All was checked
@@ -179,7 +179,7 @@ class MentorshipRelationDAO:
         request.save_to_db()
 
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
-        
+
     @staticmethod
     @email_verification_required
     def cancel_relation(user_id, relation_id):
@@ -192,11 +192,11 @@ class MentorshipRelationDAO:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.ACCEPTED:
+        if request.state != MentorshipRelationState.ACCEPTED:
             return {'message': 'This mentorship relation is not in the accepted state.'}, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return {'message': 'You cannot cancel a mentorship relation where you are not involved.'}, 400
 
         # All was checked
@@ -209,7 +209,6 @@ class MentorshipRelationDAO:
     @email_verification_required
     def delete_request(user_id, request_id):
 
-        user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -217,11 +216,11 @@ class MentorshipRelationDAO:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return {'message': 'This mentorship relation is not in the pending state.'}, 400
 
         # verify if user created the mentorship request
-        if request.action_user_id is not user_id:
+        if request.action_user_id != user_id:
             return {'message': 'You cannot delete a mentorship request that you did not create.'}, 400
 
         # All was checked
