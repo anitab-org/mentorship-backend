@@ -179,7 +179,7 @@ class MentorshipRelationDAO:
         request.save_to_db()
 
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
-        
+    
     @staticmethod
     @email_verification_required
     def cancel_relation(user_id, relation_id):
