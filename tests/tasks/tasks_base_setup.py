@@ -38,7 +38,7 @@ class TasksBaseTestCase(BaseTestCase):
         self.first_user.is_email_verified = True
         self.second_user.need_mentoring = True
         self.second_user.available_to_mentor = True
-        self.second_user.is_email_verified = True 
+        self.second_user.is_email_verified = True
         self.notes_example = 'description of a good mentorship relation'
 
         self.now_datetime = datetime.now()
