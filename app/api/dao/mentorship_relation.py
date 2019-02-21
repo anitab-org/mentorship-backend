@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+is not Nonefrom datetime import datetime, timedelta
 
 from app.utils.decorator_utils import email_verification_required
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -95,15 +95,15 @@ class MentorshipRelationDAO:
     @staticmethod
     @email_verification_required
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
-        if pending != None:
+        if pending is not None:
             return {'message': 'Not implemented.'}, 200
-        if completed != None:
+        if completed is not None:
             return {'message': 'Not implemented.'}, 200
-        if cancelled != None:
+        if cancelled is not None:
             return {'message': 'Not implemented.'}, 200
-        if accepted != None:
+        if accepted is not None:
             return {'message': 'Not implemented.'}, 200
-        if rejected != None:
+        if rejected is not None:
             return {'message': 'Not implemented.'}, 200
 
         user = UserModel.find_by_id(user_id)
@@ -179,7 +179,7 @@ class MentorshipRelationDAO:
         request.save_to_db()
 
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
-        
+
     @staticmethod
     @email_verification_required
     def cancel_relation(user_id, relation_id):
@@ -251,7 +251,7 @@ class MentorshipRelationDAO:
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
-            if relation.state is MentorshipRelationState.ACCEPTED:
+            if relation.state == MentorshipRelationState.ACCEPTED:
                 setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 return relation
 
@@ -267,7 +267,7 @@ class MentorshipRelationDAO:
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
-            if relation.state is MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
+            if relation.state == MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
                 setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 pending_requests += [relation]
 
