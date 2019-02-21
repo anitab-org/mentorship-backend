@@ -3,6 +3,7 @@ This module is used to define decorators for the app
 """
 from app.database.models.user import UserModel
 
+
 def email_verification_required(user_function):
     """
     This function is used to validate the input function i.e. user_function
