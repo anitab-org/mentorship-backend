@@ -163,7 +163,7 @@ class UserDAO:
 
         email_from_token = confirm_token(token)
 
-        if email_from_token == False or email_from_token == None:
+        if email_from_token is False or email_from_token is None:
             return {'message': 'The confirmation link is invalid or the token has expired.'}, 400
 
         user = UserModel.find_by_email(email_from_token)

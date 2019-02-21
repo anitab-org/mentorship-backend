@@ -13,11 +13,11 @@ class TaskDAO:
         description = data['description']
 
         user = UserModel.find_by_id(user_id)
-        if user == None:
+        if user is None:
             return {'message': 'User does not exist.'}, 404
 
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
-        if relation == None:
+        if relation is None:
             return {'message': 'Mentorship relation does not exist.'}, 404
 
         if relation.state != MentorshipRelationState.ACCEPTED:
@@ -34,14 +34,14 @@ class TaskDAO:
     def list_tasks(user_id, mentorship_relation_id):
 
         user = UserModel.find_by_id(user_id)
-        if user == None:
+        if user is None:
             return {'message': 'User does not exist.'}, 404
 
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
-        if relation == None:
+        if relation is None:
             return {'message': 'Mentorship relation does not exist.'}, 404
 
-        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
+        if not (user_id is relation.mentee_id or user_id is relation.mentor_id):
             return {'message': 'You are not involved in this mentorship relation.'}, 401
 
         all_tasks = relation.tasks_list.tasks
@@ -53,18 +53,18 @@ class TaskDAO:
     def delete_task(user_id, mentorship_relation_id, task_id):
 
         user = UserModel.find_by_id(user_id)
-        if user == None:
+        if user is None:
             return {'message': 'User does not exist.'}, 404
 
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
-        if relation == None:
+        if relation is None:
             return {'message': 'Mentorship relation does not exist.'}, 404
 
         task = relation.tasks_list.find_task_by_id(task_id)
-        if task == None:
+        if task is None:
             return {'message': 'Task does not exist.'}, 404
 
-        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
+        if not (user_id is relation.mentee_id or user_id is relation.mentor_id):
             return {'message': 'You are not involved in this mentorship relation.'}, 401
 
         relation.tasks_list.delete_task(task_id)
@@ -76,18 +76,18 @@ class TaskDAO:
     def complete_task(user_id, mentorship_relation_id, task_id):
 
         user = UserModel.find_by_id(user_id)
-        if user == None:
+        if user is None:
             return {'message': 'User does not exist.'}, 404
 
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
-        if relation == None:
+        if relation is None:
             return {'message': 'Mentorship relation does not exist.'}, 404
 
-        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
+        if not (user_id is relation.mentee_id or user_id is relation.mentor_id):
             return {'message': 'You are not involved in this mentorship relation.'}, 401
 
         task = relation.tasks_list.find_task_by_id(task_id)
-        if task == None:
+        if task is None:
             return {'message': 'Task does not exist.'}, 404
 
         if task.get('is_done'):
