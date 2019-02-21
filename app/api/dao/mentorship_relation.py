@@ -45,7 +45,7 @@ class MentorshipRelationDAO:
 
         # validate if mentor user exists
         mentor_user = UserModel.find_by_id(mentor_id)
-        if mentor_user is None:
+        if mentor_user == None:
             return {'message': 'Mentor user does not exist.'}, 404
 
         # validate if mentor is available to mentor
@@ -54,7 +54,7 @@ class MentorshipRelationDAO:
 
         # validate if mentee user exists
         mentee_user = UserModel.find_by_id(mentee_id)
-        if mentee_user is None:
+        if mentee_user == None:
             return {'message': 'Mentee user does not exist.'}, 404
 
         # validate if mentee is wants to be mentored
@@ -66,12 +66,12 @@ class MentorshipRelationDAO:
 
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
         for relation in all_mentor_relations:
-            if relation.state is MentorshipRelationState.ACCEPTED:
+            if relation.state == MentorshipRelationState.ACCEPTED:
                 return {'message': 'Mentor user is already in a relationship.'}, 400
 
         all_mentee_relations = mentee_user.mentor_relations + mentee_user.mentee_relations
         for relation in all_mentee_relations:
-            if relation.state is MentorshipRelationState.ACCEPTED:
+            if relation.state == MentorshipRelationState.ACCEPTED:
                 return {'message': 'Mentee user is already in a relationship.'}, 400
 
         # All validations were checked
@@ -118,12 +118,11 @@ class MentorshipRelationDAO:
     @staticmethod
     @email_verification_required
     def accept_request(user_id, request_id):
-
         user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if request is None:
+        if request == None:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
@@ -154,12 +153,11 @@ class MentorshipRelationDAO:
     @staticmethod
     @email_verification_required
     def reject_request(user_id, request_id):
-
         user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if request is None:
+        if request == None:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
@@ -179,16 +177,15 @@ class MentorshipRelationDAO:
         request.save_to_db()
 
         return {'message': 'Mentorship relation was rejected successfully.'}, 200
-        
+
     @staticmethod
     @email_verification_required
     def cancel_relation(user_id, relation_id):
-
-        user = UserModel.find_by_id(user_id)
+        #user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(relation_id)
 
         # verify if request exists
-        if request is None:
+        if request == None:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
@@ -213,7 +210,7 @@ class MentorshipRelationDAO:
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if request is None:
+        if request == None:
             return {'message': 'This mentorship relation request does not exist.'}, 404
 
         # verify if request is in pending state
@@ -232,7 +229,6 @@ class MentorshipRelationDAO:
     @staticmethod
     @email_verification_required
     def list_past_mentorship_relations(user_id):
-
         user = UserModel.find_by_id(user_id)
         now_timestamp = datetime.now().timestamp()
         past_relations = []
@@ -248,12 +244,11 @@ class MentorshipRelationDAO:
     @staticmethod
     @email_verification_required
     def list_current_mentorship_relation(user_id):
-
         user = UserModel.find_by_id(user_id)
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
-            if relation.state is MentorshipRelationState.ACCEPTED:
+            if relation.state == MentorshipRelationState.ACCEPTED:
                 setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 return relation
 
@@ -262,14 +257,13 @@ class MentorshipRelationDAO:
     @staticmethod
     @email_verification_required
     def list_pending_mentorship_relations(user_id):
-
         user = UserModel.find_by_id(user_id)
         now_timestamp = datetime.now().timestamp()
         pending_requests = []
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
-            if relation.state is MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
+            if relation.state == MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
                 setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 pending_requests += [relation]
 
