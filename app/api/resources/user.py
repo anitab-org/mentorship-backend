@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import request
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required, jwt_refresh_token_required, create_access_token, create_refresh_token, get_jwt_identity
 from flask_restplus import Resource, marshal, Namespace
 
 from app.api.validations.user import *
@@ -213,6 +213,32 @@ class UserResendEmailConfirmation(Resource):
         return {"message": "Check your email, a new verification email was sent."}, 200
 
 
+@users_ns.route('refresh')
+class RefreshUser(Resource):
+
+    @classmethod
+    @jwt_refresh_token_required
+    @users_ns.doc('refresh')
+    @users_ns.response(200, 'Successful refresh', refresh_response_body_model)
+    @users_ns.expect(auth_header_parser)
+    def post(cls):
+        """Refresh user's access
+
+        The return value is an access token and the expiry timestamp.
+        The token is valid for 1 week.
+        """
+        user_id = get_jwt_identity()
+        access_token = create_access_token(identity=user_id)
+
+        from run import application
+        access_expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+
+        return {
+            'access_token': access_token,
+            'access_expiry': access_expiry.timestamp(),
+        }, 200
+
+
 @users_ns.route('login')
 class LoginUser(Resource):
 
@@ -249,13 +275,17 @@ class LoginUser(Resource):
             return {'message': 'Please verify your email before login.'}, 403
 
         access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
 
         from run import application
-        expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+        access_expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+        refresh_expiry = datetime.utcnow() + application.config.get('JWT_REFRESH_TOKEN_EXPIRES')
 
         return {
             'access_token': access_token,
-            'expiry': expiry.timestamp()
+            'access_expiry': access_expiry.timestamp(),
+            'refresh_token': refresh_token,
+            'refresh_expiry': refresh_expiry.timestamp(),
         }, 200
 
 
