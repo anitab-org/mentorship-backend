@@ -5,6 +5,14 @@ from app.database.sqlalchemy_extension import db
 
 
 class TasksListModel(db.Model):
+    """Model representation of a list of tasks.
+    
+    Attributes:
+        id: Id of the list of tasks.
+        tasks: A lists of tasks.
+        next_task_id: Id of the next task added to the current list of tasks. 
+    """
+
     __tablename__ = 'tasks_list'
     __table_args__ = {'extend_existing': True}
 
@@ -13,6 +21,14 @@ class TasksListModel(db.Model):
     next_task_id = db.Column(db.Integer)
 
     def __init__(self, tasks=None):
+        """Initializes tasks.
+
+        Args:
+            tasks: A list of tasks.
+        
+        Raises:
+            A Value Error if the task is not initialized.
+        """
 
         if tasks is None:
             self.tasks = []
@@ -25,6 +41,14 @@ class TasksListModel(db.Model):
                 raise ValueError(TypeError)
 
     def add_task(self, description, created_at, is_done=False, completed_at=None):
+        """Adds a task to the list of tasks.
+        
+        Args:
+            description: A description of the task added to the list of tasks.
+            created_at: Date on which the task is created.
+            is_done: Boolean specifying completion of the task.
+            completed_at: Date on which task is completed.
+        """
 
         task = {
             TasksFields.ID.value: self.next_task_id,
@@ -37,6 +61,11 @@ class TasksListModel(db.Model):
         self.tasks = self.tasks + [task]
 
     def delete_task(self, task_id):
+        """Deletes a task from the list of tasks.
+
+        Args:
+            task_id: Id of the task to be deleted.
+        """
 
         new_list = []
         for task in self.tasks:
@@ -47,6 +76,14 @@ class TasksListModel(db.Model):
         self.save_to_db()
 
     def update_task(self, task_id, description=None, is_done=None, completed_at=None):
+        """Updates a task.
+        
+        Args:
+            description: A description of the task.
+            created_at: Date on which the task is created.
+            is_done: Boolean specifying completion of the task.
+            completed_at: Date on which task is completed.
+        """
 
         new_list = []
         for task in self.tasks:
@@ -70,6 +107,14 @@ class TasksListModel(db.Model):
         self.save_to_db()
 
     def find_task_by_id(self, task_id):
+        """Returns the task that has the specified id.
+        
+        Args:
+            task_id: Id of the task.
+
+        Returns: 
+            The task instance.    
+        """
 
         for task in self.tasks:
             if task[TasksFields.ID.value] == task_id:
@@ -77,9 +122,21 @@ class TasksListModel(db.Model):
         return None
 
     def is_empty(self):
+        """Checks if the list of tasks is empty.
+
+        Returns:
+            Boolean; True if the task is empty, False otherwise.
+        """
+
         return len(self.tasks) == 0
 
     def json(self):
+        """Creates json object of the attributes of list of tasks.
+
+        Returns:
+            Json objects of attributes of list of tasks.
+        """
+
         return {
             'id': self.id,
             'mentorship_relation_id': self.mentorship_relation_id,
@@ -88,23 +145,47 @@ class TasksListModel(db.Model):
         }
 
     def __repr__(self):
+        """Creates a representation of an object.
+        
+        Returns:
+            A string representation of the task object.
+        """
+        
         return "Task | id = %s; tasks = %s; next task id = %s" % (self.id, self.tasks, self.next_task_id)
 
     @classmethod
     def find_by_id(cls, _id):
+        """Finds a task with the specified id.
+        
+        Returns:
+            The task with the specified id.
+        """
+        
         return cls.query.filter_by(id=_id).first()
 
     def save_to_db(self):
+        """Adds a task to the database."""
         db.session.add(self)
         db.session.commit()
 
     def delete_from_db(self):
+        """Deletes a task from the database."""
         db.session.delete(self)
         db.session.commit()
 
 
 @unique
 class TasksFields(Enum):
+    """Represents a task attributes' name.
+    
+    Attributes:
+        ID: Id of a task.
+        DESCRIPTION: Description of a task.
+        IS_DONE: Boolean specifying the completion of the task.
+        COMPLETED_AT: The date on which the task is completed. 
+        CREATED_AT: The date on which the task was created.
+    """
+    
     ID = 'id'
     DESCRIPTION = 'description'
     IS_DONE = 'is_done'
@@ -112,4 +193,5 @@ class TasksFields(Enum):
     CREATED_AT = 'created_at'
 
     def values(self):
+    """Returns a list containing a task."""    
         return list(map(str, self))
