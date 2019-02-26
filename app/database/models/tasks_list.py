@@ -9,8 +9,8 @@ class TasksListModel(db.Model):
     
     Attributes:
         id: Id of the list of tasks.
-        tasks: A lists of tasks.
-        next_task_id: Id of the next task added to the current list of tasks. 
+        tasks: A list of tasks.
+        next_task_id: Id of the next task added to the list of tasks. 
     """
 
     __tablename__ = 'tasks_list'
@@ -44,7 +44,7 @@ class TasksListModel(db.Model):
         """Adds a task to the list of tasks.
         
         Args:
-            description: A description of the task added to the list of tasks.
+            description: A description of the task added.
             created_at: Date on which the task is created.
             is_done: Boolean specifying completion of the task.
             completed_at: Date on which task is completed.
@@ -193,5 +193,5 @@ class TasksFields(Enum):
     CREATED_AT = 'created_at'
 
     def values(self):
-    """Returns a list containing a task."""    
+        """Returns a list containing a task."""
         return list(map(str, self))
