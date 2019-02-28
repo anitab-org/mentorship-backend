@@ -38,6 +38,10 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
+export SUPERUSER_NAME=<superuser-name>
+export SUPERUSER_USERNAME=<superuser-username>
+export SUPERUSER_EMAIL=<superuser-email>
+export SUPERUSER_PASSWORD=<superuser-password>
 ```
 
 5. Run the app:
