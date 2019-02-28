@@ -19,7 +19,9 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.user1 = UserModel("User1", "user1", "__test__", "test@email.com", True)
         self.user2 = UserModel("User2", "user2", "__test__", "test2@email.com", True)
         self.user1.available_to_mentor = True
+        self.user1.is_email_verified = True
         self.user2.need_mentoring = True
+        self.user2.is_email_verified = True
 
         db.session.add(self.user1)
         db.session.add(self.user2)

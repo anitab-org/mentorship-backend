@@ -3,6 +3,7 @@ from datetime import datetime
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
+from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
 
@@ -10,6 +11,7 @@ class TaskDAO:
     """Data Access Object for Task functionalities."""
 
     @staticmethod
+    @email_verification_required
     def create_task(user_id, mentorship_relation_id, data):
         """Creates a new task.
 
@@ -29,15 +31,12 @@ class TaskDAO:
         description = data['description']
 
         user = UserModel.find_by_id(user_id)
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
 
-        if relation.state is not MentorshipRelationState.ACCEPTED:
-            return messages.MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE, 400
+        if relation.state != MentorshipRelationState.ACCEPTED:
+            return {'message': 'Mentorship relation is not in the accepted state.'}, 400
 
         now_timestamp = datetime.now().timestamp()
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
@@ -46,6 +45,7 @@ class TaskDAO:
         return messages.TASK_WAS_CREATED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def list_tasks(user_id, mentorship_relation_id):
         """Retrieves all tasks of a user in a mentorship relation.
 
@@ -62,9 +62,6 @@ class TaskDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
@@ -77,6 +74,7 @@ class TaskDAO:
         return all_tasks
 
     @staticmethod
+    @email_verification_required
     def delete_task(user_id, mentorship_relation_id, task_id):
         """Deletes a specified task from a mentorship relation.
 
@@ -94,9 +92,6 @@ class TaskDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
@@ -113,6 +108,7 @@ class TaskDAO:
         return messages.TASK_WAS_DELETED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def complete_task(user_id, mentorship_relation_id, task_id):
         """Marks a task as completed.
 
@@ -130,9 +126,6 @@ class TaskDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404

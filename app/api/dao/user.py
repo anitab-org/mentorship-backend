@@ -4,6 +4,7 @@ from operator import itemgetter
 from app import messages
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
+from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
 
@@ -40,6 +41,7 @@ class UserDAO:
         return messages.USER_WAS_CREATED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def delete_user(user_id):
         user = UserModel.find_by_id(user_id)
 
@@ -57,6 +59,7 @@ class UserDAO:
         return messages.USER_DOES_NOT_EXIST, 404
 
     @staticmethod
+    @email_verification_required
     def get_user(user_id):
         return UserModel.find_by_id(user_id)
 
@@ -82,6 +85,7 @@ class UserDAO:
         return list_of_users, 200
 
     @staticmethod
+    @email_verification_required
     def update_user_profile(user_id, data):
 
         user = UserModel.find_by_id(user_id)
@@ -142,6 +146,7 @@ class UserDAO:
         return messages.USER_SUCCESSFULLY_UPDATED, 200
 
     @staticmethod
+    @email_verification_required
     def change_password(user_id, data):
         current_password = data['current_password']
         new_password = data['new_password']
@@ -190,6 +195,7 @@ class UserDAO:
         return None
 
     @staticmethod
+    @email_verification_required
     def get_achievements(user_id):
         """Shows a subset of the user's achievements
 
