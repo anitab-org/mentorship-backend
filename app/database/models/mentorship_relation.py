@@ -5,6 +5,7 @@ from app.utils.enum_utils import MentorshipRelationState
 
 
 class MentorshipRelationModel(db.Model):
+    
     """Data Model representation of a mentorship relation.
     Attributes:
         id: integer primary key that defines the mentorships.
@@ -63,6 +64,7 @@ class MentorshipRelationModel(db.Model):
         self.tasks_list = tasks_list
 
     def json(self):
+        
         """ Returns information of mentorship as a json object. """
         return {
             'id': self.id,
@@ -83,6 +85,7 @@ class MentorshipRelationModel(db.Model):
 
     @classmethod
     def find_by_id(cls, _id):
+        
         """Returns the mentorship that has the passed id.
            Args:
                 _id: The id of a mentorship.
@@ -91,16 +94,19 @@ class MentorshipRelationModel(db.Model):
 
     @classmethod
     def is_empty(cls):
+        
         """ Returns True if the mentorship model is empty, and False otherwise. """
         return cls.query.first() is None
 
     def save_to_db(self):
+        
         """ Saves the model to the database. """
         db.session.add(self)
         db.session.commit()
 
     def delete_from_db(self):
-        """ Deletes the model from the database. """
+        
+        """ Deletes the record of mentorship relation from the database. """
         self.tasks_list.delete_from_db()
         db.session.delete(self)
         db.session.commit()
