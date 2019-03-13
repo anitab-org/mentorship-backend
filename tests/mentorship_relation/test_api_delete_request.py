@@ -2,6 +2,7 @@ import json
 import unittest
 from datetime import datetime, timedelta
 
+from app import messages
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -49,7 +50,7 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
                                           headers=get_test_request_header(self.first_user.id))
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual({'message': 'Mentorship relation was deleted successfully.'},
+        self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY,
                          json.loads(response.data))
         self.assertIsNone(MentorshipRelationModel.query.filter_by(id=request_id).first())
 
@@ -64,7 +65,7 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
                                           headers=get_test_request_header(self.second_user.id))
 
         self.assertEqual(400, response.status_code)
-        self.assertEqual({'message': 'You cannot delete a mentorship request that you did not create.'},
+        self.assertDictEqual(messages.CANT_DELETE_UNINVOLVED_REQUEST,
                          json.loads(response.data))
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=request_id).first())
 

@@ -3,12 +3,12 @@ from datetime import timedelta
 
 from flask import json
 
+from app import messages
 from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 from tests.test_utils import get_test_request_header
-
 
 class TestUserRefreshApi(BaseTestCase):
 
@@ -40,7 +40,7 @@ class TestUserRefreshApi(BaseTestCase):
             self.assertEqual(200, response.status_code)
 
     def test_user_refresh_without_header(self):
-        expected_response = {'message': 'The authorization token is missing!'}
+        expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.post('/refresh', follow_redirects=True)
 
         self.assertEqual(401, actual_response.status_code)
@@ -52,7 +52,7 @@ class TestUserRefreshApi(BaseTestCase):
             auth_header = {
                 'Authorization': 'Bearer {}'.format(refresh_token)
             }
-            expected_response = {'message': 'The token is invalid!'}
+            expected_response = messages.TOKEN_IS_INVALID
             actual_response = self.client.post('/refresh', headers=auth_header, follow_redirects=True,
                                                content_type='application/json')
 
@@ -62,7 +62,7 @@ class TestUserRefreshApi(BaseTestCase):
     def test_user_refresh_expired_token(self):
         auth_header = get_test_request_header(self.first_user.id, token_expiration_delta=timedelta(minutes=-5),
                                               refresh=True)
-        expected_response = {'message': 'The token has expired! Please, login again or refresh it.'}
+        expected_response = messages.TOKEN_HAS_EXPIRED
         actual_response = self.client.post('/refresh', follow_redirects=True, headers=auth_header,
                                            content_type='application/json')
 
