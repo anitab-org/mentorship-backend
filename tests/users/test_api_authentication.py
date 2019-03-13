@@ -4,6 +4,7 @@ from datetime import timedelta
 from flask import json
 from flask_restplus import marshal
 
+from app import messages
 from app.api.models.user import full_user_api_model
 from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
@@ -39,30 +40,30 @@ class TestProtectedApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_without_header_api(self):
-        expected_response = {'message': 'The authorization token is missing!'}
+        expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get('/user', follow_redirects=True)
 
         self.assertEqual(401, actual_response.status_code)
-        self.assertEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_incomplete_token_api(self):
         access_token = 'invalid_token'
         auth_header = {
             'Authorization': 'Bearer {}'.format(access_token)
         }
-        expected_response = {'message': 'The token is invalid!'}
+        expected_response = messages.TOKEN_IS_INVALID
         actual_response = self.client.get('/user', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(401, actual_response.status_code)
-        self.assertEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_with_token_expired_api(self):
         auth_header = get_test_request_header(self.first_user.id, token_expiration_delta=timedelta(minutes=-5))
-        expected_response = {'message': 'The token has expired! Please, login again or refresh it.'}
+        expected_response = messages.TOKEN_HAS_EXPIRED
         actual_response = self.client.get('/user', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(401, actual_response.status_code)
-        self.assertEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
 if __name__ == "__main__":

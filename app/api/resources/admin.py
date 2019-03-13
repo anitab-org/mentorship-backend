@@ -2,6 +2,7 @@ from flask import request
 from flask_restplus import Resource, Namespace
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from app import messages
 from app.api.dao.user import UserDAO
 from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
@@ -28,9 +29,7 @@ class AssignNewUserAdmin(Resource):
             return AdminDAO.assign_new_user(user.id, data)
 
         else:
-            return {
-                       "message": "You don't have admin status. You can't assign other user as admin."
-                   }, 403
+            return messages.USER_ASSIGN_NOT_ADMIN, 403
 
 
 @admin_ns.route('admin/remove')
@@ -50,6 +49,4 @@ class RevokeUserAdmin(Resource):
             return AdminDAO.revoke_admin_user(user.id, data)
 
         else:
-            return {
-                       "message": "You don't have admin status. You can't revoke other admin user."
-                   }, 403
+            return messages.USER_REVOKE_NOT_ADMIN, 403
