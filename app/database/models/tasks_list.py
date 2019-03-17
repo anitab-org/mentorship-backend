@@ -9,8 +9,8 @@ class TasksListModel(db.Model):
     
     Attributes:
         id: Id of the list of tasks.
-        tasks: A list of tasks.
-        next_task_id: Id of the next task added to the list of tasks. 
+        tasks: A list of tasks, using JSON format.
+        next_task_id: Id of the next task added to the list of tasks.
     """
 
     __tablename__ = 'tasks_list'
@@ -112,8 +112,8 @@ class TasksListModel(db.Model):
         Args:
             task_id: Id of the task.
 
-        Returns: 
-            The task instance.    
+        Returns:
+            The task instance.
         """
 
         for task in self.tasks:
@@ -182,10 +182,10 @@ class TasksFields(Enum):
         ID: Id of a task.
         DESCRIPTION: Description of a task.
         IS_DONE: Boolean specifying the completion of the task.
-        COMPLETED_AT: The date on which the task is completed. 
+        COMPLETED_AT: The date on which the task is completed.
         CREATED_AT: The date on which the task was created.
     """
-    
+
     ID = 'id'
     DESCRIPTION = 'description'
     IS_DONE = 'is_done'
