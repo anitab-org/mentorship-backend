@@ -86,12 +86,12 @@ class MentorshipRelationDAO:
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
         for relation in all_mentor_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
-                return {'message': 'Mentor user is already in a relationship.'}, 400
+                return messages.MENTOR_IN_RELATION, 400
 
         all_mentee_relations = mentee_user.mentor_relations + mentee_user.mentee_relations
         for relation in all_mentee_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
-                return {'message': 'Mentee user is already in a relationship.'}, 400
+                return messages.MENTEE_ALREADY_IN_A_RELATION, 400
 
         # All validations were checked
 
@@ -166,22 +166,22 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return {'message': 'This mentorship relation is not in the pending state.'}, 400
+            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
-            return {'message': 'You cannot accept a mentorship request sent by yourself.'}, 400
+            return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, 400
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return {'message': 'You cannot accept a mentorship relation where you are not involved.'}, 400
+            return CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
 
         requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
         for request in requests:
             if request.state == MentorshipRelationState.ACCEPTED:
-                return {'message': 'You are currently involved in a mentorship relation.'}, 400
+                return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, 400
 
         # All was checked
         request.state = MentorshipRelationState.ACCEPTED
@@ -211,15 +211,15 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return {'message': 'This mentorship relation is not in the pending state.'}, 400
+            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
-            return {'message': 'You cannot reject a mentorship request sent by yourself.'}, 400
+            return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, 400
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return {'message': 'You cannot reject a mentorship relation where you are not involved.'}, 400
+            return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, 400
 
         # All was checked
         request.state = MentorshipRelationState.REJECTED
@@ -253,7 +253,7 @@ class MentorshipRelationDAO:
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return {'message': 'You cannot cancel a mentorship relation where you are not involved.'}, 400
+            return messages.CANT_CANCEL_UNINVOLVED_REQUEST, 400
 
         # All was checked
         request.state = MentorshipRelationState.CANCELLED
@@ -285,11 +285,11 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return {'message': 'This mentorship relation is not in the pending state.'}, 400
+            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if user created the mentorship request
         if request.action_user_id != user_id:
-            return {'message': 'You cannot delete a mentorship request that you did not create.'}, 400
+            return messages.CANT_DELETE_UNINVOLVED_REQUEST, 400
 
         # All was checked
         request.delete_from_db()

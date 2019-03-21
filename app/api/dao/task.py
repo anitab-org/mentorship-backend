@@ -36,7 +36,7 @@ class TaskDAO:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
 
         if relation.state != MentorshipRelationState.ACCEPTED:
-            return {'message': 'Mentorship relation is not in the accepted state.'}, 400
+            return messages.UNACCEPTED_STATE_RELATION, 400
 
         now_timestamp = datetime.now().timestamp()
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
