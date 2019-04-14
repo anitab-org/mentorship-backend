@@ -1,5 +1,4 @@
 import unittest
-import datetime
 from werkzeug.security import check_password_hash
 
 from tests.base_test_case import BaseTestCase
