@@ -4,6 +4,7 @@ from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
+from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
 class MentorshipRelationDAO:
@@ -84,12 +85,12 @@ class MentorshipRelationDAO:
 
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
         for relation in all_mentor_relations:
-            if relation.state is MentorshipRelationState.ACCEPTED:
+            if relation.state == MentorshipRelationState.ACCEPTED:
                 return messages.MENTOR_IN_RELATION, 400
 
         all_mentee_relations = mentee_user.mentor_relations + mentee_user.mentee_relations
         for relation in all_mentee_relations:
-            if relation.state is MentorshipRelationState.ACCEPTED:
+            if relation.state == MentorshipRelationState.ACCEPTED:
                 return messages.MENTEE_ALREADY_IN_A_RELATION, 400
 
         # All validations were checked
@@ -111,6 +112,7 @@ class MentorshipRelationDAO:
         return messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
         """Lists all relationships of a given user.
 
@@ -134,10 +136,6 @@ class MentorshipRelationDAO:
             return messages.NOT_IMPLEMENTED, 200
 
         user = UserModel.find_by_id(user_id)
-
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         all_relations = user.mentor_relations + user.mentee_relations
 
         # add extra field for api response
@@ -147,6 +145,7 @@ class MentorshipRelationDAO:
         return all_relations, 200
 
     @staticmethod
+    @email_verification_required
     def accept_request(user_id, request_id):
         """Allows a mentorship request.
 
@@ -159,11 +158,6 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -171,22 +165,22 @@ class MentorshipRelationDAO:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if I'm the receiver of the request
-        if request.action_user_id is user_id:
+        if request.action_user_id == user_id:
             return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
-            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
+            return CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
 
         requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
         for request in requests:
-            if request.state is MentorshipRelationState.ACCEPTED:
+            if request.state == MentorshipRelationState.ACCEPTED:
                 return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, 400
 
         # All was checked
@@ -196,6 +190,7 @@ class MentorshipRelationDAO:
         return messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def reject_request(user_id, request_id):
         """Rejects a mentorship request.
 
@@ -208,11 +203,6 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -220,15 +210,15 @@ class MentorshipRelationDAO:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if I'm the receiver of the request
-        if request.action_user_id is user_id:
+        if request.action_user_id == user_id:
             return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, 400
 
         # All was checked
@@ -238,6 +228,7 @@ class MentorshipRelationDAO:
         return messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def cancel_relation(user_id, relation_id):
         """Allows a given user to terminate a particular relationship.
 
@@ -250,11 +241,6 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         request = MentorshipRelationModel.find_by_id(relation_id)
 
         # verify if request exists
@@ -262,11 +248,11 @@ class MentorshipRelationDAO:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.ACCEPTED:
+        if request.state != MentorshipRelationState.ACCEPTED:
             return messages.UNACCEPTED_STATE_RELATION, 400
 
         # verify if I'm involved in this relation
-        if not (request.mentee_id is user_id or request.mentor_id is user_id):
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return messages.CANT_CANCEL_UNINVOLVED_REQUEST, 400
 
         # All was checked
@@ -276,6 +262,7 @@ class MentorshipRelationDAO:
         return messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def delete_request(user_id, request_id):
         """Deletes a mentorship request.
 
@@ -290,11 +277,6 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -302,11 +284,11 @@ class MentorshipRelationDAO:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
 
         # verify if request is in pending state
-        if request.state is not MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if user created the mentorship request
-        if request.action_user_id is not user_id:
+        if request.action_user_id != user_id:
             return messages.CANT_DELETE_UNINVOLVED_REQUEST, 400
 
         # All was checked
@@ -315,6 +297,7 @@ class MentorshipRelationDAO:
         return messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def list_past_mentorship_relations(user_id):
         """Lists past mentorship relation details.
 
@@ -326,11 +309,6 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         now_timestamp = datetime.now().timestamp()
         past_relations = []
         all_relations = user.mentor_relations + user.mentee_relations
@@ -343,6 +321,7 @@ class MentorshipRelationDAO:
         return past_relations, 200
 
     @staticmethod
+    @email_verification_required
     def list_current_mentorship_relation(user_id):
         """Lists current mentorship relation details.
 
@@ -354,21 +333,17 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
-            if relation.state is MentorshipRelationState.ACCEPTED:
+            if relation.state == MentorshipRelationState.ACCEPTED:
                 setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 return relation
 
         return messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200
 
     @staticmethod
+    @email_verification_required
     def list_pending_mentorship_relations(user_id):
         """Lists mentorship requests in pending state.
 
@@ -380,17 +355,12 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-
-        # verify if user exists
-        if user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
-
         now_timestamp = datetime.now().timestamp()
         pending_requests = []
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
-            if relation.state is MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
+            if relation.state == MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
                 setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
                 pending_requests += [relation]
 

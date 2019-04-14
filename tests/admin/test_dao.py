@@ -46,6 +46,7 @@ class TestAdminDao(BaseTestCase):
             password=user1['password'],
             terms_and_conditions_checked=user1['terms_and_conditions_checked']
         )
+        user.is_email_verified = True
         user.save_to_db()
 
         user = UserModel.query.filter_by(id=2).first()
