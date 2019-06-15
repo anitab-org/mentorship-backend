@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
 
+from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
@@ -78,7 +79,7 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
 
     def test_dao_list_non_existing_current_mentorship_relation(self):
         result = MentorshipRelationDAO.list_current_mentorship_relation(user_id=self.admin_user.id)
-        expected_response = ({'message': 'You are not in a current mentorship relation.'}, 200)
+        expected_response = (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200)
 
         self.assertEqual(expected_response, result)
 

@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from flask import json
 
+from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
@@ -18,23 +19,25 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.user1 = UserModel("User1", "user1", "__test__", "test@email.com", True)
         self.user2 = UserModel("User2", "user2", "__test__", "test2@email.com", True)
         self.user1.available_to_mentor = True
+        self.user1.is_email_verified = True
         self.user2.need_mentoring = True
+        self.user2.is_email_verified = True
 
         db.session.add(self.user1)
         db.session.add(self.user2)
         db.session.commit()
 
     def test_relations_non_auth(self):
-        expected_response = {'message': 'The authorization token is missing!'}
+        expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get('/home', follow_redirects=True)
         self.assertEqual(401, actual_response.status_code)
-        self.assertEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_relations_invalid_id(self):
         auth_header = get_test_request_header(None)  # Supply invalid user ID for the test
         actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
         self.assertEqual(404, actual_response.status_code)
-        self.assertEqual({'message': 'User not found'}, json.loads(actual_response.data))
+        self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
     def test_pending_requests_auth(self):
         start_date = datetime.now()

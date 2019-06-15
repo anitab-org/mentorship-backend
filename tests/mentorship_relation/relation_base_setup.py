@@ -30,8 +30,10 @@ class MentorshipRelationBaseTestCase(BaseTestCase):
         # making sure both are available to be mentor or mentee
         self.first_user.need_mentoring = True
         self.first_user.available_to_mentor = True
+        self.first_user.is_email_verified = True
         self.second_user.need_mentoring = True
         self.second_user.available_to_mentor = True
+        self.second_user.is_email_verified = True
 
         db.session.add(self.first_user)
         db.session.add(self.second_user)

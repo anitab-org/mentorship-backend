@@ -1,11 +1,12 @@
 from datetime import datetime
 from operator import itemgetter
 
+from app import messages
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
+from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
-
 
 class UserDAO:
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
@@ -22,11 +23,11 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data['username'])
         if existing_user:
-            return {"message": "A user with that username already exists"}, 400
+            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, 400
         else:
             existing_user = UserModel.find_by_email(data['email'])
             if existing_user:
-                return {"message": "A user with that email already exists"}, 400
+                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, 400
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if 'need_mentoring' in data:
@@ -37,11 +38,10 @@ class UserDAO:
 
         user.save_to_db()
 
-        return {"message": "User was created successfully. "
-                           "A confirmation email has been sent via email. "
-                           "After confirming your email you can login."}, 200
+        return messages.USER_WAS_CREATED_SUCCESSFULLY, 200
 
     @staticmethod
+    @email_verification_required
     def delete_user(user_id):
         user = UserModel.find_by_id(user_id)
 
@@ -50,15 +50,16 @@ class UserDAO:
 
             admins_list_count = len(UserModel.get_all_admins())
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
-                return {"message": "You cannot delete your account, since you are the only Admin left."}, 400
+                return messages.USER_CANT_DELETE, 400
 
         if user:
             user.delete_from_db()
-            return {"message": "User was deleted successfully"}, 200
+            return messages.USER_SUCCESSFULLY_DELETED, 200
 
-        return {"message": "User does not exist"}, 404
+        return messages.USER_DOES_NOT_EXIST, 404
 
     @staticmethod
+    @email_verification_required
     def get_user(user_id):
         return UserModel.find_by_id(user_id)
 
@@ -84,11 +85,12 @@ class UserDAO:
         return list_of_users, 200
 
     @staticmethod
+    @email_verification_required
     def update_user_profile(user_id, data):
 
         user = UserModel.find_by_id(user_id)
         if not user:
-            return {"message": "User does not exist"}, 404
+            return messages.USER_DOES_NOT_EXIST, 404
 
         username = data.get('username', None)
         if username:
@@ -96,7 +98,7 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return {"message": "That username is already taken by another user."}, 400
+                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, 400
 
             user.username = username
 
@@ -141,9 +143,10 @@ class UserDAO:
 
         user.save_to_db()
 
-        return {"message": "User was updated successfully"}, 200
+        return messages.USER_SUCCESSFULLY_UPDATED, 200
 
     @staticmethod
+    @email_verification_required
     def change_password(user_id, data):
         current_password = data['current_password']
         new_password = data['new_password']
@@ -152,9 +155,9 @@ class UserDAO:
         if user.check_password(current_password):
             user.set_password(new_password)
             user.save_to_db()
-            return {"message": "Password was updated successfully."}, 201
+            return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
 
-        return {"message": "Current password is incorrect."}, 400
+        return messages.USER_ENTERED_INCORRECT_PASSWORD, 400
 
     @staticmethod
     def confirm_registration(token):
@@ -162,16 +165,16 @@ class UserDAO:
         email_from_token = confirm_token(token)
 
         if email_from_token is False or email_from_token is None:
-            return {'message': 'The confirmation link is invalid or the token has expired.'}, 400
+            return messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400
 
         user = UserModel.find_by_email(email_from_token)
         if user.is_email_verified:
-            return {'message': 'Account already confirmed.'}, 200
+            return messages.ACCOUNT_ALREADY_CONFIRMED, 200
         else:
             user.is_email_verified = True
             user.email_verification_date = datetime.now()
             user.save_to_db()
-            return {'message': 'You have confirmed your account. Thanks!'}, 200
+            return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200
 
     @staticmethod
     def authenticate(username_or_email, password):
@@ -192,6 +195,7 @@ class UserDAO:
         return None
 
     @staticmethod
+    @email_verification_required
     def get_achievements(user_id):
         """Shows a subset of the user's achievements
 
