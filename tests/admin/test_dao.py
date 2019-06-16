@@ -41,6 +41,34 @@ class TestAdminDao(BaseTestCase):
         user = UserModel.query.filter_by(id=2).first()
         self.assertTrue(user.is_admin)
 
+    """
+    Checks wheather a new admin can be assigned by normal user.
+    """
+    def test_dao_assign_new_admin_by_normal_user(self):
+        
+        dao = AdminDAO()
+
+        user = UserModel(
+            name=user1['name'],
+            username=user1['username'],
+            email=user1['email'],
+            password=user1['password'],
+            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+        )
+        user.is_email_verified = True
+        user.save_to_db()
+
+        user = UserModel.query.filter_by(id=2).first()
+
+        self.assertFalse(user.is_admin)
+
+        data = dict(
+            user_id=1
+        )
+        dao_result = dao.assign_new_user(2, data)
+
+        self.assertEqual((messages.USER_ASSIGN_NOT_ADMIN, 403), dao_result)
+
 
     """
     Checks whether a user tries to assign admin rights to a non existing user.
@@ -148,6 +176,33 @@ class TestAdminDao(BaseTestCase):
 
         user = UserModel.query.filter_by(id=2).first()
         self.assertFalse(user.is_admin)
+
+    
+    """
+    Checks whether a user is trying to revoke other user's admin priviledges. 
+    """
+    def test_dao_revoke_admin_role_by_non_admin_user(self):
+        
+        dao = AdminDAO()
+
+        user = UserModel(
+            name=user1['name'],
+            username=user1['username'],
+            email=user1['email'],
+            password=user1['password'],
+            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+        )
+        user.is_email_verified = True
+        user.save_to_db()
+        user = UserModel.query.filter_by(id=2).first()
+        self.assertFalse(user.is_admin)
+        
+        data = dict(
+            user_id=1
+        )
+        dao_result = dao.revoke_admin_user(2, data)
+
+        self.assertEqual((messages.USER_ASSIGN_NOT_ADMIN, 403), dao_result)
 
 
     """
