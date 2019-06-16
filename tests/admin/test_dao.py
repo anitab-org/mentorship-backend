@@ -49,15 +49,6 @@ class TestAdminDao(BaseTestCase):
         
         dao = AdminDAO()
 
-        user = UserModel(
-            name=user1['name'],
-            username=user1['username'],
-            email=user1['email'],
-            password=user1['password'],
-            terms_and_conditions_checked=user1['terms_and_conditions_checked']
-        )
-        user.save_to_db()
-
         data = dict(
             user_id=123
         )
