@@ -55,7 +55,7 @@ class TestAdminDao(BaseTestCase):
 
         dao_result = dao.assign_new_user(1, data)
 
-        self.assertEqual(({"message": "User does not exist."}, 404), dao_result) 
+        self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), dao_result) 
 
 
     """
@@ -87,7 +87,7 @@ class TestAdminDao(BaseTestCase):
 
         dao_result = dao.assign_new_user(1, data)
 
-        self.assertEqual(({"message": "User is already an Admin."}, 400), dao_result)
+        self.assertEqual((messages.USER_IS_ALREADY_AN_ADMIN, 400), dao_result)
 
 
     """
