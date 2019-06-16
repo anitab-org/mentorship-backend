@@ -2,6 +2,7 @@ from flask import request
 from flask_restplus import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from app import messages
 from app.api.dao.task import TaskDAO
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -48,13 +49,13 @@ class SendRequest(Resource):
 
         # Verify if request body has required fields
         if 'mentor_id' not in data:
-            return {"message": "Mentor ID field is missing."}
+            return messages.MENTOR_ID_FIELD_IS_MISSING
         if 'mentee_id' not in data:
-            return {"message": "Mentee ID field is missing."}
+            return messages.MENTEE_ID_FIELD_IS_MISSING
         if 'end_date' not in data:
-            return {"message": "End date field is missing."}
+            return messages.END_DATE_FIELD_IS_MISSING
         if 'notes' not in data:
-            return {"message": "Notes field is missing."}
+            return messages.NOTES_FIELD_IS_MISSING
 
         return {}
 
@@ -261,7 +262,7 @@ class CreateTask(Resource):
     def is_valid_data(data):
 
         if 'description' not in data:
-            return {"message": "Description field is missing."}
+            return messages.DESCRIPTION_FIELD_IS_MISSING
 
         return {}
 

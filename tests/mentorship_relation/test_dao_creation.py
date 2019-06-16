@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
 
+from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
@@ -34,7 +35,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
-        self.assertEqual({'message': 'Mentorship relation was sent successfully.'}, result[0])
+        self.assertEqual(messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -78,7 +79,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.second_user.id, data)
 
-        self.assertEqual({'message': 'Mentorship relation was sent successfully.'}, result[0])
+        self.assertEqual(messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -123,7 +124,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(1234, data)
 
-        self.assertEqual({'message': 'Mentor user does not exist.'}, result[0])
+        self.assertDictEqual(messages.MENTOR_DOES_NOT_EXIST, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -143,7 +144,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
-        self.assertEqual({'message': 'Mentee user does not exist.'}, result[0])
+        self.assertDictEqual(messages.MENTEE_DOES_NOT_EXIST, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -177,7 +178,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
-        self.assertEqual(({'message': 'Mentee user is already in a relationship.'}, 400), result)
+        self.assertEqual((messages.MENTEE_ALREADY_IN_A_RELATION, 400), result)
 
         query_mentorship_relations = MentorshipRelationModel.query.all()
 
@@ -212,7 +213,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.second_user.id, data)
 
-        self.assertEqual(({'message': 'Mentor user is already in a relationship.'}, 400), result)
+        self.assertEqual((messages.MENTOR_IN_RELATION, 400), result)
 
         query_mentorship_relations = MentorshipRelationModel.query.all()
 

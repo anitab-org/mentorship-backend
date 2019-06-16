@@ -10,6 +10,7 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[update_user_request_body_model.name] = update_user_request_body_model
     api_namespace.models[login_request_body_model.name] = login_request_body_model
     api_namespace.models[login_response_body_model.name] = login_response_body_model
+    api_namespace.models[refresh_response_body_model.name] = refresh_response_body_model
     api_namespace.models[resend_email_request_body_model.name] = resend_email_request_body_model
     api_namespace.models[home_response_body_model.name] = home_response_body_model
 
@@ -154,9 +155,18 @@ login_request_body_model = Model('Login request data model', {
     'password': fields.String(required=True, description='User\'s password')
 })
 
+# TODO: Remove 'expiry' after the android app refactoring.
 login_response_body_model = Model('Login response data model', {
     'access_token': fields.String(required=True, description='User\'s access token'),
-    'expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp')
+    'expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp'),
+    'access_expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp'),
+    'refresh_token': fields.String(required=True, description='User\'s refresh token'),
+    'refresh_expiry': fields.Float(required=True, description='Refresh token expiry UNIX timestamp')
+})
+
+refresh_response_body_model = Model('Refresh response data model', {
+    'access_token': fields.String(required=True, description='User\'s access token'),
+    'access_expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp')
 })
 
 update_user_request_body_model = Model('Update User request data model', {

@@ -1,5 +1,6 @@
 import unittest
 
+from app import messages
 from app.api.dao.task import TaskDAO
 from app.utils.enum_utils import MentorshipRelationState
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
@@ -9,7 +10,7 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task(self):
 
-        expected_response = {"message": "Task was created successfully."}, 200
+        expected_response = messages.TASK_WAS_CREATED_SUCCESSFULLY, 200
 
         non_existent_task = self.tasks_list_1.find_task_by_id(3)
         self.assertIsNone(non_existent_task)
@@ -26,7 +27,7 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task_with_non_existing_mentorship_relation(self):
 
-        expected_response = {'message': 'Mentorship relation does not exist.'}, 404
+        expected_response = messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
 
         actual_response = TaskDAO.create_task(user_id=self.first_user.id,
                                               mentorship_relation_id=123123,
@@ -36,7 +37,7 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task_with_mentorship_relation_non_accepted_state(self):
 
-        expected_response = {'message': 'Mentorship relation is not in the accepted state.'}, 400
+        expected_response = messages.UNACCEPTED_STATE_RELATION, 400
         self.mentorship_relation_w_second_user.state = MentorshipRelationState.CANCELLED
 
         actual_response = TaskDAO.create_task(user_id=self.first_user.id,
