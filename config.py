@@ -51,15 +51,21 @@ class BaseConfig(object):
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
     @staticmethod
-    def build_db_uri():
+    def build_db_uri(
+        db_type_arg=DB_TYPE,
+        db_user_arg=DB_USERNAME,
+        db_password_arg=DB_PASSWORD,
+        db_endpoint_arg=DB_ENDPOINT,
+        db_name_arg=DB_NAME
+        ):
         """Build remote database uri using specific environment variables."""
 
         return '{db_type}://{db_user}:{db_password}@{db_endpoint}/{db_name}'\
-            .format(db_type=BaseConfig.DB_TYPE,
-                    db_user=BaseConfig.DB_USERNAME,
-                    db_password=BaseConfig.DB_PASSWORD,
-                    db_endpoint=BaseConfig.DB_ENDPOINT,
-                    db_name=BaseConfig.DB_NAME)
+            .format(db_type=db_type_arg,
+                    db_user=db_user_arg,
+                    db_password=db_password_arg,
+                    db_endpoint=db_endpoint_arg,
+                    db_name=db_name_arg)
 
 
 class ProductionConfig(BaseConfig):
