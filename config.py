@@ -14,10 +14,11 @@ class BaseConfig(object):
     # Example:
     # MySQL: mysql+pymysql://{db_user}:{db_password}@{db_endpoint}/{db_name}
     # SQLite: sqlite:///local_data.db
-    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{db_user}:{db_password}@{db_endpoint}/{db_name}'
-    # .format(db_user=os.getenv('DB_USERNAME'), db_password=os.getenv('DB_PASSWORD'))
-    ENV_DB_USERNAME = os.getenv('DB_USERNAME')
-    ENV_DB_PASSWORD = os.getenv('DB_PASSWORD')
+    DB_TYPE = os.getenv('DB_TYPE')
+    DB_USERNAME = os.getenv('DB_USERNAME')
+    DB_PASSWORD = os.getenv('DB_PASSWORD')
+    DB_ENDPOINT = os.getenv('DB_ENDPOINT')
+    DB_NAME = os.getenv('DB_NAME')
 
     # Flask JWT settings
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)
@@ -50,44 +51,39 @@ class BaseConfig(object):
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
     @staticmethod
-    def get_db_uri(db_user_arg, db_password_arg, db_endpoint_arg, db_name_arg):
-        return 'mysql+pymysql://{db_user}:{db_password}@{db_endpoint}/{db_name}'\
-            .format(db_user=db_user_arg,
-                    db_password=db_password_arg,
-                    db_endpoint=db_endpoint_arg,
-                    db_name=db_name_arg)
+    def build_db_uri():
+        """Build remote database uri using specific environment variables."""
+
+        return '{db_type}://{db_user}:{db_password}@{db_endpoint}/{db_name}'\
+            .format(db_type=BaseConfig.DB_TYPE,
+                    db_user=BaseConfig.DB_USERNAME,
+                    db_password=BaseConfig.DB_PASSWORD,
+                    db_endpoint=BaseConfig.DB_ENDPOINT,
+                    db_name=BaseConfig.DB_NAME)
 
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
-    SQLALCHEMY_DATABASE_URI = BaseConfig.get_db_uri(db_user_arg=BaseConfig.ENV_DB_USERNAME,
-                                                    db_password_arg=BaseConfig.ENV_DB_PASSWORD,
-                                                    db_endpoint_arg='something',
-                                                    db_name_arg='systers-mentorship-production')
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
 
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = BaseConfig.get_db_uri(db_user_arg=BaseConfig.ENV_DB_USERNAME,
-                                                    db_password_arg=BaseConfig.ENV_DB_PASSWORD,
-                                                    db_endpoint_arg='something',
-                                                    db_name_arg='systers-mentorship-development')
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
 
 
 class StagingConfig(BaseConfig):
     """Staging configuration."""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = BaseConfig.get_db_uri(db_user_arg=BaseConfig.ENV_DB_USERNAME,
-                                                    db_password_arg=BaseConfig.ENV_DB_PASSWORD,
-                                                    db_endpoint_arg='systers-mentorship-staging.cq6nzcssjayz.eu-central-1.rds.amazonaws.com:3306/',
-                                                    db_name_arg='systers-mentorship-staging')
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
 
 
 class LocalConfig(BaseConfig):
     """Local configuration."""
     DEBUG = True
 
+    # Using a local sqlite database 
     SQLALCHEMY_DATABASE_URI = 'sqlite:///local_data.db'
 
 
