@@ -2,6 +2,7 @@ import unittest
 
 from flask import json
 
+from app import messages
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
@@ -51,9 +52,11 @@ class TestUserLoginApi(BaseTestCase):
             )), follow_redirects=True, content_type='application/json')
 
             self.assertIsNone(response.json.get('access_token'))
-            self.assertIsNone(response.json.get('expiry'))
+            self.assertIsNone(response.json.get('access_expiry'))
+            self.assertIsNone(response.json.get('refresh_token'))
+            self.assertIsNone(response.json.get('refresh_expiry'))
             self.assertEqual(1, len(response.json))
-            self.assertEqual('Please verify your email before login.', response.json.get('message', None))
+            self.assertEqual(messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json)
             self.assertEqual(403, response.status_code)
 
     def test_user_login_verified_user(self):
@@ -63,8 +66,10 @@ class TestUserLoginApi(BaseTestCase):
                 password=user2['password']
             )), follow_redirects=True, content_type='application/json')
             self.assertIsNotNone(response.json.get('access_token'))
-            self.assertIsNotNone(response.json.get('expiry'))
-            self.assertEqual(2, len(response.json))
+            self.assertIsNotNone(response.json.get('access_expiry'))
+            self.assertIsNotNone(response.json.get('refresh_token'))
+            self.assertIsNotNone(response.json.get('refresh_expiry'))
+            self.assertEqual(4, len(response.json))
             self.assertEqual(200, response.status_code)
 
 

@@ -1,10 +1,29 @@
-
+from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 
 
 class MentorshipRelationModel(db.Model):
+    """Data Model representation of a mentorship relation.
+    
+    Attributes:
+        id: integer primary key that defines the mentorships.
+        mentor_id: integer indicates the id of the mentor.
+        mentee_id: integer indicates the id of the mentee.
+        action_user_id: integer indicates id of action user.
+        mentor: relationship between UserModel and mentorship_relation.
+        mentee: relationship between UserModel and mentorship_relation.
+        creation_date: float that defines the date of creation of the mentorship.
+        accept_date: float that indicates the date of acceptance of mentorship.
+        start_date: float that indicates the starting date of mentorship.
+        end_date: float that indicates the ending date of mentorship.
+        state: enumeration that indicates state of mentorship.
+        notes: string that indicates any notes.
+        tasks_list_id: integer indicates the id of the tasks_list
+        tasks_list: relationship between TasksListModel and mentorship_relation.
+    """
+
     # Specifying database table used for MentorshipRelationModel
     __tablename__ = 'mentorship_relations'
     __table_args__ = {'extend_existing': True}
@@ -30,7 +49,10 @@ class MentorshipRelationModel(db.Model):
     state = db.Column(db.Enum(MentorshipRelationState), nullable=False)
     notes = db.Column(db.String(400))
 
-    def __init__(self, action_user_id, mentor_user, mentee_user, creation_date, end_date, state, notes):
+    tasks_list_id = db.Column(db.Integer, db.ForeignKey('tasks_list.id'))
+    tasks_list = db.relationship(TasksListModel, uselist=False, backref="mentorship_relation")
+
+    def __init__(self, action_user_id, mentor_user, mentee_user, creation_date, end_date, state, notes, tasks_list):
 
         self.action_user_id = action_user_id
         self.mentor = mentor_user
@@ -39,8 +61,10 @@ class MentorshipRelationModel(db.Model):
         self.end_date = end_date
         self.state = state
         self.notes = notes
+        self.tasks_list = tasks_list
 
     def json(self):
+        """Returns information of mentorship as a json object."""
         return {
             'id': self.id,
             'action_user_id': self.action_user_id,
@@ -59,17 +83,25 @@ class MentorshipRelationModel(db.Model):
     #            % (self.id, self.mentor_id, self.mentee_id)
 
     @classmethod
-    def find_by_id(cls, _id):
+    def find_by_id(cls, _id): 
+        """Returns the mentorship that has the passed id.
+           Args:
+                _id: The id of a mentorship.
+        """
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def is_empty(cls):
+        """Returns True if the mentorship model is empty, and False otherwise."""
         return cls.query.first() is None
 
     def save_to_db(self):
+        """Saves the model to the database."""
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def delete_from_db(self):   
+        """Deletes the record of mentorship relation from the database."""
+        self.tasks_list.delete_from_db()
         db.session.delete(self)
         db.session.commit()

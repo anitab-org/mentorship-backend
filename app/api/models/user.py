@@ -1,4 +1,5 @@
 from flask_restplus import fields, Model
+from app.api.models.mentorship_relation import list_tasks_response_body
 
 
 def add_models_to_namespace(api_namespace):
@@ -9,7 +10,9 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[update_user_request_body_model.name] = update_user_request_body_model
     api_namespace.models[login_request_body_model.name] = login_request_body_model
     api_namespace.models[login_response_body_model.name] = login_response_body_model
+    api_namespace.models[refresh_response_body_model.name] = refresh_response_body_model
     api_namespace.models[resend_email_request_body_model.name] = resend_email_request_body_model
+    api_namespace.models[home_response_body_model.name] = home_response_body_model
 
 
 public_user_api_model = Model('User list model', {
@@ -92,7 +95,7 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=True,
         description='User admin status'
     ),
-    'registration_date': fields.DateTime(
+    'registration_date': fields.Float(
         required=True,
         description='User registration date'
     ),
@@ -137,7 +140,9 @@ register_user_api_model = Model('User registration model', {
     'username': fields.String(required=True, description='User username'),
     'password': fields.String(required=True, description='User password'),
     'email': fields.String(required=True, description='User email'),
-    'terms_and_conditions_checked': fields.Boolean(required=True, description='User check Terms and Conditions value')
+    'terms_and_conditions_checked': fields.Boolean(required=True, description='User check Terms and Conditions value'),
+    'need_mentoring': fields.Boolean(required=False, description='User need mentoring indication'),
+    'available_to_mentor': fields.Boolean(required=False, description='User availability to mentor indication')
 })
 
 change_password_request_data_model = Model('Change password request data model', {
@@ -150,9 +155,18 @@ login_request_body_model = Model('Login request data model', {
     'password': fields.String(required=True, description='User\'s password')
 })
 
+# TODO: Remove 'expiry' after the android app refactoring.
 login_response_body_model = Model('Login response data model', {
     'access_token': fields.String(required=True, description='User\'s access token'),
-    'expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp')
+    'expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp'),
+    'access_expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp'),
+    'refresh_token': fields.String(required=True, description='User\'s refresh token'),
+    'refresh_expiry': fields.Float(required=True, description='Refresh token expiry UNIX timestamp')
+})
+
+refresh_response_body_model = Model('Refresh response data model', {
+    'access_token': fields.String(required=True, description='User\'s access token'),
+    'access_expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp')
 })
 
 update_user_request_body_model = Model('Update User request data model', {
@@ -176,4 +190,14 @@ update_user_request_body_model = Model('Update User request data model', {
 
 resend_email_request_body_model = Model('Resend email request data model', {
     'email': fields.String(required=True, description='User\'s email'),
+})
+
+home_response_body_model = Model('Get statistics on the app usage of the current user', {
+    'name': fields.String(required=True, description='The name of the user'),
+    'pending_requests': fields.Integer(required=True, description='Number of pending requests'),
+    'accepted_requests': fields.Integer(required=True, description='Number of accepted requests'),
+    'completed_relations': fields.Integer(required=True, description='Number of completed relations'),
+    'cancelled_relations': fields.Integer(required=True, description='Number of cancelled relations'),
+    'rejected_requests': fields.Integer(required=True, description='Number of rejected relations'),
+    'achievements': fields.List(fields.Nested(list_tasks_response_body))
 })

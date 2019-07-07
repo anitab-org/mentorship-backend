@@ -2,6 +2,7 @@ import unittest
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
+from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.schedulers.complete_mentorship_cron_job import complete_overdue_mentorship_relations_job
@@ -46,6 +47,13 @@ class TestCompleteMentorshipRelationCronFunction(BaseTestCase):
         self.past_end_date_example = self.now_datetime - timedelta(weeks=5)
         self.future_end_date_example = self.now_datetime + timedelta(weeks=5)
 
+        self.tasks_list_1 = TasksListModel()
+        self.tasks_list_2 = TasksListModel()
+        self.tasks_list_3 = TasksListModel()
+
+        db.session.add(self.tasks_list_1)
+        db.session.add(self.tasks_list_2)
+        db.session.add(self.tasks_list_3)
         db.session.add(self.first_user)
         db.session.add(self.second_user)
         db.session.commit()
@@ -59,7 +67,8 @@ class TestCompleteMentorshipRelationCronFunction(BaseTestCase):
             creation_date=self.now_datetime.timestamp(),
             end_date=self.past_end_date_example.timestamp(),
             state=MentorshipRelationState.ACCEPTED,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=self.tasks_list_1
         )
 
         self.mentorship_relation_2 = MentorshipRelationModel(
@@ -69,7 +78,8 @@ class TestCompleteMentorshipRelationCronFunction(BaseTestCase):
             creation_date=self.now_datetime.timestamp(),
             end_date=self.past_end_date_example.timestamp(),
             state=MentorshipRelationState.PENDING,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=self.tasks_list_2
         )
 
         self.mentorship_relation_3 = MentorshipRelationModel(
@@ -79,7 +89,8 @@ class TestCompleteMentorshipRelationCronFunction(BaseTestCase):
             creation_date=self.now_datetime.timestamp(),
             end_date=self.future_end_date_example.timestamp(),
             state=MentorshipRelationState.ACCEPTED,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=self.tasks_list_3
         )
 
         db.session.add(self.mentorship_relation_1)

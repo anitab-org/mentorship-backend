@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime
 
+from app.database.models.tasks_list import TasksListModel
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
@@ -58,7 +59,8 @@ class TestMentorshipRelationModel(BaseTestCase):
             creation_date=self.now_datetime,
             end_date=self.end_date_example,
             state=MentorshipRelationState.PENDING,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
         db.session.add(self.mentorship_relation)
         db.session.commit()

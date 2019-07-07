@@ -1,11 +1,15 @@
-import unittest
 import datetime
+import unittest
 from werkzeug.security import check_password_hash
 
+from app import messages
 from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
+from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user2
 
@@ -34,7 +38,7 @@ class TestUserDao(BaseTestCase):
         self.assertFalse(user.password_hash == 'test_password')
         self.assertTrue(check_password_hash(user.password_hash, 'test_password'))
         self.assertTrue(user.terms_and_conditions_checked)
-        self.assertIsInstance(user.registration_date, datetime.datetime)
+        self.assertIsInstance(user.registration_date, float)
         self.assertFalse(user.is_email_verified)
 
     def test_dao_confirm_registration_good_token(self):
@@ -62,8 +66,7 @@ class TestUserDao(BaseTestCase):
 
         self.assertTrue(user.is_email_verified)
         self.assertIsNotNone(user.email_verification_date)
-        self.assertEqual(({'message': 'You have confirmed your account. Thanks!'}, 200),
-                         actual_result)
+        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200), actual_result)
 
     def test_dao_confirm_registration_bad_token(self):
         dao = UserDAO()
@@ -91,8 +94,7 @@ class TestUserDao(BaseTestCase):
 
         self.assertFalse(user.is_email_verified)
         self.assertIsNone(user.email_verification_date)
-        self.assertEqual(({'message': 'The confirmation link is invalid or the token has expired.'}, 400),
-                         actual_result)
+        self.assertEqual((messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400), actual_result)
 
     def test_dao_confirm_registration_of_already_verified_user(self):
         dao = UserDAO()
@@ -119,8 +121,7 @@ class TestUserDao(BaseTestCase):
         actual_result = dao.confirm_registration(good_token)
 
         self.assertTrue(user.is_email_verified)
-        self.assertEqual(({'message': 'Account already confirmed.'}, 200),
-                         actual_result)
+        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED, 200), actual_result)
 
     def test_dao_delete_only_user_admin(self):
         dao = UserDAO()
@@ -136,8 +137,181 @@ class TestUserDao(BaseTestCase):
         self.assertTrue(after_delete_user.is_admin)
         self.assertIsNotNone(after_delete_user)
         self.assertEqual(1, after_delete_user.id)
-        self.assertEqual(({"message": "You cannot delete your account, since you are the only Admin left."}, 400),
-                         dao_result)
+        self.assertEqual((messages.USER_CANT_DELETE, 400), dao_result)
+
+    def test_get_achievements(self):
+        dao = UserDAO()
+
+        mentor = UserModel("Test mentor",
+                           "test_mentor",
+                           "test_password",
+                           "mentor@email.com",
+                           True)
+
+        mentee = UserModel("Test mentee",
+                           "test_mentee",
+                           "test_password",
+                           "mentee@email.com",
+                           True)
+
+        mentor.is_email_verified = True
+        mentor.available_to_mentor = True
+        mentee.is_email_verified = True
+        mentee.need_mentoring = True
+
+        db.session.add(mentor)
+        db.session.add(mentee)
+        db.session.commit()
+
+        start_date = datetime.datetime.now()
+        end_date = start_date + datetime.timedelta(weeks=4)
+
+        tasks_list = TasksListModel()
+        tasks_list.add_task(description="Test Task",
+                            created_at=start_date.timestamp(),
+                            is_done=True,
+                            completed_at=end_date.timestamp())
+        tasks_list.add_task(description="Test Task 2",
+                            created_at=start_date.timestamp(),
+                            is_done=True,
+                            completed_at=end_date.timestamp())
+
+        relation = MentorshipRelationModel(action_user_id=mentee.id,
+                                           mentor_user=mentor,
+                                           mentee_user=mentee,
+                                           creation_date=start_date.timestamp(),
+                                           end_date=end_date.timestamp(),
+                                           state=MentorshipRelationState.ACCEPTED,
+                                           tasks_list=tasks_list,
+                                           notes="Test Notes")
+
+        db.session.add(tasks_list)
+        db.session.add(relation)
+        db.session.commit()
+
+        achievements = dao.get_achievements(mentee.id)
+
+        self.assertEqual(2, len(achievements))
+
+        for achievement in achievements:
+            self.assertTrue(achievement.get("is_done"))
+
+    def test_get_user_statistics(self):
+        dao = UserDAO()
+
+        mentor = UserModel("Test mentor",
+                           "test_mentor",
+                           "__test__",
+                           "mentor@email.com",
+                           True)
+
+        mentee = UserModel("Test mentee",
+                           "test_mentee",
+                           "__test__",
+                           "mentee@email.com",
+                           True)
+
+        mentor.is_email_verified = True
+        mentor.available_to_mentor = True
+        mentee.is_email_verified = True
+        mentee.need_mentoring = True
+
+        db.session.add(mentor)
+        db.session.add(mentee)
+        db.session.commit()
+
+        start_date = datetime.datetime.now()
+        end_date = start_date + datetime.timedelta(weeks=4)
+
+        tasks_list = TasksListModel()
+
+        pending_relation = MentorshipRelationModel(action_user_id=mentee.id,
+                                                   mentor_user=mentor,
+                                                   mentee_user=mentee,
+                                                   creation_date=start_date.timestamp(),
+                                                   end_date=end_date.timestamp(),
+                                                   state=MentorshipRelationState.PENDING,
+                                                   tasks_list=tasks_list,
+                                                   notes="Test Notes")
+
+        db.session.add(tasks_list)
+        db.session.add(pending_relation)
+        db.session.commit()
+
+        # We first test pending relations
+        expected_response = {
+            'name': mentor.name,
+            'pending_requests': 1,
+            'accepted_requests': 0,
+            'rejected_requests': 0,
+            'completed_relations': 0,
+            'cancelled_relations': 0,
+            'achievements': []
+        }
+
+        actual_response = dao.get_user_statistics(mentor.id)
+        self.assertEqual(expected_response, actual_response)
+
+        # We now test accepted relations
+        pending_relation.state = MentorshipRelationState.ACCEPTED
+        expected_response['pending_requests'] = 0
+        expected_response['accepted_requests'] = 1
+
+        actual_response = dao.get_user_statistics(mentor.id)
+        self.assertEqual(expected_response, actual_response)
+
+        # We now test completed relations
+        pending_relation.state = MentorshipRelationState.COMPLETED
+        expected_response['accepted_requests'] = 0
+        expected_response['completed_relations'] = 1
+
+        actual_response = dao.get_user_statistics(mentor.id)
+        self.assertEqual(expected_response, actual_response)
+
+        # We now test rejected relations
+        pending_relation.state = MentorshipRelationState.REJECTED
+        expected_response['completed_relations'] = 0
+        expected_response['rejected_requests'] = 1
+
+        actual_response = dao.get_user_statistics(mentor.id)
+        self.assertEqual(expected_response, actual_response)
+
+        # We now test cancelled relations
+        pending_relation.state = MentorshipRelationState.CANCELLED
+        expected_response['rejected_requests'] = 0
+        expected_response['cancelled_relations'] = 1
+
+        actual_response = dao.get_user_statistics(mentor.id)
+        self.assertEqual(expected_response, actual_response)
+
+        # We now test achievements
+        pending_relation.state = MentorshipRelationState.ACCEPTED
+        tasks_list.add_task(description="Test Task",
+                            created_at=start_date.timestamp(),
+                            is_done=True,
+                            completed_at=end_date.timestamp())
+        tasks_list.add_task(description="Test Task 2",
+                            created_at=start_date.timestamp(),
+                            is_done=True,
+                            completed_at=end_date.timestamp())
+
+        expected_response['cancelled_relations'] = 0
+        expected_response['accepted_requests'] = 1
+        expected_response['achievements'] = [{
+            'completed_at': end_date.timestamp(),
+            'created_at': start_date.timestamp(),
+            'description': 'Test Task',
+            'id': 1,  # This is the first task in the list
+            'is_done': True
+        }, {
+            'completed_at': end_date.timestamp(),
+            'created_at': start_date.timestamp(),
+            'description': 'Test Task 2',
+            'id': 2,  # This is the second task in the list
+            'is_done': True
+        }]
+        actual_response = dao.get_user_statistics(mentor.id)
+        self.assertEqual(expected_response, actual_response)
 
 
 if __name__ == '__main__':

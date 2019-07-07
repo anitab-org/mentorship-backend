@@ -2,6 +2,8 @@ from flask import request
 from flask_restplus import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from app import messages
+from app.api.dao.task import TaskDAO
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
@@ -47,13 +49,13 @@ class SendRequest(Resource):
 
         # Verify if request body has required fields
         if 'mentor_id' not in data:
-            return {"message": "Mentor ID field is missing."}
+            return messages.MENTOR_ID_FIELD_IS_MISSING
         if 'mentee_id' not in data:
-            return {"message": "Mentee ID field is missing."}
+            return messages.MENTEE_ID_FIELD_IS_MISSING
         if 'end_date' not in data:
-            return {"message": "End date field is missing."}
+            return messages.END_DATE_FIELD_IS_MISSING
         if 'notes' not in data:
-            return {"message": "Notes field is missing."}
+            return messages.NOTES_FIELD_IS_MISSING
 
         return {}
 
@@ -225,5 +227,111 @@ class ListPendingMentorshipRequests(Resource):
 
         user_id = get_jwt_identity()
         response = DAO.list_pending_mentorship_relations(user_id)
+
+        return response
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task')
+class CreateTask(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('create_task_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
+    @mentorship_relation_ns.response(200, 'Created task with success.')
+    def post(cls, request_id):
+        """
+        Create a task.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+        request_body = request.json
+
+        is_valid = CreateTask.is_valid_data(request_body)
+
+        if is_valid != {}:
+            return is_valid, 400
+
+        response = TaskDAO.create_task(user_id=user_id, mentorship_relation_id=request_id, data=request_body)
+
+        return response
+
+    @staticmethod
+    def is_valid_data(data):
+
+        if 'description' not in data:
+            return messages.DESCRIPTION_FIELD_IS_MISSING
+
+        return {}
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>')
+class DeleteTask(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('delete_task_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Delete task with success.')
+    def delete(cls, request_id, task_id):
+        """
+        Delete a task.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+
+        response = TaskDAO.delete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
+
+        return response
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/tasks')
+class ListTasks(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('list_tasks_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'List tasks from a mentorship relation with success.',
+                                     model=list_tasks_response_body)
+    def get(cls, request_id):
+        """
+        List all tasks from a mentorship relation.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+
+        response = TaskDAO.list_tasks(user_id=user_id, mentorship_relation_id=request_id)
+
+        if isinstance(response, tuple):
+            return response
+        else:
+            return marshal(response, list_tasks_response_body), 200
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/complete')
+class UpdateTask(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('update_task_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Updated task with success.')
+    def put(cls, request_id, task_id):
+        """
+        Update a task.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+
+        response = TaskDAO.complete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
 
         return response

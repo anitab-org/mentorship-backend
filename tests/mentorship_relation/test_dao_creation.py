@@ -1,50 +1,25 @@
 import unittest
 from datetime import datetime, timedelta
 
+from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
 from app.utils.enum_utils import MentorshipRelationState
-from tests.base_test_case import BaseTestCase
-from app.database.models.user import UserModel
-from tests.test_data import user1, user2
+from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from app.database.sqlalchemy_extension import db
 
 
-class TestMentorshipRelationCreationDAO(BaseTestCase):
+class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
     # Setup consists of adding 2 users into the database
     def setUp(self):
         super(TestMentorshipRelationCreationDAO, self).setUp()
 
-        self.first_user = UserModel(
-            name=user1['name'],
-            email=user1['email'],
-            username=user1['username'],
-            password=user1['password'],
-            terms_and_conditions_checked=user1['terms_and_conditions_checked']
-        )
-        self.second_user = UserModel(
-            name=user2['name'],
-            email=user2['email'],
-            username=user2['username'],
-            password=user2['password'],
-            terms_and_conditions_checked=user2['terms_and_conditions_checked']
-        )
-
-        # making sure both are available to be mentor or mentee
-        self.first_user.need_mentoring = True
-        self.first_user.available_to_mentor = True
-        self.second_user.need_mentoring = True
-        self.second_user.available_to_mentor = True
-
         self.notes_example = 'description of a good mentorship relation'
 
         self.now_datetime = datetime.now()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
-
-        db.session.add(self.first_user)
-        db.session.add(self.second_user)
-        db.session.commit()
 
     def test_dao_create_mentorship_relation_with_good_args_mentor_is_sender(self):
         dao = MentorshipRelationDAO()
@@ -52,14 +27,15 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             mentor_id=self.first_user.id,
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         # Use DAO to create a mentorship relation
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
-        self.assertEqual({'message': 'Mentorship relation was sent successfully.'}, result[0])
+        self.assertEqual(messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -95,14 +71,15 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             mentor_id=self.first_user.id,
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         # Use DAO to create a mentorship relation
 
         result = dao.create_mentorship_relation(self.second_user.id, data)
 
-        self.assertEqual({'message': 'Mentorship relation was sent successfully.'}, result[0])
+        self.assertEqual(messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -139,14 +116,15 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             mentor_id=1234,
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         # Use DAO to create a mentorship relation
 
         result = dao.create_mentorship_relation(1234, data)
 
-        self.assertEqual({'message': 'Mentor user does not exist.'}, result[0])
+        self.assertDictEqual(messages.MENTOR_DOES_NOT_EXIST, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -158,14 +136,15 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             mentor_id=self.first_user.id,
             mentee_id=1234,
             end_date=self.end_date_example.timestamp(),
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         # Use DAO to create a mentorship relation
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
-        self.assertEqual({'message': 'Mentee user does not exist.'}, result[0])
+        self.assertDictEqual(messages.MENTEE_DOES_NOT_EXIST, result[0])
 
         query_mentorship_relation = MentorshipRelationModel.query.first()
 
@@ -180,7 +159,8 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             creation_date=self.now_datetime.timestamp(),
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.ACCEPTED,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         db.session.add(self.mentorship_relation)
@@ -190,14 +170,15 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             mentor_id=self.first_user.id,
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         # Use DAO to create a mentorship relation
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
-        self.assertEqual(({'message': 'Mentee user is already in a relationship.'}, 400), result)
+        self.assertEqual((messages.MENTEE_ALREADY_IN_A_RELATION, 400), result)
 
         query_mentorship_relations = MentorshipRelationModel.query.all()
 
@@ -212,7 +193,8 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             creation_date=self.now_datetime.timestamp(),
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.ACCEPTED,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         db.session.add(self.mentorship_relation)
@@ -223,14 +205,15 @@ class TestMentorshipRelationCreationDAO(BaseTestCase):
             mentor_id=self.second_user.id,
             mentee_id=self.first_user.id,
             end_date=self.end_date_example.timestamp(),
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         # Use DAO to create a mentorship relation
 
         result = dao.create_mentorship_relation(self.second_user.id, data)
 
-        self.assertEqual(({'message': 'Mentor user is already in a relationship.'}, 400), result)
+        self.assertEqual((messages.MENTOR_IN_RELATION, 400), result)
 
         query_mentorship_relations = MentorshipRelationModel.query.all()
 

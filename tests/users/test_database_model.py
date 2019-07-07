@@ -1,5 +1,4 @@
 import unittest
-import datetime
 from werkzeug.security import check_password_hash
 
 from tests.base_test_case import BaseTestCase
@@ -51,7 +50,7 @@ class TestAdminUserModel(BaseTestCase):
         self.assertTrue(check_password_hash(user.password_hash, 'user1_password'))
         self.assertFalse(user.is_admin)
         self.assertTrue(user.terms_and_conditions_checked)
-        self.assertIsInstance(user.registration_date, datetime.datetime)
+        self.assertIsInstance(user.registration_date, float)
         self.assertFalse(user.is_email_verified)
 
 

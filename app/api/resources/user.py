@@ -1,11 +1,11 @@
 from datetime import datetime
 
 from flask import request
-from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity
+from flask_jwt_extended import jwt_required, jwt_refresh_token_required, create_access_token, create_refresh_token, get_jwt_identity
 from flask_restplus import Resource, marshal, Namespace
 
-from app.api.validations.user import (validate_user_registration_request_data, validate_resend_email_request_data,
-                                      validate_new_password)
+from app import messages
+from app.api.validations.user import *
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
@@ -29,8 +29,8 @@ class UserList(Resource):
         """
         Returns list of all the users.
         """
-
-        return DAO.list_users()
+        user_id = get_jwt_identity()
+        return DAO.list_users(user_id)
 
 
 @users_ns.route('users/<int:user_id>')
@@ -50,11 +50,11 @@ class OtherUser(Resource):
         """
         # Validate arguments
         if not OtherUser.validate_param(user_id):
-            return {"message": "User id is not valid."}, 400
+            return messages.USER_ID_IS_NOT_VALID, 400
 
         requested_user = DAO.get_user(user_id)
         if requested_user is None:
-            return {"message": "User does not exist."}, 404
+            return messages.USER_DOES_NOT_EXIST, 404
         else:
             return marshal(requested_user, public_user_api_model), 201
 
@@ -91,6 +91,12 @@ class MyUserProfile(Resource):
         """
 
         data = request.json
+
+        is_valid = validate_update_profile_request_data(data)
+
+        if is_valid != {}:
+            return is_valid, 400
+
         user_id = get_jwt_identity()
         return DAO.update_user_profile(user_id, data)
 
@@ -139,7 +145,8 @@ class VerifiedUser(Resource):
         """
         Returns all verified users.
         """
-        return DAO.list_users(is_verified=True)
+        user_id = get_jwt_identity()
+        return DAO.list_users(user_id, is_verified=True)
 
 
 @users_ns.route('register')
@@ -148,7 +155,7 @@ class UserRegister(Resource):
     @classmethod
     @users_ns.doc('create_user')
     @users_ns.response(201, 'User successfully created.')
-    @users_ns.expect(register_user_api_model)
+    @users_ns.expect(register_user_api_model, validate=True)
     def post(cls):
         """
         Creates a new user.
@@ -175,6 +182,8 @@ class UserEmailConfirmation(Resource):
 
     @classmethod
     def get(cls, token):
+        """Confirms the user's account."""
+
         return DAO.confirm_registration(token)
 
 
@@ -184,6 +193,7 @@ class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
     def post(cls):
+        """Sends the user a new verification email."""
 
         data = request.json
 
@@ -194,14 +204,40 @@ class UserResendEmailConfirmation(Resource):
 
         user = DAO.get_user_by_email(data['email'])
         if user is None:
-            return {"message": "You are not registered in the system."}, 404
+            return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, 404
 
         if user.is_email_verified:
-            return {"message": "You already confirm your email."}, 403
+            return messages.USER_ALREADY_CONFIRMED_ACCOUNT, 403
 
         send_email_verification_message(user.name, data['email'])
 
-        return {"message": "Check your email, a new verification email was sent."}, 200
+        return messages.EMAIL_VERIFICATION_MESSAGE, 200
+
+
+@users_ns.route('refresh')
+class RefreshUser(Resource):
+
+    @classmethod
+    @jwt_refresh_token_required
+    @users_ns.doc('refresh')
+    @users_ns.response(200, 'Successful refresh', refresh_response_body_model)
+    @users_ns.expect(auth_header_parser)
+    def post(cls):
+        """Refresh user's access
+
+        The return value is an access token and the expiry timestamp.
+        The token is valid for 1 week.
+        """
+        user_id = get_jwt_identity()
+        access_token = create_access_token(identity=user_id)
+
+        from run import application
+        access_expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+
+        return {
+            'access_token': access_token,
+            'access_expiry': access_expiry.timestamp(),
+        }, 200
 
 
 @users_ns.route('login')
@@ -227,25 +263,50 @@ class LoginUser(Resource):
         password = request.json.get('password', None)
 
         if not username:
-            return {'message': 'The field username is missing.'}, 400
+            return messages.USERNAME_FIELD_IS_MISSING, 400
         if not password:
-            return {'message': 'The field password is missing.'}, 400
+            return messages.PASSWORD_FIELD_IS_MISSING, 400
 
         user = DAO.authenticate(username, password)
 
         if not user:
-            return {'message': 'Username or password is wrong.'}, 404
+            return messages.WRONG_USERNAME_OR_PASSWORD, 404
 
         if not user.is_email_verified:
-            return {'message': 'Please verify your email before login.'}, 403
+            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, 403
 
         access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
 
         from run import application
-        expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+        access_expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+        refresh_expiry = datetime.utcnow() + application.config.get('JWT_REFRESH_TOKEN_EXPIRES')
 
         return {
             'access_token': access_token,
-            'expiry': expiry.timestamp()
+            'access_expiry': access_expiry.timestamp(),
+            'refresh_token': refresh_token,
+            'refresh_expiry': refresh_expiry.timestamp(),
         }, 200
 
+
+@users_ns.route('home')
+@users_ns.expect(auth_header_parser, validate=True)
+@users_ns.response(200, 'Successful response', home_response_body_model)
+@users_ns.response(404, 'User not found')
+class UserHomeStatistics(Resource):
+    @classmethod
+    @jwt_required
+    @users_ns.expect(auth_header_parser)
+    def get(cls):
+        """Get Statistics regarding the current user
+
+        Returns:
+            A dict containing user stats
+        """
+        user_id = get_jwt_identity()
+        stats = DAO.get_user_statistics(user_id)
+        if not stats:
+            return messages.USER_NOT_FOUND, 404
+
+        return stats, 200

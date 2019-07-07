@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 
+from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
+from app.database.models.tasks_list import TasksListModel
 from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
@@ -35,8 +37,10 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         # making sure both are available to be mentor or mentee
         self.first_user.need_mentoring = True
         self.first_user.available_to_mentor = True
+        self.first_user.is_email_verified = True
         self.second_user.need_mentoring = True
         self.second_user.available_to_mentor = True
+        self.second_user.is_email_verified = True
 
         self.notes_example = 'description of a good mentorship relation'
 
@@ -56,7 +60,8 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
             creation_date=self.now_datetime.timestamp(),
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.PENDING,
-            notes=self.notes_example
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
         )
 
         db.session.add(self.mentorship_relation)
@@ -66,21 +71,21 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
 
         result = MentorshipRelationDAO.delete_request(self.first_user.id, 123)
 
-        self.assertEqual(({'message': 'This mentorship relation request does not exist.'}, 404), result)
+        self.assertEqual((messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
 
     def test_dao_sender_does_not_exist(self):
 
         result = MentorshipRelationDAO.delete_request(123, self.mentorship_relation.id)
 
-        self.assertEqual(({'message': 'User does not exist.'}, 404), result)
+        self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
 
     def test_dao_receiver_tries_to_delete_mentorship_request(self):
 
         result = MentorshipRelationDAO.delete_request(self.second_user.id, self.mentorship_relation.id)
 
-        self.assertEqual(({'message': 'You cannot delete a mentorship request that you did not create.'}, 400), result)
+        self.assertEqual((messages.CANT_DELETE_UNINVOLVED_REQUEST, 400), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
 
     def test_dao_sender_delete_mentorship_request(self):
@@ -89,7 +94,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
         result = MentorshipRelationDAO.delete_request(self.first_user.id, relation_id)
-        self.assertEqual(({'message': 'Mentorship relation was deleted successfully.'}, 200), result)
+        self.assertEqual((messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, 200), result)
 
         self.assertIsNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
@@ -97,7 +102,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
 
         result = MentorshipRelationDAO.delete_request(self.admin_user.id, self.mentorship_relation.id)
 
-        self.assertEqual(({'message': 'You cannot delete a mentorship request that you did not create.'}, 400), result)
+        self.assertEqual((messages.CANT_DELETE_UNINVOLVED_REQUEST, 400), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
 
     def test_dao_mentorship_delete_request_not_in_pending_state(self):
@@ -108,7 +113,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         db.session.commit()
 
         result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
-        self.assertEqual(({'message': 'This mentorship relation is not in the pending state.'}, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
@@ -116,7 +121,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         db.session.commit()
 
         result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
-        self.assertEqual(({'message': 'This mentorship relation is not in the pending state.'}, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
@@ -124,7 +129,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         db.session.commit()
 
         result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
-        self.assertEqual(({'message': 'This mentorship relation is not in the pending state.'}, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
@@ -132,5 +137,5 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         db.session.commit()
 
         result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
-        self.assertEqual(({'message': 'This mentorship relation is not in the pending state.'}, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
         self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
