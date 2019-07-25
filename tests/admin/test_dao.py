@@ -13,7 +13,7 @@ class TestAdminDao(BaseTestCase):
 
 
     """
-    Checks wheather a new admin can be assigned by existing admin.
+    Checks whether a new admin can be assigned by existing admin.
     """
     def test_dao_assign_new_admin_valid_user(self):
         
@@ -42,7 +42,7 @@ class TestAdminDao(BaseTestCase):
         self.assertTrue(user.is_admin)
 
     """
-    Checks wheather a new admin can be assigned by normal user.
+    Checks whether a new admin can be assigned by normal user.
     """
     def test_dao_assign_new_admin_by_normal_user(self):
         
@@ -119,7 +119,7 @@ class TestAdminDao(BaseTestCase):
 
 
     """
-    Checks if a user tries to assign admin role to (him/her)self. 
+    Checks if a user tries to self-assign admin role.  
     """
     def test_dao_assign_admin_role_to_myself(self):
 
@@ -179,7 +179,7 @@ class TestAdminDao(BaseTestCase):
 
     
     """
-    Checks whether a user is trying to revoke other user's admin priviledges. 
+    Checks whether a user is trying to revoke other user's admin privileges. 
     """
     def test_dao_revoke_admin_role_by_non_admin_user(self):
         
@@ -202,7 +202,7 @@ class TestAdminDao(BaseTestCase):
         )
         dao_result = dao.revoke_admin_user(2, data)
 
-        self.assertEqual((messages.USER_ASSIGN_NOT_ADMIN, 403), dao_result)
+        self.assertEqual((messages.USER_REVOKE_NOT_ADMIN, 403), dao_result)
 
 
     """

@@ -24,7 +24,6 @@ class AdminDAO:
         if user_id is new_admin_user_id:
             return messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, 403
 
-        #For test purposes
         admin_user = UserModel.find_by_id(user_id)
 
         if admin_user: 
@@ -69,12 +68,11 @@ class AdminDAO:
 
         new_admin_user = UserModel.find_by_id(admin_user_id)
 
-        #For test purposes
         admin_user = UserModel.find_by_id(user_id)
 
         if admin_user: 
             if not admin_user.is_admin:
-                return messages.USER_ASSIGN_NOT_ADMIN, 403
+                return messages.USER_REVOKE_NOT_ADMIN, 403
         else:
             return messages.USER_NOT_FOUND, 404
 
