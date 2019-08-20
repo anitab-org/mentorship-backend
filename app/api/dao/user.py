@@ -25,7 +25,7 @@ class UserDAO:
             data: A list containing the user's name, username, password, and email, as well as recognition that they have read and agree to the Terms and Conditions.
             
         Returns:
-            A list with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
+            A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
         
         name = data['name']
