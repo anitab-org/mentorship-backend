@@ -102,37 +102,37 @@ class UserDAO:
 
             user.username = username
 
-        if 'name' in data:
+        if 'name' in data and data['name']:
             user.name = data['name']
 
-        if 'bio' in data:
+        if 'bio' in data and data['bio']:
             user.bio = data['bio']
 
-        if 'location' in data:
+        if 'location' in data and data['location']:
             user.location = data['location']
 
-        if 'occupation' in data:
+        if 'occupation' in data and data['occupation']:
             user.occupation = data['occupation']
 
-        if 'organization' in data:
+        if 'organization' in data and data['organization']:
             user.organization = data['organization']
 
-        if 'slack_username' in data:
+        if 'slack_username' in data and data['slack_username']:
             user.slack_username = data['slack_username']
 
-        if 'social_media_links' in data:
+        if 'social_media_links' in data and data['social_media_links']:
             user.social_media_links = data['social_media_links']
 
-        if 'skills' in data:
+        if 'skills' in data and data['skills']:
             user.skills = data['skills']
 
-        if 'interests' in data:
+        if 'interests' in data and data['interests']:
             user.interests = data['interests']
 
-        if 'resume_url' in data:
+        if 'resume_url' in data and data['resume_url']:
             user.resume_url = data['resume_url']
 
-        if 'photo_url' in data:
+        if 'photo_url' in data and data['photo_url']:
             user.photo_url = data['photo_url']
 
         if 'need_mentoring' in data:
