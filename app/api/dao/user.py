@@ -102,7 +102,7 @@ class UserDAO:
 
             user.username = username
 
-        if 'name' in data:
+        if 'name' in data and data['name']:
             user.name = data['name']
 
         if 'bio' in data:
