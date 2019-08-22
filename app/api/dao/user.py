@@ -106,34 +106,64 @@ class UserDAO:
             user.name = data['name']
 
         if 'bio' in data:
-            user.bio = data['bio']
+            if data['bio']:
+                user.bio = data['bio']
+            else:
+                user.bio = None
 
         if 'location' in data:
-            user.location = data['location']
-
+            if data['location']:
+                user.location = data['location']
+            else:
+                user.location = None
+            
         if 'occupation' in data:
-            user.occupation = data['occupation']
+            if data['occupation']:
+                user.occupation = data['occupation']
+            else:
+                user.occupation = None
 
         if 'organization' in data:
-            user.organization = data['organization']
+            if data['organization']:
+                user.organization = data['organization']
+            else:
+                user.organization = None
 
         if 'slack_username' in data:
-            user.slack_username = data['slack_username']
+            if data['slack_username']:
+                user.slack_username = data['slack_username']
+            else:
+                user.slack_username = None
 
         if 'social_media_links' in data:
-            user.social_media_links = data['social_media_links']
+            if data['social_media_links']:
+                user.social_media_links = data['social_media_links']
+            else:
+                user.social_media_links = None
 
         if 'skills' in data:
-            user.skills = data['skills']
+            if data['skills']:
+                user.skills = data['skills']
+            else:
+                user.skills = None
 
         if 'interests' in data:
-            user.interests = data['interests']
+            if data['interests']:
+                user.interests = data['interests']
+            else:
+                user.interests = None
 
         if 'resume_url' in data:
-            user.resume_url = data['resume_url']
+            if data['resume_url']:
+                user.resume_url = data['resume_url']
+            else:
+                user.resume_url = None
 
         if 'photo_url' in data:
-            user.photo_url = data['photo_url']
+            if data['photo_url']:
+                user.photo_url = data['photo_url']
+            else:
+                user.photo_url = None
 
         if 'need_mentoring' in data:
             user.need_mentoring = data['need_mentoring']
