@@ -164,7 +164,7 @@ class UserDAO:
 
         email_from_token = confirm_token(token)
 
-        if email_from_token is False or email_from_token is None:
+        if email_from_token == False or email_from_token is None:
             return messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400
 
         user = UserModel.find_by_email(email_from_token)
