@@ -20,12 +20,6 @@ class TestUpdateUserDao(BaseTestCase):
         self.assertEqual('good_developer', self.admin_user.occupation)
         self.assertEqual('good_org', self.admin_user.organization)
 
-        
-    def test_dao_update_user_details_to_none(self):
-        
-        self.assertIsNone(self.admin_user.occupation)
-        self.assertIsNone(self.admin_user.organization)
-
         data = dict(
             occupation='',
             organization=''
@@ -34,6 +28,7 @@ class TestUpdateUserDao(BaseTestCase):
 
         self.assertIsNone(self.admin_user.occupation)
         self.assertIsNone(self.admin_user.organization)
+        
 
 if __name__ == '__main__':
     unittest.main()
