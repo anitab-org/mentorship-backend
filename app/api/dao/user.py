@@ -9,12 +9,25 @@ from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
 
 class UserDAO:
+    """Data Access Object for User functionalities"""
+    
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
     SUCCESS_USER_CREATED = "SUCCESS_USER_CREATED"
     MIN_NUMBER_OF_ADMINS = 1
 
     @staticmethod
     def create_user(data):
+        """Creates a new user.
+        
+        Creates a new user with provided data.
+        
+        Arguments:
+            data: A list containing the user's name, username, password, and email, as well as recognition that they have read and agree to the Terms and Conditions.
+            
+        Returns:
+            A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
+        """
+        
         name = data['name']
         username = data['username']
         password = data['password']
@@ -43,6 +56,17 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def delete_user(user_id):
+        """ Deletes a user.
+        
+        Deletes the specified user and removes them from the directory, with checks to make sure that the user exists and is not the only administrator.
+        
+        Arguments:
+            user_id: The ID of the user to be deleted.
+            
+        Returns: 
+            A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
+        """
+        
         user = UserModel.find_by_id(user_id)
 
         # check if this user is the only admin
@@ -61,18 +85,65 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def get_user(user_id):
+        """ Retrieves a user's profile information using a specified ID.
+        
+        Provides the user profile of the user whose ID matches the one specified.
+        
+        Arguments:
+            user_id: The ID of the user to be searched.
+        
+        Returns:
+            The UserModel class of the user whose ID was searched, containing the public information of their profile such as bio, location, etc.
+        
+        """
+        
         return UserModel.find_by_id(user_id)
 
     @staticmethod
     def get_user_by_email(email):
+        """ Retrieves a user's profile information using a specified email.
+        
+        Provides the user profile of the user whose email matches the one specified.
+        
+        Arguments:
+            email: The email of the user to be searched.
+        
+        Returns:
+            The UserModel class of the user whose email was searched, containing the public information of their profile such as bio, location, etc.
+        
+        """
+        
         return UserModel.find_by_email(email)
 
     @staticmethod
     def get_user_by_username(username):
+        """ Retrieves a user's profile information using a specified username.
+        
+        Provides the user profile of the user whose username matches the one specified.
+        
+        Arguments:
+            username: The ID of the user to be searched.
+        
+        Returns:
+            The UserModel class of the user whose username was searched, containing the public information of their profile such as bio, location, etc.
+        
+        """
+        
         return UserModel.find_by_username(username)
 
     @staticmethod
     def list_users(user_id, is_verified=None):
+        """ Retrieves a list of verified users with the specified ID.
+        
+        Arguments:
+            user_id: The ID of the user to be listed.
+            is_verified: Status of the user's verification; None when provided as an argument.
+        
+        Returns:
+            A list of users matching conditions and the HTTP response code.
+        
+        """
+        
         users_list = UserModel.query.filter(UserModel.id!=user_id).all()
         list_of_users = []
         if is_verified:
@@ -87,6 +158,18 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def update_user_profile(user_id, data):
+        """ Updates the profile of a specified user with new data.
+        
+        Replaces old data items with new ones in the provided data list, with a check for overlap between users in username and a check that a user with the specified ID exists
+        
+        Arguments:
+            user_id: The ID of the user whose data will be updated.
+            data: A list containing the user's information such as name, bio, location, etc.
+        
+        Returns:
+            A message that indicates whether the update was successful or not and a second element which is the HTTP response code.
+        
+        """
 
         user = UserModel.find_by_id(user_id)
         if not user:
@@ -148,6 +231,19 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def change_password(user_id, data):
+        """ Changes the user's password.
+        
+        Finds the user with the given ID, checks their current password, and then updates to the new one.
+        
+        Arguments:
+            user_id: The ID of the user to be searched.
+            data: The user's current and new password.
+        
+        Returns:
+            A message that indicates whether the password change was successful or not and a second element which is the HTTP response code.
+        
+        """
+        
         current_password = data['current_password']
         new_password = data['new_password']
 
@@ -161,6 +257,17 @@ class UserDAO:
 
     @staticmethod
     def confirm_registration(token):
+        """ Determines whether a user's email registration has been confirmed.
+        
+        Determines whether a user's email registration was invalid, previously confirmed, or just confirmed.
+        
+        Arguments:
+            token: Serialized and signed email address as a URL safe string.
+        
+        Returns:
+            A message that indicates if the confirmation was invalid, already happened, or just happened, and the HTTP response code.
+        
+        """
 
         email_from_token = confirm_token(token)
 
@@ -178,10 +285,18 @@ class UserDAO:
 
     @staticmethod
     def authenticate(username_or_email, password):
-        """
+        """ User login process.
+        
         The user can login with two options:
         -> username + password
         -> email + password
+        
+        Arguments:
+            username_or_email: The username or email associated with the account being authenticated.
+            password: The password associated with the account being authenticated.
+            
+        Returns:
+            Returns authenticated user if username and password are valid, otherwise returns None.
         """
 
         if is_email_valid(username_or_email):
