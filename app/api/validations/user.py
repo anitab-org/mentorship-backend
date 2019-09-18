@@ -55,7 +55,7 @@ def validate_user_registration_request_data(data):
         return is_valid[1]
 
     # Verify business logic of request body
-    if terms_and_conditions_checked is False:
+    if terms_and_conditions_checked == False:
         return messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED
 
     if not is_name_valid(name):
