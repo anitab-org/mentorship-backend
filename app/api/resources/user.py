@@ -132,6 +132,21 @@ class ChangeUserPassword(Resource):
             return is_valid, 400
         return DAO.change_password(user_id, data)
 
+@users_ns.route('user/profile_picture')
+class UserProfilePicture(Resource):
+
+    @classmethod
+    @jwt_required
+    @users_ns.doc('user_profile_picture')
+    @users_ns.expect(auth_header_parser, validate=True)
+    def get(cls):
+        """
+        Retrieve user's profile picture
+        """
+        user_id = get_jwt_identity()
+        data = request.json
+        return DAO.retrieve_profile_picture(user_id, data)
+
 
 @users_ns.route('users/verified')
 class VerifiedUser(Resource):

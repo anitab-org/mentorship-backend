@@ -118,6 +118,23 @@
 			"response": []
 		},
 		{
+			"name": "GET /user/profile_picture",
+			"request": {
+				"url": "http://127.0.0.1:5000/user/profile_picture",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc4NjExNjQsImlhdCI6MTUyNzg2MDg2NCwibmJmIjoxNTI3ODYwODY0LCJpZGVudGl0eSI6MX0.mghX8p4lphzqsqEpk-zpOWqlPlUqyXoW1r44AaRhjwA",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Retrieve user's profile picture"
+			},
+			"response": []
+		},
+		{
 			"name": "PUT /user/changepassword",
 			"request": {
 				"url": "http://127.0.0.1:5000/user/change_password",

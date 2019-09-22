@@ -3,6 +3,7 @@ APScheduler==3.5.1
 awsebcli==3.14.1
 blessed==1.15.0
 blinker==1.4
+boto3==1.9.99
 botocore==1.10.48
 cached-property==1.4.3
 cement==2.8.2

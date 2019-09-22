@@ -1,3 +1,5 @@
+import os
+
 from datetime import datetime
 from operator import itemgetter
 
@@ -5,6 +7,7 @@ from app import messages
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
 from app.utils.enum_utils import MentorshipRelationState
+from app.utils import aws_upload
 from app.utils.validation_utils import is_email_valid
 
 class UserDAO:
@@ -128,8 +131,14 @@ class UserDAO:
         if 'resume_url' in data and data['resume_url']:
             user.resume_url = data['resume_url']
 
-        if 'photo_url' in data and data['photo_url']:
-            user.photo_url = data['photo_url']
+        try:
+            if 'photo_url' in data and data['photo_url']:
+                image_type = data['photo_url'].split(';')[0].split('/')[1]
+                image_name = ".".join((username, image_type))
+                photo_url = aws_upload.upload_to_aws(data['photo_url'], application.config["AWS_PROFILE_BUCKET"], image_name)
+                user.photo_url = photo_url
+        except KeyError:
+            pass
 
         if 'need_mentoring' in data:
             user.need_mentoring = data['need_mentoring']
@@ -153,6 +162,15 @@ class UserDAO:
             return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
 
         return messages.USER_ENTERED_INCORRECT_PASSWORD, 400
+
+    @staticmethod
+    def retrieve_profile_picture(user_id, data):
+
+        user = UserModel.find_by_id(user_id)
+        if user.photo_url is not None:
+            return user.photo_url, 200
+
+        return messages.USER_HAS_NOT_UPDATED_PICTURE, 400
 
     @staticmethod
     def confirm_registration(token):

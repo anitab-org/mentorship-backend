@@ -14,6 +14,11 @@ class BaseConfig(object):
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(weeks=4)
 
+    # Aws details
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_PROFILE_BUCKET = os.getenv('AWS_PROFILE_BUCKET')
+
     # Security
     SECRET_KEY = os.getenv('SECRET_KEY', None)
     # if not SECRET_KEY:

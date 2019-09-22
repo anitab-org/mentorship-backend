@@ -638,6 +638,29 @@
                 ]
             }
         },
+        "/user/profile_picture": {
+            "get": {
+                "responses": {
+                    "400": {
+                        "description": "User has not updated profile picture"
+                    },
+                    "200": {
+                        "description": "https://s3.ap-south-1.amazonaws.com/bucket_name/image_name"
+                    }
+                },
+                "summary": "Returns a user profile picture",
+                "operationId": "get_user_profile_picture",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    }
+                ]
+            }
+        },
         "/user/change_password": {
             "put": {
                 "responses": {

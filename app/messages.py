@@ -56,6 +56,8 @@ USER_ASSIGN_NOT_ADMIN = {"message": "You don't have admin status. You can't"
 USER_REVOKE_NOT_ADMIN = {"message": "You don't have admin status. You can't"
                          " revoke other admin user."}
 USER_IS_NOW_AN_ADMIN = {"message": "User is now an Admin."}
+USER_HAS_NOT_UPDATED_PICTURE = {"message": "User has not updated"
+                                 " profile picture"}
 
 # Mentor availability
 MENTOR_NOT_AVAILABLE_TO_MENTOR = {"message": "Mentor user is not available to"
