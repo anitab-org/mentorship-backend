@@ -189,35 +189,65 @@ class UserDAO:
         if 'name' in data and data['name']:
             user.name = data['name']
 
-        if 'bio' in data and data['bio']:
-            user.bio = data['bio']
+        if 'bio' in data:
+            if data['bio']:
+                user.bio = data['bio']
+            else:
+                user.bio = None
 
-        if 'location' in data and data['location']:
-            user.location = data['location']
+        if 'location' in data:
+            if data['location']:
+                user.location = data['location']
+            else:
+                user.location = None
+            
+        if 'occupation' in data:
+            if data['occupation']:
+                user.occupation = data['occupation']
+            else:
+                user.occupation = None
 
-        if 'occupation' in data and data['occupation']:
-            user.occupation = data['occupation']
+        if 'organization' in data:
+            if data['organization']:
+                user.organization = data['organization']
+            else:
+                user.organization = None
 
-        if 'organization' in data and data['organization']:
-            user.organization = data['organization']
+        if 'slack_username' in data:
+            if data['slack_username']:
+                user.slack_username = data['slack_username']
+            else:
+                user.slack_username = None
 
-        if 'slack_username' in data and data['slack_username']:
-            user.slack_username = data['slack_username']
+        if 'social_media_links' in data:
+            if data['social_media_links']:
+                user.social_media_links = data['social_media_links']
+            else:
+                user.social_media_links = None
 
-        if 'social_media_links' in data and data['social_media_links']:
-            user.social_media_links = data['social_media_links']
+        if 'skills' in data:
+            if data['skills']:
+                user.skills = data['skills']
+            else:
+                user.skills = None
 
-        if 'skills' in data and data['skills']:
-            user.skills = data['skills']
+        if 'interests' in data:
+            if data['interests']:
+                user.interests = data['interests']
+            else:
+                user.interests = None
 
-        if 'interests' in data and data['interests']:
-            user.interests = data['interests']
+        if 'resume_url' in data:
+            if data['resume_url']:
+                user.resume_url = data['resume_url']
+            else:
+                user.resume_url = None
 
-        if 'resume_url' in data and data['resume_url']:
-            user.resume_url = data['resume_url']
-
-        if 'photo_url' in data and data['photo_url']:
-            user.photo_url = data['photo_url']
+        if 'photo_url' in data:
+            if data['photo_url']:
+                user.photo_url = data['photo_url']
+            else:
+                user.photo_url = None
 
         if 'need_mentoring' in data:
             user.need_mentoring = data['need_mentoring']
