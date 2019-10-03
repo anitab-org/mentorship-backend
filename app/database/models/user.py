@@ -57,7 +57,7 @@ class UserModel(db.Model):
     available_to_mentor = db.Column(db.Boolean)
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
-        """"Inits userModel class with name, username, password, email, and terms_and_conditions_checked. """
+        """"Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
         ## required fields
 
         self.name = name
