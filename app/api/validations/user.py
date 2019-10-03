@@ -1,5 +1,6 @@
 from app import messages
-from app.utils.validation_utils import is_name_valid, is_email_valid, is_username_valid, validate_length, get_stripped_string
+from app.utils.validation_utils import is_name_valid, is_email_valid, is_username_valid, validate_length, \
+    get_stripped_string
 
 # Field character limit
 
@@ -55,7 +56,7 @@ def validate_user_registration_request_data(data):
         return is_valid[1]
 
     # Verify business logic of request body
-    if terms_and_conditions_checked == False:
+    if not terms_and_conditions_checked:
         return messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED
 
     if not is_name_valid(name):
