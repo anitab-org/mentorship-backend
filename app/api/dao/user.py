@@ -8,9 +8,10 @@ from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
 
+
 class UserDAO:
     """Data Access Object for User functionalities"""
-    
+
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
     SUCCESS_USER_CREATED = "SUCCESS_USER_CREATED"
     MIN_NUMBER_OF_ADMINS = 1
@@ -27,7 +28,7 @@ class UserDAO:
         Returns:
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
-        
+
         name = data['name']
         username = data['username']
         password = data['password']
@@ -66,7 +67,7 @@ class UserDAO:
         Returns: 
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
-        
+
         user = UserModel.find_by_id(user_id)
 
         # check if this user is the only admin
@@ -96,7 +97,7 @@ class UserDAO:
             The UserModel class of the user whose ID was searched, containing the public information of their profile such as bio, location, etc.
         
         """
-        
+
         return UserModel.find_by_id(user_id)
 
     @staticmethod
@@ -112,7 +113,7 @@ class UserDAO:
             The UserModel class of the user whose email was searched, containing the public information of their profile such as bio, location, etc.
         
         """
-        
+
         return UserModel.find_by_email(email)
 
     @staticmethod
@@ -128,7 +129,7 @@ class UserDAO:
             The UserModel class of the user whose username was searched, containing the public information of their profile such as bio, location, etc.
         
         """
-        
+
         return UserModel.find_by_username(username)
 
     @staticmethod
@@ -143,8 +144,8 @@ class UserDAO:
             A list of users matching conditions and the HTTP response code.
         
         """
-        
-        users_list = UserModel.query.filter(UserModel.id!=user_id).all()
+
+        users_list = UserModel.query.filter(UserModel.id != user_id).all()
         list_of_users = []
         if is_verified:
             for user in users_list:
@@ -243,7 +244,7 @@ class UserDAO:
             A message that indicates whether the password change was successful or not and a second element which is the HTTP response code.
         
         """
-        
+
         current_password = data['current_password']
         new_password = data['new_password']
 
