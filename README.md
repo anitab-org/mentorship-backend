@@ -46,6 +46,19 @@ export APP_MAIL_PASSWORD=<app-mail-password>
 6. When you are done using the app, deactivate the virtual environment:
 `deactivate`
 
+### Running the app on Windows machines
+
+`source ./venv/bin/activate` may produce errors (no such directory errors) for windows users using git bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on git bash for windows.
+
+Make sure the following dependencies are installed before running the program (for Windows users)
+`pip install flask`
+`pip install flask_sqlalchemy`
+`pip install flask_jwt_extended`
+`pip install flask_restplus`
+`pip install flask_mail`
+`pip install apscheduler`
+If all steps were successful, it should say 'Running on http://127.0.0.1:5000'.
+
 ### Run tests
 
 To run the unitests run the following command in the terminal (while the virtual environment is activated):
