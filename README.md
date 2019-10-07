@@ -48,7 +48,9 @@ export APP_MAIL_PASSWORD=<app-mail-password>
 
 ### Running the app on Windows machines
 
-`source ./venv/bin/activate` may produce errors (no such directory errors) for windows users using git bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on git bash for windows.
+`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines.
+
+For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
 
 Make sure the following dependencies are installed before running the program (for Windows users)
 `pip install flask`
