@@ -34,7 +34,8 @@ mentorship_request_response_body = Model('List mentorship relation request model
     'start_date': fields.Float(required=True, description='Mentorship relation start date in UNIX timestamp format'),
     'end_date': fields.Float(required=True, description='Mentorship relation end date in UNIX timestamp format'),
     'state': fields.Integer(required=True, enum=MentorshipRelationState.values, description='Mentorship relation state'),
-    'notes': fields.String(required=True, description='Mentorship relation notes')
+    'notes': fields.String(required=True, description='Mentorship relation notes'),
+    'cancellation_reason': fields.String(required=False, description='Mentorship relation cancellation reason')
 })
 
 create_task_request_body = Model('Create task request model', {

@@ -139,8 +139,9 @@ class CancelMentorshipRelation(Resource):
 
         # TODO check if user id is well parsed, if it is an integer
 
+        data = request.json
         user_id = get_jwt_identity()
-        response = DAO.cancel_relation(user_id=user_id, relation_id=request_id)
+        response = DAO.cancel_relation(user_id=user_id, relation_id=request_id, data=data)
 
         return response
 

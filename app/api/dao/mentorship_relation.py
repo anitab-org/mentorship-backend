@@ -229,7 +229,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def cancel_relation(user_id, relation_id):
+    def cancel_relation(user_id, relation_id, data):
         """Allows a given user to terminate a particular relationship.
 
         Args:
@@ -257,6 +257,15 @@ class MentorshipRelationDAO:
 
         # All was checked
         request.state = MentorshipRelationState.CANCELLED
+        
+        # Updates cancellation reason if it was passed in arguments
+        if data:
+            if 'cancellation_reason' in data:
+                if data['cancellation_reason']:
+                    request.cancellation_reason = data['cancellation_reason']
+                else:
+                    request.cancellation_reason = None
+
         request.save_to_db()
 
         return messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200

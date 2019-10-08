@@ -20,6 +20,7 @@ class MentorshipRelationModel(db.Model):
         end_date: float that indicates the ending date of mentorship.
         state: enumeration that indicates state of mentorship.
         notes: string that indicates any notes.
+        cancellation_reason: string that indicates cancellation reason of mentorship relation.
         tasks_list_id: integer indicates the id of the tasks_list
         tasks_list: relationship between TasksListModel and mentorship_relation.
     """
@@ -48,6 +49,7 @@ class MentorshipRelationModel(db.Model):
 
     state = db.Column(db.Enum(MentorshipRelationState), nullable=False)
     notes = db.Column(db.String(400))
+    cancellation_reason = db.Column(db.String(400), nullable=True)
 
     tasks_list_id = db.Column(db.Integer, db.ForeignKey('tasks_list.id'))
     tasks_list = db.relationship(TasksListModel, uselist=False, backref="mentorship_relation")
@@ -61,6 +63,7 @@ class MentorshipRelationModel(db.Model):
         self.end_date = end_date
         self.state = state
         self.notes = notes
+        self.cancellation_reason = None
         self.tasks_list = tasks_list
 
     def json(self):
@@ -75,7 +78,8 @@ class MentorshipRelationModel(db.Model):
             'start_date': self.start_date,
             'end_date': self.end_date,
             'state': self.state,
-            'notes': self.notes
+            'notes': self.notes,
+            'cancellation_reason': self.cancellation_reason
         }
 
     # def __repr__(self):
