@@ -176,12 +176,30 @@ class MentorshipRelationDAO:
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
 
-        requests = user.mentee_relations + user.mentor_relations
+        my_requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
-        for request in requests:
-            if request.state == MentorshipRelationState.ACCEPTED:
+        for my_request in my_requests:
+            if my_request.state == MentorshipRelationState.ACCEPTED:
                 return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, 400
+
+        mentee = request.mentee
+        mentor = request.mentor
+        
+        #If I am mentor : Check if the mentee isn't in any other relation already  
+        if user_id == mentor.id:
+            mentee_requests = mentee.mentee_relations + mentee.mentor_relations
+
+            for mentee_request in mentee_requests:
+                if mentee_request.state == MentorshipRelationState.ACCEPTED:
+                    return messages.MENTEE_ALREADY_IN_A_RELATION, 400
+        #If I am mentee : Check if the mentor isn't in any other relation already
+        else:
+            mentor_requests = mentor.mentee_relations + mentor.mentor_relations
+            
+            for mentor_request in mentor_requests:
+                if mentor_request.state == MentorshipRelationState.ACCEPTED:
+                    return messages.MENTOR_ALREADY_IN_A_RELATION, 400
 
         # All was checked
         request.state = MentorshipRelationState.ACCEPTED
