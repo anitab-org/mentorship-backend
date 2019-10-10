@@ -86,7 +86,7 @@ class MentorshipRelationDAO:
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
         for relation in all_mentor_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
-                return messages.MENTOR_IN_RELATION, 400
+                return messages.MENTOR_ALREADY_IN_A_RELATION, 400
 
         all_mentee_relations = mentee_user.mentor_relations + mentee_user.mentee_relations
         for relation in all_mentee_relations:

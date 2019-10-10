@@ -17,9 +17,17 @@ user1 = {
 }
 
 user2 = {
-    "name": "Userb",
+    "name": "User2",
     "email": "user2@email.com",
     "username": "user2",
     "password": "user2_pwd",
+    "terms_and_conditions_checked": True
+}
+
+user3 = {
+    "name": "User3",
+    "email": "user3@email.com",
+    "username": "user3",
+    "password": "user3_pwd",
     "terms_and_conditions_checked": True
 }
