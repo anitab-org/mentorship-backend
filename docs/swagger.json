@@ -214,7 +214,7 @@
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
-                        "name": "Cancellation Reason",
+                        "name": "cancellation_reason",
                         "in": "body",
                         "type": "string",
                         "required": false,

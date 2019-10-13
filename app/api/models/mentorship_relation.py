@@ -8,6 +8,7 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[mentorship_request_response_body.name] = mentorship_request_response_body
     api_namespace.models[relation_user_response_body.name] = relation_user_response_body
     api_namespace.models[create_task_request_body.name] = create_task_request_body
+    api_namespace.models[mentorship_relation_cancellation_reason_body.name] = mentorship_relation_cancellation_reason_body
     api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
 
 
@@ -40,6 +41,10 @@ mentorship_request_response_body = Model('List mentorship relation request model
 
 create_task_request_body = Model('Create task request model', {
     'description': fields.String(required=True, description='Mentorship relation task description')
+})
+
+mentorship_relation_cancellation_reason_body = Model('Cancel mentorship relationship reason model', {
+    'cancellation_reason' : fields.String(required=False, description='Mentorship relation cancellation reason description')
 })
 
 list_tasks_response_body = Model('List tasks response model', {

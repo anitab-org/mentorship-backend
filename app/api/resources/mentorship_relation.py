@@ -130,7 +130,7 @@ class CancelMentorshipRelation(Resource):
     @classmethod
     @jwt_required
     @mentorship_relation_ns.doc('cancel_mentorship_relation')
-    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.expect(auth_header_parser, mentorship_relation_cancellation_reason_body)
     @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
     def put(cls, request_id):
         """
