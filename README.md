@@ -52,13 +52,6 @@ export APP_MAIL_PASSWORD=<app-mail-password>
 
 For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
 
-Make sure the following dependencies are installed before running the program (for Windows users)
-`pip install flask`
-`pip install flask_sqlalchemy`
-`pip install flask_jwt_extended`
-`pip install flask_restplus`
-`pip install flask_mail`
-`pip install apscheduler`
 If all steps were successful, it should say 'Running on http://127.0.0.1:5000'.
 
 ### Run tests
