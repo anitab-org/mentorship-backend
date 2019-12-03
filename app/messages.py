@@ -174,7 +174,7 @@ TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved"
                                           " successfully."}
 USER_WAS_CREATED_SUCCESSFULLY = {"message": "User was created successfully."
                                  "A confirmation email has been sent via"
-                                 " email.After confirming your email you "
+                                 " email. After confirming your email you "
                                  "can login."}
 ACCEPT_MENTORSHIP_RELATIONS_WITH_SUCCESS = {"message": "Accept mentorship"
                                             " relations with success."}
