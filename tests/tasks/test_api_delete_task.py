@@ -16,6 +16,31 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         self.assertEqual(401, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
+    def test_delete_task_non_existent_list_1(self):
+        expected_response = messages.TASK_DOES_NOT_EXIST 
+        auth_header = get_test_request_header(self.first_user.id)
+        next_task_id=self.tasks_list_1.next_task_id
+        # next_task_id is the value to be assigned, it's not yet assigned
+        # relation with second user
+        actual_response = self.client.delete('/mentorship_relation/%s/task/%s'
+                                             % (self.mentorship_relation_w_second_user.id, next_task_id),
+                                             follow_redirects=True, headers=auth_header)
+
+        self.assertEqual(404, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
+    def test_delete_task_non_existent_list_2(self):
+        expected_response = messages.TASK_DOES_NOT_EXIST 
+        auth_header = get_test_request_header(self.first_user.id)
+        next_task_id=self.tasks_list_2.next_task_id
+        # relation with admin user
+        actual_response = self.client.delete('/mentorship_relation/%s/task/%s'
+                                             % (self.mentorship_relation_w_admin_user.id, next_task_id),
+                                             follow_redirects=True, headers=auth_header)
+
+        self.assertEqual(404, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
     def test_full_task_deletion_api(self):
 
         existent_task = self.tasks_list_1.find_task_by_id(2)
