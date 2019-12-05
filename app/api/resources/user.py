@@ -1,7 +1,13 @@
 from datetime import datetime
 
 from flask import request
-from flask_jwt_extended import jwt_required, jwt_refresh_token_required, create_access_token, create_refresh_token, get_jwt_identity
+from flask_jwt_extended import (
+    jwt_required,
+    jwt_refresh_token_required,
+    create_access_token,
+    create_refresh_token,
+    get_jwt_identity
+)
 from flask_restplus import Resource, marshal, Namespace
 
 from app import messages
@@ -120,7 +126,10 @@ class ChangeUserPassword(Resource):
     @classmethod
     @jwt_required
     @users_ns.doc('update_user_password')
-    @users_ns.expect(auth_header_parser, change_password_request_data_model, validate=True)
+    @users_ns.expect(
+        auth_header_parser,
+        change_password_request_data_model,
+        validate=True)
     def put(cls):
         """
         Updates the user's password
@@ -232,7 +241,8 @@ class RefreshUser(Resource):
         access_token = create_access_token(identity=user_id)
 
         from run import application
-        access_expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
+        access_expiry = datetime.utcnow() + application.config.get(
+            'JWT_ACCESS_TOKEN_EXPIRES')
 
         return {
             'access_token': access_token,
@@ -279,8 +289,10 @@ class LoginUser(Resource):
         refresh_token = create_refresh_token(identity=user.id)
 
         from run import application
-        access_expiry = datetime.utcnow() + application.config.get('JWT_ACCESS_TOKEN_EXPIRES')
-        refresh_expiry = datetime.utcnow() + application.config.get('JWT_REFRESH_TOKEN_EXPIRES')
+        access_expiry = datetime.utcnow() + application.config.get(
+            'JWT_ACCESS_TOKEN_EXPIRES')
+        refresh_expiry = datetime.utcnow() + application.config.get(
+            'JWT_REFRESH_TOKEN_EXPIRES')
 
         return {
             'access_token': access_token,

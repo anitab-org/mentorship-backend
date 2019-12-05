@@ -2,6 +2,7 @@ from app import messages
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 
+
 class AdminDAO:
     """Data Access Object for Admin functionalities."""
 
@@ -10,7 +11,8 @@ class AdminDAO:
     def assign_new_user(user_id, data):
         """Creates a new admin.
 
-        Creates a new admin if the assigned user exists and is assigned by another user. Otherwise returns a message.
+        Creates a new admin if the assigned user exists and is assigned
+        by another user. Otherwise returns a message.
 
         Args:
             user_id: The user id of the assigner.
@@ -26,12 +28,11 @@ class AdminDAO:
 
         admin_user = UserModel.find_by_id(user_id)
 
-        if admin_user: 
+        if admin_user:
             if not admin_user.is_admin:
                 return messages.USER_ASSIGN_NOT_ADMIN, 403
         else:
             return messages.USER_NOT_FOUND, 404
-        
 
         new_admin_user = UserModel.find_by_id(new_admin_user_id)
 
@@ -52,11 +53,13 @@ class AdminDAO:
     def revoke_admin_user(user_id, data):
         """Revokes the admin status of an user.
 
-        Revokes the admin status of an user if the user exists, is an admin and another user requests for this action. Otherwise returns a message.
+        Revokes the admin status of an user if the user exists, is an admin
+        and another user requests for this action. Otherwise returns a message.
 
         Args:
             user_id: The user id of the revoker.
-            data: A list containing the details of the user whose admin status is to be revoked.
+            data: A list containing the details of the user whose admin status
+            is to be revoked.
 
         Returns:
             message: A message corresponding to the completed action.
@@ -70,7 +73,7 @@ class AdminDAO:
 
         admin_user = UserModel.find_by_id(user_id)
 
-        if admin_user: 
+        if admin_user:
             if not admin_user.is_admin:
                 return messages.USER_REVOKE_NOT_ADMIN, 403
         else:

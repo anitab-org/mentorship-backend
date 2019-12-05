@@ -17,7 +17,10 @@ class AssignNewUserAdmin(Resource):
 
     @classmethod
     @jwt_required
-    @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.expect(
+        auth_header_parser,
+        assign_and_revoke_user_admin_request_body,
+        validate=True)
     def post(cls):
         """
         Assigns a User as a new Admin.
@@ -37,7 +40,10 @@ class RevokeUserAdmin(Resource):
 
     @classmethod
     @jwt_required
-    @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.expect(
+        auth_header_parser,
+        assign_and_revoke_user_admin_request_body,
+        validate=True)
     def post(cls):
         """
         Revoke admin status from another User Admin.

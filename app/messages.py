@@ -64,7 +64,7 @@ MENTOR_IN_RELATION = {"message": "Mentor user is already in a relationship."}
 
 # Mentee availability
 MENTEE_NOT_AVAIL_TO_BE_MENTORED = {"message": "Mentee user is not available"
-                                  " to be mentored."}
+                                   " to be mentored."}
 MENTEE_ALREADY_IN_A_RELATION = {"message": "Mentee user is already in a"
                                 " relationship."}
 
@@ -91,7 +91,7 @@ CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION = {"message": "You cannot accept a"
                                           " mentorship relation where you are"
                                           " not involved."}
 USER_CANT_REJECT_REQUEST_SENT_BY_USER = {"message": "You cannot reject a"
-                                       " mentorship request sent by yourself."}
+                                         " mentorship request sent by yourself."}
 CANT_REJECT_UNINVOLVED_RELATION_REQUEST = {"message": "You cannot reject a"
                                            " mentorship relation where you are"
                                            " not involved."}
@@ -147,7 +147,8 @@ TERMS_AND_CONDITIONS_ARE_NOT_CHECKED = {"message": "Terms and conditions are"
                                         " not checked."}
 USER_INPUTS_SPACE_IN_PASSWORD = {"message": "Password shouldn't contain"
                                  " spaces."}
-TOKEN_HAS_EXPIRED = {"message": "The token has expired! Please, login again or refresh it."}
+TOKEN_HAS_EXPIRED = {"message": "The token has expired! Please, login again"
+                     "or refresh it."}
 TOKEN_SENT_TO_EMAIL_OF_USER = {"message": "Token sent to the user's email."}
 EMAIL_VERIFICATION_MESSAGE = {"message": "Check your email, a new verification"
                               " email was sent."}
@@ -171,7 +172,7 @@ MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY = {"message": "Mentorship"
 TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
 TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved"
-                                          " successfully."}
+                                  " successfully."}
 USER_WAS_CREATED_SUCCESSFULLY = {"message": "User was created successfully."
                                  "A confirmation email has been sent via"
                                  " email.After confirming your email you "

@@ -1,6 +1,10 @@
 from app import messages
-from app.utils.validation_utils import is_name_valid, is_email_valid, is_username_valid, validate_length, \
+from app.utils.validation_utils import (
+    is_name_valid, is_email_valid,
+    is_username_valid,
+    validate_length,
     get_stripped_string
+)
 
 # Field character limit
 
@@ -40,18 +44,22 @@ def validate_user_registration_request_data(data):
     email = data['email']
     terms_and_conditions_checked = data['terms_and_conditions_checked']
 
-    if not (isinstance(name, str) and isinstance(username, str) and isinstance(password, str)):
+    if not (isinstance(name, str) and isinstance(username, str) and
+            (isinstance(password, str))):
         return messages.NAME_USERNAME_AND_PASSWORD_NOT_IN_STRING_FORMAT
 
-    is_valid = validate_length(len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, 'name')
+    is_valid = validate_length(len(get_stripped_string(
+        name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, 'name')
     if not is_valid[0]:
         return is_valid[1]
 
-    is_valid = validate_length(len(get_stripped_string(username)), USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, 'username')
+    is_valid = validate_length(len(get_stripped_string(
+        username)), USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, 'username')
     if not is_valid[0]:
         return is_valid[1]
 
-    is_valid = validate_length(len(get_stripped_string(password)), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, 'password')
+    is_valid = validate_length(len(get_stripped_string(
+        password)), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, 'password')
     if not is_valid[0]:
         return is_valid[1]
 
@@ -91,8 +99,11 @@ def validate_update_profile_request_data(data):
 
     username = data.get('username', None)
     if username:
-        is_valid = validate_length(len(get_stripped_string(username)), USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH,
-                                   'username')
+        is_valid = validate_length(
+            len(get_stripped_string(username)),
+            USERNAME_MIN_LENGTH,
+            USERNAME_MAX_LENGTH,
+            'username')
         if not is_valid[0]:
             return is_valid[1]
 
@@ -101,7 +112,8 @@ def validate_update_profile_request_data(data):
 
     name = data.get('name', None)
     if name:
-        is_valid = validate_length(len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, 'name')
+        is_valid = validate_length(len(get_stripped_string(
+            name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, 'name')
         if not is_valid[0]:
             return is_valid[1]
 
@@ -110,51 +122,63 @@ def validate_update_profile_request_data(data):
 
     bio = data.get('bio', None)
     if bio:
-        is_valid = validate_length(len(get_stripped_string(bio)), 0, BIO_MAX_LENGTH, 'bio')
+        is_valid = validate_length(
+            len(get_stripped_string(bio)), 0, BIO_MAX_LENGTH, 'bio')
         if not is_valid[0]:
             return is_valid[1]
 
     location = data.get('location', None)
     if location:
-        is_valid = validate_length(len(get_stripped_string(location)), 0, LOCATION_MAX_LENGTH, 'location')
+        is_valid = validate_length(len(get_stripped_string(
+            location)), 0, LOCATION_MAX_LENGTH, 'location')
         if not is_valid[0]:
             return is_valid[1]
 
     occupation = data.get('occupation', None)
     if occupation:
-        is_valid = validate_length(len(get_stripped_string(occupation)), 0, OCCUPATION_MAX_LENGTH, 'occupation')
+        is_valid = validate_length(len(get_stripped_string(
+            occupation)), 0, OCCUPATION_MAX_LENGTH, 'occupation')
         if not is_valid[0]:
             return is_valid[1]
 
     organization = data.get('organization', None)
     if organization:
-        is_valid = validate_length(len(get_stripped_string(organization)), 0, ORGANIZATION_MAX_LENGTH, 'organization')
+        is_valid = validate_length(len(get_stripped_string(
+            organization)), 0, ORGANIZATION_MAX_LENGTH, 'organization')
         if not is_valid[0]:
             return is_valid[1]
 
     slack_username = data.get('slack_username', None)
     if slack_username:
-        is_valid = validate_length(len(get_stripped_string(slack_username)), 0, SLACK_USERNAME_MAX_LENGTH,
-                                   'slack_username')
+        is_valid = validate_length(
+            len(get_stripped_string(slack_username)),
+            0,
+            SLACK_USERNAME_MAX_LENGTH,
+            'slack_username')
         if not is_valid[0]:
             return is_valid[1]
 
     social_media_links = data.get('social_media_links', None)
     if social_media_links:
-        is_valid = validate_length(len(get_stripped_string(social_media_links)), 0, SOCIALS_MAX_LENGTH,
-                                   'social_media_links')
+        is_valid = validate_length(
+            len(get_stripped_string(social_media_links)),
+            0,
+            SOCIALS_MAX_LENGTH,
+            'social_media_links')
         if not is_valid[0]:
             return is_valid[1]
 
     skills = data.get('skills', None)
     if skills:
-        is_valid = validate_length(len(get_stripped_string(skills)), 0, SKILLS_MAX_LENGTH, 'skills')
+        is_valid = validate_length(
+            len(get_stripped_string(skills)), 0, SKILLS_MAX_LENGTH, 'skills')
         if not is_valid[0]:
             return is_valid[1]
 
     interests = data.get('interests', None)
     if interests:
-        is_valid = validate_length(len(get_stripped_string(interests)), 0, INTERESTS_MAX_LENGTH, 'interests')
+        is_valid = validate_length(len(get_stripped_string(
+            interests)), 0, INTERESTS_MAX_LENGTH, 'interests')
         if not is_valid[0]:
             return is_valid[1]
 
@@ -178,8 +202,11 @@ def validate_new_password(data):
     if " " in new_password:
         return messages.USER_INPUTS_SPACE_IN_PASSWORD
 
-    is_valid = validate_length(len(get_stripped_string(new_password)), PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH,
-                               'new_password')
+    is_valid = validate_length(
+        len(get_stripped_string(new_password)),
+        PASSWORD_MIN_LENGTH,
+        PASSWORD_MAX_LENGTH,
+        'new_password')
     if not is_valid[0]:
         return is_valid[1]
 

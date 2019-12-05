@@ -12,7 +12,8 @@ def generate_confirmation_token(email):
     """Serializes and signs an email address into token with an expiry."""
     from run import application
     serializer = URLSafeTimedSerializer(application.config['SECRET_KEY'])
-    return serializer.dumps(email, salt=application.config['SECURITY_PASSWORD_SALT'])
+    return serializer.dumps(email,
+                            salt=application.config['SECURITY_PASSWORD_SALT'])
 
 
 def confirm_token(token, expiration=EMAIL_VERIFICATION_TOKEN_TIME_TO_EXPIRE):
@@ -68,9 +69,12 @@ def send_email_verification_message(user_name, email):
         email: User email address.
     """
     confirmation_token = generate_confirmation_token(email)
-    from app.api.resources.user import UserEmailConfirmation  # import here to avoid circular imports
+    # import here to avoid circular imports
+    from app.api.resources.user import UserEmailConfirmation
     from app.api.api_extension import api
-    confirm_url = api.url_for(UserEmailConfirmation, token=confirmation_token, _external=True)
-    html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
+    confirm_url = api.url_for(UserEmailConfirmation,
+                              token=confirmation_token, _external=True)
+    html = render_template('email_confirmation.html',
+                           confirm_url=confirm_url, user_name=user_name)
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)

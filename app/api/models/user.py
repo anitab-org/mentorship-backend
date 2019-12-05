@@ -5,14 +5,22 @@ from app.api.models.mentorship_relation import list_tasks_response_body
 def add_models_to_namespace(api_namespace):
     api_namespace.models[public_user_api_model.name] = public_user_api_model
     api_namespace.models[full_user_api_model.name] = full_user_api_model
-    api_namespace.models[register_user_api_model.name] = register_user_api_model
-    api_namespace.models[change_password_request_data_model.name] = change_password_request_data_model
-    api_namespace.models[update_user_request_body_model.name] = update_user_request_body_model
-    api_namespace.models[login_request_body_model.name] = login_request_body_model
-    api_namespace.models[login_response_body_model.name] = login_response_body_model
-    api_namespace.models[refresh_response_body_model.name] = refresh_response_body_model
-    api_namespace.models[resend_email_request_body_model.name] = resend_email_request_body_model
-    api_namespace.models[home_response_body_model.name] = home_response_body_model
+    api_namespace.models[register_user_api_model.name] = (
+        register_user_api_model)
+    api_namespace.models[change_password_request_data_model.name] = (
+        change_password_request_data_model)
+    api_namespace.models[update_user_request_body_model.name] = (
+        update_user_request_body_model)
+    api_namespace.models[login_request_body_model.name] = (
+        login_request_body_model)
+    api_namespace.models[login_response_body_model.name] = (
+        login_response_body_model)
+    api_namespace.models[refresh_response_body_model.name] = (
+        refresh_response_body_model)
+    api_namespace.models[resend_email_request_body_model.name] = (
+        resend_email_request_body_model)
+    api_namespace.models[home_response_body_model.name] = (
+        home_response_body_model)
 
 
 public_user_api_model = Model('User list model', {
@@ -111,10 +119,14 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=False,
         description='User bio'
     ),
-    'location': fields.String(required=False, description='User location'),
-    'occupation': fields.String(required=False, description='User occupation'),
-    'organization': fields.String(required=False, description='User organization'),
-    'slack_username': fields.String(required=False, description='User slack username'),
+    'location': fields.String(required=False,
+                              description='User location'),
+    'occupation': fields.String(required=False,
+                                description='User occupation'),
+    'organization': fields.String(required=False,
+                                  description='User organization'),
+    'slack_username': fields.String(required=False,
+                                    description='User slack username'),
     'social_media_links': fields.String(
         required=False,
         description='User social media links'
@@ -131,8 +143,10 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=False,
         description='User availability to mentor indication'
     ),
-    'current_mentorship_role': fields.Integer(required=False, description='User current role'),
-    'membership_status': fields.Integer(required=False, description='User membershipstatus')
+    'current_mentorship_role': fields.Integer(required=False,
+                                              description='User current role'),
+    'membership_status': fields.Integer(required=False,
+                                        description='User membershipstatus')
 })
 
 register_user_api_model = Model('User registration model', {
@@ -140,15 +154,26 @@ register_user_api_model = Model('User registration model', {
     'username': fields.String(required=True, description='User username'),
     'password': fields.String(required=True, description='User password'),
     'email': fields.String(required=True, description='User email'),
-    'terms_and_conditions_checked': fields.Boolean(required=True, description='User check Terms and Conditions value'),
-    'need_mentoring': fields.Boolean(required=False, description='User need mentoring indication'),
-    'available_to_mentor': fields.Boolean(required=False, description='User availability to mentor indication')
+    'terms_and_conditions_checked': fields.Boolean(
+        required=True,
+        description='User check Terms and Conditions value'),
+    'need_mentoring': fields.Boolean(
+        required=False,
+        description='User need mentoring indication'),
+    'available_to_mentor': fields.Boolean(
+        required=False,
+        description='User availability to mentor indication')
 })
 
-change_password_request_data_model = Model('Change password request data model', {
-    'current_password': fields.String(required=True, description='User\'s current password'),
-    'new_password': fields.String(required=True, description='User\'s new password')
-})
+change_password_request_data_model = Model(
+    'Change password request data model', {
+        'current_password': fields.String(
+            required=True,
+            description='User\'s current password'),
+        'new_password': fields.String(
+            required=True,
+            description='User\'s new password')
+    })
 
 login_request_body_model = Model('Login request data model', {
     'username': fields.String(required=True, description='User\'s username'),
@@ -157,16 +182,27 @@ login_request_body_model = Model('Login request data model', {
 
 # TODO: Remove 'expiry' after the android app refactoring.
 login_response_body_model = Model('Login response data model', {
-    'access_token': fields.String(required=True, description='User\'s access token'),
-    'expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp'),
-    'access_expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp'),
-    'refresh_token': fields.String(required=True, description='User\'s refresh token'),
-    'refresh_expiry': fields.Float(required=True, description='Refresh token expiry UNIX timestamp')
+    'access_token': fields.String(required=True,
+                                  description='User\'s access token'),
+    'expiry': fields.Float(required=True,
+                           description='Access token expiry UNIX timestamp'),
+    'access_expiry': fields.Float(
+        required=True,
+        description='Access token expiry UNIX timestamp'),
+    'refresh_token': fields.String(required=True,
+                                   description='User\'s refresh token'),
+    'refresh_expiry': fields.Float(
+        required=True,
+        description='Refresh token expiry UNIX timestamp')
 })
 
 refresh_response_body_model = Model('Refresh response data model', {
-    'access_token': fields.String(required=True, description='User\'s access token'),
-    'access_expiry': fields.Float(required=True, description='Access token expiry UNIX timestamp')
+    'access_token': fields.String(
+        required=True,
+        description='User\'s access token'),
+    'access_expiry': fields.Float(
+        required=True,
+        description='Access token expiry UNIX timestamp')
 })
 
 update_user_request_body_model = Model('Update User request data model', {
@@ -175,29 +211,48 @@ update_user_request_body_model = Model('Update User request data model', {
     'bio': fields.String(required=False, description='User bio'),
     'location': fields.String(required=False, description='User location'),
     'occupation': fields.String(required=False, description='User occupation'),
-    'organization': fields.String(required=False, description='User organization'),
-    'slack_username': fields.String(required=False, description='User slack username'),
-    'social_media_links': fields.String(required=False, description='User social media links'),
+    'organization': fields.String(required=False,
+                                  description='User organization'),
+    'slack_username': fields.String(required=False,
+                                    description='User slack username'),
+    'social_media_links': fields.String(required=False,
+                                        description='User social media links'),
     'skills': fields.String(required=False, description='User skills'),
     'interests': fields.String(required=False, description='User interests'),
     # TODO: This url is generated by the backend
     'resume_url': fields.String(required=False, description='User resume url'),
     # TODO: This url is generated by the backend
     'photo_url': fields.String(required=False, description='User photo url'),
-    'need_mentoring': fields.Boolean(required=False, description='User need mentoring indication'),
-    'available_to_mentor': fields.Boolean(required=False, description='User availability to mentor indication')
+    'need_mentoring': fields.Boolean(
+        required=False,
+        description='User need mentoring indication'),
+    'available_to_mentor': fields.Boolean(
+        required=False,
+        description='User availability to mentor indication')
 })
 
 resend_email_request_body_model = Model('Resend email request data model', {
     'email': fields.String(required=True, description='User\'s email'),
 })
 
-home_response_body_model = Model('Get statistics on the app usage of the current user', {
-    'name': fields.String(required=True, description='The name of the user'),
-    'pending_requests': fields.Integer(required=True, description='Number of pending requests'),
-    'accepted_requests': fields.Integer(required=True, description='Number of accepted requests'),
-    'completed_relations': fields.Integer(required=True, description='Number of completed relations'),
-    'cancelled_relations': fields.Integer(required=True, description='Number of cancelled relations'),
-    'rejected_requests': fields.Integer(required=True, description='Number of rejected relations'),
-    'achievements': fields.List(fields.Nested(list_tasks_response_body))
-})
+home_response_body_model = Model(
+    'Get statistics on the app usage of the current user', {
+        'name': fields.String(required=True,
+                              description='The name of the user'),
+        'pending_requests': fields.Integer(
+            required=True,
+            description='Number of pending requests'),
+        'accepted_requests': fields.Integer(
+            required=True,
+            description='Number of accepted requests'),
+        'completed_relations': fields.Integer(
+            required=True,
+            description='Number of completed relations'),
+        'cancelled_relations': fields.Integer(
+            required=True,
+            description='Number of cancelled relations'),
+        'rejected_requests': fields.Integer(
+            required=True,
+            description='Number of rejected relations'),
+        'achievements': fields.List(fields.Nested(list_tasks_response_body))
+    })
