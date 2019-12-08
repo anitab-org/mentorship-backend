@@ -33,6 +33,18 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         deleted_task = self.tasks_list_1.find_task_by_id(2)
         self.assertIsNone(deleted_task)
 
+    def test_delete_task_api_resource_uninvolved(self):
+        expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
+        auth_header = get_test_request_header(self.admin_user.id)
+        actual_response = self.client.delete('/mentorship_relation/%s/task/%s'
+                                             % (self.mentorship_relation_w_second_user.id, 2),
+                                             follow_redirects=True, headers=auth_header)
+
+        self.assertEqual(401, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
+
+
 
 if __name__ == "__main__":
     unittest.main()
