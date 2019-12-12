@@ -32,9 +32,11 @@ class UserDAO:
         name = data['name']
         username = data['username']
         password = data['password']
+        confirm_password = data['confirm_password']
         email = data['email']
         terms_and_conditions_checked = data['terms_and_conditions_checked']
-
+        if password != confirm_password:
+            return messages.PASSWORD_CONFIRMATION_MISMATCH, 400
         existing_user = UserModel.find_by_username(data['username'])
         if existing_user:
             return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, 400

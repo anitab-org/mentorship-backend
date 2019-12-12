@@ -23,6 +23,7 @@ class TestUserDao(BaseTestCase):
             username='user2',
             email='user2@email.com',
             password='test_password',
+            confirm_password = 'test_password',
             terms_and_conditions_checked=True
         )
         dao.create_user(data)
