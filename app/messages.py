@@ -213,3 +213,6 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {"message": "You have confirmed your"
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
 NOT_IMPLEMENTED = {"message": "Not implemented."}
+
+# Password confirmation
+PASSWORD_CONFIRMATION_MISMATCH={"message": "The 2 password fields do not match."}
