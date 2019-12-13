@@ -32,6 +32,7 @@ class UserDAO:
         name = data['name']
         username = data['username']
         password = data['password']
+        confirm_password = data['confirm_password']
         email = data['email']
         terms_and_conditions_checked = data['terms_and_conditions_checked']
 
@@ -42,6 +43,8 @@ class UserDAO:
             existing_user = UserModel.find_by_email(data['email'])
             if existing_user:
                 return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, 400
+            elif confirm_password != password:
+                return messages.PASSWORD_CONFIRMATION_MISMATCH, 400
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if 'need_mentoring' in data:

@@ -31,6 +31,7 @@ class TestUserRegistrationApi(BaseTestCase):
                 name=user1['name'],
                 username=user1['username'],
                 password=user1['password'],
+                confirm_password=user1['password'],
                 email=user1['email'],
                 terms_and_conditions_checked=user1['terms_and_conditions_checked']
             )), follow_redirects=True, content_type='application/json')
@@ -55,6 +56,7 @@ class TestUserRegistrationApi(BaseTestCase):
                 name=user1['name'],
                 username=user1['username'],
                 password=user1['password'],
+                confirm_password=user1['password'],
                 email=user1['email'],
                 terms_and_conditions_checked=user1['terms_and_conditions_checked'],
                 available_to_mentor=user1['available_to_mentor'],
@@ -72,6 +74,7 @@ class TestUserRegistrationApi(BaseTestCase):
                 name=user1['name'],
                 username=user1['username'],
                 password=user1['password'],
+                confirm_password=user1['password'],
                 email=user1['email'],
                 terms_and_conditions_checked=user1['terms_and_conditions_checked'],
                 available_to_mentor=user1['available_to_mentor'],
@@ -88,6 +91,7 @@ class TestUserRegistrationApi(BaseTestCase):
                 name=user1['name'],
                 username=user1['username'],
                 password=user1['password'],
+                confirm_password=user1['password'],
                 email=user1['email'],
                 terms_and_conditions_checked=user1['terms_and_conditions_checked'],
                 need_mentoring=user1['need_mentoring']

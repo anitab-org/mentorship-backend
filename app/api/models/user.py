@@ -24,6 +24,10 @@ public_user_api_model = Model('User list model', {
         required=True,
         description='User username'
     ),
+    'email': fields.String(
+        required=True,
+        description='User email'
+    ),
     'name': fields.String(
         required=True,
         description='User name'
@@ -139,6 +143,7 @@ register_user_api_model = Model('User registration model', {
     'name': fields.String(required=True, description='User name'),
     'username': fields.String(required=True, description='User username'),
     'password': fields.String(required=True, description='User password'),
+    'confirm_password': fields.String(required=True, description='Confirm user password'),
     'email': fields.String(required=True, description='User email'),
     'terms_and_conditions_checked': fields.Boolean(required=True, description='User check Terms and Conditions value'),
     'need_mentoring': fields.Boolean(required=False, description='User need mentoring indication'),
