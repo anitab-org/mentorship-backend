@@ -10,6 +10,7 @@ FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is"
                                      " not valid."}
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {"message": "Field available_to_mentor"
                                         " is not valid."}
+PASSWORD_CONFIRMATION_MISMATCH = {"message": "The 2 password fields do not match."}
 
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {"message": "This mentorship"
