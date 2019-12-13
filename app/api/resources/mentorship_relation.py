@@ -8,6 +8,7 @@ from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.api.email_utils import send_email_request_notification
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
                                    description='Operations related to '
@@ -41,6 +42,7 @@ class SendRequest(Resource):
             return is_valid, 400
 
         response = DAO.create_mentorship_relation(user_id, data)
+        SendRequest.send_email_request(user_id,data)
 
         return response
 
@@ -59,6 +61,31 @@ class SendRequest(Resource):
 
         return {}
 
+    @staticmethod
+    def send_email_request(user_id,data):
+        """Sends a verification html email message to the specified user.
+
+        This function is triggered when a user makes a POST request to send a
+        mentorship request to another user. It finds out the IDs and roles to
+        be played by the sender and receiver according to the proposed mentorship
+        relation. It calls send_email_verification_message() in email_utils.py
+
+        Args:
+            user_id: ID of user making request
+            data: contents of POST request
+        """
+        sender_id = user_id
+        #assume sender is mentor, receiver is mentee
+        sender_role = "mentor"
+        receiver_id = data['mentee_id']
+        #otherwise sender is mentee, receiver is mentor
+        if user_id != data['mentor_id']:
+            sender_role = "mentee"
+            receiver_id = data['mentor_id']
+
+        send_email_request_notification(
+            receiver_id, sender_id, sender_role, data['end_date'], data['notes']
+            )
 
 @mentorship_relation_ns.route('mentorship_relations')
 class GetAllMyMentorshipRelation(Resource):

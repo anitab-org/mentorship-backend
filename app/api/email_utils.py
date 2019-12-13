@@ -74,3 +74,36 @@ def send_email_verification_message(user_name, email):
     html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)
+
+def send_email_request_notification(receiver_id, sender_id, sender_role, end_date, notes):
+    """Sends a mentorship request message to the specified user.
+
+    This function retrieves usernames and email addresses of mentorship request
+    sender and receiver. It also converts timestamp to human readable format.
+    It renders the email_confirmation.html template and sends email.
+
+    Args:
+        receiver_id: ID of person receiving mentorship request
+        sender_id: ID of person receiving mentorship request
+        sender_role: the role which request sender wants (mentor/mentee)
+        end_date: ending date of mentorship relation
+        notes: notes explaining about the mentorship request
+    """
+    from app.database.models.user import UserModel
+    from datetime import datetime
+    # retrieve objects based on id
+    receiver = UserModel.find_by_id(receiver_id)
+    sender = UserModel.find_by_id(sender_id)
+    # convert timestamp to datetime
+    dateTime = datetime.fromtimestamp(end_date)
+    html = render_template(
+        'request_notification.html',
+        receiver_name = receiver.username,
+        sender_name = sender.username,
+        sender_email = sender.email,
+        sender_role = sender_role ,
+        end_date = dateTime.strftime("%d %b %Y"), # convert to human readable form "%d %b %Y"
+        notes = notes
+        )
+    subject = "Mentorship System - You have a mentorship request!"
+    send_email(receiver.email, subject, html)
