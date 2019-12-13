@@ -6,8 +6,11 @@ from app import messages
 from app.api.dao.task import TaskDAO
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
+from app.api.dao.user import UserDAO
 from app.api.models.mentorship_relation import *
 from app.database.models.mentorship_relation import MentorshipRelationModel
+
+from app.api.email_utils import send_email_new_request
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
                                    description='Operations related to '
@@ -16,6 +19,7 @@ mentorship_relation_ns = Namespace('Mentorship Relation',
 add_models_to_namespace(mentorship_relation_ns)
 
 DAO = MentorshipRelationDAO()
+userDAO = UserDAO()
 
 
 @mentorship_relation_ns.route('mentorship_relation/send_request')
@@ -30,17 +34,31 @@ class SendRequest(Resource):
     def post(cls):
         """
         Creates a new mentorship relation request.
+        Also, sends an email notification to the recipient about new relation request.
         """
 
-        user_id = get_jwt_identity()
         data = request.json
+        user_sender_id = get_jwt_identity()
 
         is_valid = SendRequest.is_valid_data(data)
 
         if is_valid != {}:
             return is_valid, 400
 
-        response = DAO.create_mentorship_relation(user_id, data)
+        response = DAO.create_mentorship_relation(user_sender_id, data)
+
+        if user_sender_id == data["mentee_id"]:
+            sender_role = "mentee"
+            user_recipient_id = data["mentor_id"]
+        else:
+            sender_role = "mentor"
+            user_recipient_id = data["mentee_id"]
+
+        user_sender = userDAO.get_user(user_sender_id)
+        user_recipient = userDAO.get_user(user_recipient_id)
+        notes = data["notes"]
+
+        send_email_new_request(user_sender, user_recipient, notes, sender_role)
 
         return response
 

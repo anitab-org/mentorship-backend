@@ -74,3 +74,23 @@ def send_email_verification_message(user_name, email):
     html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)
+
+
+def send_email_new_request(user_sender, user_recipient, notes, sender_role):
+    """Sends a notification html email message to the user_recipient user.
+
+    First, the email address is serialized and signed for safety into a token.
+    A confirmation url is generated using the token and a custom html email
+    message containing the user's name and confirmation url is built and sent
+    to the user.
+
+    Args:
+        user_sender: User who sent a relation request.
+        user_recipient: User to which a relation request is addressed.
+        note: Note from user_sender.
+        sender_role: Role of the sender_user in the relationship. Must be either "mentee" or "mentor"
+    """
+    html = render_template('email_relation_request.html', user_recipient_name=user_recipient.name,
+                           user_sender_name=user_sender.name, notes=notes, sender_role=sender_role)
+    subject = "Mentorship System - You have got new relation request"
+    send_email(user_recipient.email, subject, html)
