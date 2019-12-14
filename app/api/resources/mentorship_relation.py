@@ -4,10 +4,12 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import messages
 from app.api.dao.task import TaskDAO
+from app.api.email_utils import send_email_about_new_request
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.user import UserModel
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
                                    description='Operations related to '
@@ -42,6 +44,21 @@ class SendRequest(Resource):
 
         response = DAO.create_mentorship_relation(user_id, data)
 
+        if response[1] is 200:
+            mentor_id = data['mentor_id']
+            mentee_id = data['mentee_id']
+
+            if user_id == mentee_id:
+                receiver_id = mentor_id
+            else:
+                receiver_id = mentee_id
+
+            receiver = UserModel.find_by_id(receiver_id)
+
+            user_name = receiver.name
+            email = receiver.email
+
+            send_email_about_new_request(user_name, email)
         return response
 
     @staticmethod

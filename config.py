@@ -64,6 +64,9 @@ class TestingConfig(BaseConfig):
     DEBUG = True
     TESTING = True
 
+    # mail accounts
+    MAIL_DEFAULT_SENDER = 'certain@example.com'
+
     # Use in-memory SQLite database for testing
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'

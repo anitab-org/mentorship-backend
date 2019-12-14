@@ -74,3 +74,15 @@ def send_email_verification_message(user_name, email):
     html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)
+
+
+def send_email_about_new_request(user_name, email):
+    """Sends an html email message to the specified user.
+
+        Args:
+            user_name: User's name.
+            email: User email address.
+    """
+    html = render_template('email_new_request_is_received.html', user_name=user_name)
+    subject = "Mentorship System - New Request"
+    send_email(email, subject, html)
