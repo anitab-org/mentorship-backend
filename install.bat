@@ -2,25 +2,47 @@
 
 ECHO Welcome to mentorship-backend installer!
 
-SET /p email="Enter admin account email address: "
+SET /P email="Enter admin account email address: "
 ECHO Email: %email%
 
-SET /p username="Enter admin username (part of email before "@"): "
+SET /P username="Enter admin username (part of email before "@"): "
 ECHO Username: %username%
 
-SET /p password="Enter password for email %email%: "
+SET /P password="Enter password for email %email%: "
 ECHO Password: %password%
 
-SET /p mailserver="Enter mailserver address: "
+SET /P mailserver="Enter mailserver address: "
 ECHO Mailserver: %mailserver%
 
-SET /p config="Enter environment config (dev OR test OR prod): "
-ECHO Config: %config%
+ECHO 1. dev
+ECHO 2. test
+ECHO 3. prod
 
-SET /p secret="Enter secret key: "
+CHOICE /C 123 /M "Select environment config: "
+If %ErrorLevel%==1 GOTO dev
+If %ErrorLevel%==2 GOTO test
+If %ErrorLevel%==3 GOTO prod
+Exit/B
+
+:dev
+SET config=dev
+GOTO end
+
+:test
+SET config=test
+GOTO end
+
+:prod
+SET config=prod
+GOTO end
+
+:end
+ECHO Environment config: %config%
+
+SET /P secret="Enter secret key: "
 ECHO Secret: %secret%
 
-SET /p salt="Enter security password salt: "
+SET /P salt="Enter security password salt: "
 ECHO salt: %salt%
 
 @ECHO set FLASK_ENVIRONMENT_CONFIG=%config%> .env
@@ -45,7 +67,7 @@ pip3 install -r requirements.txt
 
 ECHO dependencies installed
 
-python -m unittest discover tests
+python3 -m unittest discover tests
 
 ECHO Installation successful!
 
