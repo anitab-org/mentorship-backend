@@ -27,7 +27,7 @@ class MentorshipRelationDAO:
 
         Args:
             user_id: ID of the user initiating this request. Has to be either the mentor or the mentee.
-            data: List containing the mentor_id, mentee_id, end_date_timestamp and notes.
+            data: Dict containing the mentor_id, mentee_id, end_date_timestamp and notes.
 
         Returns:
             message: A message corresponding to the completed action; success if mentorship relationship is established, failure if otherwise.

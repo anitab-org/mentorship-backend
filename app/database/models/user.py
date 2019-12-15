@@ -109,7 +109,28 @@ class UserModel(db.Model):
 
     def __repr__(self):
         """Returns the user's name and username. """
-        return "User name id %s. Username is %s ." % (self.name, self.username)
+        return (f"id: {self.id},\n"
+                f"name: {self.name},\n"
+                f"username: {self.username},\n"
+                f"email: {self.email},\n"
+                f"terms_and_conditions_checked: {self.terms_and_conditions_checked},\n"
+                f"is_admin: {self.is_admin},\n"
+                f"is_email_verified: {self.is_email_verified},\n"
+                f"current_mentorship_role: {self.current_mentorship_role},\n"
+                f"membership_status: {self.membership_status},\n"
+                f"bio: {self.bio},\n"
+                f"location: {self.location},\n"
+                f"occupation: {self.occupation},\n"
+                f"organization: {self.organization},\n"
+                f"slack_username: {self.slack_username},\n"
+                f"social_media_links: {self.social_media_links},\n"
+                f"skills: {self.skills},\n"
+                f"interests: {self.interests},\n"
+                f"resume_url: {self.resume_url},\n"
+                f"photo_url: {self.photo_url},\n"
+                f"need_mentoring: {self.need_mentoring},\n"
+                f"available_to_mentor: {self.available_to_mentor}\n"
+                )
 
     @classmethod
     def find_by_username(cls, username):
