@@ -1,52 +1,52 @@
-@echo off
+@ECHO OFF
 
-echo Welcome to mentorship-backend installer!
+ECHO Welcome to mentorship-backend installer!
 
-set /p email="Enter admin account email address: "
-echo Email: %email%
+SET /p email="Enter admin account email address: "
+ECHO Email: %email%
 
-set /p username="Enter admin username (part of email before "@"): "
-echo Username: %username%
+SET /p username="Enter admin username (part of email before "@"): "
+ECHO Username: %username%
 
-set /p password="Enter password for email %email%: "
-echo Password: %password%
+SET /p password="Enter password for email %email%: "
+ECHO Password: %password%
 
-set /p mailserver="Enter mailserver address: "
-echo Mailserver: %mailserver%
+SET /p mailserver="Enter mailserver address: "
+ECHO Mailserver: %mailserver%
 
-set /p config="Enter environment config (dev OR test OR prod): "
-echo Config: %config%
+SET /p config="Enter environment config (dev OR test OR prod): "
+ECHO Config: %config%
 
-set /p secret="Enter secret key: "
-echo Secret: %secret%
+SET /p secret="Enter secret key: "
+ECHO Secret: %secret%
 
-set /p salt="Enter security password salt: "
-echo salt: %salt%
+SET /p salt="Enter security password salt: "
+ECHO salt: %salt%
 
-@echo set FLASK_ENVIRONMENT_CONFIG=%config%> .env
-@echo set SECRET_KEY=%secret%>> .env
-@echo set SECURITY_PASSWORD_SALT=%salt%>> .env
-@echo set MAIL_DEFAULT_SENDER=%email%>> .env
-@echo set MAIL_SERVER=%mailserver%>> .env
-@echo set APP_MAIL_USERNAME=%username%>> .env
-@echo set APP_MAIL_PASSWORD=%password%>> .env
+@ECHO set FLASK_ENVIRONMENT_CONFIG=%config%> .env
+@ECHO set SECRET_KEY=%secret%>> .env
+@ECHO set SECURITY_PASSWORD_SALT=%salt%>> .env
+@ECHO set MAIL_DEFAULT_SENDER=%email%>> .env
+@ECHO set MAIL_SERVER=%mailserver%>> .env
+@ECHO set APP_MAIL_USERNAME=%username%>> .env
+@ECHO set APP_MAIL_PASSWORD=%password%>> .env
 
 pip3 install virtualenv
 
 virtualenv venv
 
-echo virtual environment created
+ECHO virtual environment created
 
-call venv\Scripts\activate
+CALL venv\Scripts\activate
 
-echo virtual environment activated
+ECHO virtual environment activated
 
 pip3 install -r requirements.txt
 
-echo dependencies installed
+ECHO dependencies installed
 
 python -m unittest discover tests
 
-echo Installation successful!
+ECHO Installation successful!
 
-pause
+PAUSE
