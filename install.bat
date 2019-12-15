@@ -37,7 +37,7 @@ virtualenv venv
 
 echo virtual environment created
 
-venv\Scripts\activate
+call venv\Scripts\activate
 
 echo virtual environment activated
 
@@ -46,5 +46,7 @@ pip3 install -r requirements.txt
 echo dependencies installed
 
 python -m unittest discover tests
+
+echo Installation successful!
 
 pause
