@@ -302,13 +302,15 @@ class TestUserDao(BaseTestCase):
             'created_at': start_date.timestamp(),
             'description': 'Test Task',
             'id': 1,  # This is the first task in the list
-            'is_done': True
+            'is_done': True,
+            'requires_approval': False
         }, {
             'completed_at': end_date.timestamp(),
             'created_at': start_date.timestamp(),
             'description': 'Test Task 2',
             'id': 2,  # This is the second task in the list
-            'is_done': True
+            'is_done': True,
+            'requires_approval': False
         }]
         actual_response = dao.get_user_statistics(mentor.id)
         self.assertEqual(expected_response, actual_response)

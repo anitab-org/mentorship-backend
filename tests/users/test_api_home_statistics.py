@@ -243,7 +243,8 @@ class TestHomeStatisticsApi(BaseTestCase):
                 'created_at': task_created_time,
                 'description': 'Test task',
                 'id': 1,  # This is the only task in the list
-                'is_done': True
+                'is_done': True,
+                'requires_approval': False
             }]
         }
         auth_header = get_test_request_header(self.user1.id)

@@ -37,6 +37,19 @@ class TestCompleteTasksDao(TasksBaseTestCase):
 
         self.assertEqual(expected_response, actual_response)
 
+    def test_achieve_not_approved_task(self):
+        task = self.tasks_list_1.find_task_by_id(3)
+
+        self.assertFalse(self.tasks_list_1.find_task_by_id(3).get('is_done'))
+
+        expected_response = messages.TASK_REQUIRES_APPROVAL, 403
+        actual_response = TaskDAO.complete_task(self.second_user.id,
+                                                self.mentorship_relation_w_second_user.id,
+                                                3)
+
+        self.assertFalse(self.tasks_list_1.find_task_by_id(3).get('is_done'))
+        self.assertEqual(expected_response, actual_response)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -142,8 +142,8 @@ class TaskDAO:
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
 
-        if user_id == relation.mentee_id and task.requires_approval:
-            return messages.TASK_REQUIRES_APPROVAL, 401
+        if user_id == relation.mentee_id and task.get('requires_approval'):
+            return messages.TASK_REQUIRES_APPROVAL, 403
 
         if task.get('is_done'):
             return messages.TASK_WAS_ALREADY_ACHIEVED, 400

@@ -108,6 +108,11 @@ class TasksBaseTestCase(BaseTestCase):
             is_done=True,
             completed_at=self.end_date_example.timestamp()
         )
+        self.tasks_list_1.add_task(
+            description=self.description_example,
+            created_at=self.now_datetime.timestamp(),
+            requires_approval=True
+        )
         self.tasks_list_2.add_task(
             description=self.description_example,
             created_at=self.now_datetime.timestamp()

@@ -12,7 +12,7 @@ class TestListTasksDao(TasksBaseTestCase):
 
         expected_response = messages.TASK_WAS_CREATED_SUCCESSFULLY, 200
 
-        non_existent_task = self.tasks_list_1.find_task_by_id(3)
+        non_existent_task = self.tasks_list_1.find_task_by_id(4)
         self.assertIsNone(non_existent_task)
 
         actual_response = TaskDAO.create_task(user_id=self.first_user.id,
@@ -20,7 +20,7 @@ class TestListTasksDao(TasksBaseTestCase):
                                               data=dict(description=self.test_description, is_done=self.test_is_done))
         self.assertEqual(expected_response, actual_response)
 
-        new_task = self.tasks_list_1.find_task_by_id(3)
+        new_task = self.tasks_list_1.find_task_by_id(4)
         self.assertIsNotNone(new_task)
         self.assertEqual(self.test_description, new_task.get('description'))
         self.assertEqual(self.test_is_done, new_task.get('is_done'))

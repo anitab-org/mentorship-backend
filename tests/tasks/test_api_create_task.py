@@ -18,7 +18,7 @@ class TestCreateTaskApi(TasksBaseTestCase):
 
     def test_full_task_creation_api(self):
 
-        non_existent_task = self.tasks_list_1.find_task_by_id(3)
+        non_existent_task = self.tasks_list_1.find_task_by_id(4)
         self.assertIsNone(non_existent_task)
 
         auth_header = get_test_request_header(self.first_user.id)
@@ -30,7 +30,7 @@ class TestCreateTaskApi(TasksBaseTestCase):
         self.assertEqual(200, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
-        new_task = self.tasks_list_1.find_task_by_id(3)
+        new_task = self.tasks_list_1.find_task_by_id(4)
         self.assertIsNotNone(new_task)
         self.assertEqual(self.test_description, new_task.get('description'))
         self.assertEqual(self.test_is_done, new_task.get('is_done'))

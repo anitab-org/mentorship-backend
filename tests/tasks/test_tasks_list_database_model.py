@@ -10,7 +10,6 @@ class TestTasksListModel(BaseTestCase):
 
     def setUp(self):
         super(TestTasksListModel, self).setUp()
-
         self.empty_tasks_list = TasksListModel()
         self.tasks_list_1 = TasksListModel()
         db.session.add(self.empty_tasks_list)
@@ -45,7 +44,8 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
+            requires_approval=False
         )
 
         self.assertEqual([expected_task_1], tasks_list_one.tasks)
@@ -57,7 +57,8 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=2,
-            is_done=False
+            is_done=False,
+            requires_approval=False
         )
 
         self.assertEqual([expected_task_1, expected_task_2], tasks_list_one.tasks)
@@ -75,7 +76,8 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
+            requires_approval=False
         )
 
         self.assertEqual([expected_task_1], tasks_list_one.tasks)
@@ -93,7 +95,8 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
+            requires_approval=False
         )
 
         self.assertEqual([expected_task_1], tasks_list_two.tasks)
@@ -118,14 +121,16 @@ class TestTasksListModel(BaseTestCase):
             created_at=self.now_timestamp,
             description=self.test_description_1,
             id=1,
-            is_done=False
+            is_done=False,
+            requires_approval=False
         )
         expected_task_2 = dict(
             completed_at=None,
             created_at=self.now_timestamp,
             description=self.test_description_2,
             id=2,
-            is_done=False
+            is_done=False,
+            requires_approval=False
         )
 
         tasks_list_one.add_task(self.test_description_1, self.now_timestamp)
