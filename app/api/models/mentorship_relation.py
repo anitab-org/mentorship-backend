@@ -29,16 +29,20 @@ mentorship_request_response_body = Model('List mentorship relation request model
     'sent_by_me': fields.Boolean(required=True, description='Mentorship relation sent by current user indication'),
     'mentor': fields.Nested(relation_user_response_body),
     'mentee': fields.Nested(relation_user_response_body),
-    'creation_date': fields.Float(required=True, description='Mentorship relation creation date in UNIX timestamp format'),
-    'accept_date': fields.Float(required=True, description='Mentorship relation acceptance date in UNIX timestamp format'),
+    'creation_date': fields.Float(required=True,
+                                  description='Mentorship relation creation date in UNIX timestamp format'),
+    'accept_date': fields.Float(required=True,
+                                description='Mentorship relation acceptance date in UNIX timestamp format'),
     'start_date': fields.Float(required=True, description='Mentorship relation start date in UNIX timestamp format'),
     'end_date': fields.Float(required=True, description='Mentorship relation end date in UNIX timestamp format'),
-    'state': fields.Integer(required=True, enum=MentorshipRelationState.values, description='Mentorship relation state'),
+    'state': fields.Integer(required=True, enum=MentorshipRelationState.values,
+                            description='Mentorship relation state'),
     'notes': fields.String(required=True, description='Mentorship relation notes')
 })
 
 create_task_request_body = Model('Create task request model', {
-    'description': fields.String(required=True, description='Mentorship relation task description')
+    'description': fields.String(required=True, description='Mentorship relation task description'),
+    'requires_approval': fields.Boolean(required=False, description='If true, only mentor can mark task as completed.')
 })
 
 list_tasks_response_body = Model('List tasks response model', {
@@ -46,5 +50,6 @@ list_tasks_response_body = Model('List tasks response model', {
     'description': fields.String(required=True, description='Mentorship relation task description'),
     'is_done': fields.Boolean(required=True, description='Mentorship relation task is done indication'),
     'created_at': fields.Float(required=True, description='Task creation date in UNIX timestamp format'),
-    'completed_at': fields.Float(required=False, description='Task completion date in UNIX timestamp format')
+    'completed_at': fields.Float(required=False, description='Task completion date in UNIX timestamp format'),
+    'requires_approval': fields.Boolean(required=False, description='If true, only mentor can mark task as completed.')
 })
