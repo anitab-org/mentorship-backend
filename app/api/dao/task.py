@@ -12,7 +12,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def create_task(user_id, mentorship_relation_id, data):
+    def create_task(user_id, mentorship_relation_id, data: dict):
         """Creates a new task.
 
         Creates a new task in a mentorship relation if the specified user is already involved in it.
@@ -29,6 +29,10 @@ class TaskDAO:
         """
 
         description = data['description']
+        if 'requires_approval' in data.keys():
+            requires_approval = data['requires_approval']
+        else:
+            requires_approval = False
 
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
@@ -39,7 +43,8 @@ class TaskDAO:
             return messages.UNACCEPTED_STATE_RELATION, 400
 
         now_timestamp = datetime.now().timestamp()
-        relation.tasks_list.add_task(description=description, created_at=now_timestamp)
+        relation.tasks_list.add_task(description=description, created_at=now_timestamp,
+                                     requires_approval=requires_approval)
         relation.tasks_list.save_to_db()
 
         return messages.TASK_WAS_CREATED_SUCCESSFULLY, 200
@@ -136,6 +141,9 @@ class TaskDAO:
         task = relation.tasks_list.find_task_by_id(task_id)
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
+
+        if user_id == relation.mentee_id and task.requires_approval:
+            return messages.TASK_REQUIRES_APPROVAL, 401
 
         if task.get('is_done'):
             return messages.TASK_WAS_ALREADY_ACHIEVED, 400

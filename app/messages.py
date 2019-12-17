@@ -21,6 +21,7 @@ USER_NOT_FOUND = {"message": "User not found."}
 MENTOR_DOES_NOT_EXIST = {"message": "Mentor user does not exist."}
 MENTEE_DOES_NOT_EXIST = {"message": "Mentee user does not exist."}
 TASK_DOES_NOT_EXIST = {"message": "Task does not exist."}
+TASK_REQUIRES_APPROVAL = {"message": "Task requires mentor's approval."}
 USER_DOES_NOT_EXIST = {"message": "User does not exist"}
 
 # Missing fields
