@@ -15,7 +15,7 @@ cd mentorship-backend
 
 ECHO "Installing the virtual environment - 'venv'"
 pip3 install virtualenv
-virtualenv venv
+virtualenv venv --python=python3
 
 CALL venv\Scripts\activate	
 
