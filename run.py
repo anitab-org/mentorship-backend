@@ -1,6 +1,8 @@
 from flask import Flask
 from config import get_env_config
 
+from dotenv import load_dotenv
+load_dotenv(verbose=True)
 
 def create_app(config_filename):
     app = Flask(__name__)

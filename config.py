@@ -41,6 +41,9 @@ class BaseConfig(object):
     # mail accounts
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
+    # pagination config
+    USERS_PER_PAGE = 3
+
 
 class ProductionConfig(BaseConfig):
     ENV = 'production'

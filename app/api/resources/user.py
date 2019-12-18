@@ -25,12 +25,15 @@ class UserList(Resource):
     @users_ns.doc('list_users')
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
+    @users_ns.param('page', 'Pagination page number')
     def get(cls):
         """
         Returns list of all the users.
         """
+        page = request.args.get('page', 1, type=int)
+
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id)
+        return DAO.list_users(user_id, page=page)
 
 
 @users_ns.route('users/<int:user_id>')

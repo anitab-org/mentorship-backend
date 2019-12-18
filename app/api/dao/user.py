@@ -133,19 +133,22 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id, is_verified=None):
+    def list_users(user_id, is_verified=None, page=1):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
             user_id: The ID of the user to be listed.
             is_verified: Status of the user's verification; None when provided as an argument.
+            page: number of page. Each page contains from several to several dozen of users
         
         Returns:
             A list of users matching conditions and the HTTP response code.
-        
-        """
 
-        users_list = UserModel.query.filter(UserModel.id != user_id).all()
+        """
+        USERS_PER_PAGE = 3  # TODO: Move to app conifg
+
+        users_list = UserModel.query.filter(UserModel.id != user_id).paginate(page, USERS_PER_PAGE, False).items
+
         list_of_users = []
         if is_verified:
             for user in users_list:
@@ -200,7 +203,7 @@ class UserDAO:
                 user.location = data['location']
             else:
                 user.location = None
-            
+
         if 'occupation' in data:
             if data['occupation']:
                 user.occupation = data['occupation']
