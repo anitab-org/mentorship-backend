@@ -27,6 +27,7 @@ IF %errorlevel% == 0 (
 goto :next 
 ) ELSE ( 
 ECHO "Error in installing modules. Exited with status : %errorlevel%"
+goto :steps
 )
 
 :next
