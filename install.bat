@@ -5,7 +5,7 @@ ECHO "Welcome to the setup for mentorship-backend repo."
 ECHO "This installation requires Python version above 3.0. Make sure you have it installed."
 
 SET /P check_repo="Do you want to clone the repository [y/n] : "
-IF %check_repo%=="y" ( ECHO "Cloning the repository"
+IF %check_repo%==y ( ECHO "Cloning the repository"
 git clone https://github.com/systers/mentorship-backend.git 
 ) ELSE ( 
 ECHO "Make sure that you have the repository and the install.bat file in the same folder!" 
