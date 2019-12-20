@@ -4,10 +4,12 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import messages
 from app.api.dao.task import TaskDAO
+from app.api.email_utils import send_email_about_accepted_request
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.user import UserModel
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
                                    description='Operations related to '
@@ -100,8 +102,15 @@ class AcceptMentorshipRelation(Resource):
         user_id = get_jwt_identity()
         response = DAO.accept_request(user_id=user_id, request_id=request_id)
 
-        return response
+        if response[1] is 200:
+            request = MentorshipRelationModel.find_by_id(request_id)
+            request_creator = UserModel.find_by_id(request.action_user_id)
+            request_acceptor = UserModel.find_by_id(user_id)
 
+            send_email_about_accepted_request(request_acceptor.name,
+                                              request_creator.name,
+                                              request_creator.email)
+        return response
 
 @mentorship_relation_ns.route('mentorship_relation/<int:request_id>/reject')
 class RejectMentorshipRelation(Resource):
