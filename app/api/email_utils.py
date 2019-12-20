@@ -74,3 +74,15 @@ def send_email_verification_message(user_name, email):
     html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)
+
+
+def send_request_accept_message(user_name, email, r_name):
+    """Sends a message that the mentor relationship request sent by user has been accepted
+        Args:
+            user_name: User's name.
+            email: User email address.
+            r_name: Receiver's name.
+        """
+    html = render_template('acceptrequest_message.html', r_name=r_name, user_name=user_name)
+    subject = "Mentorship System - Your Request has been accepted!"
+    send_email(email, subject, html)

@@ -6,6 +6,7 @@ from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
+import app.api.email_utils as email_utils
 
 class MentorshipRelationDAO:
     """Data Access Object for mentorship relation functionalities.
@@ -183,6 +184,9 @@ class MentorshipRelationDAO:
             if request.state == MentorshipRelationState.ACCEPTED:
                 return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, 400
 
+        # send email to request sender
+        senderUser = UserModel.find_by_id(request.action_user_id)
+        email_utils.send_request_accept_message(senderUser.name, senderUser.email, user.name)
         # All was checked
         request.state = MentorshipRelationState.ACCEPTED
         request.save_to_db()
