@@ -52,6 +52,26 @@ To run the unitests run the following command in the terminal (while the virtual
 
 `python -m unittest discover tests`
 
+## Deploy with Docker
+First things first: 
+- you need [Docker](https://docs.docker.com/install/) installed.
+- you need [Docker Hub account](https://hub.docker.com/signup)
+
+If you're on Mac or Windows, we recommend installing Docker Desktop for [Mac](https://docs.docker.com/docker-for-mac/) / [Windows](https://docs.docker.com/docker-for-windows/)
+
+> Replace $username with your Docker account username.
+
+### Build image
+To build a new Docker image from you project
+`docker build -t $username/mentorship-backend .`
+
+### Run image in a container
+Having built the image, you probably want to run it
+`docker run -it -p 5000:5000 $username/mentorship-backend`
+
+### Access container
+By default, server runs in the container on `http://0.0.0.0:5000/`.
+
 ## Contributing
 
 Please read our [Contributing guidelines](https://github.com/systers/mentorship-backend/blob/develop/.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
