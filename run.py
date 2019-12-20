@@ -35,6 +35,5 @@ def create_tables():
     from app.database.sqlalchemy_extension import db
     db.create_all()
 
-
 if __name__ == "__main__":
     application.run(port=5000)
