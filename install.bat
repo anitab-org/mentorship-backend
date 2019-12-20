@@ -7,15 +7,14 @@ ECHO "This installation requires Python version above 3.0. Make sure you have it
 SET /P check_repo="Do you want to clone the repository [y/n] : "
 IF %check_repo%==y ( ECHO "Cloning the repository"
 git clone https://github.com/systers/mentorship-backend.git 
+cd mentorship-backend
 ) ELSE ( 
 ECHO "Make sure that you have the repository and the install.bat file in the same folder!" 
 )
 
-cd mentorship-backend
-
 ECHO "Installing the virtual environment - 'venv'"
 pip3 install virtualenv
-virtualenv venv --python=python3
+virtualenv venv
 
 CALL venv\Scripts\activate	
 
@@ -27,7 +26,7 @@ IF %errorlevel% == 0 (
 goto :next 
 ) ELSE ( 
 ECHO "Error in installing modules. Exited with status : %errorlevel%"
-goto :steps
+goto :help
 )
 
 :next
@@ -45,7 +44,9 @@ SET SECURITY_PASSWORD_SALT=%security_password_salt%
 SET /P mail_sender="Enter value for MAIL_DEFAULT_SENDER "
 SET MAIL_DEFAULT_SENDER=%mail_sender%
 
-SET /P mail_server="Enter value for MAIL_SERVER "
+ECHO "Setting up the MAIL_SERVER"
+set "server=%mail_sender:@=" & set "server=%"
+set "mail_server=smtp.%server%"
 SET MAIL_SERVER=%mail_server%
 
 SET /P app_mail_username="Enter value for APP_MAIL_USERNAME "
@@ -62,10 +63,26 @@ IF %errorlevel% == 0 (
 goto :steps 
 ) ELSE ( 
 ECHO "Error while testing the file. Exited with status : %errorlevel%"
-goto :steps
+goto :help 
 )
 
+:help
+
+ECHO "Follow the below mentioned links according to the status codes : "
+
+ECHO "Status 1 OR 9009 : "
+ECHO "For error in installing modules : https://stackoverflow.com/questions/23708898/pip-is-not-recognized-as-an-internal-or-external-command"
+
+ECHO "For error in unit testing :https://stackoverflow.com/questions/17953124/python-is-not-recognized-as-an-internal-or-external-command"
+
+ECHO "Status 2 OR 3 : https://stackoverflow.com/questions/33638281/what-is-the-reason-for-the-error-message-system-cannot-find-the-path-specified"
+
+ECHO "Status 5 : https://www.eassos.com/how-to/how-to-fix-access-denied-error-in-windows.php"
+
+goto :steps
+
 :steps
+ECHO "-----------------------------"
 ECHO "Steps to activate the virtual environment again..."
 ECHO "1. Locate to the mentorship-backend project in your system"
 ECHO "2. Enter the following command - 'CALL venv\Scripts\activate'"
