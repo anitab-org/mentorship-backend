@@ -6,6 +6,10 @@ from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
+from app.api.mail_extension import mail
+
+from flask_mail import Message
+from flask import render_template
 
 class MentorshipRelationDAO:
     """Data Access Object for mentorship relation functionalities.
@@ -186,6 +190,17 @@ class MentorshipRelationDAO:
         # All was checked
         request.state = MentorshipRelationState.ACCEPTED
         request.save_to_db()
+
+        # Send mail
+        from run import application
+        template = render_template('email_mentorship_accepted.html', user_name=user.name)
+        msg = Message(
+            "Mentorship System - Mentorship Relation accepted!",
+            recipients=[user.email],
+            html=template,
+            sender=application.config['MAIL_DEFAULT_SENDER']
+        )
+        mail.send(msg)
 
         return messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, 200
 
