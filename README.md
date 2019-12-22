@@ -72,7 +72,7 @@ Run the following command in your cmd : `docker build -t {any_name_of_choice} .`
 Run the following command : `docker-machine ip default`
 
 5. The final step, to run the project.
-Run the following command : `docker run --publish 5000:5000 {name_of_the_image}` 
+Run the following command : `docker run --publish 5000:5000 {any_name_of_choice}` 
 
 6. The project will run on the IP address of your host at port 5000.
 For example, if your IP is '192.168.99.100' (default), then the project will run on 'http://192.168.99.100:5000/'.
