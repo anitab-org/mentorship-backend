@@ -5,9 +5,6 @@ COPY . /dockeRun
 # Changing the working directory
 WORKDIR /dockeRun
 
-# This statement executes the '.env' file to set/export all environment variables.
-RUN pip install python-dotenv
-
 # This statement installs all the required modules from the 'requirements.txt' file.
 RUN pip install -r requirements.txt
 
