@@ -52,6 +52,31 @@ To run the unitests run the following command in the terminal (while the virtual
 
 `python -m unittest discover tests`
 
+### Run app using Docker
+
+1. To begin with, you first have to install the Docker on your system. (Install Docker Toolbox if working on Windows)
+
+Install Docker from : https://docs.docker.com/install/
+Install Docker Toolbox from : https://docs.docker.com/toolbox/toolbox_install_windows/
+
+Follow the steps in the above mentioned links to install and set-up docker on your server.
+
+2. Next step is to set/export your environment variables.
+Open the `.env` file in the 'mentorship-backend' folder and enter the values for the environment variables.
+Save the file.
+
+3. In order to run a file on Docker, we first have to build an image for our project.
+Run the following command in your cmd : `docker build -t {any_name_of_choice} .`
+
+4. Check for the IP of your docker host(as this will be the address on which the project will run).
+Run the following command : `docker-machine ip default`
+
+5. The final step, to run the project.
+Run the following command : `docker run --publish 5000:5000 {name_of_the_image}` 
+
+6. The project will run on the IP address of your host at port 5000.
+For example, if your IP is '192.168.99.100' (default), then the project will run on 'http://192.168.99.100:5000/'.
+
 ## Contributing
 
 Please read our [Contributing guidelines](https://github.com/systers/mentorship-backend/blob/develop/.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
