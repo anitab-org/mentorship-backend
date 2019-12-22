@@ -13,5 +13,5 @@ RUN pip install -r requirements.txt
 
 COPY . /dockeRun
 
-#This statement runs the 'run.py' file
+# This statement runs the 'run.py' file
 CMD [ "python","run.py" ]
