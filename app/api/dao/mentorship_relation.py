@@ -193,10 +193,13 @@ class MentorshipRelationDAO:
 
         # Send mail
         from run import application
+
         template = render_template('email_mentorship_accepted.html', user_name=user.name)
+        email_user = UserModel.find_by_id(request.action_user_id)
+
         msg = Message(
             "Mentorship System - Mentorship Relation accepted!",
-            recipients=[user.email],
+            recipients=[email_user.email],
             html=template,
             sender=application.config['MAIL_DEFAULT_SENDER']
         )
