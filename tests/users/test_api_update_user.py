@@ -1,20 +1,36 @@
 import unittest
+from datetime import timedelta
 from random import SystemRandom
 from string import ascii_lowercase
 
 from flask import json
 
 from app import messages
-from app.api.validations.user import USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH
+from app.api.validations.user import \
+    USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, \
+    PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.base_test_case import BaseTestCase
-from tests.test_data import user1
+from tests.test_data import user1, user2
 from tests.test_utils import get_test_request_header
 
 
 class TestUpdateUserApi(BaseTestCase):
+
+    def add_user(self):
+        self.first_user = UserModel(
+            name=user1['name'],
+            email=user1['email'],
+            username=user1['username'],
+            password=user1['password'],
+            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+        )
+        self.first_user.is_email_verified = True
+
+        db.session.add(self.first_user)
+        db.session.commit()
 
     def test_update_user_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
@@ -173,6 +189,82 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertEqual(200, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
         self.assertEqual(test_need_mentoring, self.first_user.need_mentoring)
+
+    def test_change_password_to_different_password(self):
+        self.add_user()
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = messages.PASSWORD_SUCCESSFULLY_UPDATED
+        actual_response = self.client.put(
+            '/user/change_password', follow_redirects=True,
+            headers=auth_header,
+            data=json.dumps(dict(current_password=user1['password'],
+                                 new_password=user2['password'])),
+            content_type='application/json')
+
+        self.assertEqual(201, actual_response.status_code)
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
+
+    def test_change_password_to_empty_password(self):
+        self.add_user()
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = {"message": get_length_validation_error_message(
+            "new_password", PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)}
+        actual_response = self.client.put(
+            '/user/change_password', follow_redirects=True,
+            headers=auth_header,
+            data=json.dumps(dict(current_password=user1['password'],
+                                 new_password="")),
+            content_type='application/json')
+
+        self.assertEqual(400, actual_response.status_code)
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
+
+    def test_change_password_to_password_with_white_spaces(self):
+        self.add_user()
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = messages.USER_INPUTS_SPACE_IN_PASSWORD
+        actual_response = self.client.put(
+            '/user/change_password', follow_redirects=True,
+            headers=auth_header,
+            data=json.dumps(dict(current_password=user1['password'],
+                                 new_password="n e w  p a s s w o r d")),
+            content_type='application/json')
+
+        self.assertEqual(400, actual_response.status_code)
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
+
+    def test_change_password_without_token(self):
+        self.add_user()
+        expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
+        actual_response = self.client.put(
+            '/user/change_password', follow_redirects=True,
+            data=json.dumps(dict(current_password=user1['password'],
+                                 new_password=user2['password'])),
+            content_type='application/json')
+
+        self.assertEqual(401, actual_response.status_code)
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
+
+    def test_change_password_with_expired_token(self):
+        self.add_user()
+        auth_header = get_test_request_header(
+            self.first_user.id,
+            token_expiration_delta=timedelta(-1))
+        expected_response = messages.TOKEN_HAS_EXPIRED
+        actual_response = self.client.put(
+            '/user/change_password', follow_redirects=True,
+            headers=auth_header,
+            data=json.dumps(dict(current_password=user1['password'],
+                                 new_password=user2['password'])),
+            content_type='application/json')
+
+        self.assertEqual(401, actual_response.status_code)
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
 
 
 if __name__ == "__main__":
