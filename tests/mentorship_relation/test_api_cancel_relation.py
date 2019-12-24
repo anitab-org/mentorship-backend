@@ -62,6 +62,71 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
             self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
                              json.loads(response.data))
 
+    # User1 (sent the request) cancels a mentorship relation that it is currently
+    # involved with User2 (the relation is in an ACCEPTED state)
+    # 200, MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY response
+    def test__sender_cancel_mentorship_relation(self):
+        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        with self.client:
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
+                                       headers=get_test_request_header(self.first_user.id))
+            self.assertEqual(200, response.status_code)
+            self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
+            self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
+                             json.loads(response.data))
+
+    # User2 (received the request) cancels a mentorship relation that it is currently
+    # involved with User1 (the relation is in an ACCEPTED state)
+    # 200, MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY response
+    def test__receiver_cancel_mentorship_relation(self):
+        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        with self.client:
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
+                                       headers=get_test_request_header(self.second_user.id))
+            self.assertEqual(200, response.status_code)
+            self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
+            self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
+                             json.loads(response.data))
+
+    # User 1 cancel a mentorship relation which the User1 is not involved with
+    # 400, CANT_CANCEL_UNINVOLVED_REQUEST response
+    def test__cancel_mentorship_relation_not_involved(self):
+        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        with self.client:
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
+                                       headers=get_test_request_header(self.admin_user.id))
+            self.assertEqual(400, response.status_code)
+            self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+            self.assertDictEqual(messages.CANT_CANCEL_UNINVOLVED_REQUEST,
+                             json.loads(response.data))
+
+    # Valid user tries to cancel valid task with authentication token missing
+    # 401, AUTHORISATION_TOKEN_IS_MISSING
+    def test__cancel_mentorship_relation_auth_token_missing(self):
+        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        with self.client:
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id)
+            self.assertEqual(401, response.status_code)
+            self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+            self.assertDictEqual(messages.AUTHORISATION_TOKEN_IS_MISSING,
+                             json.loads(response.data))
+
+    # Valid user tries to cancel valid task with authentication token expired
+    # 401, TOKEN_HAS_EXPIRED response
+    def test__cancel_mentorship_relation_auth_token_expired(self):
+        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        with self.client:
+            # generate token that expired 10 seconds ago
+            auth_header = get_test_request_header(
+            self.first_user.id,
+            token_expiration_delta = timedelta(seconds = -10)
+            )
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
+                                       headers=auth_header)
+            self.assertEqual(401, response.status_code)
+            self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+            self.assertDictEqual(messages.TOKEN_HAS_EXPIRED,
+                             json.loads(response.data))
 
 if __name__ == "__main__":
     unittest.main()
