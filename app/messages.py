@@ -135,6 +135,8 @@ MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE = {"message": "Mentorship relation is"
 
 # Login errors
 USER_ENTERED_INCORRECT_PASSWORD = {"message": "Current password is incorrect."}
+USER_ENTERED_CURRENT_PASSWORD = {"message": "New password should not be same "
+                                            "as the current password."}
 EMAIL_EXPIRED_OR_TOKEN_IS_INVALID = {"message": "The confirmation link is"
                                      " invalid or the token has expired."}
 WRONG_USERNAME_OR_PASSWORD = {"message": "Username or password is wrong."}
