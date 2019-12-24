@@ -7,6 +7,7 @@ from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
+
 class MentorshipRelationDAO:
     """Data Access Object for mentorship relation functionalities.
 
@@ -80,7 +81,6 @@ class MentorshipRelationDAO:
         if not mentee_user.need_mentoring:
             return messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED, 400
 
-
         # TODO add tests for this portion
 
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
@@ -113,7 +113,8 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
+    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None,
+                                  rejected=None):
         """Lists all relationships of a given user.
 
         Lists all relationships of a given user. Support for filtering not yet implemented.
@@ -174,7 +175,7 @@ class MentorshipRelationDAO:
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
+            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
 
         requests = user.mentee_relations + user.mentor_relations
 
