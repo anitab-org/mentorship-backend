@@ -1,6 +1,7 @@
+import datetime
 import json
+import time
 import unittest
-from datetime import datetime, timedelta
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -17,8 +18,8 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
         self.notes_example = 'description of a good mentorship relation'
 
-        self.now_datetime = datetime.now()
-        self.end_date_example = self.now_datetime + timedelta(weeks=5)
+        self.now_datetime = datetime.datetime.now()
+        self.end_date_example = self.now_datetime + datetime.timedelta(weeks=5)
 
         # create new mentorship relation
 
@@ -45,6 +46,33 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
             self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY,
+                                 json.loads(response.data))
+
+    def test_accept_mentorship_request_token_missing(self):
+        self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
+        with self.client:
+            response = self.client.put(f"/mentorship_relation/{self.mentorship_relation.id}/accept",
+                                       headers=None)
+
+            self.assertEqual(401, response.status_code)
+            self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
+            self.assertDictEqual(messages.AUTHORISATION_TOKEN_IS_MISSING,
+                                 json.loads(response.data))
+
+    def test_accept_mentorship_request_token_expired(self):
+        self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
+        with self.client:
+            auth_header = get_test_request_header(self.first_user.id,
+                                                  token_expiration_delta=datetime.timedelta(milliseconds=1))
+
+            time.sleep(1)
+
+            response = self.client.put(f"/mentorship_relation/{self.mentorship_relation.id}/accept",
+                                       headers=auth_header)
+
+            self.assertEqual(401, response.status_code)
+            self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
+            self.assertDictEqual(messages.TOKEN_HAS_EXPIRED,
                                  json.loads(response.data))
 
     def test_accept_mentorship_request_user_already_in_relation(self):
