@@ -7,7 +7,6 @@ from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
-
 class MentorshipRelationDAO:
     """Data Access Object for mentorship relation functionalities.
 

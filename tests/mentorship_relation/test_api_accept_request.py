@@ -10,7 +10,6 @@ from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from tests.test_utils import get_test_request_header
 
-
 class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
     def setUp(self):
