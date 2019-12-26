@@ -80,16 +80,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
     
     #missing authorisation token
     
-    def test__mentor_cancel_token_missing(self):
-        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
-        with self.client:
-            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id) 
-            self.assertEqual(401, response.status_code)
-            self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
-            self.assertDictEqual(messages.AUTHORISATION_TOKEN_IS_MISSING, 
-                                 json.loads(response.data))
-            
-    def test__mentee_cancel_token_missing(self):
+    def test_user_cancel_token_missing(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
         with self.client:
             response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id) 
@@ -100,19 +91,9 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
             
     #expired authorisation token
             
-    def test__mentor_cancel_token_expired(self):
+    def test_user_cancel_token_expired(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
         header = get_test_request_header(self.first_user.id, timedelta(days=-1))
-        with self.client:
-            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id, 
-                                       headers = header)
-            self.assertEqual(401, response.status_code)
-            self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
-            self.assertDictEqual(messages.TOKEN_HAS_EXPIRED, json.loads(response.data))
-            
-    def test__mentee_cancel_token_expired(self):
-        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
-        header = get_test_request_header(self.second_user.id, timedelta(days=-1))
         with self.client:
             response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id, 
                                        headers = header)
@@ -122,7 +103,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
         
     #not involved in mentorship    
         
-    def test__user_not_in_mentorship(self):
+    def test_user_not_involved_tries_to_cancel_relation(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
         with self.client:
             response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
