@@ -6,7 +6,7 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_data import user1, user2, user3
+from tests.test_data import user1, user2
 
 
 class TasksBaseTestCase(BaseTestCase):
@@ -31,13 +31,6 @@ class TasksBaseTestCase(BaseTestCase):
             password=user2['password'],
             terms_and_conditions_checked=user2['terms_and_conditions_checked']
         )
-        self.third_user = UserModel(
-            name=user3['name'],
-            email=user3['email'],
-            username=user3['username'],
-            password=user3['password'],
-            terms_and_conditions_checked=user3['terms_and_conditions_checked']
-        )
         # making sure both are available to be mentor or mentee
         self.first_user.need_mentoring = True
         self.first_user.available_to_mentor = True
@@ -45,7 +38,6 @@ class TasksBaseTestCase(BaseTestCase):
         self.second_user.need_mentoring = True
         self.second_user.available_to_mentor = True
         self.second_user.is_email_verified = True
-        self.third_user.is_email_verified = True
 
         self.notes_example = 'description of a good mentorship relation'
 
@@ -61,7 +53,6 @@ class TasksBaseTestCase(BaseTestCase):
         db.session.add(self.tasks_list_3)
         db.session.add(self.first_user)
         db.session.add(self.second_user)
-        db.session.add(self.third_user)
         db.session.commit()
 
         # create new mentorship relation

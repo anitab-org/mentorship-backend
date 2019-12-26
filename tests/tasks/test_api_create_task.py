@@ -7,6 +7,7 @@ from app import messages
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
 
+
 class TestCreateTaskApi(TasksBaseTestCase):
 
     def test_create_task_api_resource_non_auth(self):
@@ -17,15 +18,15 @@ class TestCreateTaskApi(TasksBaseTestCase):
         self.assertEqual(401, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
-    def test_user_involved_in_mentorship_relation_creates_task(self):
+    def test_user_not_involved_in_mentorship_relation_creates_task(self):
         auth_header = get_test_request_header(self.second_user.id)
 
-        actual_response = self.client.post('/mentorship_relation/3/task',
+        actual_response = self.client.post('/mentorship_relation/100/task',
                                            follow_redirects=True, headers=auth_header, content_type='application/json',
                                            data=json.dumps(dict(description=self.test_description)))
-        expected_response = messages.UNACCEPTED_STATE_RELATION
+        expected_response = messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(404, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_creates_task_without_descripton(self):

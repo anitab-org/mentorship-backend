@@ -23,11 +23,3 @@ user2 = {
     "password": "user2_pwd",
     "terms_and_conditions_checked": True
 }
-
-user3 = {
-    "name": "User 3",
-    "email": "user3@email.com",
-    "username": "user3",
-    "password": "user3_pwd",
-    "terms_and_conditions_checked": True
-}
