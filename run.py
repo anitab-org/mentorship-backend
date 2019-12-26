@@ -12,6 +12,9 @@ def create_app(config_filename):
     from app.database.sqlalchemy_extension import db
     db.init_app(app)
 
+    from app.utils.list_of_string_converter import ListOfStringConverter
+    app.url_map.converters['list_of_string'] = ListOfStringConverter
+
     from app.api.jwt_extension import jwt
     jwt.init_app(app)
 

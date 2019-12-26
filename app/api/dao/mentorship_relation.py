@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import List
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -80,7 +81,6 @@ class MentorshipRelationDAO:
         if not mentee_user.need_mentoring:
             return messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED, 400
 
-
         # TODO add tests for this portion
 
         all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
@@ -113,36 +113,38 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
+    def list_mentorship_relations(user_id: int = None, rel_states: List[str] = None):
         """Lists all relationships of a given user.
 
-        Lists all relationships of a given user. Support for filtering not yet implemented.
+        Lists all relationships of a given user.
+        Note regarding filtering: If you supply more than one argument, it will still work.
 
         Args:
-            user_id: ID of the user whose relationships are to be listed.
+            :param user_id: ID of the user whose relationships are to be listed.
+            :param rel_states List of states by which this query should be filtered
 
         Returns:
             message: A message corresponding to the completed action; success if all relationships of a given user are listed, failure if otherwise.
         """
-        if pending is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if completed is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if cancelled is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if accepted is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if rejected is not None:
-            return messages.NOT_IMPLEMENTED, 200
 
         user = UserModel.find_by_id(user_id)
         all_relations = user.mentor_relations + user.mentee_relations
+        response_relations = []
 
         # add extra field for api response
         for relation in all_relations:
             setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
 
-        return all_relations, 200
+            if rel_states:
+                for i, s in enumerate(rel_states):
+                    rel_states[i] = s.upper()
+
+                if relation.state.name in rel_states:
+                    response_relations.append(relation)
+            else:
+                response_relations = all_relations
+
+        return response_relations, 200
 
     @staticmethod
     @email_verification_required
