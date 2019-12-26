@@ -75,6 +75,8 @@ MATCH_EITHER_MENTOR_OR_MENTEE = {"message": "Your ID has to match either"
 # Update
 NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {"message": "No data for updating"
                                          "profile was sent"}
+USER_ENTERED_SAME_PASSWORD_FOR_NEW_PASSWORD = {"message": "The password has not been changed. "
+                                               "You can not use same password as current one."}
 
 # Relation constraints
 MENTOR_ID_SAME_AS_MENTEE_ID = {"message": "You cannot have a mentorship"

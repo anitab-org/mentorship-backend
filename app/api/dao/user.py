@@ -280,6 +280,8 @@ class UserDAO:
 
         user = UserModel.find_by_id(user_id)
         if user.check_password(current_password):
+            if user.check_password(new_password):
+                return messages.USER_ENTERED_SAME_PASSWORD_FOR_NEW_PASSWORD, 400
             user.set_password(new_password)
             user.save_to_db()
             return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
