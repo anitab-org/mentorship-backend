@@ -6,6 +6,7 @@ from app.utils.enum_utils import MentorshipRelationState
 def add_models_to_namespace(api_namespace):
     api_namespace.models[send_mentorship_request_body.name] = send_mentorship_request_body
     api_namespace.models[mentorship_request_response_body.name] = mentorship_request_response_body
+    api_namespace.models[count_pending_requests_response_body.name] = count_pending_requests_response_body
     api_namespace.models[relation_user_response_body.name] = relation_user_response_body
     api_namespace.models[create_task_request_body.name] = create_task_request_body
     api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
@@ -35,6 +36,10 @@ mentorship_request_response_body = Model('List mentorship relation request model
     'end_date': fields.Float(required=True, description='Mentorship relation end date in UNIX timestamp format'),
     'state': fields.Integer(required=True, enum=MentorshipRelationState.values, description='Mentorship relation state'),
     'notes': fields.String(required=True, description='Mentorship relation notes')
+})
+
+count_pending_requests_response_body = Model('Send mentorship relation count request model', {
+    "count": fields.Integer(required=True, description='Pending request count')
 })
 
 create_task_request_body = Model('Create task request model', {

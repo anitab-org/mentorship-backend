@@ -522,6 +522,39 @@
                 ]
             }
         },
+        "/mentorship_relations/count_pending": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Returned pending mentorship relation count with success.",
+                        "schema": {
+                            "$ref": "#/definitions/Send mentorship relation count request model"
+                        }
+                    }
+                },
+                "summary": "Lists pending mentorship requests count of the current user",
+                "operationId": "get_pending_mentorship_relations_count",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true,
+                        "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "X-Fields",
+                        "in": "header",
+                        "type": "string",
+                        "format": "mask",
+                        "description": "An optional fields mask"
+                    }
+                ],
+                "tags": [
+                    "Mentorship Relation"
+                ]
+            }
+        },
         "/register": {
             "post": {
                 "responses": {
@@ -1285,6 +1318,18 @@
                 "notes": {
                     "type": "string",
                     "description": "Mentorship relation notes"
+                }
+            },
+            "type": "object"
+        },
+        "Send mentorship relation count request model": {
+            "required": [
+                "count"
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "description": "count of pending mentorship relations"
                 }
             },
             "type": "object"

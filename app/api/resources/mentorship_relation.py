@@ -230,6 +230,24 @@ class ListPendingMentorshipRequests(Resource):
 
         return response
 
+@mentorship_relation_ns.route('mentorship_relations/count_pending')
+class CountPendingMentorshipRequests(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('get_pending_mentorship_relations_count')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Returned pending mentorship relation count with success.',
+                                     model=count_pending_requests_response_body)
+    @mentorship_relation_ns.marshal_with(count_pending_requests_response_body)
+    def get(cls):
+        """
+        Lists pending mentorship requests count of the current user.
+        """
+
+        user_id = get_jwt_identity()
+        response = DAO.count_pending_mentorship_relations(user_id)
+        return response
 
 @mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task')
 class CreateTask(Resource):
