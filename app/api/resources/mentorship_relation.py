@@ -8,6 +8,7 @@ from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.api.email_utils import send_email_mentorship_relation_accepted
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
                                    description='Operations related to '
@@ -16,7 +17,6 @@ mentorship_relation_ns = Namespace('Mentorship Relation',
 add_models_to_namespace(mentorship_relation_ns)
 
 DAO = MentorshipRelationDAO()
-
 
 @mentorship_relation_ns.route('mentorship_relation/send_request')
 class SendRequest(Resource):
@@ -99,6 +99,9 @@ class AcceptMentorshipRelation(Resource):
 
         user_id = get_jwt_identity()
         response = DAO.accept_request(user_id=user_id, request_id=request_id)
+
+        if response[1] == 200:
+            send_email_mentorship_relation_accepted(request_id)
 
         return response
 
