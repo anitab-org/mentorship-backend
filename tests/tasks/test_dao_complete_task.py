@@ -10,9 +10,9 @@ class TestCompleteTasksDao(TasksBaseTestCase):
         self.assertFalse(self.tasks_list_1.find_task_by_id(1).get('is_done'))
 
         expected_response = messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, 200
-        actual_response = TaskDAO.complete_task(self.first_user.id,
-                                               self.mentorship_relation_w_second_user.id,
-                                               1)
+        actual_response = TaskDAO.update_task(self.first_user.id,
+                                              self.mentorship_relation_w_second_user.id,
+                                              1, True)
 
         self.assertTrue(self.tasks_list_1.find_task_by_id(1).get('is_done'))
         self.assertEqual(expected_response, actual_response)
@@ -21,19 +21,42 @@ class TestCompleteTasksDao(TasksBaseTestCase):
         self.assertTrue(self.tasks_list_1.find_task_by_id(2).get('is_done'))
 
         expected_response = messages.TASK_WAS_ALREADY_ACHIEVED, 400
-        actual_response = TaskDAO.complete_task(self.first_user.id,
-                                               self.mentorship_relation_w_second_user.id,
-                                               2)
+        actual_response = TaskDAO.update_task(self.first_user.id,
+                                              self.mentorship_relation_w_second_user.id,
+                                              2, True)
 
         self.assertTrue(self.tasks_list_1.find_task_by_id(2).get('is_done'))
+        self.assertEqual(expected_response, actual_response)
+
+    def test_unachieve_achieved_task(self):
+        self.assertTrue(self.tasks_list_1.find_task_by_id(2).get('is_done'))
+
+        expected_response = messages.TASK_WAS_UNACHIEVED_SUCCESSFULLY, 200
+        actual_response = TaskDAO.update_task(self.first_user.id,
+                                              self.mentorship_relation_w_second_user.id,
+                                              2, False)
+
+        self.assertFalse(self.tasks_list_1.find_task_by_id(2).get('is_done'))
+        self.assertEqual(expected_response, actual_response)
+
+    def test_unachieve_unachieved_task(self):
+        TaskDAO.update_task(self.first_user.id, self.mentorship_relation_w_second_user.id, 2, False)
+        self.assertFalse(self.tasks_list_1.find_task_by_id(2).get('is_done'))
+
+        expected_response = messages.TASK_IS_ALREADY_UNACHIEVED, 400
+        actual_response = TaskDAO.update_task(self.first_user.id,
+                                              self.mentorship_relation_w_second_user.id,
+                                              2, False)
+
+        self.assertFalse(self.tasks_list_1.find_task_by_id(2).get('is_done'))
         self.assertEqual(expected_response, actual_response)
 
     def test_achieve_not_existent_task(self):
 
         expected_response = messages.TASK_DOES_NOT_EXIST, 404
-        actual_response = TaskDAO.complete_task(self.first_user.id,
-                                               self.mentorship_relation_w_second_user.id,
-                                               123123)
+        actual_response = TaskDAO.update_task(self.first_user.id,
+                                              self.mentorship_relation_w_second_user.id,
+                                              123123, True)
 
         self.assertEqual(expected_response, actual_response)
 

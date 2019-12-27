@@ -109,16 +109,17 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def complete_task(user_id, mentorship_relation_id, task_id):
+    def update_task(user_id, mentorship_relation_id, task_id, is_done):
         """Marks a task as completed.
 
-        Updates the task that belongs to a user who is involved in the specified
-        mentorship relation to finished task status.
+        Updates status of the task that belongs to a user who is involved in the specified
+        mentorship relation.
 
         Args:
             user_id: The id of the user.
             mentorship_relation_id: The id of the mentorship relation.
             task_id: The id of the task.
+            is_done: The status of task completion.
 
         Returns:
             A two element list where the first element is a dictionary containing a key 'message' indicating in its value
@@ -137,10 +138,19 @@ class TaskDAO:
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
 
-        if task.get('is_done'):
+        if is_done and task.get('is_done'):
             return messages.TASK_WAS_ALREADY_ACHIEVED, 400
+
+        if not is_done and not task.get('is_done'):
+            return messages.TASK_IS_ALREADY_UNACHIEVED, 400
+
         else:
             relation.tasks_list.update_task(
-                task_id=task_id, is_done=True, completed_at=datetime.now().timestamp())
+                task_id=task_id, is_done=is_done, completed_at=datetime.now().timestamp())
 
-        return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, 200
+        task = relation.tasks_list.find_task_by_id(task_id)
+
+        if task.get('is_done'):
+            return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, 200
+        else:
+            return messages.TASK_WAS_UNACHIEVED_SUCCESSFULLY, 200

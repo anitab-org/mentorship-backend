@@ -11,7 +11,7 @@ class TestCompleteTaskApi(TasksBaseTestCase):
 
     def test_complete_task_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
-        actual_response = self.client.put('/mentorship_relation/%s/task/%s/complete'
+        actual_response = self.client.put('/mentorship_relation/%s/task/%s'
                                              % (self.mentorship_relation_w_second_user.id, 2),
                                              follow_redirects=True)
 
@@ -28,7 +28,7 @@ class TestCompleteTaskApi(TasksBaseTestCase):
 
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
-        actual_response = self.client.put('/mentorship_relation/%s/task/%s/complete'
+        actual_response = self.client.put('/mentorship_relation/%s/task/%s?is_done=true'
                                              % (self.mentorship_relation_w_second_user.id, 1),
                                              follow_redirects=True, headers=auth_header)
 

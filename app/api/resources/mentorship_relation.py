@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, Namespace, marshal
+from flask_restplus import Resource, Namespace, marshal, inputs
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import messages
@@ -315,8 +315,10 @@ class ListTasks(Resource):
             return marshal(response, list_tasks_response_body), 200
 
 
-@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/complete')
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>')
 class UpdateTask(Resource):
+
+    auth_header_parser.add_argument('is_done', type=inputs.boolean, help="Whether task should be done or not.")
 
     @classmethod
     @jwt_required
@@ -332,6 +334,10 @@ class UpdateTask(Resource):
 
         user_id = get_jwt_identity()
 
-        response = TaskDAO.complete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
+        args = auth_header_parser.parse_args()
+        is_done = args.get('is_done')
+
+        response = TaskDAO.update_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id,
+                                       is_done=is_done)
 
         return response

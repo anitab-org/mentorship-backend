@@ -154,6 +154,7 @@ EMAIL_VERIFICATION_MESSAGE = {"message": "Check your email, a new verification"
 
 # Success messages
 TASK_WAS_ALREADY_ACHIEVED = {"message": "Task was already achieved."}
+TASK_IS_ALREADY_UNACHIEVED = {"message": "Task is already unachieved."}
 MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY = {"message": "Mentorship relation"
                                              " was sent successfully."}
 MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY = {"message": "Mentorship"
@@ -172,6 +173,7 @@ TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
 TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved"
                                           " successfully."}
+TASK_WAS_UNACHIEVED_SUCCESSFULLY = {"message": "Task was marked as unachieved successfully."}
 USER_WAS_CREATED_SUCCESSFULLY = {"message": "User was created successfully."
                                  "A confirmation email has been sent via"
                                  " email.After confirming your email you "
