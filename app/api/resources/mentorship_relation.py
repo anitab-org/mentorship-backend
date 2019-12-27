@@ -17,7 +17,6 @@ add_models_to_namespace(mentorship_relation_ns)
 
 DAO = MentorshipRelationDAO()
 
-
 @mentorship_relation_ns.route('mentorship_relation/send_request')
 class SendRequest(Resource):
 
@@ -227,6 +226,27 @@ class ListPendingMentorshipRequests(Resource):
 
         user_id = get_jwt_identity()
         response = DAO.list_pending_mentorship_relations(user_id)
+
+        return response
+
+
+@mentorship_relation_ns.route('mentorship_relations/count_pending')
+class CountPendingMentorshipRequests(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('get_count_pending_mentorship_relations')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Returned number of pending mentorship requests with success.',
+                                     model='count_pending_requests_response_body')
+    @mentorship_relation_ns.marshal_list_with(count_pending_requests_response_body)
+    def get(cls):
+        """
+        Counts the number of pending mentorship requests of the current user.
+        """
+
+        user_id = get_jwt_identity()
+        response = DAO.count_pending_mentorship_relations(user_id)
 
         return response
 

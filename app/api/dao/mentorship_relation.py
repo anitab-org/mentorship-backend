@@ -365,3 +365,29 @@ class MentorshipRelationDAO:
                 pending_requests += [relation]
 
         return pending_requests, 200
+
+    @staticmethod
+    @email_verification_required
+    def count_pending_mentorship_relations(user_id):
+        """Counts all the pending mentorship requests of the user.
+
+        Args:
+            user_id: ID of the currrent user.
+
+        Returns:
+            message: A message containing the number of pending mentorship requests of the user.
+
+        """
+
+        user = UserModel.find_by_id(user_id)
+        now_timestamp = datetime.now().timestamp()
+        all_relations = user.mentor_relations + user.mentee_relations
+        pending_request_count = 0
+
+        pending_requests=[relation
+                for relation in all_relations
+                if relation.state == MentorshipRelationState.PENDING and relation.end_date > now_timestamp ]
+        
+        pending_request_count=len(pending_requests)
+
+        return { 'count' : pending_request_count }

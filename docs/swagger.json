@@ -522,6 +522,39 @@
                 ]
             }
         },
+        "/mentorship_relations/count_pending": {
+          "get": {
+            "responses": {
+                "200": {
+                    "description": "Returned number of pending mentorship relation with success.",
+                    "schema": {
+                        "$ref": "#/definitions/Count pending requests response model"
+                    }
+                }
+            },
+            "summary": "Counts the number of pending mentorship requests of the current user",
+            "operationId": "get_count_pending_mentorship_relations",
+            "parameters": [
+                {
+                    "name": "Authorization",
+                    "in": "header",
+                    "type": "string",
+                    "required": true,
+                    "description": "Authentication access token. E.g.: Bearer <access_token>"
+                },
+                {
+                    "name": "X-Fields",
+                    "in": "header",
+                    "type": "string",
+                    "format": "mask",
+                    "description": "An optional fields mask"
+                }
+            ],
+            "tags": [
+                "Mentorship Relation"
+            ]
+          }
+        },
         "/register": {
             "post": {
                 "responses": {
@@ -1348,8 +1381,20 @@
                 }
             },
             "type": "object"
-        }
-    },
+        },
+        "Count pending requests response model": {
+            "required": [
+                "count",
+            ],
+            "properties": {
+                "count": {
+                    "type": "integer",
+                    "description": "Number of pending requests"
+                }
+            },
+            "type": "object"
+           }
+        },
     "responses": {
         "ParseError": {
             "description": "When a mask can't be parsed"
