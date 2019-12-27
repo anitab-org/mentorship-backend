@@ -91,9 +91,19 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
             
     #expired authorisation token
             
-    def test_user_cancel_token_expired(self):
+    def test_mentor_cancel_token_expired(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
         header = get_test_request_header(self.first_user.id, timedelta(days=-1))
+        with self.client:
+            response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id, 
+                                       headers = header)
+            self.assertEqual(401, response.status_code)
+            self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+            self.assertDictEqual(messages.TOKEN_HAS_EXPIRED, json.loads(response.data))
+            
+    def test_mentee_cancel_token_expired(self):
+        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        header = get_test_request_header(self.second_user.id, timedelta(days=-1))
         with self.client:
             response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id, 
                                        headers = header)
