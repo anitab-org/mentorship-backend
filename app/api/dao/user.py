@@ -7,6 +7,7 @@ from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
+from libgravatar import Gravatar
 
 
 class UserDAO:
@@ -49,6 +50,12 @@ class UserDAO:
 
         if 'available_to_mentor' in data:
             user.available_to_mentor = data['available_to_mentor']
+
+        try:
+            gravatar = Gravatar(email)
+            user.photo_url = gravatar.get_image(size=512)
+        except:
+            return messages.ERROR_WHILE_CALLING_GRAVATAR, 500
 
         user.save_to_db()
 
@@ -200,7 +207,7 @@ class UserDAO:
                 user.location = data['location']
             else:
                 user.location = None
-            
+
         if 'occupation' in data:
             if data['occupation']:
                 user.occupation = data['occupation']

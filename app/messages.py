@@ -213,3 +213,5 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {"message": "You have confirmed your"
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
 NOT_IMPLEMENTED = {"message": "Not implemented."}
+ERROR_WHILE_CALLING_GRAVATAR = {"message": "An unknown error occurred while"
+                                           "calling Gravatar."}
