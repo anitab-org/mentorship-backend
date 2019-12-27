@@ -23,6 +23,7 @@ Flask-Mail==0.9.1
 flask-restplus==0.11.0
 Flask-SQLAlchemy==2.3.2
 Flask-Testing==0.7.1
+Flask-Migrate==2.5.2
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.10
