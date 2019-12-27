@@ -113,7 +113,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id: int = None, rel_states: List[str] = None):
+    def list_mentorship_relations(user_id: int = None, rel_states = None):
         """Lists all relationships of a given user.
 
         Lists all relationships of a given user.
@@ -136,8 +136,8 @@ class MentorshipRelationDAO:
             setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
 
             if rel_states:
-                for i, s in enumerate(rel_states):
-                    rel_states[i] = s.upper()
+                for iterable, start in enumerate(rel_states):
+                    rel_states[iterable] = start.upper()
 
                 if relation.state.name in rel_states:
                     response_relations.append(relation)

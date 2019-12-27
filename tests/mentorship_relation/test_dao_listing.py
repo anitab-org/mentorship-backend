@@ -35,9 +35,6 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
             tasks_list=TasksListModel()
         )
 
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
         self.accepted_mentorship_relation = MentorshipRelationModel(
             action_user_id=self.first_user.id,
             mentor_user=self.first_user,
@@ -49,9 +46,6 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
             tasks_list=TasksListModel()
         )
 
-        db.session.add(self.accepted_mentorship_relation)
-        db.session.commit()
-
         self.rejected_mentorship_relation = MentorshipRelationModel(
             action_user_id=self.first_user.id,
             mentor_user=self.first_user,
@@ -62,9 +56,6 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
             notes=self.notes_example,
             tasks_list=TasksListModel()
         )
-
-        db.session.add(self.rejected_mentorship_relation)
-        db.session.commit()
 
         self.cancelled_mentorship_relation = MentorshipRelationModel(
             action_user_id=self.first_user.id,
@@ -88,10 +79,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
             tasks_list=TasksListModel()
         )
 
-        db.session.add(self.completed_mentorship_relation)
-        db.session.commit()
-
+        db.session.add(self.mentorship_relation)
+        db.session.add(self.accepted_mentorship_relation)
+        db.session.add(self.rejected_mentorship_relation)
         db.session.add(self.cancelled_mentorship_relation)
+        db.session.add(self.completed_mentorship_relation)
+
         db.session.commit()
 
     def test_dao_list_mentorship_relation_accepted(self):
