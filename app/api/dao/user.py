@@ -264,14 +264,17 @@ class UserDAO:
     def change_password(user_id, data):
         """ Changes the user's password.
         
-        Finds the user with the given ID, checks their current password, and then updates to the new one.
+        Finds the user with the given ID, checks their current password,
+        and then updates to the new one.
         
         Arguments:
             user_id: The ID of the user to be searched.
             data: The user's current and new password.
         
         Returns:
-            A message that indicates whether the password change was successful or not and a second element which is the HTTP response code.
+            A message that indicates whether the password change was successful or not
+            and a second element which is the HTTP response code.
+            Returns error if new password is a duplicate.
         
         """
 
@@ -280,6 +283,8 @@ class UserDAO:
 
         user = UserModel.find_by_id(user_id)
         if user.check_password(current_password):
+            if current_password == new_password:
+                return messages.DUPLICATE_PASSWORD, 400
             user.set_password(new_password)
             user.save_to_db()
             return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201

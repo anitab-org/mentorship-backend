@@ -201,9 +201,9 @@ UPDATED_TASK_WITH_SUCCESS = {"message": "Updated task with success."}
 USER_SUCCESSFULLY_CREATED = {"message": "User successfully created."}
 USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully"}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}
-PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated "
-                                 "successfully"}
-
+PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated successfully."}
+DUPLICATE_PASSWORD = {"message": "The password has not been changed. You can not "
+                        "use same password as current one."}
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}
 USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email"}
