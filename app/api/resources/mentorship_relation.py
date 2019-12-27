@@ -335,3 +335,25 @@ class UpdateTask(Resource):
         response = TaskDAO.complete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
 
         return response
+
+
+@mentorship_relation_ns.route('mentorship_relations/count_pending')
+class GetPendingRequestsCount(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('get_pending_requests_count')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(
+        200, 'Returned pending requests\' count with success.',
+        model=count_pending_requests_response_body)
+    @mentorship_relation_ns.marshal_list_with(
+        count_pending_requests_response_body)
+    def get(cls):
+        """
+        Returns pending requests' count.
+        """
+
+        user_id = get_jwt_identity()
+
+        return DAO.count_pending_requests(user_id=user_id)
