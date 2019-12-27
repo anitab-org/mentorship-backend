@@ -1,5 +1,6 @@
 from flask import Flask
 from config import get_env_config
+from flask_migrate import Migrate
 
 
 def create_app(config_filename):
@@ -11,6 +12,8 @@ def create_app(config_filename):
 
     from app.database.sqlalchemy_extension import db
     db.init_app(app)
+
+    migrate = Migrate(app, db)
 
     from app.api.jwt_extension import jwt
     jwt.init_app(app)
