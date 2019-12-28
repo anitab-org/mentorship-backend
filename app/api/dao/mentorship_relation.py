@@ -113,10 +113,10 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
+    def list_mentorship_relations(user_id=None, stateList=None):
         """Lists all relationships of a given user.
 
-        Lists all relationships of a given user. Support for filtering not yet implemented.
+        Query and list all relationships of a given user with a given RELATION STATE. Support for filtering not yet implemented.
 
         Args:
             user_id: ID of the user whose relationships are to be listed.
@@ -124,16 +124,6 @@ class MentorshipRelationDAO:
         Returns:
             message: A message corresponding to the completed action; success if all relationships of a given user are listed, failure if otherwise.
         """
-        if pending is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if completed is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if cancelled is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if accepted is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if rejected is not None:
-            return messages.NOT_IMPLEMENTED, 200
 
         user = UserModel.find_by_id(user_id)
         all_relations = user.mentor_relations + user.mentee_relations
@@ -142,7 +132,22 @@ class MentorshipRelationDAO:
         for relation in all_relations:
             setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
 
-        return all_relations, 200
+        response_relations = []
+        #filter and remove whitespaces and empty list items
+        if stateList:
+            for s in stateList:
+                s.replace(" ", "")
+                if s == "":
+                    stateList.remove(s)
+        #iterate through relations and filter out those which match query
+        if stateList and len(stateList) != 0:
+            for relation in all_relations:
+                if relation.state.name in stateList:
+                    response_relations.append(relation)
+        else:
+            return all_relations, 200
+
+        return response_relations, 200
 
     @staticmethod
     @email_verification_required

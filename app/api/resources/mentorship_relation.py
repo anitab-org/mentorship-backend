@@ -62,21 +62,21 @@ class SendRequest(Resource):
 
 @mentorship_relation_ns.route('mentorship_relations')
 class GetAllMyMentorshipRelation(Resource):
-
+    auth_header_parser.add_argument('state', type=str, action='split', help='optional query filter mentor relation requests by state: PENDING, ACCEPTED, REJECTED, CANCELLED, COMPLETED')
     @classmethod
     @jwt_required
     @mentorship_relation_ns.doc('get_all_user_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations was successfully.',
+    @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations with respective query filter was successful.',
                                      model=mentorship_request_response_body)
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
         """
-        Lists all mentorship relations of current user.
+        Lists all mentorship relations of current user with query filter for state of relation.
         """
 
         user_id = get_jwt_identity()
-        response = DAO.list_mentorship_relations(user_id=user_id)
+        response = DAO.list_mentorship_relations(user_id=user_id, stateList=auth_header_parser.parse_args()['state'])
 
         return response
 
