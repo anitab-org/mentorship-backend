@@ -870,7 +870,8 @@
                 "organization",
                 "skills",
                 "slack_username",
-                "username"
+                "username",
+                "is_available"
             ],
             "properties": {
                 "id": {
@@ -920,6 +921,10 @@
                 "available_to_mentor": {
                     "type": "boolean",
                     "description": "User availability to mentor indication"
+                },
+                "is_available": {
+                    "type": "boolean",
+                    "description": "User availability for mentorship relation"
                 }
             },
             "type": "object"

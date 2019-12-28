@@ -7,7 +7,8 @@ from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
-
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
+from app.database.models.mentorship_relation import MentorshipRelationModel
 
 class UserDAO:
     """Data Access Object for User functionalities"""
@@ -153,6 +154,13 @@ class UserDAO:
                     list_of_users += [user.json()]
         else:
             list_of_users = [user.json() for user in users_list]
+        # user is available for relation if: not in relation * (need_mentoring + available_to_mentor)
+        for user in list_of_users:
+            current_relation_response = MentorshipRelationDAO.list_current_mentorship_relation(user['id'])
+            # find if not in relation
+            if not isinstance(current_relation_response,MentorshipRelationModel):
+                if (user['need_mentoring'] or user['available_to_mentor']):
+                    user['is_available'] = True
 
         return list_of_users, 200
 
