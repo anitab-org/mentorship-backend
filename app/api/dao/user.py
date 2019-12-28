@@ -51,12 +51,6 @@ class UserDAO:
         if 'available_to_mentor' in data:
             user.available_to_mentor = data['available_to_mentor']
 
-        try:
-            gravatar = Gravatar(email)
-            user.photo_url = gravatar.get_image(size=512)
-        except:
-            return messages.ERROR_WHILE_CALLING_GRAVATAR, 500
-
         user.save_to_db()
 
         return messages.USER_WAS_CREATED_SUCCESSFULLY, 200
@@ -207,7 +201,7 @@ class UserDAO:
                 user.location = data['location']
             else:
                 user.location = None
-
+            
         if 'occupation' in data:
             if data['occupation']:
                 user.occupation = data['occupation']
@@ -261,6 +255,14 @@ class UserDAO:
 
         if 'available_to_mentor' in data:
             user.available_to_mentor = data['available_to_mentor']
+
+        try:
+            if user.photo_url:
+                pass
+            else:
+                user.photo_url = UserDAO.get_gravatar(user)
+        except:
+            return messages.ERROR_WHILE_CALLING_GRAVATAR, 500
 
         user.save_to_db()
 
@@ -318,8 +320,21 @@ class UserDAO:
         else:
             user.is_email_verified = True
             user.email_verification_date = datetime.now()
+
+            try:
+                user.photo_url = UserDAO.get_gravatar(user)
+            except:
+                return messages.ERROR_WHILE_CALLING_GRAVATAR, 500
+
             user.save_to_db()
             return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200
+
+    @staticmethod
+    def get_gravatar(user):
+        """Finds user's Gravatar photo URL and returns it. If user doesn't have Gravatar account,
+        default Gravatar image will be returned. Default image: http://www.gravatar.com/avatar"""
+        gravatar = Gravatar(user.email)
+        return gravatar.get_image(size=512)
 
     @staticmethod
     def authenticate(username_or_email, password):
