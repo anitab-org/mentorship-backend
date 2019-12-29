@@ -1,13 +1,15 @@
-from app import messages
+from app import messages, messenger
 from app.database.models.user import UserModel
+from app.messages_enums import Message
 from app.utils.decorator_utils import email_verification_required
+
 
 class AdminDAO:
     """Data Access Object for Admin functionalities."""
 
     @staticmethod
     @email_verification_required
-    def assign_new_user(user_id, data):
+    def assign_new_user(user_id, data, lang="en"):
         """Creates a new admin.
 
         Creates a new admin if the assigned user exists and is assigned by another user. Otherwise returns a message.
@@ -22,30 +24,29 @@ class AdminDAO:
         new_admin_user_id = data['user_id']
 
         if user_id == new_admin_user_id:
-            return messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, 403
+            return messenger.send(Message.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, lang), 403
 
         admin_user = UserModel.find_by_id(user_id)
 
-        if admin_user: 
+        if admin_user:
             if not admin_user.is_admin:
-                return messages.USER_ASSIGN_NOT_ADMIN, 403
+                return messenger.send(Message.USER_ASSIGN_NOT_ADMIN, lang), 403
         else:
-            return messages.USER_NOT_FOUND, 404
-        
+            return messenger.send(Message.USER_NOT_FOUND, lang), 404
 
         new_admin_user = UserModel.find_by_id(new_admin_user_id)
 
         if new_admin_user:
 
             if new_admin_user.is_admin:
-                return messages.USER_IS_ALREADY_AN_ADMIN, 400
+                return messenger.send(Message.USER_IS_ALREADY_AN_ADMIN, lang), 400
 
             new_admin_user.is_admin = True
             new_admin_user.save_to_db()
 
-            return messages.USER_IS_NOW_AN_ADMIN, 200
+            return messenger.send(Message.USER_IS_NOW_AN_ADMIN, lang), 200
 
-        return messages.USER_DOES_NOT_EXIST, 404
+        return messenger.send(Message.USER_DOES_NOT_EXIST, lang), 404
 
     @staticmethod
     @email_verification_required
@@ -70,7 +71,7 @@ class AdminDAO:
 
         admin_user = UserModel.find_by_id(user_id)
 
-        if admin_user: 
+        if admin_user:
             if not admin_user.is_admin:
                 return messages.USER_REVOKE_NOT_ADMIN, 403
         else:

@@ -2,11 +2,12 @@ from flask import request
 from flask_restplus import Resource, Namespace
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from app import messages
+from app import messages, messenger
 from app.api.dao.user import UserDAO
 from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
 from app.api.resources.common import auth_header_parser
+from app.messages_enums import Message
 
 admin_ns = Namespace('Admins', description='Operations related to Admin users')
 add_models_to_namespace(admin_ns)
@@ -24,12 +25,15 @@ class AssignNewUserAdmin(Resource):
         """
         user_id = get_jwt_identity()
         user = UserDAO.get_user(user_id)
+
+        lang = request.args.get('lang')
+
         if user.is_admin:
             data = request.json
-            return AdminDAO.assign_new_user(user.id, data)
+            return AdminDAO.assign_new_user(user.id, data, lang)
 
         else:
-            return messages.USER_ASSIGN_NOT_ADMIN, 403
+            return messenger.send(Message.USER_ASSIGN_NOT_ADMIN, lang), 403
 
 
 @admin_ns.route('admin/remove')
