@@ -2,7 +2,9 @@ from datetime import datetime
 from operator import itemgetter
 
 from app import messages
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
@@ -154,6 +156,22 @@ class UserDAO:
         else:
             list_of_users = [user.json() for user in users_list]
 
+        all_relations = MentorshipRelationModel.query.all()
+
+        for index, user in enumerate(list_of_users):
+            is_available = True
+
+            rel = MentorshipRelationDAO.list_current_mentorship_relation(user['id'])
+            print(rel)
+
+            if isinstance(rel, MentorshipRelationModel):
+                is_available = False
+            else:
+                if user['need_mentoring'] or user['available_to_mentor']:
+                    is_available = True
+
+            list_of_users[index]['is_available'] = is_available
+
         return list_of_users, 200
 
     @staticmethod
@@ -200,7 +218,7 @@ class UserDAO:
                 user.location = data['location']
             else:
                 user.location = None
-            
+
         if 'occupation' in data:
             if data['occupation']:
                 user.occupation = data['occupation']

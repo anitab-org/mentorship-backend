@@ -1,14 +1,19 @@
 import unittest
+from datetime import timedelta, datetime
+
 from flask import json
 from flask_restplus import marshal
 
 from app import messages
 from app.api.models.user import public_user_api_model
+from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
+from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2
+from tests.test_utils import get_test_request_header
 
 
 class TestListUsersApi(BaseTestCase):
@@ -30,10 +35,33 @@ class TestListUsersApi(BaseTestCase):
             terms_and_conditions_checked=user2['terms_and_conditions_checked']
         )
 
+        self.notes_example = 'Example relation description'
+        self.now_datetime = datetime.now()
+        self.end_date_example = self.now_datetime + timedelta(weeks=5)
+
+        # self.mentorship_relation = MentorshipRelationModel(
+        #     action_user_id=self.verified_user.id,
+        #     mentor_user=self.verified_user,
+        #     mentee_user=self.admin_user,
+        #     creation_date=self.now_datetime.timestamp(),
+        #     end_date=self.end_date_example.timestamp(),
+        #     state=MentorshipRelationState.ACCEPTED,
+        #     notes=self.notes_example,
+        #     tasks_list=TasksListModel()
+        # )
+
         self.verified_user.is_email_verified = True
         db.session.add(self.verified_user)
         db.session.add(self.other_user)
+        # db.session.add(self.mentorship_relation)
         db.session.commit()
+
+        # Needed to properly handle is_available. This property exists only
+        # on public_user_api_model. UserModel doesn't have it. That's why it's
+        # being set here.
+        self.verified_user.is_available = False
+        self.other_user.is_available = True
+        self.admin_user.is_available = False
 
     def test_list_users_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
@@ -57,6 +85,9 @@ class TestListUsersApi(BaseTestCase):
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_resource_unverified(self):
+        pass
 
 
 if __name__ == "__main__":
