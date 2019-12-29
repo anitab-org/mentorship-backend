@@ -22,9 +22,11 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         self.now_datetime = datetime.now()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
+        self.dao = MentorshipRelationDAO()
+
         # create new mentorship relation
 
-        self.mentorship_relation = MentorshipRelationModel(
+        self.pending_mentorship_relation = MentorshipRelationModel(
             action_user_id=self.first_user.id,
             mentor_user=self.first_user,
             mentee_user=self.second_user,
@@ -79,7 +81,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
             tasks_list=TasksListModel()
         )
 
-        db.session.add(self.mentorship_relation)
+        db.session.add(self.pending_mentorship_relation)
         db.session.add(self.accepted_mentorship_relation)
         db.session.add(self.rejected_mentorship_relation)
         db.session.add(self.cancelled_mentorship_relation)
@@ -88,84 +90,42 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
     def test_dao_list_mentorship_relation_accepted(self):
-        DAO = MentorshipRelationDAO()
+        result = self.dao.list_mentorship_relations(user_id=self.first_user.id, rel_states=["accepted"])
 
-        self.mentorship_relation.state = MentorshipRelationState.ACCEPTED
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, rel_states=["accepted"])
-
-        self.assertEqual(([self.mentorship_relation, self.accepted_mentorship_relation], 200), result)
+        self.assertEqual(([self.accepted_mentorship_relation], 200), result)
 
     def test_dao_list_mentorship_relation_cancelled(self):
-        DAO = MentorshipRelationDAO()
+        result = self.dao.list_mentorship_relations(user_id=self.first_user.id, rel_states=["cancelled"])
 
-        self.mentorship_relation.state = MentorshipRelationState.CANCELLED
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, rel_states=["cancelled"])
-
-        self.assertEqual(([self.mentorship_relation, self.cancelled_mentorship_relation], 200), result)
+        self.assertEqual(([self.cancelled_mentorship_relation], 200), result)
 
     def test_dao_list_mentorship_relation_rejected(self):
-        DAO = MentorshipRelationDAO()
+        result = self.dao.list_mentorship_relations(user_id=self.first_user.id, rel_states=["rejected"])
 
-        self.mentorship_relation.state = MentorshipRelationState.REJECTED
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, rel_states=["rejected"])
-
-        self.assertEqual(([self.mentorship_relation, self.rejected_mentorship_relation], 200), result)
+        self.assertEqual(([self.rejected_mentorship_relation], 200), result)
 
     def test_dao_list_mentorship_relation_completed(self):
-        DAO = MentorshipRelationDAO()
+        result = self.dao.list_mentorship_relations(user_id=self.first_user.id, rel_states=["completed"])
 
-        self.mentorship_relation.state = MentorshipRelationState.COMPLETED
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, rel_states=["completed"])
-
-        self.assertEqual(([self.mentorship_relation, self.completed_mentorship_relation], 200), result)
+        self.assertEqual(([self.completed_mentorship_relation], 200), result)
 
     def test_dao_list_mentorship_relation_pending(self):
-        DAO = MentorshipRelationDAO()
+        result = self.dao.list_mentorship_relations(user_id=self.first_user.id, rel_states=["pending"])
 
-        self.mentorship_relation.state = MentorshipRelationState.PENDING
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, rel_states=["pending"])
-
-        self.assertEqual(([self.mentorship_relation], 200), result)
+        self.assertEqual(([self.pending_mentorship_relation], 200), result)
 
     def test_dao_list_mentorship_relation_all(self):
-        DAO = MentorshipRelationDAO()
-
-        self.mentorship_relation.state = MentorshipRelationState.PENDING
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id)
-        expected_response = [self.mentorship_relation, self.accepted_mentorship_relation,
-                             self.rejected_mentorship_relation,self.cancelled_mentorship_relation,
+        result = self.dao.list_mentorship_relations(user_id=self.first_user.id)
+        expected_response = [self.pending_mentorship_relation, self.accepted_mentorship_relation,
+                             self.rejected_mentorship_relation, self.cancelled_mentorship_relation,
                              self.completed_mentorship_relation], 200
 
         self.assertIsNotNone(result)
         self.assertEqual(expected_response, result)
 
     def test_dao_list_mentorship_relation_all_pending_and_accepted(self):
-        DAO = MentorshipRelationDAO()
-
-        self.mentorship_relation.state = MentorshipRelationState.PENDING
-        db.session.add(self.mentorship_relation)
-        db.session.commit()
-
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, rel_states=["pending", "accepted"])
-        expected_response = [self.mentorship_relation, self.accepted_mentorship_relation], 200
+        result = self.dao.list_mentorship_relations(user_id=self.first_user.id, rel_states=["pending", "accepted"])
+        expected_response = [self.pending_mentorship_relation, self.accepted_mentorship_relation], 200
 
         self.assertIsNotNone(result)
         self.assertEqual(expected_response, result)
