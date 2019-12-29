@@ -7,7 +7,7 @@ from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
-
+from libgravatar import Gravatar
 
 class UserDAO:
     """Data Access Object for User functionalities"""
@@ -311,6 +311,10 @@ class UserDAO:
         else:
             user.is_email_verified = True
             user.email_verification_date = datetime.now()
+            # gravatar
+            if user.photo_url is None:
+                gravatar = Gravatar(user.email)
+                user.photo_url = gravatar.get_image(default = "identicon")
             user.save_to_db()
             return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200
 
