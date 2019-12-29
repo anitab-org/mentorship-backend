@@ -21,6 +21,3 @@ def complete_overdue_mentorship_relations_job():
             if relation.state == MentorshipRelationState.ACCEPTED and relation.end_date < current_date_timestamp:
                 relation.state = MentorshipRelationState.COMPLETED
                 relation.save_to_db()
-
-            # for tests purposes
-            # print('{} | hola hola hola hola hola'.format(datetime.now()))
