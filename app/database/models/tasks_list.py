@@ -2,6 +2,7 @@ from enum import unique, Enum
 
 from app.database.db_types.JsonCustomType import JsonCustomType
 from app.database.sqlalchemy_extension import db
+from datetime import date
 
 
 class TasksListModel(db.Model):
@@ -20,7 +21,7 @@ class TasksListModel(db.Model):
     tasks = db.Column(JsonCustomType)
     next_task_id = db.Column(db.Integer)
 
-    def __init__(self, tasks=None):
+    def __init__(self, tasks: 'TasksListModel' = None):
         """Initializes tasks.
 
         Args:
@@ -40,7 +41,7 @@ class TasksListModel(db.Model):
             else:
                 raise ValueError(TypeError)
 
-    def add_task(self, description, created_at, is_done=False, completed_at=None):
+    def add_task(self, description: str, created_at: date, is_done=False, completed_at=None) -> None:
         """Adds a task to the list of tasks.
         
         Args:
@@ -60,7 +61,7 @@ class TasksListModel(db.Model):
         self.next_task_id += 1
         self.tasks = self.tasks + [task]
 
-    def delete_task(self, task_id):
+    def delete_task(self, task_id: int) -> None:
         """Deletes a task from the list of tasks.
 
         Args:
@@ -75,10 +76,12 @@ class TasksListModel(db.Model):
         self.tasks = new_list
         self.save_to_db()
 
-    def update_task(self, task_id, description=None, is_done=None, completed_at=None):
+    def update_task(self, task_id: int, description: str = None, is_done: bool = None,
+                    completed_at: date = None) -> None:
         """Updates a task.
         
         Args:
+            task_id: Id of the task to be updated.
             description: A description of the task.
             created_at: Date on which the task is created.
             is_done: Boolean specifying completion of the task.
@@ -106,7 +109,7 @@ class TasksListModel(db.Model):
         self.tasks = new_list
         self.save_to_db()
 
-    def find_task_by_id(self, task_id):
+    def find_task_by_id(self, task_id: int):
         """Returns the task that has the specified id.
         
         Args:
@@ -121,7 +124,7 @@ class TasksListModel(db.Model):
                 return task
         return None
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         """Checks if the list of tasks is empty.
 
         Returns:
@@ -150,25 +153,25 @@ class TasksListModel(db.Model):
         Returns:
             A string representation of the task object.
         """
-        
+
         return "Task | id = %s; tasks = %s; next task id = %s" % (self.id, self.tasks, self.next_task_id)
 
     @classmethod
-    def find_by_id(cls, _id):
+    def find_by_id(cls, _id: int):
         """Finds a task with the specified id.
         
         Returns:
             The task with the specified id.
         """
-        
+
         return cls.query.filter_by(id=_id).first()
 
-    def save_to_db(self):
+    def save_to_db(self) -> None:
         """Adds a task to the database."""
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def delete_from_db(self) -> None:
         """Deletes a task from the database."""
         db.session.delete(self)
         db.session.commit()

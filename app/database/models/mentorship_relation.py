@@ -1,3 +1,5 @@
+from datetime import date
+
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
@@ -52,7 +54,8 @@ class MentorshipRelationModel(db.Model):
     tasks_list_id = db.Column(db.Integer, db.ForeignKey('tasks_list.id'))
     tasks_list = db.relationship(TasksListModel, uselist=False, backref="mentorship_relation")
 
-    def __init__(self, action_user_id, mentor_user, mentee_user, creation_date, end_date, state, notes, tasks_list):
+    def __init__(self, action_user_id: id, mentor_user, mentee_user, creation_date: date, end_date: date,
+                 state: MentorshipRelationState, notes: str, tasks_list: TasksListModel):
 
         self.action_user_id = action_user_id
         self.mentor = mentor_user
@@ -83,7 +86,7 @@ class MentorshipRelationModel(db.Model):
     #            % (self.id, self.mentor_id, self.mentee_id)
 
     @classmethod
-    def find_by_id(cls, _id): 
+    def find_by_id(cls, _id) -> 'MentorshipRelationModel':
         """Returns the mentorship that has the passed id.
            Args:
                 _id: The id of a mentorship.
@@ -91,16 +94,16 @@ class MentorshipRelationModel(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def is_empty(cls):
+    def is_empty(cls) -> bool:
         """Returns True if the mentorship model is empty, and False otherwise."""
         return cls.query.first() is None
 
-    def save_to_db(self):
+    def save_to_db(self) -> None:
         """Saves the model to the database."""
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):   
+    def delete_from_db(self) -> None:
         """Deletes the record of mentorship relation from the database."""
         self.tasks_list.delete_from_db()
         db.session.delete(self)
