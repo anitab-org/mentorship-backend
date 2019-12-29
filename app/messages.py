@@ -123,6 +123,9 @@ USER_INPUTS_INCORRECT_CONFIGURATION_VALUE = {"message": "The environment"
                                              " config value has to be within"
                                              " these values: prod,"
                                              "dev, test."}
+CURRENT_PASSWORD_MATCHES_NEW_PASSWORD = {"message": "The password has not been "
+                                         "changed. You can not use same "
+                                         "password as current one."}
 
 # Mentorship state
 NOT_PENDING_STATE_RELATION = {"message": "This mentorship relation is not in"
