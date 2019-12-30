@@ -25,6 +25,8 @@ class UserList(Resource):
     @users_ns.doc('list_users')
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
+    @users_ns.response(401, 'Auth token is invalid.')
+    @users_ns.response(403, 'Auth token is missing')
     def get(cls):
         """
         Returns list of all the users.
@@ -43,7 +45,8 @@ class OtherUser(Resource):
     @users_ns.expect(auth_header_parser)
     @users_ns.response(201, 'Success.', public_user_api_model)
     @users_ns.response(400, 'User id is not valid.')
-    @users_ns.response(404, 'User does not exist.')
+    @users_ns.response(401, 'Auth token is missing or invalid.')
+    @users_ns.response(404, 'User not found.')
     def get(cls, user_id):
         """
         Returns a user.
@@ -64,6 +67,7 @@ class OtherUser(Resource):
 
 
 @users_ns.route('user')
+@users_ns.response(401, 'Auth token is missing or invalid.')
 @users_ns.response(404, 'User not found.')
 class MyUserProfile(Resource):
 
@@ -85,6 +89,7 @@ class MyUserProfile(Resource):
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(200, 'User successfully updated.')
     @users_ns.response(404, 'User not found.')
+    @users_ns.response(400, 'Username already in use.')
     def put(cls):
         """
         Updates user profile
@@ -105,6 +110,8 @@ class MyUserProfile(Resource):
     @users_ns.doc('delete_user')
     @users_ns.expect(auth_header_parser, validate=True)
     @users_ns.response(200, 'User successfully deleted.')
+    @users_ns.response(401, 'Auth token is missing or invalid.')
+    @users_ns.response(400, 'User is the last admin.')
     @users_ns.response(404, 'User not found.')
     def delete(cls):
         """
@@ -121,6 +128,9 @@ class ChangeUserPassword(Resource):
     @jwt_required
     @users_ns.doc('update_user_password')
     @users_ns.expect(auth_header_parser, change_password_request_data_model, validate=True)
+    @users_ns.response(201, 'Password successfully updated.')
+    @users_ns.response(401, 'Auth token is missing or invalid.')
+    @users_ns.response(400, 'Incorrect password.')
     def put(cls):
         """
         Updates the user's password
@@ -154,8 +164,9 @@ class UserRegister(Resource):
 
     @classmethod
     @users_ns.doc('create_user')
-    @users_ns.response(201, 'User successfully created.')
     @users_ns.expect(register_user_api_model, validate=True)
+    @users_ns.response(201, 'User successfully created.')
+    @users_ns.response(400, 'Username or email already in use.')
     def post(cls):
         """
         Creates a new user.
@@ -181,6 +192,8 @@ class UserRegister(Resource):
 class UserEmailConfirmation(Resource):
 
     @classmethod
+    @users_ns.response(200, 'Account is already confirmed.')
+    @users_ns.response(400, 'Email expired or token is invalid')
     def get(cls, token):
         """Confirms the user's account."""
 
@@ -192,6 +205,10 @@ class UserResendEmailConfirmation(Resource):
 
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
+    @users_ns.response(200, 'Verification message sent successfully.')
+    @users_ns.response(400, 'Invalid email data.')
+    @users_ns.response(403, 'User email address is already confirmed.')
+    @users_ns.response(404, 'User not found.')
     def post(cls):
         """Sends the user a new verification email."""
 
@@ -221,6 +238,7 @@ class RefreshUser(Resource):
     @jwt_refresh_token_required
     @users_ns.doc('refresh')
     @users_ns.response(200, 'Successful refresh', refresh_response_body_model)
+    @users_ns.response(401, 'Auth token is missing or invalid.')
     @users_ns.expect(auth_header_parser)
     def post(cls):
         """Refresh user's access
@@ -246,6 +264,9 @@ class LoginUser(Resource):
     @classmethod
     @users_ns.doc('login')
     @users_ns.response(200, 'Successful login', login_response_body_model)
+    @users_ns.response(400, 'Username or password missing.')
+    @users_ns.response(403, 'Email not verified.')
+    @users_ns.response(404, 'Username or password invalid.')
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -293,6 +314,7 @@ class LoginUser(Resource):
 @users_ns.route('home')
 @users_ns.expect(auth_header_parser, validate=True)
 @users_ns.response(200, 'Successful response', home_response_body_model)
+@users_ns.response(401, 'Auth token is missing or invalid.')
 @users_ns.response(404, 'User not found')
 class UserHomeStatistics(Resource):
     @classmethod

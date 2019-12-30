@@ -206,7 +206,7 @@ PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated "
 
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}
-USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email"}
+USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You have already confirmed your email"}
 ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {"message": "You have confirmed your"
                                         " account.Thanks!"}
 

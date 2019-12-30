@@ -27,6 +27,8 @@ class SendRequest(Resource):
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(200, 'Mentorship Relation request was sent successfully.')
     @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
+    @mentorship_relation_ns.response(404, 'User not found.')
     def post(cls):
         """
         Creates a new mentorship relation request.
@@ -70,6 +72,7 @@ class GetAllMyMentorshipRelation(Resource):
     @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations was successfully.',
                                      model=mentorship_request_response_body)
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
     def get(cls):
         """
         Lists all mentorship relations of current user.
@@ -89,6 +92,9 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.doc('accept_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Accept mentorship relations with success.')
+    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
+    @mentorship_relation_ns.response(404, 'Request not found.')
     def put(cls, request_id):
         """
         Accept a mentorship relation.
@@ -111,6 +117,9 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.doc('reject_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Rejected mentorship relations with success.')
+    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
+    @mentorship_relation_ns.response(404, 'Request not found.')
     def put(cls, request_id):
         """
         Reject a mentorship relation.
@@ -132,6 +141,9 @@ class CancelMentorshipRelation(Resource):
     @mentorship_relation_ns.doc('cancel_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
+    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
+    @mentorship_relation_ns.response(404, 'Relation not found.')
     def put(cls, request_id):
         """
         Cancel a mentorship relation.
@@ -153,6 +165,9 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.doc('delete_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Deleted mentorship relation with success.')
+    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
+    @mentorship_relation_ns.response(404, 'Relation not found')
     def delete(cls, request_id):
         """
         Delete a mentorship request.
@@ -176,6 +191,7 @@ class ListPastMentorshipRelations(Resource):
     @mentorship_relation_ns.response(200, 'Returned past mentorship relations with success.',
                                      model=mentorship_request_response_body)
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
     def get(cls):
         """
         Lists past mentorship relations of the current user.
@@ -196,6 +212,7 @@ class ListCurrentMentorshipRelation(Resource):
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Returned current mentorship relation with success.',
                                      model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
     def get(cls):
         """
         Lists current mentorship relation of the current user.
@@ -219,6 +236,7 @@ class ListPendingMentorshipRequests(Resource):
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Returned pending mentorship relation with success.',
                                      model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
         """
@@ -239,6 +257,9 @@ class CreateTask(Resource):
     @mentorship_relation_ns.doc('create_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
     @mentorship_relation_ns.response(200, 'Created task with success.')
+    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid.')
+    @mentorship_relation_ns.response(404, 'Relation not found.')
     def post(cls, request_id):
         """
         Create a task.
@@ -275,6 +296,9 @@ class DeleteTask(Resource):
     @mentorship_relation_ns.doc('delete_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Delete task with success.')
+    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid or user is not involved in this relation.')
+    @mentorship_relation_ns.response(404, 'Task or relation not found.')
     def delete(cls, request_id, task_id):
         """
         Delete a task.
@@ -298,6 +322,8 @@ class ListTasks(Resource):
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'List tasks from a mentorship relation with success.',
                                      model=list_tasks_response_body)
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid or user is not involved in this relation.')
+    @mentorship_relation_ns.response(404, 'Relation not found.')
     def get(cls, request_id):
         """
         List all tasks from a mentorship relation.
@@ -323,6 +349,8 @@ class UpdateTask(Resource):
     @mentorship_relation_ns.doc('update_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Updated task with success.')
+    @mentorship_relation_ns.response(401, 'Auth token is missing or invalid or user is not involved in this relation.')
+    @mentorship_relation_ns.response(404, 'Task or relation not found.')
     def put(cls, request_id, task_id):
         """
         Update a task.

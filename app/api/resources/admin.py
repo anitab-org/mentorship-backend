@@ -18,6 +18,9 @@ class AssignNewUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.response(400, 'User is already an admin.')
+    @admin_ns.response(403, 'Assigning user is not an admin.')
+    @admin_ns.response(404, 'User not found.')
     def post(cls):
         """
         Assigns a User as a new Admin.
@@ -38,6 +41,9 @@ class RevokeUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.response(400, 'User is not an admin.')
+    @admin_ns.response(403, 'Revoking user is not an admin.')
+    @admin_ns.response(404, 'User not found.')
     def post(cls):
         """
         Revoke admin status from another User Admin.
