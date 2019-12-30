@@ -18,6 +18,13 @@ DAO = UserDAO()  # User data access object
 
 
 @users_ns.route('users')
+@users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
+#TODO: @users_ns.response(404, 'User does not exist.')
 class UserList(Resource):
 
     @classmethod
@@ -42,8 +49,14 @@ class OtherUser(Resource):
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser)
     @users_ns.response(201, 'Success.', public_user_api_model)
-    @users_ns.response(400, 'User id is not valid.')
-    @users_ns.response(404, 'User does not exist.')
+    @users_ns.response(400, '%s'%messages.USER_ID_IS_NOT_VALID)
+    @users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
+    @users_ns.response(404, '%s'%messages.USER_DOES_NOT_EXIST)
     def get(cls, user_id):
         """
         Returns a user.
@@ -64,7 +77,13 @@ class OtherUser(Resource):
 
 
 @users_ns.route('user')
-@users_ns.response(404, 'User not found.')
+@users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
+@users_ns.response(404, '%s'%messages.USER_DOES_NOT_EXIST)
 class MyUserProfile(Resource):
 
     @classmethod
@@ -83,8 +102,8 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('update_user_profile')
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(200, 'User successfully updated.')
-    @users_ns.response(404, 'User not found.')
+    @users_ns.response(200, '%s'%messages.USER_SUCCESSFULLY_UPDATED)
+    @users_ns.response(400, 'Invalid input.')
     def put(cls):
         """
         Updates user profile
@@ -104,8 +123,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('delete_user')
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.response(200, 'User successfully deleted.')
-    @users_ns.response(404, 'User not found.')
+    @users_ns.response(200, '%s'%messages.USER_SUCCESSFULLY_DELETED)
     def delete(cls):
         """
         Deletes user.
@@ -113,7 +131,14 @@ class MyUserProfile(Resource):
         user_id = get_jwt_identity()
         return DAO.delete_user(user_id)
 
-
+@users_ns.response(201, '%s'%messages.PASSWORD_SUCCESSFULLY_UPDATED)
+@users_ns.response(400, '%s'%messages.USER_ENTERED_INCORRECT_PASSWORD)
+@users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
 @users_ns.route('user/change_password')
 class ChangeUserPassword(Resource):
 
@@ -132,7 +157,12 @@ class ChangeUserPassword(Resource):
             return is_valid, 400
         return DAO.change_password(user_id, data)
 
-
+@users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
 @users_ns.route('users/verified')
 class VerifiedUser(Resource):
 
@@ -154,7 +184,11 @@ class UserRegister(Resource):
 
     @classmethod
     @users_ns.doc('create_user')
-    @users_ns.response(201, 'User successfully created.')
+    @users_ns.response(200, '%s'%messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(400, '%s\n%s'%(
+        messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+        messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS
+    ))
     @users_ns.expect(register_user_api_model, validate=True)
     def post(cls):
         """
@@ -177,6 +211,11 @@ class UserRegister(Resource):
 
 
 @users_ns.route('user/confirm_email/<string:token>')
+@users_ns.response(200, '%s\n%s'%(
+    messages.USER_SUCCESSFULLY_CREATED,
+    messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS
+))
+@users_ns.response(400, '%s'%messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
 @users_ns.param('token', 'Token sent to the user\'s email')
 class UserEmailConfirmation(Resource):
 
@@ -188,6 +227,10 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route('user/resend_email')
+@users_ns.response(200, '%s'%messages.EMAIL_VERIFICATION_MESSAGE)
+@users_ns.response(400, 'Invalid input.')
+@users_ns.response(403, '%s'%messages.USER_ALREADY_CONFIRMED_ACCOUNT)
+@users_ns.response(404, '%s'%messages.USER_DOES_NOT_EXIST)
 class UserResendEmailConfirmation(Resource):
 
     @classmethod
@@ -221,6 +264,12 @@ class RefreshUser(Resource):
     @jwt_refresh_token_required
     @users_ns.doc('refresh')
     @users_ns.response(200, 'Successful refresh', refresh_response_body_model)
+    @users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
     @users_ns.expect(auth_header_parser)
     def post(cls):
         """Refresh user's access
@@ -246,6 +295,12 @@ class LoginUser(Resource):
     @classmethod
     @users_ns.doc('login')
     @users_ns.response(200, 'Successful login', login_response_body_model)
+    @users_ns.response(400, '%s\n%s'%(
+        messages.USERNAME_FIELD_IS_MISSING,
+        messages.PASSWORD_FIELD_IS_MISSING
+    ))
+    @users_ns.response(403, '%s'%messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
+    @users_ns.response(404, '%s'%messages.WRONG_USERNAME_OR_PASSWORD)
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -291,9 +346,16 @@ class LoginUser(Resource):
 
 
 @users_ns.route('home')
+@users_ns.doc('home')
 @users_ns.expect(auth_header_parser, validate=True)
 @users_ns.response(200, 'Successful response', home_response_body_model)
-@users_ns.response(404, 'User not found')
+@users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
+@users_ns.response(404, '%s'%messages.USER_NOT_FOUND)
 class UserHomeStatistics(Resource):
     @classmethod
     @jwt_required
