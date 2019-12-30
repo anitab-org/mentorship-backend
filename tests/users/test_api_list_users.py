@@ -1,11 +1,16 @@
 import unittest
+from datetime import datetime, timedelta
+
 from flask import json
 from flask_restplus import marshal
 
 from app import messages
 from app.api.models.user import public_user_api_model
+from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
+from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2
@@ -31,8 +36,30 @@ class TestListUsersApi(BaseTestCase):
         )
 
         self.verified_user.is_email_verified = True
+        self.verified_user.need_mentoring = True
+
+        # both users arenot in a current relationship
+        # verified_user needs mentoring -> is_available = True
+        self.verified_user.is_available = True
+        self.other_user.is_available = False
+
         db.session.add(self.verified_user)
         db.session.add(self.other_user)
+        db.session.commit()
+
+    def create_relationship(self):
+        """Creates relationship between verified and other user."""
+        relation = MentorshipRelationModel(
+            self.other_user.id,
+            self.other_user,
+            self.verified_user,
+            datetime.now().timestamp(),
+            (datetime.now() + timedelta(weeks=5)).timestamp(),
+            MentorshipRelationState.ACCEPTED,
+            'notes',
+            TasksListModel()
+        )
+        db.session.add(relation)
         db.session.commit()
 
     def test_list_users_api_resource_non_auth(self):
@@ -54,6 +81,20 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]
         actual_response = self.client.get('/users/verified', follow_redirects=True, headers=auth_header)
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_relation(self):
+        # Creates relationship between two users, which means that they are
+        # not available
+        self.create_relationship()
+        self.verified_user.is_available = False
+        self.other_user.is_available = False
+
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model), marshal(self.other_user, public_user_api_model)]
+        actual_response = self.client.get('/users', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
