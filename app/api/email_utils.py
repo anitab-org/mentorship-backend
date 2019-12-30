@@ -71,6 +71,6 @@ def send_email_verification_message(user_name, email):
     from app.api.resources.user import UserEmailConfirmation  # import here to avoid circular imports
     from app.api.api_extension import api
     confirm_url = api.url_for(UserEmailConfirmation, token=confirmation_token, _external=True)
-    html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
+    html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name, expiry_time=EMAIL_VERIFICATION_TOKEN_TIME_TO_EXPIRE//3600)
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)
