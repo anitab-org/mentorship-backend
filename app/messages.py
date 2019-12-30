@@ -22,6 +22,7 @@ MENTOR_DOES_NOT_EXIST = {"message": "Mentor user does not exist."}
 MENTEE_DOES_NOT_EXIST = {"message": "Mentee user does not exist."}
 TASK_DOES_NOT_EXIST = {"message": "Task does not exist."}
 USER_DOES_NOT_EXIST = {"message": "User does not exist"}
+TASK_COMMENT_DOES_NOT_EXIST = {"message": "Task comment does not exist."}
 
 # Missing fields
 MENTOR_ID_FIELD_IS_MISSING = {"message": "Mentor ID field is missing."}
@@ -203,6 +204,12 @@ USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully"}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}
 PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated "
                                  "successfully"}
+TASK_COMMENT_WAS_CREATED_SUCCESSFULLY = {"message": "Task comment was created"
+                                                    "successfully."}
+TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY = {"message": "Task comment was updated"
+                                                    "successfully."}
+TASK_COMMENT_WAS_DELETED_SUCCESSFULLY = {"message": "Task comment was deleted"
+                                                    "successfully."}
 
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}
