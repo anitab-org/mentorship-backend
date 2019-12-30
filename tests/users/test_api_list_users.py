@@ -35,25 +35,33 @@ class TestListUsersApi(BaseTestCase):
             terms_and_conditions_checked=user2['terms_and_conditions_checked']
         )
 
-        self.notes_example = 'Example relation description'
-        self.now_datetime = datetime.now()
-        self.end_date_example = self.now_datetime + timedelta(weeks=5)
+        self.admin_user.need_mentoring = True
+        self.admin_user.available_to_mentor = True
 
-        # self.mentorship_relation = MentorshipRelationModel(
-        #     action_user_id=self.verified_user.id,
-        #     mentor_user=self.verified_user,
-        #     mentee_user=self.admin_user,
-        #     creation_date=self.now_datetime.timestamp(),
-        #     end_date=self.end_date_example.timestamp(),
-        #     state=MentorshipRelationState.ACCEPTED,
-        #     notes=self.notes_example,
-        #     tasks_list=TasksListModel()
-        # )
+        self.verified_user.is_email_verified = True
+        self.verified_user.available_to_mentor = True
 
         self.verified_user.is_email_verified = True
         db.session.add(self.verified_user)
         db.session.add(self.other_user)
-        # db.session.add(self.mentorship_relation)
+        db.session.add(self.admin_user)
+        db.session.commit()
+
+        self.notes_example = 'Example relation description'
+        self.now_datetime = datetime.now()
+        self.end_date_example = self.now_datetime + timedelta(weeks=5)
+
+        self.mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.verified_user.id,
+            mentor_user=self.verified_user,
+            mentee_user=self.admin_user,
+            creation_date=self.now_datetime.timestamp(),
+            end_date=self.end_date_example.timestamp(),
+            state=MentorshipRelationState.ACCEPTED,
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
+        )
+        db.session.add(self.mentorship_relation)
         db.session.commit()
 
         # Needed to properly handle is_available. This property exists only
@@ -72,7 +80,8 @@ class TestListUsersApi(BaseTestCase):
 
     def test_list_users_api_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
-        expected_response = [marshal(self.verified_user, public_user_api_model), marshal(self.other_user, public_user_api_model)]
+        expected_response = [marshal(self.verified_user, public_user_api_model),
+                             marshal(self.other_user, public_user_api_model)]
         actual_response = self.client.get('/users', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
@@ -86,8 +95,14 @@ class TestListUsersApi(BaseTestCase):
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
-    def test_list_users_api_resource_unverified(self):
-        pass
+    def test_list_users_api_resource_user_available(self):
+        auth_header = get_test_request_header(self.other_user.id)
+        expected_response = [marshal(self.admin_user, public_user_api_model),
+                             marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get('/users', follow_redirects=True, headers=auth_header)
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
 
 
 if __name__ == "__main__":

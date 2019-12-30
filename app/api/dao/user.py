@@ -162,7 +162,6 @@ class UserDAO:
             is_available = True
 
             rel = MentorshipRelationDAO.list_current_mentorship_relation(user['id'])
-            print(rel)
 
             if isinstance(rel, MentorshipRelationModel):
                 is_available = False
