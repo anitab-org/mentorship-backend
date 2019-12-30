@@ -28,6 +28,7 @@ itsdangerous==0.24
 Jinja2==2.10
 jmespath==0.9.3
 jsonschema==2.6.0
+libgravatar==0.2.3
 MarkupSafe==1.0
 pathspec==0.5.5
 PyJWT==1.4.2
