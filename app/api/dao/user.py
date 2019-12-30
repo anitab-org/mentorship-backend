@@ -1,3 +1,6 @@
+import hashlib
+import urllib.parse
+
 from datetime import datetime
 from operator import itemgetter
 
@@ -311,6 +314,18 @@ class UserDAO:
         else:
             user.is_email_verified = True
             user.email_verification_date = datetime.now()
+
+            if user.photo_url is None:
+                default = "identicon"
+                size = 160
+
+                gravatar_url = "https://www.gravatar.com/avatar/" + hashlib.md5(
+                    user.email.lower().encode('utf-8')).hexdigest() + "?"
+                gravatar_url += urllib.parse.urlencode(
+                    {'d': default, 's': str(size)})
+
+                user.photo_url = gravatar_url
+
             user.save_to_db()
             return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200
 

@@ -64,9 +64,46 @@ class TestUserDao(BaseTestCase):
 
         actual_result = dao.confirm_registration(good_token)
 
+        self.assertEqual(
+            user.photo_url,
+            "https://www.gravatar.com/avatar/fd6926c24d76d650a365ae350784e048?"
+            "d=identicon&s=160")
         self.assertTrue(user.is_email_verified)
         self.assertIsNotNone(user.email_verification_date)
         self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200), actual_result)
+
+    def test_dao_test_gravatar_with_photo_url(self):
+        """Tests GRAVATAR when user already has a profile image."""
+        dao = UserDAO()
+
+        user = UserModel(
+            name=user2['name'],
+            email=user2['email'],
+            username=user2['username'],
+            password=user2['password'],
+            terms_and_conditions_checked=user2[
+                'terms_and_conditions_checked']
+        )
+        user.photo_url = "https://example.com"
+        db.session.add(user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        user = UserModel.query.filter_by(email=user2['email']).first()
+        self.assertIsNotNone(user)
+
+        good_token = generate_confirmation_token(user2['email'])
+
+        self.assertFalse(user.is_email_verified)
+
+        actual_result = dao.confirm_registration(good_token)
+
+        self.assertEqual(user.photo_url, "https://example.com")
+        self.assertTrue(user.is_email_verified)
+        self.assertIsNotNone(user.email_verification_date)
+        self.assertEqual(
+            (messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200),
+            actual_result)
 
     def test_dao_confirm_registration_bad_token(self):
         dao = UserDAO()
