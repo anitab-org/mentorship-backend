@@ -21,5 +21,15 @@ user2 = {
     "email": "user2@email.com",
     "username": "user2",
     "password": "user2_pwd",
-    "terms_and_conditions_checked": True
+    "terms_and_conditions_checked": True,
+    "need_mentoring": True
+}
+
+user3 = {
+    "name": "Userc",
+    "email": "user3@email.com",
+    "username": "user3",
+    "password": "user3_pwd",
+    "terms_and_conditions_checked": True,
+    "need_mentoring": False
 }
