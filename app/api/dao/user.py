@@ -138,7 +138,7 @@ class UserDAO:
     def list_users(user_id, is_verified=None):
 
         # To check whether the user is available for a mentorship relation.
-        def isUserInRelation(user):
+        def setUserAvailableForRelation(user):
             relation = MentorshipRelationDAO.list_current_mentorship_relation(user['id'])
             user['is_available_for_relation'] = not isinstance(relation, MentorshipRelationModel) and (user['need_mentoring'] or user['available_to_mentor'])
 
@@ -163,7 +163,7 @@ class UserDAO:
             list_of_users = [user.json() for user in users_list]
 
         # Updating 'list_of_users' to initialise value for 'is_available_for_relation' property.
-        list(map(lambda user: isUserInRelation(user), list_of_users))
+        list(map(lambda user: setUserAvailableForRelation(user), list_of_users))
 
         return list_of_users, 200
 
