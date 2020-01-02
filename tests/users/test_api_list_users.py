@@ -30,6 +30,18 @@ class TestListUsersApi(BaseTestCase):
             terms_and_conditions_checked=user2['terms_and_conditions_checked']
         )
 
+        self.other_user.available_to_mentor = False
+        self.other_user.need_mentoring = False
+
+        self.verified_user.available_to_mentor = True
+
+        self.admin_user.need_mentoring = False
+        self.admin_user.available_to_mentor = False
+
+        self.verified_user.is_available_for_relation = True
+        self.other_user.is_available_for_relation = False
+        self.admin_user.is_available_for_relation = False
+
         self.verified_user.is_email_verified = True
         db.session.add(self.verified_user)
         db.session.add(self.other_user)
@@ -44,7 +56,8 @@ class TestListUsersApi(BaseTestCase):
 
     def test_list_users_api_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
-        expected_response = [marshal(self.verified_user, public_user_api_model), marshal(self.other_user, public_user_api_model)]
+        expected_response = [marshal(self.verified_user, public_user_api_model),
+                             marshal(self.other_user, public_user_api_model)]
         actual_response = self.client.get('/users', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
@@ -54,6 +67,15 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]
         actual_response = self.client.get('/users/verified', follow_redirects=True, headers=auth_header)
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_availability_api_resource_users(self):
+        auth_header = get_test_request_header(self.verified_user.id)
+        expected_response = [marshal(self.admin_user, public_user_api_model),
+                             marshal(self.other_user, public_user_api_model)]
+        actual_response = self.client.get('/users', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))

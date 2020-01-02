@@ -63,6 +63,10 @@ public_user_api_model = Model('User list model', {
     'available_to_mentor': fields.Boolean(
         required=True,
         description='User availability to mentor indication'
+    ),
+    'is_available_for_relation': fields.Boolean(
+        required=True,
+        description='User availability to be involved in a mentorship relationship'
     )
 })
 
