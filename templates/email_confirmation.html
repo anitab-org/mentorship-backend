@@ -1,12 +1,119 @@
-<p>Hi {{ user_name }},</p>
+
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Bangers|Lobster|Righteous" rel="stylesheet">
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+  
+<title>
+Verify Your Email Please!!
+</title>
+<style>
+body {
+    margin: 5;
+    padding: 5;
+      background: rgb(244,56,56);
+background-color: #FFDEE9;
+background-image: linear-gradient(0deg, #FFDEE9 0%, #B5FFFC 100%);
+  background-repeat: no-repeat;
+    font-family: 'Righteous';
+     text-align:center;
+	font-weight:bolder;
+}
+
+p.Hi{font-size: 22;
+	margin:5;
+	margin-bottom: 50px;
+   
+}
+p.text{
+font-family: sans-serif;
+
+}
+
+a.confirm_url{
+	text-decoration: none;
+	color: white;
+	padding: 5px;
+	border: 2px solid #5e2bff;
+	background: #5e2bff;
+	border-radius: 7px;
+	transition: 0.5s;
+	font-family: 'Bangers';
+}
+a.confirm_url:hover{
+	color:black;
+	background: transparent;
+
+}
+a.footer{
+	color: black;
+
+}
+
+
+.fab,
+.fas {
+    font-size: 26px;
+    padding: 10px;
+    margin: 0;
+    background: black;
+    color: white;
+    margin: 2 0;
+    transition: 0.5s;
+}
+
+.fab:hover,
+.fas:hover {
+    border-bottom: 2px solid black;
+    margin-bottom: -2px;
+}
+.fa-facebook-f:hover {
+    background: linear-gradient(90deg ,#0696ca,#0656cf);
+    color: white;
+}
+
+.fa-quora:hover {
+    background: #a62100;
+    color: white;
+
+}
+
+.fa-github:hover {
+    background: #333;
+    color: white;
+}
+
+.fa-at:hover {
+    background: #0442bc;
+    color: white;
+}
+.fa-instagram:hover{
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    color: white;
+}
+div.outer{
+	border:1px solid black;
+	background: white;
+	margin:2% 10%;
+}
+</style>
+</head>
+<body>
+	<div class="outer">
+<img  height="150px" width="auto" src="https://cdn.clipart.email/8069a832a573177c60b2da5c39ff5e8d_hombre-hello-remix-cyberscootysvg_899-1715.svg">
+<p class="Hi" >Hi {{ user_name }},</p>
 <br>
-<p>Welcome to Mentorship System!</p>
+<div>Welcome to Mentorship System!</div>
 <br>
-<p>You recently signed up for a Mentorship System account.
+<p class="text">You recently signed up for a Mentorship System account.
     Before you get started, we need to verify your email:</p>
 <br>
-<p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+<p><a class="confirm_url" href="{{ confirm_url }}">Click here</a></p>
 <br>
-<p><i>In Systerhood,</i></p>
-<p>Systers Open Source</p>
-<p><a href="http://systers.io/">http://systers.io/</a></p>
+
+<footer>Follow us on<br><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a><a href="#" target="_blank"><i class="fab fa-instagram"></i></a><a href="#" target="_blank"><i class="fab fa-github"></i></a><a href="#"><i class="fas fa-at"></i></a> <br>
+        © <a class="footer" href="http://systers.io/">Systers Open Source </a>2020 All Rights Reserved.</footer>
+</div>
+</body>
+</html>
