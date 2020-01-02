@@ -172,6 +172,7 @@ TASK_COMMENT_WAS_CREATED_SUCCESSFULLY = {'message': "Task comment was created su
 TASK_COMMENT_WAS_DELETED_SUCCESSFULLY = {"message": "Task comment was deleted successfully"}
 TASK_COMMENT_WAS_MODIFIED_SUCCESSFULLY = {'message': "Task comment was modified successfully"}
 TASK_COMMENT_DOES_NOT_EXIST = {'message': "Task comment with given id does not exist"}
+COMMENT_FIELD_IS_MISSING = {'message': "Comment field in body is missing"}
 TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
 TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved"

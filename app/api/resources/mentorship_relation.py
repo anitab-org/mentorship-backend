@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import messages
 from app.api.dao.task import TaskDAO
+from app.api.dao.task_comment import TaskCommentDAO
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
@@ -335,3 +336,123 @@ class UpdateTask(Resource):
         response = TaskDAO.complete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
 
         return response
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/taskcommnent')
+class CreateTaskComment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('create_task_comment_in_task_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser, create_task_comment_body)
+    @mentorship_relation_ns.response(200, 'Task comment was created successfully.')
+    def post(cls, request_id, task_id):
+        """
+        Create a task comment.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+        request_body = request.json
+
+        is_valid = CreateTaskComment.is_valid_data(request_body)
+
+        if is_valid != {}:
+            return is_valid, 400
+
+        response = TaskCommentDAO.create_task_comment(user_id=user_id, relation_id=request_id, data=request_body, task_id=task_id)
+
+        return response
+
+    @staticmethod
+    def is_valid_data(data):
+
+        if 'comment' not in data:
+            return messages.DESCRIPTION_FIELD_IS_MISSING
+
+        return {}
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/taskcommnents')
+class ListTasksComment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('list_tasks_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'List task comments from a task from a mentorship relation with success.',
+                                     model=list_task_comment_response_body)
+    def get(cls, request_id, task_id):
+        """
+        List all task comment from a task from a mentorship relation.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+
+        response = TaskCommentDAO.get_task_comments_by_task_id(user_id=user_id, relation_id=request_id, task_id=task_id)
+
+        if isinstance(response, tuple):
+            return response
+        else:
+            return marshal(response, list_task_comment_response_body), 200
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/taskcomment/<int:taskcomment_id>')
+class DeleteTaskComment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('delete_task_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200, 'Task comment was deleted successfully')
+    def delete(cls, request_id, task_id, taskcomment_id):
+        """
+        Delete a task comment.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+
+        response = TaskCommentDAO.delete_comment(user_id=user_id, relation_id=request_id, task_id=task_id, _id=taskcomment_id)
+
+        return response
+
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/taskcommnent/<int:taskcomment_id>/modify')
+class ModifyTaskComment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('update_task_comment_in_task_in_mentorship_relation')
+    @mentorship_relation_ns.expect(auth_header_parser, create_task_comment_body)
+    @mentorship_relation_ns.response(200, 'Task comment was modified successfully')
+    def put(cls, request_id, task_id, taskcomment_id):
+        """
+        Modify a task comment.
+        """
+
+        # TODO check if user id is well parsed, if it is an integer
+
+        user_id = get_jwt_identity()
+        request_body = request.json
+
+        is_valid = CreateTaskComment.is_valid_data(request_body)
+
+        if is_valid != {}:
+            return is_valid, 400
+
+        response = TaskCommentDAO.modify_comment(user_id=user_id, relation_id=request_id, comment=request_body['comment'], task_id=task_id, _id=taskcomment_id)
+
+        return response
+
+    @staticmethod
+    def is_valid_data(data):
+
+        if 'comment' not in data:
+            return messages.COMMENT_FIELD_IS_MISSING
+
+        return {}
