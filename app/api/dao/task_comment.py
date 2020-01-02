@@ -14,15 +14,12 @@ class TaskCommentDAO:
     @staticmethod
     @email_verification_required
     def create_task_comment(relation_id, user_id, task_id, data):
-        """Creates a new task.
-
-        Creates a new task comment,
-
+        """Creates a new task comment.
         Args:
             relation_id: The id of the mentorship relation.
             user_id: The id of the user.
             task_id: The id of the task relation.
-            data: A list containing the comment of the task comment.
+            data: A dict object containing the string value of the comment for task comment.
 
         Returns:
             A two element list where the first element is a dictionary,
@@ -43,11 +40,11 @@ class TaskCommentDAO:
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
 
-        comment = data['comment']
+        comment_value = data['comment']
 
         task_comments_list = TaskCommentModel.find_task_comments_list_by_task_id(relation_id=relation_id,
                                                                                  task_id=task_id)
-        task_comments_list.add_task_comment(comment=comment, user_id=user_id, task_id=task_id)
+        task_comments_list.add_task_comment(comment=comment_value, user_id=user_id, task_id=task_id)
 
         return messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY, 200
 
@@ -55,9 +52,6 @@ class TaskCommentDAO:
     @email_verification_required
     def get_task_comments_by_task_id(user_id, task_id, relation_id):
         """Gets task comment of specified task_id
-
-        Gets task comment.
-
         Args:
             user_id: The id of the user.
             relation_id: The id of the mentorship relation.

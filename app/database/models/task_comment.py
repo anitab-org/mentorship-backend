@@ -130,14 +130,6 @@ class TaskCommentModel(db.Model):
         """Returns True if the task comment model is empty, and False otherwise."""
         return len(self.task_comments) == 0
 
-    @classmethod
-    def find_by_id(cls, _id):
-        """Returns the task comment that has the passed id.
-           Args:
-                _id: The id of a task comment.
-        """
-        return cls.query.filter_by(id=_id).first()
-
     def save_to_db(self):
         """Saves the model to the database."""
         db.session.add(self)
@@ -170,5 +162,5 @@ class TaskCommentsFields(Enum):
     MODIFICATION_DATE = 'modification_date'
 
     def values(self):
-        """Returns a list containing a task."""
+        """Returns a single task comment mapped to a list."""
         return list(map(str, self))

@@ -346,13 +346,15 @@ class CreateTaskComment(Resource):
     @mentorship_relation_ns.doc('create_task_comment_in_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser, create_task_comment_body)
     @mentorship_relation_ns.response(200, 'Task comment was created successfully.')
+    @mentorship_relation_ns.response(400, "This mentorship relation status is not in the accepted state.")
+    @mentorship_relation_ns.response(404, "Mentorship relation does not exist.")
+    @mentorship_relation_ns.response(404, "Task does not exist.")
+
     def post(cls, request_id, task_id):
         """
         Create a task comment.
         """
-
         # TODO check if user id is well parsed, if it is an integer
-
         user_id = get_jwt_identity()
         request_body = request.json
 
@@ -383,13 +385,16 @@ class ListTasksComment(Resource):
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'List task comments from a task from a mentorship relation with success.',
                                      model=list_task_comment_response_body)
+    @mentorship_relation_ns.response(400, "This mentorship relation status is not in the accepted state.")
+    @mentorship_relation_ns.response(401, "You are not involved in this mentorship relation.")
+    @mentorship_relation_ns.response(404, "Mentorship relation does not exist.")
+    @mentorship_relation_ns.response(404, "Task does not exist.")
+
     def get(cls, request_id, task_id):
         """
-        List all task comment from a task from a mentorship relation.
+        List all task comments from a task from a mentorship relation.
         """
-
         # TODO check if user id is well parsed, if it is an integer
-
         user_id = get_jwt_identity()
 
         response = TaskCommentDAO.get_task_comments_by_task_id(user_id=user_id, relation_id=request_id, task_id=task_id)
@@ -408,13 +413,14 @@ class DeleteTaskComment(Resource):
     @mentorship_relation_ns.doc('delete_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(200, 'Task comment was deleted successfully')
+    @mentorship_relation_ns.response(400, "This mentorship relation status is not in the accepted state.")
+    @mentorship_relation_ns.response(404, "Task comment with given id does not exist")
+    @mentorship_relation_ns.response(401, "User can't delete task comment not made by user")
     def delete(cls, request_id, task_id, taskcomment_id):
         """
         Delete a task comment.
         """
-
         # TODO check if user id is well parsed, if it is an integer
-
         user_id = get_jwt_identity()
 
         response = TaskCommentDAO.delete_comment(user_id=user_id, relation_id=request_id, task_id=task_id, _id=taskcomment_id)
@@ -430,13 +436,14 @@ class ModifyTaskComment(Resource):
     @mentorship_relation_ns.doc('update_task_comment_in_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser, create_task_comment_body)
     @mentorship_relation_ns.response(200, 'Task comment was modified successfully')
+    @mentorship_relation_ns.response(400, "This mentorship relation status is not in the accepted state.")
+    @mentorship_relation_ns.response(401, "User can't modify task comment not made by user")
+    @mentorship_relation_ns.response(404, "Task comment with given id does not exist")
     def put(cls, request_id, task_id, taskcomment_id):
         """
         Modify a task comment.
         """
-
         # TODO check if user id is well parsed, if it is an integer
-
         user_id = get_jwt_identity()
         request_body = request.json
 
