@@ -28,17 +28,7 @@ The project runs on Python 3.
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`
 
-4. Make sure you exported the following [environment variables](https://github.com/systers/mentorship-backend/wiki/Environment-Variables):
-
-```
-export FLASK_ENVIRONMENT_CONFIG=<dev-or-test-or-prod>
-export SECRET_KEY=<your-secret-key>
-export SECURITY_PASSWORD_SALT=<your-security-password-salt>
-export MAIL_DEFAULT_SENDER=<mail-default-sender>
-export MAIL_SERVER=<mail-server>
-export APP_MAIL_USERNAME=<app-mail-username>
-export APP_MAIL_PASSWORD=<app-mail-password>
-```
+4. Make sure you create ~.env~ using ~.env.template~ and update the values of corresponding environment variables.
 
 5. Run the app:
 `python run.py`
