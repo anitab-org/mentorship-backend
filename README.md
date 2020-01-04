@@ -28,7 +28,7 @@ The project runs on Python 3.
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`
 
-4. Make sure you create ~.env~ using ~.env.template~ and update the values of corresponding environment variables.
+4. Make sure you create `.env~` using `.env.template` and update the values of corresponding environment variables.
 
 5. Run the app:
 `python run.py`
