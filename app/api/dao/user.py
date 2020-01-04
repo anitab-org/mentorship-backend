@@ -2,7 +2,10 @@ from datetime import datetime
 from operator import itemgetter
 
 from app import messages
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
+from app.api.dao.task import TaskDAO
 from app.api.email_utils import confirm_token
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
@@ -200,7 +203,7 @@ class UserDAO:
                 user.location = data['location']
             else:
                 user.location = None
-            
+
         if 'occupation' in data:
             if data['occupation']:
                 user.occupation = data['occupation']
@@ -418,3 +421,76 @@ class UserDAO:
             'achievements': achievements
         }
         return response
+
+    @staticmethod
+    def get_user_dashboard(user_id):
+        user = UserModel.find_by_id(user_id)
+
+        if not user:
+            return None
+
+        current_relation = MentorshipRelationDAO.list_current_mentorship_relation(user_id)
+        all_relations = user.mentor_relations + user.mentee_relations
+
+        relations_received_as_mentee = list(filter(lambda rel: rel.action_user_id != user_id and rel.mentee_id == user_id, all_relations))
+        relations_sent_as_mentee = list(filter(lambda rel: rel.action_user_id == user_id and rel.mentee_id == user_id, all_relations))
+        relations_received_as_mentor = list(filter(lambda rel: rel.action_user_id != user_id and rel.mentor_id == user_id, all_relations))
+        relations_sent_as_mentor = list(filter(lambda rel: rel.action_user_id == user_id and rel.mentor_id == user_id, all_relations))
+
+        current_tasks = []
+        if isinstance(current_relation, MentorshipRelationModel):
+            current_tasks = TaskDAO.list_tasks(user_id, current_relation.id)
+
+        dashboard = {
+            # relations received as mentee, by state
+            "pending_relations_received_as_mentee": [rel.json() for rel in relations_received_as_mentee if
+                                                     rel.state == MentorshipRelationState.PENDING],
+            "accepted_relations_received_as_mentee": [rel.json() for rel in relations_received_as_mentee if
+                                                      rel.state == MentorshipRelationState.ACCEPTED],
+            "rejected_relations_received_as_mentee": [rel.json() for rel in relations_received_as_mentee if
+                                                      rel.state == MentorshipRelationState.REJECTED],
+            "cancelled_relations_received_as_mentee": [rel.json() for rel in relations_received_as_mentee if
+                                                       rel.state == MentorshipRelationState.CANCELLED],
+            "completed_relations_received_as_mentee": [rel.json() for rel in relations_received_as_mentee if
+                                                       rel.state == MentorshipRelationState.COMPLETED],
+
+            # relations sent as mentee, by state
+            "pending_relations_sent_as_mentee": [rel.json() for rel in relations_sent_as_mentee if
+                                                 rel.state == MentorshipRelationState.PENDING],
+            "accepted_relations_sent_as_mentee": [rel.json() for rel in relations_sent_as_mentee if
+                                                  rel.state == MentorshipRelationState.ACCEPTED],
+            "rejected_relations_sent_as_mentee": [rel.json() for rel in relations_sent_as_mentee if
+                                                  rel.state == MentorshipRelationState.REJECTED],
+            "cancelled_relations_sent_as_mentee": [rel.json() for rel in relations_sent_as_mentee if
+                                                   rel.state == MentorshipRelationState.CANCELLED],
+            "completed_relations_sent_as_mentee": [rel.json() for rel in relations_sent_as_mentee if
+                                                   rel.state == MentorshipRelationState.COMPLETED],
+
+            # relations received as mentor, by state
+            "pending_relations_received_as_mentor": [rel.json() for rel in relations_received_as_mentor if
+                                                     rel.state == MentorshipRelationState.PENDING],
+            "accepted_relations_received_as_mentor": [rel.json() for rel in relations_received_as_mentor if
+                                                      rel.state == MentorshipRelationState.ACCEPTED],
+            "rejected_relations_received_as_mentor": [rel.json() for rel in relations_received_as_mentor if
+                                                      rel.state == MentorshipRelationState.REJECTED],
+            "cancelled_relations_received_as_mentor": [rel.json() for rel in relations_received_as_mentor if
+                                                       rel.state == MentorshipRelationState.CANCELLED],
+            "completed_relations_received_as_mentor": [rel.json() for rel in relations_received_as_mentor if
+                                                       rel.state == MentorshipRelationState.COMPLETED],
+
+            # relations sent as mentor, by state
+            "pending_relations_sent_as_mentor": [rel.json() for rel in relations_sent_as_mentor if
+                                                 rel.state == MentorshipRelationState.PENDING],
+            "accepted_relations_sent_as_mentor": [rel.json() for rel in relations_sent_as_mentor if
+                                                  rel.state == MentorshipRelationState.ACCEPTED],
+            "rejected_relations_sent_as_mentor": [rel.json() for rel in relations_sent_as_mentor if
+                                                  rel.state == MentorshipRelationState.REJECTED],
+            "cancelled_relations_sent_as_mentor": [rel.json() for rel in relations_sent_as_mentor if
+                                                   rel.state == MentorshipRelationState.CANCELLED],
+            "completed_relations_sent_as_mentor": [rel.json() for rel in relations_sent_as_mentor if
+                                                   rel.state == MentorshipRelationState.COMPLETED],
+            "tasks_undone": [task for task in current_tasks if not task.get('is_done')],
+            "tasks_done": [task for task in current_tasks if task.get('is_done')]
+        }
+
+        return dashboard

@@ -1,5 +1,6 @@
 from flask_restplus import fields, Model
-from app.api.models.mentorship_relation import list_tasks_response_body
+
+from app.api.models.mentorship_relation import list_tasks_response_body, mentorship_request_response_body
 
 
 def add_models_to_namespace(api_namespace):
@@ -13,7 +14,33 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[refresh_response_body_model.name] = refresh_response_body_model
     api_namespace.models[resend_email_request_body_model.name] = resend_email_request_body_model
     api_namespace.models[home_response_body_model.name] = home_response_body_model
+    api_namespace.models[dashboard_api_model.name] = dashboard_api_model
 
+
+dashboard_api_model = Model('Dashboard model', {
+    'pending_relations_received_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'accepted_relations_received_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'rejected_relations_received_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'cancelled_relations_received_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'completed_relations_received_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'pending_relations_sent_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'accepted_relations_sent_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'rejected_relations_sent_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'cancelled_relations_sent_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'completed_relations_sent_as_mentee': fields.List(fields.Nested(mentorship_request_response_body)),
+    'pending_relations_received_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'accepted_relations_received_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'rejected_relations_received_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'cancelled_relations_received_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'completed_relations_received_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'pending_relations_sent_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'accepted_relations_sent_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'rejected_relations_sent_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'cancelled_relations_sent_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'completed_relations_sent_as_mentor': fields.List(fields.Nested(mentorship_request_response_body)),
+    'tasks_undone': fields.List(fields.Nested(list_tasks_response_body)),
+    'tasks_done': fields.List(fields.Nested(list_tasks_response_body))
+})
 
 public_user_api_model = Model('User list model', {
     'id': fields.Integer(
