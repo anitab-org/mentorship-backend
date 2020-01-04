@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from flask import json
 
 from app import messages
+from app.api.models.mentorship_relation import DashboardMentorshipRelation
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
@@ -100,13 +101,14 @@ class TestDashboardApi(BaseTestCase):
             end_date=self.end_date,
             state=MentorshipRelationState.PENDING,
             notes="",
-            tasks_list=TasksListModel()
-        )
+            tasks_list=TasksListModel())
+
         db.session.add(pending_relation_received_as_mentee)
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["pending_relations_received_as_mentee"] = [pending_relation_received_as_mentee.json()]
+        expected_response["pending_relations_received_as_mentee"] = [
+            DashboardMentorshipRelation(pending_relation_received_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -129,7 +131,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["accepted_relations_received_as_mentee"] = [accepted_relation_received_as_mentee.json()]
+        expected_response["accepted_relations_received_as_mentee"] = [
+            DashboardMentorshipRelation(accepted_relation_received_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -152,7 +155,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["rejected_relations_received_as_mentee"] = [rejected_relation_received_as_mentee.json()]
+        expected_response["rejected_relations_received_as_mentee"] = [
+            DashboardMentorshipRelation(rejected_relation_received_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -175,7 +179,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["cancelled_relations_received_as_mentee"] = [cancelled_relation_received_as_mentee.json()]
+        expected_response["cancelled_relations_received_as_mentee"] = [
+            DashboardMentorshipRelation(cancelled_relation_received_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -198,7 +203,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["completed_relations_received_as_mentee"] = [completed_relation_received_as_mentee.json()]
+        expected_response["completed_relations_received_as_mentee"] = [
+            DashboardMentorshipRelation(completed_relation_received_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -221,7 +227,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["pending_relations_sent_as_mentee"] = [pending_relation_sent_as_mentee.json()]
+        expected_response["pending_relations_sent_as_mentee"] = [
+            DashboardMentorshipRelation(pending_relation_sent_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -244,7 +251,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["accepted_relations_sent_as_mentee"] = [pending_accepted_sent_as_mentee.json()]
+        expected_response["accepted_relations_sent_as_mentee"] = [
+            DashboardMentorshipRelation(pending_accepted_sent_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -267,7 +275,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["rejected_relations_sent_as_mentee"] = [rejected_relation_sent_as_mentee.json()]
+        expected_response["rejected_relations_sent_as_mentee"] = [
+            DashboardMentorshipRelation(rejected_relation_sent_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -290,7 +299,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["cancelled_relations_sent_as_mentee"] = [cancelled_relation_sent_as_mentee.json()]
+        expected_response["cancelled_relations_sent_as_mentee"] = [
+            DashboardMentorshipRelation(cancelled_relation_sent_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -313,7 +323,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["completed_relations_sent_as_mentee"] = [completed_relation_sent_as_mentee.json()]
+        expected_response["completed_relations_sent_as_mentee"] = [
+            DashboardMentorshipRelation(completed_relation_sent_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -336,7 +347,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["pending_relations_received_as_mentor"] = [pending_relation_received_as_mentee.json()]
+        expected_response["pending_relations_received_as_mentor"] = [
+            DashboardMentorshipRelation(pending_relation_received_as_mentee).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -359,7 +371,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["accepted_relations_received_as_mentor"] = [accepted_relation_received_as_mentor.json()]
+        expected_response["accepted_relations_received_as_mentor"] = [
+            DashboardMentorshipRelation(accepted_relation_received_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -382,7 +395,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["rejected_relations_received_as_mentor"] = [rejected_relation_received_as_mentor.json()]
+        expected_response["rejected_relations_received_as_mentor"] = [
+            DashboardMentorshipRelation(rejected_relation_received_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -405,7 +419,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["cancelled_relations_received_as_mentor"] = [cancelled_relation_received_as_mentor.json()]
+        expected_response["cancelled_relations_received_as_mentor"] = [
+            DashboardMentorshipRelation(cancelled_relation_received_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -428,7 +443,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["completed_relations_received_as_mentor"] = [completed_relation_received_as_mentor.json()]
+        expected_response["completed_relations_received_as_mentor"] = [
+            DashboardMentorshipRelation(completed_relation_received_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -451,7 +467,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["pending_relations_sent_as_mentor"] = [pending_relation_sent_as_mentor.json()]
+        expected_response["pending_relations_sent_as_mentor"] = [
+            DashboardMentorshipRelation(pending_relation_sent_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -474,7 +491,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["accepted_relations_sent_as_mentor"] = [accepted_relation_sent_as_mentor.json()]
+        expected_response["accepted_relations_sent_as_mentor"] = [
+            DashboardMentorshipRelation(accepted_relation_sent_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -497,7 +515,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["rejected_relations_sent_as_mentor"] = [rejected_relation_sent_as_mentor.json()]
+        expected_response["rejected_relations_sent_as_mentor"] = [
+            DashboardMentorshipRelation(rejected_relation_sent_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -520,7 +539,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["cancelled_relations_sent_as_mentor"] = [cancelled_relation_sent_as_mentor.json()]
+        expected_response["cancelled_relations_sent_as_mentor"] = [
+            DashboardMentorshipRelation(cancelled_relation_sent_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)
@@ -543,7 +563,8 @@ class TestDashboardApi(BaseTestCase):
         db.session.commit()
 
         expected_response = self.empty_response
-        expected_response["completed_relations_sent_as_mentor"] = [completed_relation_sent_as_mentor.json()]
+        expected_response["completed_relations_sent_as_mentor"] = [
+            DashboardMentorshipRelation(completed_relation_sent_as_mentor).json()]
 
         auth_header = get_test_request_header(self.user1.id)
         actual_response = self.client.get('/dashboard', follow_redirects=True, headers=auth_header)

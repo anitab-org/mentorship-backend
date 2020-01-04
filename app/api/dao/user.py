@@ -5,6 +5,7 @@ from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.dao.task import TaskDAO
 from app.api.email_utils import confirm_token
+from app.api.models.mentorship_relation import DashboardMentorshipRelation
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
@@ -430,16 +431,23 @@ class UserDAO:
             return None
 
         current_relation = MentorshipRelationDAO.list_current_mentorship_relation(user_id)
-        all_relations = user.mentor_relations + user.mentee_relations
-
-        relations_received_as_mentee = list(filter(lambda rel: rel.action_user_id != user_id and rel.mentee_id == user_id, all_relations))
-        relations_sent_as_mentee = list(filter(lambda rel: rel.action_user_id == user_id and rel.mentee_id == user_id, all_relations))
-        relations_received_as_mentor = list(filter(lambda rel: rel.action_user_id != user_id and rel.mentor_id == user_id, all_relations))
-        relations_sent_as_mentor = list(filter(lambda rel: rel.action_user_id == user_id and rel.mentor_id == user_id, all_relations))
 
         current_tasks = []
         if isinstance(current_relation, MentorshipRelationModel):
             current_tasks = TaskDAO.list_tasks(user_id, current_relation.id)
+
+        all_relations = user.mentor_relations + user.mentee_relations
+
+        new_all_relations = list(map(lambda rel: DashboardMentorshipRelation(rel), all_relations))
+
+        relations_received_as_mentee = list(
+            filter(lambda rel: rel.action_user_id != user_id and rel.mentee_id == user_id, new_all_relations))
+        relations_sent_as_mentee = list(
+            filter(lambda rel: rel.action_user_id == user_id and rel.mentee_id == user_id, new_all_relations))
+        relations_received_as_mentor = list(
+            filter(lambda rel: rel.action_user_id != user_id and rel.mentor_id == user_id, new_all_relations))
+        relations_sent_as_mentor = list(
+            filter(lambda rel: rel.action_user_id == user_id and rel.mentor_id == user_id, new_all_relations))
 
         dashboard = {
             # relations received as mentee, by state
