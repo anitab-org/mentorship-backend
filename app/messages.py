@@ -196,6 +196,10 @@ RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS = {"message": "Returned"
                                                       " pending mentorship"
                                                       " relations"
                                                       " with success."}
+RETURNED_ALL_MENTORSHIP_RELATIONS_WITH_SUCCESS = {
+    "message": "Returned all user\'s mentorship relations with success."}
+LISTS_ALL_TASKS_WITH_SUCCESS = {
+    "message": "List tasks from a mentorship relation with success."}
 DELETE_TASK_WITH_SUCCESS = {"message": "Delete task with success."}
 UPDATED_TASK_WITH_SUCCESS = {"message": "Updated task with success."}
 USER_SUCCESSFULLY_CREATED = {"message": "User successfully created."}
@@ -203,6 +207,10 @@ USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully"}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}
 PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated "
                                  "successfully"}
+SUCCESS = {"message": "Success."}
+SUCCESSFUL_REFRESH = {"message": "Successful refresh."}
+SUCCESSFUL_LOGIN = {"message": "Successful login."}
+SUCCESSFUL_RESPONSE = {"message": "Successful response."}
 
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}
