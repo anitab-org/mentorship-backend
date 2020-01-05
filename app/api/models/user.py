@@ -13,6 +13,14 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[refresh_response_body_model.name] = refresh_response_body_model
     api_namespace.models[resend_email_request_body_model.name] = resend_email_request_body_model
     api_namespace.models[home_response_body_model.name] = home_response_body_model
+    api_namespace.models[dashboard_relation_body_mentee_model.name] = dashboard_relation_body_mentee_model
+    api_namespace.models[dashboard_relation_body_mentor_model.name] = dashboard_relation_body_mentor_model
+    api_namespace.models[dashboard_relation_states_body_mentee_model.name] = dashboard_relation_states_body_mentee_model
+    api_namespace.models[dashboard_relation_states_body_mentor_model.name] = dashboard_relation_states_body_mentor_model
+    api_namespace.models[dashboard_mentorship_requests_model.name] = dashboard_mentorship_requests_model
+    api_namespace.models[list_tasks_inherited_model.name] = list_tasks_inherited_model
+    api_namespace.models[dashboard_tasks_model.name] = dashboard_tasks_model
+    api_namespace.models[dashboard_response_body_model.name] = dashboard_response_body_model
 
 
 public_user_api_model = Model('User list model', {
@@ -200,4 +208,83 @@ home_response_body_model = Model('Get statistics on the app usage of the current
     'cancelled_relations': fields.Integer(required=True, description='Number of cancelled relations'),
     'rejected_requests': fields.Integer(required=True, description='Number of rejected relations'),
     'achievements': fields.List(fields.Nested(list_tasks_response_body))
+})
+
+
+dashboard_relation_body_mentee_model = Model('Mentorship relation displayed on dashboard where other use is mentee', {
+    'id': fields.Integer(required=True, description='Mentorship relation ID'),
+    'mentee_id': fields.Integer(required=True, description='Other user\'s ID'),
+    'username': fields.String(required=True, description='User username'),
+    'photo_url': fields.String(required=True, description='User photo url'),
+    'creation_date': fields.Float(
+        required=True, description='Mentorship relation creation date in UNIX timestamp format'
+        ),
+    'accept_date': fields.Float(
+        required=True, description='Mentorship relation acceptance date in UNIX timestamp format'
+        ),
+    'start_date': fields.Float(
+        required=True, description='Mentorship relation start date in UNIX timestamp format'
+        ),
+    'end_date': fields.Float(
+        required=True, description='Mentorship relation end date in UNIX timestamp format'
+        ),
+    'notes': fields.String(required=True, description='Mentorship relation notes')
+})
+
+dashboard_relation_body_mentor_model = Model('Mentorship relation displayed on dashboard where other use is mentor', {
+    'id': fields.Integer(required=True, description='Mentorship relation ID'),
+    'mentor_id': fields.Integer(required=True, description='Other user\'s ID'),
+    'username': fields.String(required=True, description='User username'),
+    'photo_url': fields.String(required=True, description='User photo url'),
+    'creation_date': fields.Float(
+        required=True, description='Mentorship relation creation date in UNIX timestamp format'
+        ),
+    'accept_date': fields.Float(
+        required=True, description='Mentorship relation acceptance date in UNIX timestamp format'
+        ),
+    'start_date': fields.Float(
+        required=True, description='Mentorship relation start date in UNIX timestamp format'
+        ),
+    'end_date': fields.Float(
+        required=True, description='Mentorship relation end date in UNIX timestamp format'
+        ),
+    'notes': fields.String(required=True, description='Mentorship relation notes')
+})
+
+dashboard_relation_states_body_mentee_model = Model('Mentorship relation states when other person is mentee',{
+    'PENDING': fields.List(fields.Nested(dashboard_relation_body_mentee_model)),
+    'ACCEPTED': fields.List(fields.Nested(dashboard_relation_body_mentee_model)),
+    'REJECTED': fields.List(fields.Nested(dashboard_relation_body_mentee_model)),
+    'CANCELLED': fields.List(fields.Nested(dashboard_relation_body_mentee_model)),
+    'COMPLETED': fields.List(fields.Nested(dashboard_relation_body_mentee_model))
+})
+
+dashboard_relation_states_body_mentor_model = Model('Mentorship relation states when other person is ment',{
+    'PENDING': fields.List(fields.Nested(dashboard_relation_body_mentor_model)),
+    'ACCEPTED': fields.List(fields.Nested(dashboard_relation_body_mentor_model)),
+    'REJECTED': fields.List(fields.Nested(dashboard_relation_body_mentor_model)),
+    'CANCELLED': fields.List(fields.Nested(dashboard_relation_body_mentor_model)),
+    'COMPLETED': fields.List(fields.Nested(dashboard_relation_body_mentor_model))
+})
+
+dashboard_mentorship_requests_model = Model('Display mentorship request details', {
+    'received_as_mentee': fields.Nested(dashboard_relation_states_body_mentor_model),
+    'sent_as_mentee': fields.Nested(dashboard_relation_states_body_mentor_model),
+    'received_as_mentor': fields.Nested(dashboard_relation_states_body_mentee_model),
+    'sent_as_mentor': fields.Nested(dashboard_relation_states_body_mentee_model)
+})
+
+list_tasks_inherited_model = list_tasks_response_body.inherit('Added request_id field', {
+    'request_id': fields.Integer(required=True, description='Request ID')
+})
+
+dashboard_tasks_model = Model('Display todo and done tasks', {
+    'todo': fields.List(fields.Nested(list_tasks_inherited_model)),
+    'done': fields.List(fields.Nested(list_tasks_inherited_model))
+})
+
+dashboard_response_body_model = Model('Get dashboard highlights of the current user', {
+    'user_details': fields.Nested(full_user_api_model),
+    'mentorship_requests': fields.Nested(dashboard_mentorship_requests_model),
+    'tasks': fields.Nested(dashboard_tasks_model)
 })

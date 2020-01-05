@@ -8,6 +8,23 @@
 	},
 	"item": [
 		{
+			"name": "GET /dashboard",
+			"request": {
+				"url": "http://127.0.0.1:5000/dashboard",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"description": "Authorization token beginning with 'Bearer'"
+					}
+				],
+				"body": {},
+				"description": "Get user dashboard data"
+			},
+			"response": []
+		},
+		{
 			"name": "POST /register",
 			"request": {
 				"url": "http://127.0.0.1:5000/register",

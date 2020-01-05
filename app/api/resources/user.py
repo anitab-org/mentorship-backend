@@ -310,3 +310,25 @@ class UserHomeStatistics(Resource):
             return messages.USER_NOT_FOUND, 404
 
         return stats, 200
+
+@users_ns.route('dashboard')
+@users_ns.doc('dashboard')
+@users_ns.expect(auth_header_parser, validate=True)
+@users_ns.response(200, 'Successful response', dashboard_response_body_model)
+@users_ns.response(404, '%s'%messages.USER_NOT_FOUND)
+class UserDashboard(Resource):
+    @classmethod
+    @jwt_required
+    @users_ns.expect(auth_header_parser)
+    def get(cls):
+        """Get dashboard data regarding the current user
+
+        Returns:
+            A dict containing user stats
+        """
+        user_id = get_jwt_identity()
+        stats = DAO.get_user_dashboard(user_id)
+        if not stats:
+            return messages.USER_NOT_FOUND, 404
+
+        return stats, 200

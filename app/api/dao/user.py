@@ -3,11 +3,13 @@ from operator import itemgetter
 
 from app import messages
 from app.api.email_utils import confirm_token
+from app.api.models.user import full_user_api_model
 from app.database.models.user import UserModel
+from app.api.dao.task import TaskDAO
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
-
+from flask_restplus import marshal
 
 class UserDAO:
     """Data Access Object for User functionalities"""
@@ -418,3 +420,138 @@ class UserDAO:
             'achievements': achievements
         }
         return response
+
+    @staticmethod
+    def get_user_dashboard(user_id):
+        """Shows user dashboard statistics
+
+        Gets the following statistics of the user:
+        -> user_details
+            - id, name, username, email, password_hash, terms_and_conditions_checked, is_admin,
+            registration_date, is_email_verified, email_verification_date, bio, location,
+            occupation, organization, slack_username, social_media_links, skills, interests,
+            resume_url, photo_url, need_mentoring, available_to_mentor,
+            current_mentorship_role, membership_status
+        -> Mentorship relations
+            - received_as_mentee, sent_as_mentee, received_as_mentor, sent_as_mentor
+                - states: PENDING, ACCEPTED, REJECTED, CANCELLED, COMPLETED
+                    - id, username, photo_url, creation_date, accept_date, start_date, end_date, notes
+        -> Tasks: todo, done
+            - id, description, is_done, created_at, completed_at
+
+        Args:
+            user_id: The id of the user for whom stats are requested
+
+        Returns:
+            A dict containing the stats (if the user ID is valid)
+            If user ID is invalid, returns None
+        """
+        user = UserModel.find_by_id(user_id)
+
+        if not user:
+            return None
+
+        user_details = marshal(UserDAO.get_user(user_id), full_user_api_model)
+
+        received_as_mentee = {'PENDING': [], 'ACCEPTED': [], 'REJECTED': [], 'CANCELLED': [], 'COMPLETED': []}
+        sent_as_mentee = {'PENDING': [], 'ACCEPTED': [], 'REJECTED': [], 'CANCELLED': [], 'COMPLETED': []}
+
+        received_as_mentor = {'PENDING': [], 'ACCEPTED': [], 'REJECTED': [], 'CANCELLED': [], 'COMPLETED': []}
+        sent_as_mentor = {'PENDING': [], 'ACCEPTED': [], 'REJECTED': [], 'CANCELLED': [], 'COMPLETED': []}
+
+        tasks_sorted = {'todo':[], 'done': []}
+
+        # user as mentee
+        for relation in user.mentee_relations:
+            relation_field = {
+                'id': 0, 'mentor_id': '', 'username': '', 'photo_url': '', 'creation_date': 0,
+                'accept_date': 0, 'start_date': 0, 'end_date': 0, 'notes': ''
+                }
+            mentor_user = UserModel.find_by_id(relation.mentor_id)
+            relation_field['id'] = relation.id
+            relation_field['user_id'] = mentor_user.id
+            relation_field['username'] = mentor_user.username
+            relation_field['photo_url'] = mentor_user.photo_url
+            relation_field['creation_date'] = relation.creation_date
+            relation_field['accept_date'] = relation.accept_date
+            relation_field['start_date'] = relation.start_date
+            relation_field['end_date'] = relation.end_date
+            relation_field['notes'] = relation.notes
+
+            #user is mentee and sender
+            if user_id == relation.action_user_id:
+                sent_as_mentee[str(UserDAO.mapState(relation.state))].append(relation_field)
+
+            #user is mentee and reciever
+            else:
+                received_as_mentee[str(UserDAO.mapState(relation.state))].append(relation_field)
+
+            task_list = TaskDAO.list_tasks(user_id=user_id, mentorship_relation_id=relation.id)
+            for task in task_list:
+                # tasks are identified by request_id and task_id
+                # Two tasks can have same task_id so request_id is also added
+                task['request_id'] = relation.id
+                if task['is_done'] == True:
+                    tasks_sorted['done'].append(task)
+                else:
+                    tasks_sorted['todo'].append(task)
+
+        # user as mentor
+        for relation in user.mentor_relations:
+            relation_field = {
+                'id': 0, 'mentee_id': '', 'username': '', 'photo_url': '', 'creation_date': 0,
+                'accept_date': 0, 'start_date': 0, 'end_date': 0, 'notes': ''
+                }
+            mentee_user = UserModel.find_by_id(relation.mentee_id)
+            relation_field['id'] = relation.id
+            relation_field['user_id'] = mentee_user.id
+            relation_field['username'] = mentee_user.username
+            relation_field['photo_url'] = mentee_user.photo_url
+            relation_field['creation_date'] = relation.creation_date
+            relation_field['accept_date'] = relation.accept_date
+            relation_field['start_date'] = relation.start_date
+            relation_field['end_date'] = relation.end_date
+            relation_field['notes'] = relation.notes
+
+            #user is mentor and sender
+            if user_id == relation.action_user_id:
+                sent_as_mentor[str(UserDAO.mapState(relation.state))].append(relation_field)
+
+            #user is mentor and reciever
+            else:
+                received_as_mentor[str(UserDAO.mapState(relation.state))].append(relation_field)
+
+            task_list = TaskDAO.list_tasks(user_id=user_id, mentorship_relation_id=relation.id)
+            for task in task_list:
+                # tasks are identified by request_id and task_id
+                # Two tasks can have same task_id so request_id is also added
+                task['request_id'] = relation.id
+                if task['is_done'] == True:
+                    tasks_sorted['done'].append(task)
+                else:
+                    tasks_sorted['todo'].append(task)
+
+        response = {
+            'user_details': user_details,
+            'mentorship_relations': {
+                'received_as_mentee': received_as_mentee,
+                'sent_as_mentee': sent_as_mentee,
+                'received_as_mentor': received_as_mentor,
+                'sent_as_mentor': sent_as_mentor,
+            },
+            'tasks': tasks_sorted
+        }
+        return response
+
+    @staticmethod
+    def mapState(state):
+        if state == 1:
+            return "PENDING"
+        elif state == 2:
+            return "ACCEPTED"
+        elif state == 3:
+            return "REJECTED"
+        elif state == 4:
+            return "CANCELLED"
+        elif state == 5:
+            return "COMPLETED"
