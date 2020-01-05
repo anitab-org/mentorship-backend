@@ -203,6 +203,12 @@ USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully"}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}
 PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated "
                                  "successfully"}
+SUCCESSFUL_LOGIN = {"message": "Successful login"}
+SUCCESSFUL_RESPONSE = {"message": "Successful response"}
+SUCCESSFUL_REFRESH = {"message": "Successful refresh"}
+RETURNED_USERS_SUCCESSFULLY = {"message": "returned users successfully"}
+LIST_TASKS_FROM_MENTORSHIP_SUCCESSFULLY = {"message": "List tasks from a mentorship relation with success."}
+RETURNED_ALL_USER_MENTORSHIP_RELATIONS_SUCCESSFULLY = {"message": "Successfully returned all mentorship relations of the user."}
 
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}

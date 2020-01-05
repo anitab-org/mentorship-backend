@@ -25,6 +25,10 @@ class UserList(Resource):
     @users_ns.doc('list_users')
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
+    @users_ns.response(200, messages.RETURNED_USERS_SUCCESSFULLY['message'])
+    @users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     def get(cls):
         """
         Returns list of all the users.
@@ -41,9 +45,12 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(201, 'Success.', public_user_api_model)
-    @users_ns.response(400, 'User id is not valid.')
-    @users_ns.response(404, 'User does not exist.')
+    @users_ns.response(201, messages.SUCCESSFUL_RESPONSE['message'], public_user_api_model)
+    @users_ns.response(400, messages.USER_ID_IS_NOT_VALID['message'])
+    @users_ns.response(404, messages.USER_DOES_NOT_EXIST['message'])
+    @users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     def get(cls, user_id):
         """
         Returns a user.
@@ -64,13 +71,16 @@ class OtherUser(Resource):
 
 
 @users_ns.route('user')
-@users_ns.response(404, 'User not found.')
+@users_ns.response(404, messages.USER_NOT_FOUND['message'])
 class MyUserProfile(Resource):
 
     @classmethod
     @jwt_required
     @users_ns.doc('get_user')
     @users_ns.expect(auth_header_parser, validate=True)
+    @users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     @users_ns.marshal_with(full_user_api_model)  # , skip_none=True
     def get(cls):
         """
@@ -83,8 +93,16 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('update_user_profile')
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(200, 'User successfully updated.')
-    @users_ns.response(404, 'User not found.')
+    @users_ns.response(200, messages.USER_SUCCESSFULLY_UPDATED['message'])
+    @users_ns.response(404, messages.USER_NOT_FOUND['message'])
+    @users_ns.response(400, messages.NEW_USERNAME_INPUT_BY_USER_IS_INVALID['message'] + '\n' +
+                       messages.NAME_INPUT_BY_USER_IS_INVALID['message'] + '\n' +
+                       messages.FIELD_NEED_MENTORING_IS_NOT_VALID['message'] + '\n' +
+                       messages.FIELD_AVAILABLE_TO_MENTOR_IS_INVALID['message'] + '\n' +
+                       messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS['message'])
+    @users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     def put(cls):
         """
         Updates user profile
@@ -104,8 +122,12 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc('delete_user')
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.response(200, 'User successfully deleted.')
-    @users_ns.response(404, 'User not found.')
+    @users_ns.response(200, messages.USER_SUCCESSFULLY_DELETED['message'])
+    @users_ns.response(404, messages.USER_NOT_FOUND['message'])
+    @users_ns.response(400, messages.USER_CANT_DELETE['message'])
+    @users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     def delete(cls):
         """
         Deletes user.
@@ -121,6 +143,14 @@ class ChangeUserPassword(Resource):
     @jwt_required
     @users_ns.doc('update_user_password')
     @users_ns.expect(auth_header_parser, change_password_request_data_model, validate=True)
+    @users_ns.response(201, messages.PASSWORD_SUCCESSFULLY_UPDATED['message'])
+    @users_ns.response(400, messages.CURRENT_PASSWORD_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.NEW_PASSWORD_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.USER_INPUTS_SPACE_IN_PASSWORD['message'] + '\n' +
+                       messages.USER_ENTERED_INCORRECT_PASSWORD['message'])
+    @users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     def put(cls):
         """
         Updates the user's password
@@ -141,6 +171,7 @@ class VerifiedUser(Resource):
     @users_ns.doc('get_verified_users')
     @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
     @users_ns.expect(auth_header_parser)
+    @users_ns.response(200, messages.RETURNED_USERS_SUCCESSFULLY['message'])
     def get(cls):
         """
         Returns all verified users.
@@ -154,7 +185,20 @@ class UserRegister(Resource):
 
     @classmethod
     @users_ns.doc('create_user')
-    @users_ns.response(201, 'User successfully created.')
+    @users_ns.response(201, messages.USER_SUCCESSFULLY_CREATED['message'])
+    @users_ns.response(200, messages.USER_WAS_CREATED_SUCCESSFULLY['message'])
+    @users_ns.response(400, messages.NAME_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.USERNAME_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.PASSWORD_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.EMAIL_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.TERMS_AND_CONDITIONS_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.NAME_USERNAME_AND_PASSWORD_NOT_IN_STRING_FORMAT['message'] + '\n' +
+                       messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED['message'] + '\n' +
+                       messages.NAME_INPUT_BY_USER_IS_INVALID['message'] + '\n' +
+                       messages.EMAIL_INPUT_BY_USER_IS_INVALID['message'] + '\n' +
+                       messages.USERNAME_INPUT_BY_USER_IS_INVALID['message'] + '\n' +
+                       messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS['message'] + '\n' +
+                       messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS['message'])
     @users_ns.expect(register_user_api_model, validate=True)
     def post(cls):
         """
@@ -178,6 +222,9 @@ class UserRegister(Resource):
 
 @users_ns.route('user/confirm_email/<string:token>')
 @users_ns.param('token', 'Token sent to the user\'s email')
+@users_ns.response(200, messages.ACCOUNT_ALREADY_CONFIRMED['message'] + '\n' +
+                   messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS['message'])
+@users_ns.response(400, messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID['message'])
 class UserEmailConfirmation(Resource):
 
     @classmethod
@@ -192,6 +239,11 @@ class UserResendEmailConfirmation(Resource):
 
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
+    @users_ns.response(200, messages.EMAIL_VERIFICATION_MESSAGE['message'])
+    @users_ns.response(400, messages.EMAIL_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.EMAIL_INPUT_BY_USER_IS_INVALID['message'])
+    @users_ns.response(403, messages.USER_ALREADY_CONFIRMED_ACCOUNT['message'])
+    @users_ns.response(404, messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM['message'])
     def post(cls):
         """Sends the user a new verification email."""
 
@@ -220,7 +272,10 @@ class RefreshUser(Resource):
     @classmethod
     @jwt_refresh_token_required
     @users_ns.doc('refresh')
-    @users_ns.response(200, 'Successful refresh', refresh_response_body_model)
+    @users_ns.response(200, messages.SUCCESSFUL_REFRESH['message'], refresh_response_body_model)
+    @users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     @users_ns.expect(auth_header_parser)
     def post(cls):
         """Refresh user's access
@@ -245,7 +300,11 @@ class LoginUser(Resource):
 
     @classmethod
     @users_ns.doc('login')
-    @users_ns.response(200, 'Successful login', login_response_body_model)
+    @users_ns.response(200, messages.SUCCESSFUL_LOGIN['message'], login_response_body_model)
+    @users_ns.response(400, messages.USERNAME_FIELD_IS_MISSING['message'] + '\n' +
+                       messages.PASSWORD_FIELD_IS_MISSING['message'])
+    @users_ns.response(403, messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN['message'])
+    @users_ns.response(404, messages.WRONG_USERNAME_OR_PASSWORD['message'])
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -292,8 +351,11 @@ class LoginUser(Resource):
 
 @users_ns.route('home')
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(200, 'Successful response', home_response_body_model)
-@users_ns.response(404, 'User not found')
+@users_ns.response(200, messages.SUCCESSFUL_RESPONSE['message'], home_response_body_model)
+@users_ns.response(404, messages.USER_NOT_FOUND['message'])
+@users_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                   + messages.TOKEN_IS_INVALID['message'] + '\n'
+                   + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
 class UserHomeStatistics(Resource):
     @classmethod
     @jwt_required

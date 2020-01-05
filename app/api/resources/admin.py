@@ -18,6 +18,10 @@ class AssignNewUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.response(403, messages.USER_ASSIGN_NOT_ADMIN['message'])
+    @admin_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     def post(cls):
         """
         Assigns a User as a new Admin.
@@ -38,6 +42,10 @@ class RevokeUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.response(403, messages.USER_REVOKE_NOT_ADMIN['message'])
+    @admin_ns.response(401, messages.TOKEN_HAS_EXPIRED['message'] + '\n'
+                       + messages.TOKEN_IS_INVALID['message'] + '\n'
+                       + messages.AUTHORISATION_TOKEN_IS_MISSING['message'])
     def post(cls):
         """
         Revoke admin status from another User Admin.
