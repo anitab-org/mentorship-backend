@@ -25,8 +25,25 @@ class SendRequest(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('send_request')
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
-    @mentorship_relation_ns.response(200, 'Mentorship Relation request was sent successfully.')
-    @mentorship_relation_ns.response(400, 'Validation error.')
+    @mentorship_relation_ns.response(200, messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(400, messages.MATCH_EITHER_MENTOR_OR_MENTEE['message'] + "\n"
+                                        + messages.MENTOR_ID_SAME_AS_MENTEE_ID['message'] + "\n"
+                                        + messages.END_TIME_BEFORE_PRESENT['message'] + "\n"
+                                        + messages.MENTOR_TIME_GREATER_THAN_MAX_TIME['message'] + "\n"
+                                        + messages.MENTOR_TIME_LESS_THAN_MIN_TIME['message'] + "\n"
+                                        + messages.MENTOR_NOT_AVAILABLE_TO_MENTOR['message'] + "\n"
+                                        + messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED['message'] + "\n"
+                                        + messages.MENTOR_IN_RELATION['message'] + "\n"
+                                        + messages.MENTEE_ALREADY_IN_A_RELATION['message'] + "\n"
+                                        + messages.MENTOR_ID_FIELD_IS_MISSING['message'] + "\n"
+                                        + messages.MENTEE_ID_FIELD_IS_MISSING['message'] + "\n"
+                                        + messages.END_DATE_FIELD_IS_MISSING['message'] + "\n"
+                                        + messages.NOTES_FIELD_IS_MISSING['message'])
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTOR_DOES_NOT_EXIST['message'] + "\n"
+                                        + messages.MENTEE_DOES_NOT_EXIST['message'])
     def post(cls):
         """
         Creates a new mentorship relation request.
@@ -67,8 +84,13 @@ class GetAllMyMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_all_user_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations was successfully.',
-                                     model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(200, messages.MENTORSHIP_RELATIONS_WERE_RETRIEVED_SUCCESSFULLY['message'] + "\n"
+                                        + messages.NOT_IMPLEMENTED['message'],
+                                          model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
         """
@@ -88,7 +110,15 @@ class AcceptMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('accept_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Accept mentorship relations with success.')
+    @mentorship_relation_ns.response(200, messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(400, messages.NOT_PENDING_STATE_RELATION['message'] + "\n"
+                                        + messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER['message'] + "\n"
+                                        + messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION['message'] + "\n"
+                                        + messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION['message'])
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST['message'])
     def put(cls, request_id):
         """
         Accept a mentorship relation.
@@ -110,7 +140,14 @@ class RejectMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('reject_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Rejected mentorship relations with success.')
+    @mentorship_relation_ns.response(200, messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(400, messages.NOT_PENDING_STATE_RELATION['message'] + "\n"
+                                        + messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER['message'] + "\n"
+                                        + messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST['message'])
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST['message'])
     def put(cls, request_id):
         """
         Reject a mentorship relation.
@@ -131,7 +168,13 @@ class CancelMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('cancel_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Cancelled mentorship relations with success.')
+    @mentorship_relation_ns.response(200, messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(400, messages.UNACCEPTED_STATE_RELATION['message'] + "\n"
+                                        + messages.CANT_CANCEL_UNINVOLVED_REQUEST['message'])
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                         + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                         + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST['message'])
     def put(cls, request_id):
         """
         Cancel a mentorship relation.
@@ -152,7 +195,13 @@ class DeleteMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('delete_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Deleted mentorship relation with success.')
+    @mentorship_relation_ns.response(200, messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(400, messages.NOT_PENDING_STATE_RELATION['message'] + "\n"
+                                        + messages.CANT_DELETE_UNINVOLVED_REQUEST['message'])
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST['message'])
     def delete(cls, request_id):
         """
         Delete a mentorship request.
@@ -173,8 +222,11 @@ class ListPastMentorshipRelations(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_past_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned past mentorship relations with success.',
+    @mentorship_relation_ns.response(200, messages.RETURNED_PAST_MENTORSHIP_RELATIONS_WITH_SUCCESS['message'],
                                      model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
         """
@@ -194,8 +246,12 @@ class ListCurrentMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_current_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned current mentorship relation with success.',
-                                     model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(200, messages.RETURNED_CURRENT_MENTORSHIP_RELATIONS_WITH_SUCCESS['message'] + "\n"
+                                        + messages.NOT_IN_MENTORED_RELATION_CURRENTLY['message'],
+                                          model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                       + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                       + messages.TOKEN_HAS_EXPIRED['message'])
     def get(cls):
         """
         Lists current mentorship relation of the current user.
@@ -217,8 +273,11 @@ class ListPendingMentorshipRequests(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_pending_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Returned pending mentorship relation with success.',
+    @mentorship_relation_ns.response(200, messages.RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS['message'],
                                      model=mentorship_request_response_body)
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     def get(cls):
         """
@@ -238,7 +297,13 @@ class CreateTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('create_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
-    @mentorship_relation_ns.response(200, 'Created task with success.')
+    @mentorship_relation_ns.response(200, messages.TASK_WAS_CREATED_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(400, messages.UNACCEPTED_STATE_RELATION['message'] + "\n"
+                                        + messages.DESCRIPTION_FIELD_IS_MISSING['message'])
+    @mentorship_relation_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message'])
     def post(cls, request_id):
         """
         Create a task.
@@ -274,7 +339,13 @@ class DeleteTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('delete_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Delete task with success.')
+    @mentorship_relation_ns.response(200, messages.TASK_WAS_DELETED_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(401, messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message'] + "\n"
+                                        + messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message'] + "\n"
+                                        + messages.TASK_DOES_NOT_EXIST['message'])
     def delete(cls, request_id, task_id):
         """
         Delete a task.
@@ -296,8 +367,13 @@ class ListTasks(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('list_tasks_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'List tasks from a mentorship relation with success.',
+    @mentorship_relation_ns.response(200, messages.TASKS_WERE_RETRIEVED_SUCCESSFULLY['message'],
                                      model=list_tasks_response_body)
+    @mentorship_relation_ns.response(401, messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message'] + "\n"
+                                        + messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message'])
     def get(cls, request_id):
         """
         List all tasks from a mentorship relation.
@@ -322,7 +398,14 @@ class UpdateTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('update_task_in_mentorship_relation')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Updated task with success.')
+    @mentorship_relation_ns.response(200, messages.TASK_WAS_ACHIEVED_SUCCESSFULLY['message'])
+    @mentorship_relation_ns.response(400, messages.TASK_WAS_ALREADY_ACHIEVED['message'])
+    @mentorship_relation_ns.response(401, messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message'] + "\n"
+                                        + messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                                        + messages.TOKEN_IS_INVALID['message'] + "\n"
+                                        + messages.TOKEN_HAS_EXPIRED['message'])
+    @mentorship_relation_ns.response(404, messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message'] + "\n"
+                                        + messages.TASK_DOES_NOT_EXIST['message'])
     def put(cls, request_id, task_id):
         """
         Update a task.

@@ -156,6 +156,8 @@ EMAIL_VERIFICATION_MESSAGE = {"message": "Check your email, a new verification"
 TASK_WAS_ALREADY_ACHIEVED = {"message": "Task was already achieved."}
 MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY = {"message": "Mentorship relation"
                                              " was sent successfully."}
+MENTORSHIP_RELATIONS_WERE_RETRIEVED_SUCCESSFULLY = {"message": "Mentorship relations"
+                                                  " were retrieved successfully."}
 MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY = {"message": "Mentorship"
                                                  " relation was accepted"
                                                  " successfully."}
@@ -169,6 +171,7 @@ MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY = {"message": "Mentorship"
                                                   " relation was "
                                                   "cancelled successfully"}
 TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
+TASKS_WERE_RETRIEVED_SUCCESSFULLY = {"message": "Tasks were retrieved successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
 TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved"
                                           " successfully."}
@@ -198,11 +201,17 @@ RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS = {"message": "Returned"
                                                       " with success."}
 DELETE_TASK_WITH_SUCCESS = {"message": "Delete task with success."}
 UPDATED_TASK_WITH_SUCCESS = {"message": "Updated task with success."}
-USER_SUCCESSFULLY_CREATED = {"message": "User successfully created."}
+USERS_SUCCESSFULLY_RETRIEVED = {"message": "All users were successfully retrieved."}
+VERIFIED_USERS_SUCCESSFULLY_RETRIEVED = {"message": "All verified users were successfully retrieved."}
+USER_SUCCESSFULLY_CREATED = {"message": "User was successfully created."}
+USER_SUCCESSFULLY_RETRIEVED = {"message": "User was successfully retrieved."}
 USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully"}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}
+USER_ACCESS_SUCCESSFULLY_REFRESHED = {"message": "User\'s access was refreshed successfully."}
 PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated "
                                  "successfully"}
+USER_SUCCESSFULLY_LOGGED_IN = {"message": "User was logged in successfully."}
+RETURNED_USER_STATISTICS_WITH_SUCCESS = {"message": "Returned user statistics with success."}
 
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}

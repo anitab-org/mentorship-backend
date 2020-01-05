@@ -18,6 +18,14 @@ class AssignNewUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.response(200, messages.USER_IS_NOW_AN_ADMIN['message'])
+    @admin_ns.response(400, messages.USER_IS_ALREADY_AN_ADMIN['message'])
+    @admin_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                          + messages.TOKEN_IS_INVALID['message'] + "\n"
+                          + messages.TOKEN_HAS_EXPIRED['message'])
+    @admin_ns.response(403, messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER['message'])
+    @admin_ns.response(404, messages.USER_NOT_FOUND['message'] + "\n"
+                          + messages.USER_DOES_NOT_EXIST['message'])
     def post(cls):
         """
         Assigns a User as a new Admin.
@@ -38,6 +46,14 @@ class RevokeUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.response(200, messages.USER_ADMIN_STATUS_WAS_REVOKED['message'])
+    @admin_ns.response(400, messages.USER_IS_NOT_AN_ADMIN['message'])
+    @admin_ns.response(401, messages.AUTHORISATION_TOKEN_IS_MISSING['message'] + "\n"
+                          + messages.TOKEN_IS_INVALID['message'] + "\n"
+                          + messages.TOKEN_HAS_EXPIRED['message'])
+    @admin_ns.response(403, messages.USER_CANNOT_REVOKE_ADMIN_STATUS['message'] + "\n"
+                          + messages.USER_REVOKE_NOT_ADMIN['message'])
+    @admin_ns.response(404, messages.USER_NOT_FOUND['message'])
     def post(cls):
         """
         Revoke admin status from another User Admin.
