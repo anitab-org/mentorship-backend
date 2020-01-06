@@ -212,4 +212,5 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {"message": "You have confirmed your"
 
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
+INVALID_END_DATE = {"message": "Validation error. End date represented by the timestamp is invalid."}
 NOT_IMPLEMENTED = {"message": "Not implemented."}

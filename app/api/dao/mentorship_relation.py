@@ -47,7 +47,10 @@ class MentorshipRelationDAO:
         if mentor_id == mentee_id:
             return messages.MENTOR_ID_SAME_AS_MENTEE_ID, 400
 
-        end_date_datetime = datetime.fromtimestamp(end_date_timestamp)
+        try:
+            end_date_datetime = datetime.fromtimestamp(end_date_timestamp)
+        except ValueError:
+            return messages.INVALID_END_DATE, 400
 
         now_datetime = datetime.now()
         if end_date_datetime < now_datetime:
