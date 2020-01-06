@@ -4,9 +4,13 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import messages
 from app.api.dao.task import TaskDAO
+from app.api.dao.task_comment import TaskCommentDAO
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
+from app.api.validations.task_comment import \
+    validate_task_comment_request_data, COMMENT_MAX_LENGTH
+from app.utils.validation_utils import get_length_validation_error_message
 from app.database.models.mentorship_relation import MentorshipRelationModel
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
@@ -335,3 +339,139 @@ class UpdateTask(Resource):
         response = TaskDAO.complete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
 
         return response
+
+
+@mentorship_relation_ns.route(
+    'mentorship_relation/<int:relation_id>/task/<int:task_id>/comment')
+class CreateTaskComment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.expect(auth_header_parser,
+                                   task_comment_model)
+    @mentorship_relation_ns.doc(responses={
+        201: messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY['message'],
+        400: f"{messages.COMMENT_FIELD_IS_MISSING['message']}<br>"
+             f"{messages.COMMENT_NOT_IN_STRING_FORMAT['message']}<br>"
+             f"{get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}<br>"
+             f"{messages.UNACCEPTED_STATE_RELATION['message']}",
+        401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+             f"{messages.TOKEN_IS_INVALID['message']}<br>"
+             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
+             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
+        404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_DOES_NOT_EXIST['message']}"})
+    def post(cls, relation_id, task_id):
+        """
+        Creates a new task comment.
+        """
+
+        data = request.json
+
+        is_valid = validate_task_comment_request_data(data)
+        if is_valid != {}:
+            return is_valid, 400
+
+        comment = data['comment']
+        return TaskCommentDAO.create_task_comment(
+            get_jwt_identity(), task_id, relation_id, comment)
+
+
+@mentorship_relation_ns.route(
+    'mentorship_relation/<int:relation_id>/task/<int:task_id>/comment/<int:comment_id>')
+class TaskComment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.expect(auth_header_parser,
+                                   task_comment_model)
+    @mentorship_relation_ns.doc(responses={
+        200: messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY['message'],
+        400: f"{messages.COMMENT_FIELD_IS_MISSING['message']}<br>"
+             f"{messages.COMMENT_NOT_IN_STRING_FORMAT['message']}<br>"
+             f"{get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}<br>"
+             f"{messages.UNACCEPTED_STATE_RELATION['message']}<br>"
+             f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU['message']}",
+        401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+             f"{messages.TOKEN_IS_INVALID['message']}<br>"
+             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
+             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
+        404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_COMMENT_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST['message']}"
+    })
+    def put(cls, relation_id, task_id, comment_id):
+        """
+        Modifies the task comment.
+        """
+
+        data = request.json
+
+        is_valid = validate_task_comment_request_data(data)
+        if is_valid != {}:
+            return is_valid, 400
+
+        comment = data['comment']
+        return TaskCommentDAO.modify_comment(
+            get_jwt_identity(), comment_id, task_id, relation_id, comment)
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.doc(responses={
+        200: messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY['message'],
+        400: f"{messages.UNACCEPTED_STATE_RELATION['message']}<br>"
+             f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE['message']}",
+        401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+             f"{messages.TOKEN_IS_INVALID['message']}<br>"
+             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
+             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
+        404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_COMMENT_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST['message']}"})
+    def delete(cls, relation_id, task_id, comment_id):
+        """
+        Deletes the task comment.
+        """
+
+        return TaskCommentDAO.delete_comment(
+            get_jwt_identity(), comment_id, task_id, relation_id)
+
+
+@mentorship_relation_ns.route(
+    'mentorship_relation/<int:relation_id>/task/<int:task_id>/comments/')
+class TaskComments(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(
+        200,
+        messages.LIST_TASK_COMMENTS_WITH_SUCCESS['message'],
+        task_comments_model)
+    @mentorship_relation_ns.doc(responses={
+        400: messages.UNACCEPTED_STATE_RELATION['message'],
+        401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+             f"{messages.TOKEN_IS_INVALID['message']}<br>"
+             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
+             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
+        404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
+             f"{messages.TASK_DOES_NOT_EXIST['message']}"})
+    def get(cls, relation_id, task_id):
+        """
+        Lists the task comments.
+        """
+
+        response = TaskCommentDAO.get_all_task_comments_by_task_id(
+            get_jwt_identity(), task_id, relation_id)
+
+        if isinstance(response, tuple):
+            return response
+        else:
+            return marshal(response, task_comments_model), 200
