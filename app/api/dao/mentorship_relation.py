@@ -310,13 +310,12 @@ class MentorshipRelationDAO:
 
         user = UserModel.find_by_id(user_id)
         now_timestamp = datetime.now().timestamp()
-        past_relations = []
-        all_relations = user.mentor_relations + user.mentee_relations
+        past_relations = list(filter(
+            lambda relation: relation.end_date < now_timestamp,
+            user.mentor_relations + user.mentee_relations))
 
-        for relation in all_relations:
-            if relation.end_date < now_timestamp:
-                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
-                past_relations += [relation]
+        for relation in past_relations:
+            setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
 
         return past_relations, 200
 
