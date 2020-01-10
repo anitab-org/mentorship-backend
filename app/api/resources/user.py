@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import request
 from flask_jwt_extended import jwt_required, jwt_refresh_token_required, create_access_token, create_refresh_token, get_jwt_identity
 from flask_restplus import Resource, marshal, Namespace
+import urllib.parse
 
 from app import messages
 from app.api.validations.user import *
@@ -25,11 +26,23 @@ class UserList(Resource):
     @users_ns.doc('list_users')
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
+    @users_ns.param(name="search", description="Search a user by the display name", _in="query")
     def get(cls):
         """
-        Returns list of all the users.
+        Returns two different results :
+        1. If `search` param is empty, it returns the list of all the users.
+        2. If `search` param is provided, it returns the user whose display name matches the search param.
         """
         user_id = get_jwt_identity()
+
+        search_param = request.args.get('search','')
+        search_param.strip()
+        # Verifying that search param is not empty
+        if search_param != '':
+            # Decoding the search param
+            search_name = urllib.parse.unquote(search_param)
+            return DAO.get_users_by_name(search_name)
+
         return DAO.list_users(user_id)
 
 

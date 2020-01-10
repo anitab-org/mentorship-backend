@@ -117,6 +117,12 @@ class UserModel(db.Model):
         return cls.query.filter_by(username=username).first()
 
     @classmethod
+    def find_by_name(cls, name):
+        """Returns the users that have the name we searched for. """
+        search_name = f'%{name}%'
+        return cls.query.filter(cls.name.like(search_name)).all()
+
+    @classmethod
     def find_by_email(cls, email):
         """Returns the user that has the email we searched for. """
         return cls.query.filter_by(email=email).first()
