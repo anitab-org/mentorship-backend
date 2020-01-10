@@ -139,8 +139,9 @@ class MentorshipRelationDAO:
         all_relations = user.mentor_relations + user.mentee_relations
 
         # add extra field for api response
-        for relation in all_relations:
-            setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
+        map( lambda relation:
+             setattr(relation, 'sent_by_me', relation.action_user_id == user_id),
+             all_relations)
 
         return all_relations, 200
 
@@ -310,7 +311,6 @@ class MentorshipRelationDAO:
 
         user = UserModel.find_by_id(user_id)
         now_timestamp = datetime.now().timestamp()
-        past_relations = []
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
