@@ -47,3 +47,5 @@ urllib3==1.22
 wcwidth==0.1.7
 websocket-client==0.48.0
 Werkzeug==0.14.1
+Whoosh
+flask_whooshalchemyplus

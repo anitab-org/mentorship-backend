@@ -9,6 +9,7 @@ class BaseConfig(object):
     # SQLAlchemy settings
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    WHOOSH_BASE = 'whoosh' #whoosh index table
 
     # Flask JWT settings
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)
