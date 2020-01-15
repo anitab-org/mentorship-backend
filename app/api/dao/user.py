@@ -148,11 +148,8 @@ class UserDAO:
         users_list = UserModel.query.filter(UserModel.id != user_id).all()
         list_of_users = []
         if is_verified:
-            for user in users_list:
-                if user.is_email_verified:
-                    list_of_users += [user.json()]
-        else:
-            list_of_users = [user.json() for user in users_list]
+            users_list = filter(lambda user: user.is_email_verified, users_list)
+        list_of_users = [user.json() for user in users_list]
 
         return list_of_users, 200
 
@@ -186,68 +183,18 @@ class UserDAO:
 
             user.username = username
 
-        if 'name' in data and data['name']:
-            user.name = data['name']
+        #Lambda function to assign attribute to user object if attribute exists in data
+        data_contains = lambda field: data[field] if (data[field]) else None
 
-        if 'bio' in data:
-            if data['bio']:
-                user.bio = data['bio']
-            else:
-                user.bio = None
-
-        if 'location' in data:
-            if data['location']:
-                user.location = data['location']
-            else:
-                user.location = None
-            
-        if 'occupation' in data:
-            if data['occupation']:
-                user.occupation = data['occupation']
-            else:
-                user.occupation = None
-
-        if 'organization' in data:
-            if data['organization']:
-                user.organization = data['organization']
-            else:
-                user.organization = None
-
-        if 'slack_username' in data:
-            if data['slack_username']:
-                user.slack_username = data['slack_username']
-            else:
-                user.slack_username = None
-
-        if 'social_media_links' in data:
-            if data['social_media_links']:
-                user.social_media_links = data['social_media_links']
-            else:
-                user.social_media_links = None
-
-        if 'skills' in data:
-            if data['skills']:
-                user.skills = data['skills']
-            else:
-                user.skills = None
-
-        if 'interests' in data:
-            if data['interests']:
-                user.interests = data['interests']
-            else:
-                user.interests = None
-
-        if 'resume_url' in data:
-            if data['resume_url']:
-                user.resume_url = data['resume_url']
-            else:
-                user.resume_url = None
-
-        if 'photo_url' in data:
-            if data['photo_url']:
-                user.photo_url = data['photo_url']
-            else:
-                user.photo_url = None
+        # list of user attributes
+        attribute_list = [
+            "name","username","bio","location","occupation","organization","slack_username",
+            "social_media_links","skills","interests","resume_url","photo_url",
+        ]
+        #user object attribute assigned if attribute exists in data
+        for attribute in attribute_list:
+            if attribute in data:
+                setattr(user, attribute, data_contains(attribute))
 
         if 'need_mentoring' in data:
             user.need_mentoring = data['need_mentoring']
@@ -360,7 +307,7 @@ class UserDAO:
         tasks = []
         for relation in all_relations:
             tasks += relation.tasks_list.tasks
-        achievements = [task for task in tasks if task.get("is_done")]
+        achievements = list(filter(lambda task: task.get("is_done"), tasks))
         return achievements
 
     @staticmethod

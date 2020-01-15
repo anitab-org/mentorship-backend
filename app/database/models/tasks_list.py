@@ -67,10 +67,8 @@ class TasksListModel(db.Model):
             task_id: Id of the task to be deleted.
         """
 
-        new_list = []
-        for task in self.tasks:
-            if task[TasksFields.ID.value] != task_id:
-                new_list = new_list + [task]
+        # Lambda to remove tasks. Tasks whose IDs are not selected for deletion are kept.
+        new_list = list(filter(lambda task: task[TasksFields.ID.value] != task_id, self.tasks))
 
         self.tasks = new_list
         self.save_to_db()
