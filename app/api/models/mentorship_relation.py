@@ -9,6 +9,8 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[relation_user_response_body.name] = relation_user_response_body
     api_namespace.models[create_task_request_body.name] = create_task_request_body
     api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
+    api_namespace.models[create_comment_request_body.name] = create_comment_request_body
+    api_namespace.models[list_comment_response_body.name] = list_comment_response_body
 
 
 send_mentorship_request_body = Model('Send mentorship relation request model', {
@@ -47,4 +49,18 @@ list_tasks_response_body = Model('List tasks response model', {
     'is_done': fields.Boolean(required=True, description='Mentorship relation task is done indication'),
     'created_at': fields.Float(required=True, description='Task creation date in UNIX timestamp format'),
     'completed_at': fields.Float(required=False, description='Task completion date in UNIX timestamp format')
+})
+
+create_comment_request_body = Model('Create comment request model', {
+    'comment': fields.String(required=True, description='Task comment')
+})
+
+list_comment_response_body = Model('List comments response model', {
+    'id': fields.Integer(required=True, description='Comment ID'),
+    'request_id': fields.Integer(required=True, description='Request ID'),
+    'task_id': fields.Integer(required=True, description='Task ID'),
+    'user_id': fields.Integer(required=True, description='User who created comment'),
+    'creation_time': fields.Float(required=True, description='Time of creation'),
+    'modification_time': fields.Float(required=True, description='Time of modification'),
+    'comment': fields.String(required=True, description='Comment contents')
 })

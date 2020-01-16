@@ -21,6 +21,7 @@ USER_NOT_FOUND = {"message": "User not found."}
 MENTOR_DOES_NOT_EXIST = {"message": "Mentor user does not exist."}
 MENTEE_DOES_NOT_EXIST = {"message": "Mentee user does not exist."}
 TASK_DOES_NOT_EXIST = {"message": "Task does not exist."}
+COMMENT_DOES_NOT_EXIST = {"message": "Comment does not exist."}
 USER_DOES_NOT_EXIST = {"message": "User does not exist"}
 
 # Missing fields
@@ -40,6 +41,7 @@ NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
 AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is"
                                   " missing!."}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing"}
+COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing"}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}
@@ -172,6 +174,9 @@ TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
 TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved"
                                           " successfully."}
+COMMENT_WAS_CREATED_SUCCESSFULLY = {"message": "Comment was created successfully."}
+COMMENT_WAS_DELETED_SUCCESSFULLY = {"message": "Comment was deleted successfully."}
+
 USER_WAS_CREATED_SUCCESSFULLY = {"message": "User was created successfully."
                                  "A confirmation email has been sent via"
                                  " email.After confirming your email you "
@@ -198,6 +203,7 @@ RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS = {"message": "Returned"
                                                       " with success."}
 DELETE_TASK_WITH_SUCCESS = {"message": "Delete task with success."}
 UPDATED_TASK_WITH_SUCCESS = {"message": "Updated task with success."}
+UPDATED_COMMENT_WITH_SUCCESS = {"message": "Updated comment with success."}
 USER_SUCCESSFULLY_CREATED = {"message": "User successfully created."}
 USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully"}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}

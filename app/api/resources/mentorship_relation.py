@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app import messages
 from app.api.dao.task import TaskDAO
+from app.api.dao.comment import CommentDAO
 from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.models.mentorship_relation import *
@@ -335,3 +336,136 @@ class UpdateTask(Resource):
         response = TaskDAO.complete_task(user_id=user_id, mentorship_relation_id=request_id, task_id=task_id)
 
         return response
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/comment')
+class CreateComment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('create_comment_for_task')
+    @mentorship_relation_ns.expect(auth_header_parser, create_comment_request_body)
+    @mentorship_relation_ns.response(200, '%s'%messages.COMMENT_WAS_CREATED_SUCCESSFULLY)
+    @mentorship_relation_ns.response(400, '%s'%messages.COMMENT_FIELD_IS_MISSING)
+    @mentorship_relation_ns.response(401, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
+    @mentorship_relation_ns.response(404, '%s\n%s'%(
+        messages.TASK_DOES_NOT_EXIST, messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
+        ))
+    def post(cls, request_id, task_id):
+        """
+        Add a comment for a task.
+        """
+
+        user_id = get_jwt_identity()
+        request_body = request.json
+
+        is_valid = CreateComment.is_valid_data(request_body)
+
+        if is_valid != {}:
+            return is_valid, 400
+
+        response = CommentDAO.create_task_comment(
+            user_id=user_id, request_id=request_id, task_id=task_id, data=request_body
+            )
+
+        return response
+
+    @staticmethod
+    def is_valid_data(data):
+
+        if 'comment' not in data:
+            return messages.COMMENT_FIELD_IS_MISSING
+
+        return {}
+
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/comments')
+class ReadComments(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('create_comment_for_task')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(
+        200, 'Return all comments for a given task',
+        model=list_comment_response_body
+        )
+    @mentorship_relation_ns.response(400, '%s'%messages.COMMENT_FIELD_IS_MISSING)
+    @mentorship_relation_ns.response(401, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
+    @mentorship_relation_ns.response(404, '%s\n%s'%(
+        messages.TASK_DOES_NOT_EXIST, messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
+        ))
+    def get(cls, request_id, task_id):
+        """
+        Read comments for a task.
+        """
+
+        user_id = get_jwt_identity()
+        response = CommentDAO.get_task_comments(user_id, request_id, task_id)
+
+        return response
+
+@mentorship_relation_ns.response(400, '%s'%messages.COMMENT_FIELD_IS_MISSING)
+@mentorship_relation_ns.response(401, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
+@mentorship_relation_ns.response(404, '%s\n%s\n%s'%(
+    messages.TASK_DOES_NOT_EXIST, messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+    messages.COMMENT_DOES_NOT_EXIST
+    ))
+@mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/comment/<int:comment_id>')
+class Comment(Resource):
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('read_comment_for_task')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200,"Comment successfully found", list_comment_response_body)
+    def get(cls, request_id, task_id, comment_id):
+        """
+        Read comment for a task.
+        """
+
+        user_id = get_jwt_identity()
+        response = CommentDAO.get_task_comment(user_id, request_id, task_id, comment_id)
+
+        return response
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('delete_comment_for_task')
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(200,"%s"%messages.COMMENT_WAS_DELETED_SUCCESSFULLY)
+    def delete(cls, request_id, task_id, comment_id):
+        """
+        Delete comment for a task.
+        """
+
+        user_id = get_jwt_identity()
+        response = CommentDAO.delete_task_comment(user_id, request_id, task_id, comment_id)
+
+        return response
+
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc('update_comment_for_task')
+    @mentorship_relation_ns.expect(auth_header_parser, create_comment_request_body)
+    @mentorship_relation_ns.response(200,"%s"%messages.UPDATED_COMMENT_WITH_SUCCESS)
+    def put(cls, request_id, task_id, comment_id):
+        """
+        Update comment for a task.
+        """
+
+        user_id = get_jwt_identity()
+        data = request.json
+        is_valid = Comment.is_valid_data(data)
+
+        if is_valid != {}:
+            return is_valid, 400
+        response = CommentDAO.update_task_comment(user_id, request_id, task_id, comment_id, data['comment'])
+
+        return response
+
+    @staticmethod
+    def is_valid_data(data):
+
+        if 'comment' not in data:
+            return messages.COMMENT_FIELD_IS_MISSING
+
+        return {}

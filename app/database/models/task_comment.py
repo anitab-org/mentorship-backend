@@ -6,8 +6,9 @@ class TaskCommentModel(db.Model):
     """Defines attributes for task comment.
 
     Attributes:
-        id: ID of task comment
-        task id: ID of a task
+        id: ID of comment (primary key)
+        request_id: ID of relation
+        task_id: ID of a task
         user id: ID of user commenting on task
         creation time
         modification time
@@ -17,26 +18,29 @@ class TaskCommentModel(db.Model):
     __tablename__ = 'task_comment'
     __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, primary_key=True)
-    task_id = db.Column(db.Integer, unique=True)
-    user_id = db.Column(db.Integer, unique=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    request_id = db.Column(db.Integer, nullable=False)
+    task_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
     creation_time = db.Column(db.Float, nullable=False)
-    modification_time = db.Column(db.Float)
+    modification_time = db.Column(db.Float, nullable=True)
     comment = db.Column(db.String, nullable=False)
 
-    def __init__(self, task_id, user_id, comment):
-        """"Initialises TaskCommentModel class with task_id, user_id, and comment. """
+    def __init__(self, request_id, task_id, user_id, comment):
+        """Initialises TaskCommentModel class with request_id, task_id, user_id, and comment. """
         ## required fields
+        self.request_id = request_id
         self.task_id = task_id
         self.user_id = user_id
-        self.creation_time = creation_time
         self.comment = comment
         self.creation_time = time.time()
+        self.modification_time = None
 
     def json(self):
         """Returns TaskCommentModel object in json format."""
         return {
             'id': self.id,
+            'request_id': self.request_id,
             'task_id': self.task_id,
             'user_id': self.user_id,
             'creation_time': self.creation_time,
@@ -51,9 +55,9 @@ class TaskCommentModel(db.Model):
             A string representation of comment.
         """
 
-        return """Comment | id = %s; task_id = %s; user_id = %s; creation_time = %s;
+        return """Comment | id = %s; request_id = %s; task_id = %s; user_id = %s; creation_time = %s;
         modification_time = %s; comment = %s""" % (
-            self.id, self.task_id, self.user_id, self.creation_time, self.modification_time, self.comment
+            self.id, self.request_id, self.task_id, self.user_id, self.creation_time, self.modification_time, self.comment
             )
 
     @classmethod
@@ -65,6 +69,17 @@ class TaskCommentModel(db.Model):
         """
 
         return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def find_by_request_and_task(cls, request_id, task_id):
+        """Finds comments with the specified request and task ID
+
+        Returns:
+            The list of comments with the specified request and task ID
+        """
+
+        result = cls.query.filter_by(request_id = request_id).filter_by(task_id = task_id).all()
+        return result
 
     @classmethod
     def is_empty(cls):
@@ -81,9 +96,8 @@ class TaskCommentModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def edit_comment(self, id, comment):
+    def edit_comment(self, comment):
         """Edits a comment in the database. """
-        row = find_by_id(self, id)
-        row.comment = comment
-        row.modification_time=time.time()
+        self.comment = comment
+        self.modification_time=time.time()
         db.session.commit()
