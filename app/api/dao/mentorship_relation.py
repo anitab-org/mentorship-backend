@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Dict
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -20,7 +21,7 @@ class MentorshipRelationDAO:
     MAXIMUM_MENTORSHIP_DURATION = timedelta(weeks=24)  # 6 months = approximately 6*4
     MINIMUM_MENTORSHIP_DURATION = timedelta(weeks=4)
 
-    def create_mentorship_relation(self, user_id, data):
+    def create_mentorship_relation(self, user_id: int, data: Dict[str, str]):
         """Creates a relationship between two users.
 
         Establishes the mentor-mentee relationship.
@@ -113,7 +114,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
+    def list_mentorship_relations(user_id: int=None, accepted: bool=None, pending: bool=None, completed: bool=None, cancelled: bool=None, rejected: bool=None):
         """Lists all relationships of a given user.
 
         Lists all relationships of a given user. Support for filtering not yet implemented.
@@ -146,7 +147,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def accept_request(user_id, request_id):
+    def accept_request(user_id: int, request_id: int):
         """Allows a mentorship request.
 
         Args:
@@ -191,7 +192,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def reject_request(user_id, request_id):
+    def reject_request(user_id: int, request_id: int):
         """Rejects a mentorship request.
 
         Args:
@@ -229,7 +230,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def cancel_relation(user_id, relation_id):
+    def cancel_relation(user_id: int, relation_id: int):
         """Allows a given user to terminate a particular relationship.
 
         Args:
@@ -263,7 +264,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def delete_request(user_id, request_id):
+    def delete_request(user_id: int, request_id: int):
         """Deletes a mentorship request.
 
         Deletes a mentorship request if the current user was the one who created it and the request is in the pending state.
@@ -298,7 +299,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_past_mentorship_relations(user_id):
+    def list_past_mentorship_relations(user_id: int):
         """Lists past mentorship relation details.
 
         Args:
@@ -322,7 +323,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_current_mentorship_relation(user_id):
+    def list_current_mentorship_relation(user_id: int):
         """Lists current mentorship relation details.
 
         Args:
@@ -344,7 +345,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_pending_mentorship_relations(user_id):
+    def list_pending_mentorship_relations(user_id: int):
         """Lists mentorship requests in pending state.
 
         Args:
