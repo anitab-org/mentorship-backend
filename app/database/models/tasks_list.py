@@ -66,12 +66,7 @@ class TasksListModel(db.Model):
         Args:
             task_id: Id of the task to be deleted.
         """
-
-        new_list = []
-        for task in self.tasks:
-            if task[TasksFields.ID.value] != task_id:
-                new_list = new_list + [task]
-
+        new_list = list(filter(lambda task: task[TasksFields.ID.value] != task_id, self.tasks))
         self.tasks = new_list
         self.save_to_db()
 
@@ -115,11 +110,10 @@ class TasksListModel(db.Model):
         Returns:
             The task instance.
         """
-
-        for task in self.tasks:
-            if task[TasksFields.ID.value] == task_id:
-                return task
-        return None
+        task = list(filter(lambda task: task[TasksFields.ID.value] == task_id, self.tasks))
+        if len(task) == 0:
+            return None
+        return task[0]
 
     def is_empty(self):
         """Checks if the list of tasks is empty.

@@ -146,11 +146,8 @@ class UserDAO:
         """
 
         users_list = UserModel.query.filter(UserModel.id != user_id).all()
-        list_of_users = []
         if is_verified:
-            for user in users_list:
-                if user.is_email_verified:
-                    list_of_users += [user.json()]
+            list_of_users = list(filter(lambda user: user.is_email_verified, users_list))
         else:
             list_of_users = [user.json() for user in users_list]
 

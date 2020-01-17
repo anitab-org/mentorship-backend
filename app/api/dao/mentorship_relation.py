@@ -137,10 +137,7 @@ class MentorshipRelationDAO:
 
         user = UserModel.find_by_id(user_id)
         all_relations = user.mentor_relations + user.mentee_relations
-
-        # add extra field for api response
-        for relation in all_relations:
-            setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
+        var = (lambda relation: setattr(relation, 'sent_by_me', relation.action_user_id == user_id), all_relations)
 
         return all_relations, 200
 
@@ -310,13 +307,8 @@ class MentorshipRelationDAO:
 
         user = UserModel.find_by_id(user_id)
         now_timestamp = datetime.now().timestamp()
-        past_relations = []
-        all_relations = user.mentor_relations + user.mentee_relations
-
-        for relation in all_relations:
-            if relation.end_date < now_timestamp:
-                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
-                past_relations += [relation]
+        past_relations = list(filter(lambda relation: relation.end_date < now_timestamp, user.mentor_relations + user.mentee_relations))
+        var = (lambda relation: setattr(relation, 'sent_by_me', relation.action_user_id == user_id), past_relations)
 
         return past_relations, 200
 
@@ -356,12 +348,7 @@ class MentorshipRelationDAO:
 
         user = UserModel.find_by_id(user_id)
         now_timestamp = datetime.now().timestamp()
-        pending_requests = []
-        all_relations = user.mentor_relations + user.mentee_relations
-
-        for relation in all_relations:
-            if relation.state == MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
-                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
-                pending_requests += [relation]
+        pending_requests = list(filter(lambda relation: relation.state == MentorshipRelationState.PENDING and relation.end_date > now_timestamp, user.mentor_relations + user.mentee_relations))
+        var = (lambda relation: setattr(relation, 'sent_by_me', relation.action_user_id == user_id), pending_requests)
 
         return pending_requests, 200
