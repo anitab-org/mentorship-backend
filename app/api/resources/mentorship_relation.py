@@ -30,6 +30,17 @@ class SendRequest(Resource):
     def post(cls):
         """
         Creates a new mentorship relation request.
+
+        Input:
+        1. Header: valid access token
+        2. Body: A dict containing
+        - mentor_id, mentee_id: One of them must contain user ID
+        - end_date: UNIX timestamp
+        - notes: description of relation request
+
+        Returns:
+        Success or failure message. A mentorship request is send to the other
+        person whose ID is mentioned. The relation appears at /pending endpoint.
         """
 
         user_id = get_jwt_identity()
@@ -73,6 +84,12 @@ class GetAllMyMentorshipRelation(Resource):
     def get(cls):
         """
         Lists all mentorship relations of current user.
+
+        Input:
+        1. Header: valid access token
+
+        Returns:
+        JSON array containing user's relations as objects.
         """
 
         user_id = get_jwt_identity()
@@ -92,6 +109,13 @@ class AcceptMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Accept a mentorship relation.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of request which is to be accepted (request_id)
+
+        Returns:
+        Success or failure message.
         """
 
         # check if user id is well parsed
@@ -114,6 +138,13 @@ class RejectMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Reject a mentorship relation.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of request which is to be rejected (request_id)
+
+        Returns:
+        Success or failure message.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -135,6 +166,13 @@ class CancelMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Cancel a mentorship relation.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of request which is to be cancelled (request_id)
+
+        Returns:
+        Success or failure message.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -156,6 +194,13 @@ class DeleteMentorshipRelation(Resource):
     def delete(cls, request_id):
         """
         Delete a mentorship request.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of request which is to be deleted (request_id)
+
+        Returns:
+        Success or failure message.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -179,6 +224,12 @@ class ListPastMentorshipRelations(Resource):
     def get(cls):
         """
         Lists past mentorship relations of the current user.
+
+        Input:
+        1. Header: valid access token
+
+        Returns:
+        JSON array containing details of past mentorship relations as objects.
         """
 
         user_id = get_jwt_identity()
@@ -199,6 +250,12 @@ class ListCurrentMentorshipRelation(Resource):
     def get(cls):
         """
         Lists current mentorship relation of the current user.
+
+        Input:
+        1. Header: valid access token
+
+        Returns:
+        JSON array containing details of current mentorship relations as objects.
         """
 
         user_id = get_jwt_identity()
@@ -223,6 +280,12 @@ class ListPendingMentorshipRequests(Resource):
     def get(cls):
         """
         Lists pending mentorship requests of the current user.
+
+        Input:
+        1. Header: valid access token
+
+        Returns:
+        JSON array containing details of pending mentorship relations as objects.
         """
 
         user_id = get_jwt_identity()
@@ -241,7 +304,16 @@ class CreateTask(Resource):
     @mentorship_relation_ns.response(200, 'Created task with success.')
     def post(cls, request_id):
         """
-        Create a task.
+        Create a task for a mentorship relation.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of request for which task is being created (request_id)
+        3. Body: JSON object containing description of task.
+
+        Returns:
+        Success or failure message. It gets added to GET /tasks endpoint and
+        is visible to the other person in the mentorship relation.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -278,6 +350,15 @@ class DeleteTask(Resource):
     def delete(cls, request_id, task_id):
         """
         Delete a task.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of the task to be deleted (task_id) and it ID of the associated
+        mentorship relation (request_id).
+        3. Body: JSON object containing description of task.
+
+        Returns:
+        Success or failure message. Task is deleted if request is successful.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -301,6 +382,14 @@ class ListTasks(Resource):
     def get(cls, request_id):
         """
         List all tasks from a mentorship relation.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of the mentorship relation for which tasks are to be
+        displayed(request_id). The user must be involved in this relation.
+
+        Returns:
+        JSON array containing task details as objects is displayed on success.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -325,7 +414,16 @@ class UpdateTask(Resource):
     @mentorship_relation_ns.response(200, 'Updated task with success.')
     def put(cls, request_id, task_id):
         """
-        Update a task.
+        Update a task to mark it as complate
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of task (task_id) and ID of the associated mentorship
+        relation (request_id). The user must be involved in this relation.
+        3. Body:
+
+        Returns:
+        Success or failure message. The task is marked as complete if succesful.
         """
 
         # TODO check if user id is well parsed, if it is an integer

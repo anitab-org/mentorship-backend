@@ -28,6 +28,12 @@ class UserList(Resource):
     def get(cls):
         """
         Returns list of all the users.
+
+        A user with valid access token can view the list of users. The endpoint
+        doesn't take any other input. A JSON array having an object for each user is
+        returned. The array contains id, username, name, slack_username, bio,
+        location, occupation, organization, interests, skills, need_mentoring,
+        available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
         return DAO.list_users(user_id)
@@ -47,6 +53,9 @@ class OtherUser(Resource):
     def get(cls, user_id):
         """
         Returns a user.
+
+        A user with valid access token can view the details of another user. The endpoint
+        takes "user_id" of such user has input.
         """
         # Validate arguments
         if not OtherUser.validate_param(user_id):
@@ -74,7 +83,10 @@ class MyUserProfile(Resource):
     @users_ns.marshal_with(full_user_api_model)  # , skip_none=True
     def get(cls):
         """
-        Returns a user.
+        Returns details of current user.
+
+        A user with valid access token can use this endpoint to view his/her own
+        user details. The endpoint doesn't take any other input.
         """
         user_id = get_jwt_identity()
         return DAO.get_user(user_id)
@@ -88,6 +100,12 @@ class MyUserProfile(Resource):
     def put(cls):
         """
         Updates user profile
+
+        A user with valid access token can use this endpoint to edit his/her own
+        user details. The endpoint takes any of the given parameters (name, username,
+        bio, location, occupation, organization, slack_username, social_media_links,
+        skills, interests, resume_url, photo_url, need_mentoring, available_to_mentor).
+        The response contains a success message.
         """
 
         data = request.json
@@ -109,6 +127,10 @@ class MyUserProfile(Resource):
     def delete(cls):
         """
         Deletes user.
+
+        A user with valid access token can use this endpoint to delete his/her own
+        user details. The endpoint doesn't take any other input. The response contains
+        a success message.
         """
         user_id = get_jwt_identity()
         return DAO.delete_user(user_id)
@@ -124,6 +146,10 @@ class ChangeUserPassword(Resource):
     def put(cls):
         """
         Updates the user's password
+
+        A user with valid access token can use this endpoint to change his/her own
+        password. The endpoint takes current password and new password as input.
+        The response contains a success message.
         """
         user_id = get_jwt_identity()
         data = request.json
@@ -144,6 +170,12 @@ class VerifiedUser(Resource):
     def get(cls):
         """
         Returns all verified users.
+
+        A user with valid access token can view the list of verified users. The endpoint
+        doesn't take any other input. A JSON array having an object for each user is
+        returned. The array contains id, username, name, slack_username, bio,
+        location, occupation, organization, interests, skills, need_mentoring,
+        available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
         return DAO.list_users(user_id, is_verified=True)
@@ -159,6 +191,11 @@ class UserRegister(Resource):
     def post(cls):
         """
         Creates a new user.
+
+        The endpoint accepts details like name, username, password, email,
+        terms_and_conditions_checked(true/false), need_mentoring(true/false),
+        available_to_mentor(true/false). A success message is displayed and
+        verification email is sent to the user's email ID.
         """
 
         data = request.json
@@ -182,7 +219,13 @@ class UserEmailConfirmation(Resource):
 
     @classmethod
     def get(cls, token):
-        """Confirms the user's account."""
+        """Confirms the user's account.
+
+        This endpoint is called when a new user clicks the verification link
+        sent on the users' email. It takes the verification token through URL
+        as input parameter.The verification token is valid for 24 hours. A success or
+        failure response is returned by the API.
+        """
 
         return DAO.confirm_registration(token)
 
@@ -193,7 +236,12 @@ class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
     def post(cls):
-        """Sends the user a new verification email."""
+        """Sends the user a new verification email.
+
+        This endpoint is called when a user wants the verification email to be
+        resent. The verification token is valid for 24 hours. A success or
+        failure response is returned by the API.
+        """
 
         data = request.json
 
@@ -302,7 +350,8 @@ class UserHomeStatistics(Resource):
         """Get Statistics regarding the current user
 
         Returns:
-            A dict containing user stats
+            A dict containing user stats(name, pending_requests, accepted_requests,
+            completed_relations, cancelled_relations, rejected_requests, achievements)
         """
         user_id = get_jwt_identity()
         stats = DAO.get_user_statistics(user_id)
