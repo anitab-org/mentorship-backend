@@ -1,5 +1,6 @@
 import unittest
 
+from app.messenger import Lang
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 
@@ -10,6 +11,7 @@ from app.database.sqlalchemy_extension import db
 
 
 class TestAdminDao(BaseTestCase):
+    lang = Lang("en")
 
 
     """
@@ -36,7 +38,7 @@ class TestAdminDao(BaseTestCase):
         data = dict(
             user_id=2
         )
-        dao.assign_new_user(1, data)
+        dao.assign_new_user(1, data, self.lang)
 
         user = UserModel.query.filter_by(id=2).first()
         self.assertTrue(user.is_admin)
@@ -65,7 +67,7 @@ class TestAdminDao(BaseTestCase):
         data = dict(
             user_id=1
         )
-        dao_result = dao.assign_new_user(2, data)
+        dao_result = dao.assign_new_user(2, data, self.lang)
 
         self.assertEqual((messages.USER_ASSIGN_NOT_ADMIN, 403), dao_result)
 
@@ -81,7 +83,7 @@ class TestAdminDao(BaseTestCase):
             user_id=123
         )
 
-        dao_result = dao.assign_new_user(1, data)
+        dao_result = dao.assign_new_user(1, data, self.lang)
 
         self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), dao_result) 
 
@@ -113,7 +115,7 @@ class TestAdminDao(BaseTestCase):
             user_id=2
         )
 
-        dao_result = dao.assign_new_user(1, data)
+        dao_result = dao.assign_new_user(1, data, self.lang)
 
         self.assertEqual((messages.USER_IS_ALREADY_AN_ADMIN, 400), dao_result)
 
@@ -142,7 +144,7 @@ class TestAdminDao(BaseTestCase):
             user_id=2
         )
 
-        dao_result = dao.assign_new_user(2, data)
+        dao_result = dao.assign_new_user(2, data, self.lang)
 
         self.assertEqual((messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, 403), dao_result)
 
@@ -172,7 +174,7 @@ class TestAdminDao(BaseTestCase):
         data = dict(
             user_id=2
         )
-        dao.revoke_admin_user(1, data)
+        dao.revoke_admin_user(1, data, self.lang)
 
         user = UserModel.query.filter_by(id=2).first()
         self.assertFalse(user.is_admin)
@@ -200,7 +202,7 @@ class TestAdminDao(BaseTestCase):
         data = dict(
             user_id=1
         )
-        dao_result = dao.revoke_admin_user(2, data)
+        dao_result = dao.revoke_admin_user(2, data, self.lang)
 
         self.assertEqual((messages.USER_REVOKE_NOT_ADMIN, 403), dao_result)
 
@@ -216,7 +218,7 @@ class TestAdminDao(BaseTestCase):
             user_id=123
         )
 
-        dao_result = dao.revoke_admin_user(1, data)
+        dao_result = dao.revoke_admin_user(1, data, self.lang)
 
         self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), dao_result)
 
@@ -243,7 +245,7 @@ class TestAdminDao(BaseTestCase):
             user_id=2
         )
 
-        dao_result = dao.revoke_admin_user(1, data)
+        dao_result = dao.revoke_admin_user(1, data, self.lang)
 
         self.assertEqual((messages.USER_IS_NOT_AN_ADMIN, 400), dao_result)
 
@@ -257,7 +259,7 @@ class TestAdminDao(BaseTestCase):
             user_id=1
         )
 
-        dao_result = dao.revoke_admin_user(1, data)
+        dao_result = dao.revoke_admin_user(1, data, self.lang)
 
         self.assertEqual((messages.USER_CANNOT_REVOKE_ADMIN_STATUS, 403), dao_result)
 

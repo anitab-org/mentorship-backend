@@ -8,6 +8,7 @@ from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
 from app.api.resources.common import auth_header_parser
 from app.messages_enums import Message
+from app.messenger import Lang
 
 admin_ns = Namespace('Admins', description='Operations related to Admin users')
 add_models_to_namespace(admin_ns)
@@ -26,14 +27,14 @@ class AssignNewUserAdmin(Resource):
         user_id = get_jwt_identity()
         user = UserDAO.get_user(user_id)
 
-        lang = request.args.get('lang')
+        lang = Lang(request.args.get('lang'))
 
         if user.is_admin:
             data = request.json
             return AdminDAO.assign_new_user(user.id, data, lang)
 
         else:
-            return messenger.send(Message.USER_ASSIGN_NOT_ADMIN, lang), 403
+            return lang.map(Message.USER_ASSIGN_NOT_ADMIN), 403
 
 
 @admin_ns.route('admin/remove')
@@ -48,9 +49,12 @@ class RevokeUserAdmin(Resource):
         """
         user_id = get_jwt_identity()
         user = UserDAO.get_user(user_id)
+
+        lang = Lang(request.args.get('lang'))
+
         if user.is_admin:
             data = request.json
-            return AdminDAO.revoke_admin_user(user.id, data)
+            return AdminDAO.revoke_admin_user(user.id, data, lang)
 
         else:
-            return messages.USER_REVOKE_NOT_ADMIN, 403
+            return lang.map(Message.USER_REVOKE_NOT_ADMIN), 403
