@@ -131,6 +131,11 @@ UNACCEPTED_STATE_RELATION = {"message": "This mentorship relation status is"
                              " not in the accepted state."}
 MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE = {"message": "Mentorship relation is"
                                            " not in the accepted state."}
+#password errors
+INSUFFICIENT_LENGTH = {"message":"Password should have minimum 8 characters"}
+ATLEAST_ONE_UPPERCASE = {"message":"Password should have atleast 1 uppercase character"}
+ATLEAST_NUMBER = {"message":"Password should have atleast 1 number"}
+ATLEAST_ONE_SPECIAL_CHARACTER = {"message":"Password should have atleast 1 special character."}
 
 
 # Login errors
