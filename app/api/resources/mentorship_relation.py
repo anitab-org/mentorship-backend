@@ -30,6 +30,8 @@ class SendRequest(Resource):
     def post(cls):
         """
         Creates a new mentorship relation request.
+        Both users must be available and the duration of the relationship must
+        be between one and six months.
         """
 
         user_id = get_jwt_identity()
@@ -73,6 +75,9 @@ class GetAllMyMentorshipRelation(Resource):
     def get(cls):
         """
         Lists all mentorship relations of current user.
+        Returns a JSON array of all relations including all fields: id,
+        mentee and mentor ids, creation, start, end and accept dates, state,
+        notes, sent_by_me and action user's id.
         """
 
         user_id = get_jwt_identity()
@@ -92,6 +97,8 @@ class AcceptMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Accept a mentorship relation.
+        The user who sends the request can't be the user who sent the
+        relationship request.
         """
 
         # check if user id is well parsed
@@ -114,6 +121,8 @@ class RejectMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Reject a mentorship relation.
+        The user who sends the request can't be the user who sent the
+        relationship request.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -135,6 +144,8 @@ class CancelMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Cancel a mentorship relation.
+        The relationship must exist and be accepted.
+        The user who sends the request must be involved in the given relation.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -156,6 +167,9 @@ class DeleteMentorshipRelation(Resource):
     def delete(cls, request_id):
         """
         Delete a mentorship request.
+        The relationship must exist and be in pending state.
+        The user who sends the request must be the user who sent the
+        relationship request.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -179,6 +193,9 @@ class ListPastMentorshipRelations(Resource):
     def get(cls):
         """
         Lists past mentorship relations of the current user.
+        Returns a JSON array of past relations including all fields: id,
+        mentee and mentor ids, creation, start, end and accept dates, state,
+        notes, sent_by_me and action user's id.
         """
 
         user_id = get_jwt_identity()
@@ -199,6 +216,9 @@ class ListCurrentMentorshipRelation(Resource):
     def get(cls):
         """
         Lists current mentorship relation of the current user.
+        Returns a JSON representation of the relation including all fields: id,
+        mentee and mentor ids, creation, start, end and accept dates, state,
+        notes, sent_by_me and action user's id.
         """
 
         user_id = get_jwt_identity()
@@ -223,6 +243,9 @@ class ListPendingMentorshipRequests(Resource):
     def get(cls):
         """
         Lists pending mentorship requests of the current user.
+        Returns a JSON array of pending relations including all fields: id,
+        mentee and mentor ids, creation, start, end and accept dates, state,
+        notes, sent_by_me and action user's id.
         """
 
         user_id = get_jwt_identity()
@@ -242,6 +265,8 @@ class CreateTask(Resource):
     def post(cls, request_id):
         """
         Create a task.
+        A task should contain a description and the user must be in the given
+        relationship.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -278,6 +303,8 @@ class DeleteTask(Resource):
     def delete(cls, request_id, task_id):
         """
         Delete a task.
+        The task must exist and the user must be involved in the given
+        relationship.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -301,6 +328,8 @@ class ListTasks(Resource):
     def get(cls, request_id):
         """
         List all tasks from a mentorship relation.
+        Returns a JSON array of all tasks including all fields: id,
+        description, is_done, created_at and completed_at.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -326,6 +355,9 @@ class UpdateTask(Resource):
     def put(cls, request_id, task_id):
         """
         Update a task.
+        The task will be marked as completed and therefore be an achievement.
+        The task and user must exist and the user must be involved in the given
+        relationship.
         """
 
         # TODO check if user id is well parsed, if it is an integer
