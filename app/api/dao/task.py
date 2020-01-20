@@ -31,7 +31,7 @@ class TaskDAO:
         description = data['description']
 
         user = UserModel.find_by_id(user_id)
-        relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)  #_id?
+        relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id) 
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
 

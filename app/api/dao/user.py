@@ -11,6 +11,7 @@ from app.utils.validation_utils import is_email_valid
 
 def check_security(password_check):
     """Returns a boolean if the password is secure"""
+    flag=0
     if len(password_check) < 8:
         flag=0
         return messages.INSUFFICIENT_LENGTH,400
