@@ -30,6 +30,13 @@ class SendRequest(Resource):
     def post(cls):
         """
         Creates a new mentorship relation request.
+
+        Required:
+        - Both users must be available for a mentorship relation and duration of relation must be between one
+        to six months.
+
+        Returns:
+        - A message stating whether mentorship relation request was successfully sent or not.
         """
 
         user_id = get_jwt_identity()
@@ -73,6 +80,10 @@ class GetAllMyMentorshipRelation(Resource):
     def get(cls):
         """
         Lists all mentorship relations of current user.
+
+        Returns:
+        - A JSON serialized list (relation_id, mentor_id, mentee_id, state, creation date, end date)
+        of all mentorship relations of the querying user.
         """
 
         user_id = get_jwt_identity()
@@ -92,6 +103,14 @@ class AcceptMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Accept a mentorship relation.
+
+        Required:
+        - Id of the mentorship relation, which is currently not in a ACCEPTED state.
+        - Querying user must be available and must be mentioned either as mentee or mentor in the mentorship relation
+        being accepted.
+
+        Returns:
+        - A message stating whether relation was successfully accepted or not.
         """
 
         # check if user id is well parsed
@@ -114,6 +133,14 @@ class RejectMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Reject a mentorship relation.
+
+        Required:
+        - Id of the mentorship relation, which is currently not in a ACCEPTED state.
+        - Querying user must be mentioned either as mentee or mentor in the mentorship relation
+        being rejected.
+
+        Returns:
+        - A message stating whether relation was successfully rejected or not.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -135,6 +162,13 @@ class CancelMentorshipRelation(Resource):
     def put(cls, request_id):
         """
         Cancel a mentorship relation.
+
+        Required:
+        - Id of the mentorship relation, which is currently in a ACCEPTED state.
+        - Querying user must be involved in the relation being cancelled.
+
+        Returns:
+        - A message stating whether relation was successfully cancelled or not.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -156,6 +190,13 @@ class DeleteMentorshipRelation(Resource):
     def delete(cls, request_id):
         """
         Delete a mentorship request.
+
+        Required:
+        - Id of the mentorship relation, which is currently not in a ACCEPTED, REJECTED or a CANCELLED state.
+        - Querying user must be the sender of the mentorship relation being deleted.
+
+        Returns:
+        - A message stating whether relation was successfully deleted or not.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -179,6 +220,10 @@ class ListPastMentorshipRelations(Resource):
     def get(cls):
         """
         Lists past mentorship relations of the current user.
+
+        Returns:
+        - A JSON serialized list (relation_id, mentor_id, mentee_id, state, creation date, end date)
+        of all past (completed) mentorship relations of the querying user.
         """
 
         user_id = get_jwt_identity()
@@ -199,6 +244,10 @@ class ListCurrentMentorshipRelation(Resource):
     def get(cls):
         """
         Lists current mentorship relation of the current user.
+
+        Returns:
+        - A JSON serialized object (relation_id, mentor_id, mentee_id, state, creation date, end date)
+        of the current mentorship relation of the querying user.
         """
 
         user_id = get_jwt_identity()
@@ -223,6 +272,10 @@ class ListPendingMentorshipRequests(Resource):
     def get(cls):
         """
         Lists pending mentorship requests of the current user.
+
+        Returns:
+        - A JSON serialized list (relation_id, mentor_id, mentee_id, state, creation date, end date)
+        of all pending (not accepted) mentorship relations of the querying user.
         """
 
         user_id = get_jwt_identity()
@@ -242,6 +295,14 @@ class CreateTask(Resource):
     def post(cls, request_id):
         """
         Create a task.
+
+        Required:
+        - Id of the mentorship relation, which has an ACCEPTED state.
+        - Querying user must be involved in the mentorship relation.
+        - A Description of the task is required.
+
+        Returns:
+        - A message stating whether task was successfully created or not.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -278,6 +339,14 @@ class DeleteTask(Resource):
     def delete(cls, request_id, task_id):
         """
         Delete a task.
+
+        Required:
+        - Id of the mentorship relation, which has an ACCEPTED state.
+        - Id of the task, which must exist in the mentioned mentorship relation.
+        - Querying user must be involved in the mentorship relation.
+
+        Returns:
+        - A message stating whether task was successfully deleted or not.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -301,6 +370,14 @@ class ListTasks(Resource):
     def get(cls, request_id):
         """
         List all tasks from a mentorship relation.
+
+        Required:
+        - Id of the mentorship relation, which has an ACCEPTED state.
+        - Querying user must be involved in the mentorship relation.
+
+        Returns:
+        - A JSON serialized list (task_id, creation date, completion date, is done or not, description)
+        of all tasks in mentioned mentorship relation.
         """
 
         # TODO check if user id is well parsed, if it is an integer
@@ -326,6 +403,14 @@ class UpdateTask(Resource):
     def put(cls, request_id, task_id):
         """
         Update a task.
+
+        Required:
+        - Id of the mentorship relation, which has an ACCEPTED state.
+        - Id of the task, which must exist in the mentioned mentorship relation.
+        - Querying user must be involved in the mentorship relation.
+
+        Returns:
+        - A message stating whether task was successfully updated to done or not.
         """
 
         # TODO check if user id is well parsed, if it is an integer
