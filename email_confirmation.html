@@ -1,0 +1,96 @@
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Bangers|Lobster|Righteous" rel="stylesheet">
+ <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+<title>
+Email Verification...
+</title>
+<style>
+body {
+    font-size:24;
+    margin: 5;
+    padding: 5;
+      background: rgb(244,56,56);
+background-color: powderblue;
+  background-repeat: no-repeat;
+    font-family:Times New Roman, Times, serif;
+     text-align:center;
+	font-weight:bolder;
+}
+
+p.Hi{font-size: 36;
+	margin:5;
+	margin-bottom: 25px;
+   
+}
+p.text{
+    font-size: 18;
+font-family: serif;
+
+}
+
+a.confirm_url{
+	color: solid black;
+	background: solid black;
+	font-size: 18;
+}
+a.confirm_url:hover{
+	color:black;
+	background: transparent;
+
+}
+a.footer{
+    font-size: 18;
+	color: white;
+
+}
+
+
+.fab,
+.fas {
+    font-size: 32px;
+    padding: 10px;
+    margin: 0;
+    background: black;
+    color: white;
+    margin: 2 0;
+    transition: 0.5s;
+}
+
+.fab:hover,
+.fas:hover {
+    border-bottom: 2px solid black;
+    margin-bottom: -2px;
+}
+.fa-facebook-f:hover {
+    background: blue;
+    color: white;
+}
+.fa-github:hover {
+    background: #333;
+    color: white;
+}
+
+div.outer{
+	border:2px solid black;
+	background: white;
+	margin:2% 10%;
+}
+</style>
+</head>
+<body>
+	<div class="outer">
+<p class="Hi" >Hi {{ user_name }},</p>
+<img src="https://lh3.googleusercontent.com/POnFCgbnRFoUyWdn_MfdpwzxFz3Iy12ERzQB3Cs6MgFtIN2PvHIZ-gO4GLNf7HtpxbQeoRI-xaDSr80VASjWApgebBME949r-qDzSlolGb0VqqAiMJUYjDsSUAQ-Mcq9xz_jj-Im70LXF7fadBy6mNlqNJnkD_NoCIqVA90CgL1jGZmHcGhcELZA1Xy_VXjXMX8m8mwdcG8U3oQWVkHh1CyyseEQT5I-sNneo9kjjXyK7uIHA6qUPQJEUuik_-Yz7BnH3Ie8akkoUejMuveJ3HttMEjYj4gub744d4cehvZlZ_CB3pFBeZkJ1HlQo9QHmGxKFdBuHTB0ZE1xyNzhQdgrp7TcVREaKxsAOchms5-Ld58lt_-IXug1L2wJNcGyGHQgRQVl2q45sKczb8qZGoXK5BG0a9iHXFATXdLFOA82jtxPe0X8wQcFukOBV7OdjE-jMzqmN8w69fZWEaNgr1dKCf9DkgBMhG2WEOh3hDbhUxDQu2hBVydmGLjI2_S3i0MVs7FSTdxOlrWR57BD0HXtgMby7d2pa_scfhliCpWcuga9jsXOUaS-oHhXV-2QWVrgZtMiM4FI0xJXEupRhlM0DuU2kt8UysyOPrHgG2oNpA2bcSjqXLMhTCe5wSZml00khAEXgWRMIW4da0mFNB_cmJzvjW3cyJI_WWPMs18J539CN3m0E1V6jQXTQue_6lCefK-YVMCUmi3AKC0IhT5FfimbjpH1LlQruMQPqBbnE2g=s398-no">
+<div><b>Welcome to Mentorship System!</b></div>
+<br>
+<p class="text">You recently signed up for a Mentorship System account.
+    Before you get started, we need to verify your email:</p>
+<br>
+<p><a class="confirm_url" href="{{ confirm_url }}">Click here</a></p>
+<br>
+
+<footer>Connect with us on:<br><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a><a href="#" target="_blank"><i class="fab fa-github"></i></a> <br>
+</div>
+</body>
+</html> 
