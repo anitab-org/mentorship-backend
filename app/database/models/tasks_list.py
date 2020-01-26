@@ -40,7 +40,8 @@ class TasksListModel(db.Model):
             else:
                 raise ValueError(TypeError)
 
-    def add_task(self, description, created_at, is_done=False, completed_at=None):
+    def add_task(self, description, created_at, is_done=False,
+                 completed_at=None):
         """Adds a task to the list of tasks.
         
         Args:
@@ -75,12 +76,13 @@ class TasksListModel(db.Model):
         self.tasks = new_list
         self.save_to_db()
 
-    def update_task(self, task_id, description=None, is_done=None, completed_at=None):
+    def update_task(self, task_id, description=None, is_done=None,
+                    completed_at=None):
         """Updates a task.
         
         Args:
+            task_id: The ID of the task
             description: A description of the task.
-            created_at: Date on which the task is created.
             is_done: Boolean specifying completion of the task.
             completed_at: Date on which task is completed.
         """
@@ -150,8 +152,9 @@ class TasksListModel(db.Model):
         Returns:
             A string representation of the task object.
         """
-        
-        return "Task | id = %s; tasks = %s; next task id = %s" % (self.id, self.tasks, self.next_task_id)
+
+        return "Task | id = %s; tasks = %s; next task id = %s" % (
+            self.id, self.tasks, self.next_task_id)
 
     @classmethod
     def find_by_id(cls, _id):
@@ -160,7 +163,7 @@ class TasksListModel(db.Model):
         Returns:
             The task with the specified id.
         """
-        
+
         return cls.query.filter_by(id=_id).first()
 
     def save_to_db(self):

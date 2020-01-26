@@ -40,12 +40,15 @@ class TestListUsersApi(BaseTestCase):
         actual_response = self.client.get('/users', follow_redirects=True)
 
         self.assertEqual(401, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
 
     def test_list_users_api_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
-        expected_response = [marshal(self.verified_user, public_user_api_model), marshal(self.other_user, public_user_api_model)]
-        actual_response = self.client.get('/users', follow_redirects=True, headers=auth_header)
+        expected_response = [marshal(self.verified_user, public_user_api_model),
+                             marshal(self.other_user, public_user_api_model)]
+        actual_response = self.client.get('/users', follow_redirects=True,
+                                          headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
@@ -53,7 +56,9 @@ class TestListUsersApi(BaseTestCase):
     def test_list_users_api_resource_verified_users(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]
-        actual_response = self.client.get('/users/verified', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get('/users/verified',
+                                          follow_redirects=True,
+                                          headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))

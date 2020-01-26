@@ -11,7 +11,8 @@ class UserModel(db.Model):
         username: A string for storing the user's username.
         password: A string for storing the user's password.
         email: A string for storing user email.
-        terms_and_conditions_checked: A boolean indicating if user has agreed to terms and conditions or not.
+        terms_and_conditions_checked: A boolean indicating if user has agreed
+        to terms and conditions or not.
     """
     # Specifying database table used for UserModel
     __tablename__ = 'users'
@@ -56,9 +57,11 @@ class UserModel(db.Model):
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
 
-    def __init__(self, name, username, password, email, terms_and_conditions_checked):
-        """"Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
-        ## required fields
+    def __init__(self, name, username, password, email,
+                 terms_and_conditions_checked):
+        """"Initialises userModel class with name, username, password, email,
+        and terms_and_conditions_checked. """
+        # required fields
 
         self.name = name
         self.username = username
@@ -69,11 +72,12 @@ class UserModel(db.Model):
         self.set_password(password)
 
         # default values
-        self.is_admin = True if self.is_empty() else False  # first user is admin
+        # first user is admin
+        self.is_admin = True if self.is_empty() else False
         self.is_email_verified = False
         self.registration_date = time.time()
 
-        ## optional fields
+        # optional fields
 
         self.need_mentoring = False
         self.available_to_mentor = False
@@ -137,7 +141,8 @@ class UserModel(db.Model):
         return cls.query.first() is None
 
     def set_password(self, password_plain_text):
-        """Sets user password when they create an account or when they are changing their password. """
+        """Sets user password when they create an account or
+        when they are changing their password. """
         self.password_hash = generate_password_hash(password_plain_text)
 
     # checks if password is the same, using its hash

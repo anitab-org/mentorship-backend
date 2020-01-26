@@ -7,7 +7,6 @@ from tests.base_test_case import BaseTestCase
 class TestUpdateUserDao(BaseTestCase):
 
     def test_dao_update_user(self):
-
         self.assertIsNone(self.admin_user.occupation)
         self.assertIsNone(self.admin_user.organization)
 
@@ -21,7 +20,6 @@ class TestUpdateUserDao(BaseTestCase):
         self.assertEqual('good_org', self.admin_user.organization)
 
     def test_update_fields_with_empty_data(self):
-        
         self.assertIsNone(self.admin_user.occupation)
         self.assertIsNone(self.admin_user.organization)
 

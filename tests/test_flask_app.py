@@ -1,6 +1,7 @@
 from tests.base_test_case import BaseTestCase
 import unittest
 
+
 class TestFlaskApp(BaseTestCase):
 
     def test_index(self):

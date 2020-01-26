@@ -17,7 +17,8 @@ class BaseConfig(object):
     # Security
     SECRET_KEY = os.getenv('SECRET_KEY', None)
     # if not SECRET_KEY:
-    #     raise ValueError('You need to export SECRET_KEY set for Flask application')
+    #     raise ValueError(
+    #     'You need to export SECRET_KEY set for Flask application')
 
     SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
 
@@ -73,7 +74,8 @@ class TestingConfig(BaseConfig):
 def get_env_config():
     flask_config_name = os.getenv('FLASK_ENVIRONMENT_CONFIG', 'dev')
     if flask_config_name not in ['prod', 'test', 'dev']:
-        raise ValueError('The environment config value has to be within these values: prod, dev, test.')
+        raise ValueError('The environment config value has to be within '
+                         'these values: prod, dev, test.')
     return CONFIGURATION_MAPPER[flask_config_name]
 
 

@@ -26,7 +26,8 @@ class BaseTestCase(TestCase):
             email=test_admin_user['email'],
             username=test_admin_user['username'],
             password=test_admin_user['password'],
-            terms_and_conditions_checked=test_admin_user['terms_and_conditions_checked']
+            terms_and_conditions_checked=test_admin_user[
+                'terms_and_conditions_checked']
         )
         db.session.add(self.admin_user)
         db.session.commit()

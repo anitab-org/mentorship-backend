@@ -25,9 +25,10 @@ else
 fi
 
 # Get the latest code
-cd $HOME
-git clone --branch=$TRAVIS_BRANCH https://github.com/systers/mentorship-backend.git
-cd mentorship-backend
+# shellcheck disable=SC2164
+cd "$HOME"
+git clone --branch="$TRAVIS_BRANCH" https://github.com/systers/mentorship-backend.git
+cd mentorship-backend || exit
 
 # Create AWS Elastic Beanstalk profile
 mkdir ~/.aws
@@ -36,11 +37,12 @@ echo "aws_access_key_id = $AWS_ACCESS_ID" >> ~/.aws/config
 echo "aws_secret_access_key = $AWS_SECRET_KEY" >> ~/.aws/config
 
 # Add environment variables
-eb setenv FLASK_ENVIRONMENT_CONFIG=$FLASK_ENVIRONMENT_CONFIG MAIL_DEFAULT_SENDER=$MAIL_DEFAULT_SENDER MAIL_SERVER=$MAIL_SERVER APP_MAIL_USERNAME=$APP_MAIL_USERNAME APP_MAIL_PASSWORD=$APP_MAIL_PASSWORD SECRET_KEY=$SECRET_KEY SECURITY_PASSWORD_SALT=$SECURITY_PASSWORD_SALT
+eb setenv FLASK_ENVIRONMENT_CONFIG=$FLASK_ENVIRONMENT_CONFIG MAIL_DEFAULT_SENDER="$MAIL_DEFAULT_SENDER" MAIL_SERVER="$MAIL_SERVER" APP_MAIL_USERNAME="$APP_MAIL_USERNAME" APP_MAIL_PASSWORD="$APP_MAIL_PASSWORD" SECRET_KEY="$SECRET_KEY" SECURITY_PASSWORD_SALT="$SECURITY_PASSWORD_SALT"
 
 # Publishing
 echo "Publishing to '$SERVER' server"
 eb deploy
+# shellcheck disable=SC2181
 if [ $? -eq 0 ]; then
     echo "Publishing successful."
 else

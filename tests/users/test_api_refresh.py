@@ -10,6 +10,7 @@ from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 from tests.test_utils import get_test_request_header
 
+
 class TestUserRefreshApi(BaseTestCase):
 
     # User 1 which has email verified
@@ -30,8 +31,10 @@ class TestUserRefreshApi(BaseTestCase):
 
     def test_user_refresh(self):
         with self.client:
-            refresh_header = get_test_request_header(user1['username'], refresh=True)
-            response = self.client.post('/refresh', headers=refresh_header, follow_redirects=True,
+            refresh_header = get_test_request_header(user1['username'],
+                                                     refresh=True)
+            response = self.client.post('/refresh', headers=refresh_header,
+                                        follow_redirects=True,
                                         content_type='application/json')
 
             self.assertIsNotNone(response.json.get('access_token'))
@@ -53,17 +56,22 @@ class TestUserRefreshApi(BaseTestCase):
                 'Authorization': 'Bearer {}'.format(refresh_token)
             }
             expected_response = messages.TOKEN_IS_INVALID
-            actual_response = self.client.post('/refresh', headers=auth_header, follow_redirects=True,
+            actual_response = self.client.post('/refresh', headers=auth_header,
+                                               follow_redirects=True,
                                                content_type='application/json')
 
             self.assertEqual(401, actual_response.status_code)
-            self.assertEqual(expected_response, json.loads(actual_response.data))
+            self.assertEqual(expected_response,
+                             json.loads(actual_response.data))
 
     def test_user_refresh_expired_token(self):
-        auth_header = get_test_request_header(self.first_user.id, token_expiration_delta=timedelta(minutes=-5),
+        auth_header = get_test_request_header(self.first_user.id,
+                                              token_expiration_delta=timedelta(
+                                                  minutes=-5),
                                               refresh=True)
         expected_response = messages.TOKEN_HAS_EXPIRED
-        actual_response = self.client.post('/refresh', follow_redirects=True, headers=auth_header,
+        actual_response = self.client.post('/refresh', follow_redirects=True,
+                                           headers=auth_header,
                                            content_type='application/json')
 
         self.assertEqual(401, actual_response.status_code)

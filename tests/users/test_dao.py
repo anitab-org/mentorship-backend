@@ -36,7 +36,8 @@ class TestUserDao(BaseTestCase):
         self.assertTrue(user.email == 'user2@email.com')
         self.assertFalse(user.is_admin)
         self.assertFalse(user.password_hash == 'test_password')
-        self.assertTrue(check_password_hash(user.password_hash, 'test_password'))
+        self.assertTrue(
+            check_password_hash(user.password_hash, 'test_password'))
         self.assertTrue(user.terms_and_conditions_checked)
         self.assertIsInstance(user.registration_date, float)
         self.assertFalse(user.is_email_verified)
@@ -66,7 +67,8 @@ class TestUserDao(BaseTestCase):
 
         self.assertTrue(user.is_email_verified)
         self.assertIsNotNone(user.email_verification_date)
-        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200), actual_result)
+        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200),
+                         actual_result)
 
     def test_dao_confirm_registration_bad_token(self):
         dao = UserDAO()
@@ -94,7 +96,8 @@ class TestUserDao(BaseTestCase):
 
         self.assertFalse(user.is_email_verified)
         self.assertIsNone(user.email_verification_date)
-        self.assertEqual((messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400), actual_result)
+        self.assertEqual((messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400),
+                         actual_result)
 
     def test_dao_confirm_registration_of_already_verified_user(self):
         dao = UserDAO()
@@ -121,7 +124,8 @@ class TestUserDao(BaseTestCase):
         actual_result = dao.confirm_registration(good_token)
 
         self.assertTrue(user.is_email_verified)
-        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED, 200), actual_result)
+        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED, 200),
+                         actual_result)
 
     def test_dao_delete_only_user_admin(self):
         dao = UserDAO()
