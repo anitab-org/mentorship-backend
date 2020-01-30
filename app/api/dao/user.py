@@ -1,11 +1,15 @@
 from datetime import datetime
 from operator import itemgetter
+from flask_restplus import marshal
 
 from app import messages
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
+from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.api.models.mentorship_relation import list_tasks_response_body, mentorship_request_response_body_for_user_dashboard_body
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.utils.validation_utils import is_email_valid
 
 
@@ -418,3 +422,95 @@ class UserDAO:
             'achievements': achievements
         }
         return response
+
+    @staticmethod
+    def get_user_dashboard(user_id):
+        """
+        returns user dashboard: relations received. sent as mentor or mentee for all states.
+        Also returns all done, to be done tasks if in a relation
+
+        Args:
+            user_id: id of the user whose dashboard is to be returned
+        """
+        user = UserModel.find_by_id(user_id)
+        if not user:
+            return None
+
+        response = {}
+
+        all_user_relations = user.mentee_relations + user.mentor_relations
+        relations_in_response_form = [DashboardRelationResponseModel(relation) for relation in all_user_relations]
+
+        mentor_sent_relations = [relation for relation in relations_in_response_form if relation.action_user_id == user_id and relation.mentor_id == user_id]
+        mentor_received_relations = [relation for relation in relations_in_response_form if relation.action_user_id != user_id and relation.mentor_id == user_id]
+        mentee_sent_relations = [relation for relation in relations_in_response_form if relation.action_user_id == user_id and relation.mentee_id == user_id]
+        mentee_received_relations = [relation for relation in relations_in_response_form if relation.action_user_id != user_id and relation.mentee_id == user_id]
+
+        as_mentee = {
+            'sent': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []},
+            'received': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []}}
+        as_mentor = {
+            'sent': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []},
+            'received': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []}}
+
+        as_mentee['received']['accepted'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentee['received']['rejected'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentee['received']['completed'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentee['received']['cancelled'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentee['received']['pending'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.PENDING]
+
+        as_mentor['received']['accepted'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentor['received']['rejected'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentor['received']['completed'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentor['received']['cancelled'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentor['received']['pending'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.PENDING]
+
+        as_mentee['sent']['accepted'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentee['sent']['rejected'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentee['sent']['completed'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentee['sent']['cancelled'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentee['sent']['pending'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.PENDING]
+
+        as_mentor['sent']['accepted'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentor['sent']['rejected'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentor['sent']['completed'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentor['sent']['cancelled'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentor['sent']['pending'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.PENDING]
+
+        response['as_mentor'] = as_mentor
+        response['as_mentee'] = as_mentee
+
+        current_relation = MentorshipRelationDAO.list_current_mentorship_relation(user_id=user_id)
+        response['tasks_todo'] = marshal([task for task in current_relation.tasks_list.tasks if not task['is_done']], list_tasks_response_body)
+        response['tasks_done'] = marshal([task for task in current_relation.tasks_list.tasks if task['is_done']], list_tasks_response_body)
+
+        return response
+
+
+class DashboardRelationResponseModel:
+    """temp class used for storing mentorship_request_response_body_for_user_dashboard_body values"""
+    def __init__(self, relation: MentorshipRelationModel):
+        self.state = relation.state
+        self.mentor_id = relation.mentor_id
+        self.mentee_id = relation.mentee_id
+        self.action_user_id = relation.action_user_id
+        self.response = {
+            'id': relation.id,
+            'action_user_id': relation.action_user_id,
+            'mentor': {
+                'id': relation.mentor_id,
+                'user_name': relation.mentor.name,
+                'photo_url': relation.mentor.photo_url
+            },
+            'mentee': {
+                'id': relation.mentee_id,
+                'user_name': relation.mentee.name,
+                'photo_url': relation.mentee.photo_url
+            },
+            'creation_date': relation.creation_date,
+            'accept_date': relation.accept_date,
+            'start_date': relation.start_date,
+            'end_date': relation.end_date,
+            'state': relation.state,
+            'notes': relation.notes
+        }
