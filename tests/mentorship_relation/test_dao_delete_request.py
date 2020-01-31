@@ -68,42 +68,51 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         db.session.commit()
 
     def test_dao_delete_non_existing_mentorship_request(self):
-
         result = MentorshipRelationDAO.delete_request(self.first_user.id, 123)
 
-        self.assertEqual((messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
+        self.assertEqual(
+            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404), result)
+        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(
+            id=self.mentorship_relation.id).first())
 
     def test_dao_sender_does_not_exist(self):
-
-        result = MentorshipRelationDAO.delete_request(123, self.mentorship_relation.id)
+        result = MentorshipRelationDAO.delete_request(
+            123, self.mentorship_relation.id)
 
         self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
+        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(
+            id=self.mentorship_relation.id).first())
 
     def test_dao_receiver_tries_to_delete_mentorship_request(self):
-
-        result = MentorshipRelationDAO.delete_request(self.second_user.id, self.mentorship_relation.id)
+        result = MentorshipRelationDAO.delete_request(
+            self.second_user.id, self.mentorship_relation.id)
 
         self.assertEqual((messages.CANT_DELETE_UNINVOLVED_REQUEST, 400), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
+        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(
+            id=self.mentorship_relation.id).first())
 
     def test_dao_sender_delete_mentorship_request(self):
         relation_id = self.mentorship_relation.id
 
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
-        result = MentorshipRelationDAO.delete_request(self.first_user.id, relation_id)
-        self.assertEqual((messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, 200), result)
+        result = MentorshipRelationDAO.delete_request(
+            self.first_user.id, relation_id)
+        self.assertEqual(
+            (messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, 200),
+            result)
 
-        self.assertIsNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
+        self.assertIsNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
     def test_dao_user_not_involved_tries_to_delete_mentorship_request(self):
-
-        result = MentorshipRelationDAO.delete_request(self.admin_user.id, self.mentorship_relation.id)
+        result = MentorshipRelationDAO.delete_request(
+            self.admin_user.id, self.mentorship_relation.id)
 
         self.assertEqual((messages.CANT_DELETE_UNINVOLVED_REQUEST, 400), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=self.mentorship_relation.id).first())
+        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(
+            id=self.mentorship_relation.id).first())
 
     def test_dao_mentorship_delete_request_not_in_pending_state(self):
         relation_id = self.mentorship_relation.id
@@ -112,30 +121,38 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
+        result = MentorshipRelationDAO.delete_request(
+            self.first_user.id, self.mentorship_relation.id)
         self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
+        result = MentorshipRelationDAO.delete_request(
+            self.first_user.id, self.mentorship_relation.id)
         self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
+        result = MentorshipRelationDAO.delete_request(
+            self.first_user.id, self.mentorship_relation.id)
         self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first())
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = MentorshipRelationDAO.delete_request(self.first_user.id, self.mentorship_relation.id)
+        result = MentorshipRelationDAO.delete_request(
+            self.first_user.id, self.mentorship_relation.id)
         self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
-        self.assertIsNotNone(MentorshipRelationModel.query.filter_by(id=relation_id).first())
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first())

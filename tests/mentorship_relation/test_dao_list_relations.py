@@ -7,7 +7,8 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
-from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
+from tests.mentorship_relation.relation_base_setup import \
+    MentorshipRelationBaseTestCase
 
 
 class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
@@ -62,8 +63,8 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
     def test_dao_list_past_mentorship_relations(self):
-
-        result = MentorshipRelationDAO.list_past_mentorship_relations(user_id=self.first_user.id)
+        result = MentorshipRelationDAO.list_past_mentorship_relations(
+            user_id=self.first_user.id)
 
         expected_response = [self.past_mentorship_relation]
 
@@ -71,21 +72,22 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         self.assertEqual(expected_response, result[0])
 
     def test_dao_list_current_mentorship_relation(self):
-
-        result = MentorshipRelationDAO.list_current_mentorship_relation(user_id=self.first_user.id)
+        result = MentorshipRelationDAO.list_current_mentorship_relation(
+            user_id=self.first_user.id)
         expected_response = self.future_accepted_mentorship_relation
 
         self.assertEqual(expected_response, result)
 
     def test_dao_list_non_existing_current_mentorship_relation(self):
-        result = MentorshipRelationDAO.list_current_mentorship_relation(user_id=self.admin_user.id)
+        result = MentorshipRelationDAO.list_current_mentorship_relation(
+            user_id=self.admin_user.id)
         expected_response = (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200)
 
         self.assertEqual(expected_response, result)
 
     def test_dao_list_pending_mentorship_relation(self):
-
-        result = MentorshipRelationDAO.list_pending_mentorship_relations(user_id=self.first_user.id)
+        result = MentorshipRelationDAO.list_pending_mentorship_relations(
+            user_id=self.first_user.id)
         expected_response = [self.future_pending_mentorship_relation]
 
         self.assertEqual(expected_response, result[0])

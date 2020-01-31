@@ -9,7 +9,8 @@ from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
-from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
+from tests.mentorship_relation.relation_base_setup import \
+    MentorshipRelationBaseTestCase
 from tests.test_utils import get_test_request_header
 
 
@@ -80,55 +81,69 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     def test_list_past_mentorship_relations(self):
         with self.client:
             response = self.client.get('/mentorship_relations/past',
-                                       headers=get_test_request_header(self.second_user.id))
+                                       headers=get_test_request_header(
+                                           self.second_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual([marshal(self.past_mentorship_relation, mentorship_request_response_body)], json.loads(response.data))
+            self.assertEqual([marshal(self.past_mentorship_relation,
+                                      mentorship_request_response_body)],
+                             json.loads(response.data))
 
     def test_list_pending_mentorship_relations(self):
         with self.client:
             response = self.client.get('/mentorship_relations/pending',
-                                       headers=get_test_request_header(self.second_user.id))
+                                       headers=get_test_request_header(
+                                           self.second_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual([marshal(self.future_pending_mentorship_relation, mentorship_request_response_body)],
+            self.assertEqual([marshal(self.future_pending_mentorship_relation,
+                                      mentorship_request_response_body)],
                              json.loads(response.data))
 
     def test_list_current_mentorship_relation(self):
         with self.client:
             response = self.client.get('/mentorship_relations/current',
-                                       headers=get_test_request_header(self.second_user.id))
+                                       headers=get_test_request_header(
+                                           self.second_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual(marshal(self.future_accepted_mentorship_relation, mentorship_request_response_body),
+            self.assertEqual(marshal(self.future_accepted_mentorship_relation,
+                                     mentorship_request_response_body),
                              json.loads(response.data))
 
     def test_list_all_mentorship_relations(self):
         with self.client:
             response = self.client.get('/mentorship_relations',
-                                       headers=get_test_request_header(self.admin_user.id))
+                                       headers=get_test_request_header(
+                                           self.admin_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual([marshal(self.admin_only_mentorship_relation, mentorship_request_response_body)],
+            self.assertEqual([marshal(self.admin_only_mentorship_relation,
+                                      mentorship_request_response_body)],
                              json.loads(response.data))
 
     def test_list_current_mentorship_relation_sent_by_current_user(self):
         with self.client:
             response = self.client.get('/mentorship_relations/current',
-                                       headers=get_test_request_header(self.second_user.id))
+                                       headers=get_test_request_header(
+                                           self.second_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual(marshal(self.future_accepted_mentorship_relation, mentorship_request_response_body),
+            self.assertEqual(marshal(self.future_accepted_mentorship_relation,
+                                     mentorship_request_response_body),
                              json.loads(response.data))
-            self.assertFalse(self.future_accepted_mentorship_relation.sent_by_me)
+            self.assertFalse(
+                self.future_accepted_mentorship_relation.sent_by_me)
 
     def test_list_current_mentorship_relation_sent_by_another_user(self):
         with self.client:
             response = self.client.get('/mentorship_relations/current',
-                                       headers=get_test_request_header(self.first_user.id))
+                                       headers=get_test_request_header(
+                                           self.first_user.id))
 
             self.assertEqual(200, response.status_code)
-            self.assertEqual(marshal(self.future_accepted_mentorship_relation, mentorship_request_response_body),
+            self.assertEqual(marshal(self.future_accepted_mentorship_relation,
+                                     mentorship_request_response_body),
                              json.loads(response.data))
             self.assertTrue(self.future_accepted_mentorship_relation.sent_by_me)
 
