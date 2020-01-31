@@ -180,6 +180,14 @@ class MentorshipRelationDAO:
         user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
 
+        # verify if request exists
+        if request is None:
+            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
+
+        # verify if request is in pending state
+        if request.state != MentorshipRelationState.PENDING:
+            return messages.NOT_PENDING_STATE_RELATION, 400
+
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
             return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, 400
@@ -217,6 +225,14 @@ class MentorshipRelationDAO:
         """
 
         request = MentorshipRelationModel.find_by_id(request_id)
+
+        # verify if request exists
+        if request is None:
+            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
+
+        # verify if request is in pending state
+        if request.state != MentorshipRelationState.PENDING:
+            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
@@ -286,6 +302,14 @@ class MentorshipRelationDAO:
         """
 
         request = MentorshipRelationModel.find_by_id(request_id)
+
+        # verify if request exists
+        if request is None:
+            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
+
+        # verify if request is in pending state
+        if request.state != MentorshipRelationState.PENDING:
+            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if user created the mentorship request
         if request.action_user_id != user_id:
