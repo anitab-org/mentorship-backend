@@ -5,7 +5,8 @@ from unittest.mock import patch
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.schedulers.complete_mentorship_cron_job import complete_overdue_mentorship_relations_job
+from app.schedulers.complete_mentorship_cron_job import \
+    complete_overdue_mentorship_relations_job
 from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.user import UserModel
 from tests.base_test_case import BaseTestCase
@@ -103,16 +104,21 @@ class TestCompleteMentorshipRelationCronFunction(BaseTestCase):
 
     @patch('run.application', side_effect=get_test_app)
     def test_complete_mentorship_relations_accepted(self, get_test_app_fn):
-
-        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation_1.state)
-        self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation_2.state)
-        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation_3.state)
+        self.assertEqual(MentorshipRelationState.ACCEPTED,
+                         self.mentorship_relation_1.state)
+        self.assertEqual(MentorshipRelationState.PENDING,
+                         self.mentorship_relation_2.state)
+        self.assertEqual(MentorshipRelationState.ACCEPTED,
+                         self.mentorship_relation_3.state)
 
         complete_overdue_mentorship_relations_job()
 
-        self.assertEqual(MentorshipRelationState.COMPLETED, self.mentorship_relation_1.state)
-        self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation_2.state)
-        self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation_3.state)
+        self.assertEqual(MentorshipRelationState.COMPLETED,
+                         self.mentorship_relation_1.state)
+        self.assertEqual(MentorshipRelationState.PENDING,
+                         self.mentorship_relation_2.state)
+        self.assertEqual(MentorshipRelationState.ACCEPTED,
+                         self.mentorship_relation_3.state)
 
 
 if __name__ == "__main__":
