@@ -56,7 +56,8 @@ class TestUserLoginApi(BaseTestCase):
             self.assertIsNone(response.json.get('refresh_token'))
             self.assertIsNone(response.json.get('refresh_expiry'))
             self.assertEqual(1, len(response.json))
-            self.assertEqual(messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json)
+            self.assertEqual(messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN,
+                             response.json)
             self.assertEqual(403, response.status_code)
 
     def test_user_login_verified_user(self):
