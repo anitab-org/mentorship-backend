@@ -7,8 +7,9 @@ from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
+
 class MentorshipRelationDAO:
-    """Data Access Object for mentorship relation functionalities.
+    """Data Access Object for mentorship relation endpoint.
 
     Provides various functions pertaining to mentorship.
 
@@ -17,7 +18,8 @@ class MentorshipRelationDAO:
         MINIMUM_MENTORSHIP_DURATION
     """
 
-    MAXIMUM_MENTORSHIP_DURATION = timedelta(weeks=24)  # 6 months = approximately 6*4
+    # 6 months = approximately 6*4
+    MAXIMUM_MENTORSHIP_DURATION = timedelta(weeks=24)
     MINIMUM_MENTORSHIP_DURATION = timedelta(weeks=4)
 
     def create_mentorship_relation(self, user_id, data):
@@ -26,11 +28,14 @@ class MentorshipRelationDAO:
         Establishes the mentor-mentee relationship.
 
         Args:
-            user_id: ID of the user initiating this request. Has to be either the mentor or the mentee.
-            data: List containing the mentor_id, mentee_id, end_date_timestamp and notes.
+            user_id: ID of the user initiating this request. Has to be either
+            the mentor or the mentee.
+            data: List containing the mentor_id, mentee_id, end_date_timestamp
+            and notes.
 
         Returns:
-            message: A message corresponding to the completed action; success if mentorship relationship is established, failure if otherwise.
+            message: A message corresponding to the completed action; success
+            if mentorship relationship is established, failure if otherwise.
         """
         action_user_id = user_id
         mentor_id = data['mentor_id']
@@ -39,7 +44,8 @@ class MentorshipRelationDAO:
         notes = data['notes']
 
         # user_id has to match either mentee_id or mentor_id
-        is_valid_user_ids = action_user_id == mentor_id or action_user_id == mentee_id
+        is_valid_user_ids = action_user_id == mentor_id or \
+                            action_user_id == mentee_id
         if not is_valid_user_ids:
             return messages.MATCH_EITHER_MENTOR_OR_MENTEE, 400
 
@@ -80,15 +86,16 @@ class MentorshipRelationDAO:
         if not mentee_user.need_mentoring:
             return messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED, 400
 
-
         # TODO add tests for this portion
 
-        all_mentor_relations = mentor_user.mentor_relations + mentor_user.mentee_relations
+        all_mentor_relations = mentor_user.mentor_relations + \
+                               mentor_user.mentee_relations
         for relation in all_mentor_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
                 return messages.MENTOR_IN_RELATION, 400
 
-        all_mentee_relations = mentee_user.mentor_relations + mentee_user.mentee_relations
+        all_mentee_relations = mentee_user.mentor_relations + \
+                               mentee_user.mentee_relations
         for relation in all_mentee_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
                 return messages.MENTEE_ALREADY_IN_A_RELATION, 400
@@ -98,14 +105,15 @@ class MentorshipRelationDAO:
         tasks_list = TasksListModel()
         tasks_list.save_to_db()
 
-        mentorship_relation = MentorshipRelationModel(action_user_id=action_user_id,
-                                                      mentor_user=mentor_user,
-                                                      mentee_user=mentee_user,
-                                                      creation_date=datetime.now().timestamp(),
-                                                      end_date=end_date_timestamp,
-                                                      state=MentorshipRelationState.PENDING,
-                                                      notes=notes,
-                                                      tasks_list=tasks_list)
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=action_user_id,
+            mentor_user=mentor_user,
+            mentee_user=mentee_user,
+            creation_date=datetime.now().timestamp(),
+            end_date=end_date_timestamp,
+            state=MentorshipRelationState.PENDING,
+            notes=notes,
+            tasks_list=tasks_list)
 
         mentorship_relation.save_to_db()
 
@@ -113,16 +121,26 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
+    def list_mentorship_relations(user_id=None, accepted=None, pending=None,
+                                  completed=None, cancelled=None,
+                                  rejected=None):
         """Lists all relationships of a given user.
 
-        Lists all relationships of a given user. Support for filtering not yet implemented.
+        Lists all relationships of a given user.
+        Support for filtering not yet implemented.
 
         Args:
             user_id: ID of the user whose relationships are to be listed.
+            accepted: boolean that indicates if relation must be accepted
+            pending: boolean that indicates if relation must be pending
+            completed: boolean that indicates if relation must be completed
+            cancelled: boolean that indicates if relation must be cancelled
+            rejected: boolean that indicates if relation must be rejected
 
         Returns:
-            message: A message corresponding to the completed action; success if all relationships of a given user are listed, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if all relationships of a given user are listed,
+            failure if otherwise.
         """
         if pending is not None:
             return messages.NOT_IMPLEMENTED, 200
@@ -154,19 +172,13 @@ class MentorshipRelationDAO:
             request_id: ID of the request to be accepted.
 
         Returns:
-            message: A message corresponding to the completed action; success if mentorship relation request is accepted, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if mentorship relation request is accepted,
+            failure if otherwise.
         """
 
         user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
-
-        # verify if request exists
-        if request is None:
-            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
-
-        # verify if request is in pending state
-        if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
@@ -174,7 +186,7 @@ class MentorshipRelationDAO:
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
+            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
 
         requests = user.mentee_relations + user.mentor_relations
 
@@ -199,19 +211,12 @@ class MentorshipRelationDAO:
             request_id: ID of the request to be rejected.
 
         Returns:
-            message: A message corresponding to the completed action; success if mentorship relation request is rejected, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if mentorship relation request is rejected,
+            failure if otherwise.
         """
 
-        user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
-
-        # verify if request exists
-        if request is None:
-            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
-
-        # verify if request is in pending state
-        if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
@@ -237,10 +242,11 @@ class MentorshipRelationDAO:
             relation_id: ID of the relationship.
 
         Returns:
-            message: A message corresponding to the completed action; success if mentorship relation is terminated, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if mentorship relation is terminated,
+            failure if otherwise.
         """
 
-        user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(relation_id)
 
         # verify if request exists
@@ -266,26 +272,20 @@ class MentorshipRelationDAO:
     def delete_request(user_id, request_id):
         """Deletes a mentorship request.
 
-        Deletes a mentorship request if the current user was the one who created it and the request is in the pending state.
+        Deletes a mentorship request if the current user was the one
+        who created it and the request is in the pending state.
 
         Args:
             user_id: ID of the user that is deleting a request.
             request_id: ID of the request.
 
         Returns:
-            message: A message corresponding to the completed action; success if mentorship relation request is deleted, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if mentorship relation request is deleted,
+            failure if otherwise.
         """
 
-        user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
-
-        # verify if request exists
-        if request is None:
-            return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404
-
-        # verify if request is in pending state
-        if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, 400
 
         # verify if user created the mentorship request
         if request.action_user_id != user_id:
@@ -305,7 +305,9 @@ class MentorshipRelationDAO:
             user_id: ID of the user listing all previous relationships.
 
         Returns:
-            message: A message corresponding to the completed action; success if past mentorship relation details are listed, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if past mentorship relation details are listed,
+            failure if otherwise.
         """
 
         user = UserModel.find_by_id(user_id)
@@ -315,7 +317,8 @@ class MentorshipRelationDAO:
 
         for relation in all_relations:
             if relation.end_date < now_timestamp:
-                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
+                setattr(relation, 'sent_by_me',
+                        relation.action_user_id == user_id)
                 past_relations += [relation]
 
         return past_relations, 200
@@ -329,7 +332,9 @@ class MentorshipRelationDAO:
             user_id: ID of the user listing all current relationships.
 
         Returns:
-            message: A message corresponding to the completed action; success if current mentorship relation details are listed, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if current mentorship relation details are listed,
+            failure if otherwise.
         """
 
         user = UserModel.find_by_id(user_id)
@@ -337,7 +342,8 @@ class MentorshipRelationDAO:
 
         for relation in all_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
-                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
+                setattr(relation, 'sent_by_me',
+                        relation.action_user_id == user_id)
                 return relation
 
         return messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200
@@ -351,7 +357,9 @@ class MentorshipRelationDAO:
             user_id: ID of the user listing all pending relationships.
 
         Returns:
-            message: A message corresponding to the completed action; success if pending mentorship relation requests are listed, failure if otherwise.
+            message: A message corresponding to the completed action;
+            success if pending mentorship relation requests are listed,
+            failure if otherwise.
         """
 
         user = UserModel.find_by_id(user_id)
@@ -360,8 +368,10 @@ class MentorshipRelationDAO:
         all_relations = user.mentor_relations + user.mentee_relations
 
         for relation in all_relations:
-            if relation.state == MentorshipRelationState.PENDING and relation.end_date > now_timestamp:
-                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
+            if relation.state == MentorshipRelationState.PENDING and \
+                    relation.end_date > now_timestamp:
+                setattr(relation, 'sent_by_me',
+                        relation.action_user_id == user_id)
                 pending_requests += [relation]
 
         return pending_requests, 200
