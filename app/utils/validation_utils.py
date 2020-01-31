@@ -20,9 +20,13 @@ def is_username_valid(username):
 def validate_length(field_length, min_length, max_length, field_name):
     if not (min_length <= field_length <= max_length):
         if min_length <= 0:
-            error_msg = {"message": get_length_validation_error_message(field_name, None, max_length)}
+            error_msg = {
+                "message": get_length_validation_error_message(
+                    field_name, None, max_length)}
         else:
-            error_msg = {"message": get_length_validation_error_message(field_name, min_length, max_length)}
+            error_msg = {
+                "message": get_length_validation_error_message(
+                    field_name, min_length, max_length)}
         return False, error_msg
     else:
         return True, {}
@@ -30,13 +34,12 @@ def validate_length(field_length, min_length, max_length, field_name):
 
 def get_length_validation_error_message(field_name, min_length, max_length):
     if min_length is None:
-        return "The {field_name} field has to be shorter than {max_limit} characters.".format(field_name=field_name,
-                                                                                              max_limit=max_length + 1)
+        return f"The {field_name} field has to be shorter than " \
+               f"{max_length + 1} characters."
     else:
-        return "The {field_name} field has to be longer than {min_limit} " \
-               "characters and shorter than {max_limit} characters.".format(field_name=field_name,
-                                                                            min_limit=min_length - 1,
-                                                                            max_limit=max_length + 1)
+        return f"The {field_name} field has to be longer than " \
+               f"{min_length - 1} characters and shorter than " \
+               f"{max_length + 1} characters."
 
 
 def get_stripped_string(string_with_whitespaces):
