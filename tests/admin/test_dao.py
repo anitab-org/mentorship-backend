@@ -10,13 +10,11 @@ from app.database.sqlalchemy_extension import db
 
 
 class TestAdminDao(BaseTestCase):
-
-
     """
     Checks whether a new admin can be assigned by existing admin.
     """
+
     def test_dao_assign_new_admin_valid_user(self):
-        
         dao = AdminDAO()
 
         user = UserModel(
@@ -33,9 +31,7 @@ class TestAdminDao(BaseTestCase):
 
         self.assertFalse(user.is_admin)
 
-        data = dict(
-            user_id=2
-        )
+        data = dict(user_id=2)
         dao.assign_new_user(1, data)
 
         user = UserModel.query.filter_by(id=2).first()
@@ -44,8 +40,8 @@ class TestAdminDao(BaseTestCase):
     """
     Checks whether a new admin can be assigned by normal user.
     """
+
     def test_dao_assign_new_admin_by_normal_user(self):
-        
         dao = AdminDAO()
 
         user = UserModel(
@@ -62,35 +58,29 @@ class TestAdminDao(BaseTestCase):
 
         self.assertFalse(user.is_admin)
 
-        data = dict(
-            user_id=1
-        )
+        data = dict(user_id=1)
         dao_result = dao.assign_new_user(2, data)
 
         self.assertEqual((messages.USER_ASSIGN_NOT_ADMIN, 403), dao_result)
 
-
     """
     Checks whether a user tries to assign admin rights to a non existing user.
     """
+
     def test_dao_assign_admin_role_to_non_existing_user(self):
-        
         dao = AdminDAO()
 
-        data = dict(
-            user_id=123
-        )
+        data = dict(user_id=123)
 
         dao_result = dao.assign_new_user(1, data)
 
-        self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), dao_result) 
-
+        self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), dao_result)
 
     """
     Checks whether a user tries to assign admin rights to existing admin user.
     """
-    def test_dao_assign_admin_role_to_admin_user(self):
 
+    def test_dao_assign_admin_role_to_admin_user(self):
         dao = AdminDAO()
 
         user = UserModel(
@@ -108,21 +98,18 @@ class TestAdminDao(BaseTestCase):
         user.is_admin = True
         user.save_to_db()
         self.assertTrue(user.is_admin)
-        
-        data = dict(
-            user_id=2
-        )
+
+        data = dict(user_id=2)
 
         dao_result = dao.assign_new_user(1, data)
 
         self.assertEqual((messages.USER_IS_ALREADY_AN_ADMIN, 400), dao_result)
 
-
     """
     Checks if a user tries to self-assign admin role.  
     """
-    def test_dao_assign_admin_role_to_myself(self):
 
+    def test_dao_assign_admin_role_to_myself(self):
         dao = AdminDAO()
 
         user = UserModel(
@@ -138,20 +125,18 @@ class TestAdminDao(BaseTestCase):
         user = UserModel.query.filter_by(id=2).first()
         self.assertFalse(user.is_admin)
 
-        data = dict(
-            user_id=2
-        )
+        data = dict(user_id=2)
 
         dao_result = dao.assign_new_user(2, data)
 
-        self.assertEqual((messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, 403), dao_result)
-
+        self.assertEqual((messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, 403),
+                         dao_result)
 
     """
     Checks whether a user is trying to revoke other user's admin priviledges. 
     """
+
     def test_dao_revoke_admin_role_to_valid_user(self):
-        
         dao = AdminDAO()
 
         user = UserModel(
@@ -169,20 +154,17 @@ class TestAdminDao(BaseTestCase):
         user.save_to_db()
         self.assertTrue(user.is_admin)
 
-        data = dict(
-            user_id=2
-        )
+        data = dict(user_id=2)
         dao.revoke_admin_user(1, data)
 
         user = UserModel.query.filter_by(id=2).first()
         self.assertFalse(user.is_admin)
 
-    
     """
     Checks whether a user is trying to revoke other user's admin privileges. 
     """
+
     def test_dao_revoke_admin_role_by_non_admin_user(self):
-        
         dao = AdminDAO()
 
         user = UserModel(
@@ -196,36 +178,30 @@ class TestAdminDao(BaseTestCase):
         user.save_to_db()
         user = UserModel.query.filter_by(id=2).first()
         self.assertFalse(user.is_admin)
-        
-        data = dict(
-            user_id=1
-        )
+
+        data = dict(user_id=1)
         dao_result = dao.revoke_admin_user(2, data)
 
         self.assertEqual((messages.USER_REVOKE_NOT_ADMIN, 403), dao_result)
 
-
     """
     Checks whether a user tries to revoke admin rights from a non existing user.
     """
-    def test_dao_revoke_admin_role_to_non_existing_user(self):
 
+    def test_dao_revoke_admin_role_to_non_existing_user(self):
         dao = AdminDAO()
 
-        data = dict(
-            user_id=123
-        )
+        data = dict(user_id=123)
 
         dao_result = dao.revoke_admin_user(1, data)
 
         self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), dao_result)
 
-
     """
     Checks whether a user tries to revoke admin rights of a non admin user.
     """
+
     def test_dao_revoke_admin_role_to_non_admin_user(self):
-        
         dao = AdminDAO()
 
         user = UserModel(
@@ -239,9 +215,7 @@ class TestAdminDao(BaseTestCase):
         user = UserModel.query.filter_by(id=2).first()
         self.assertFalse(user.is_admin)
 
-        data = dict(
-            user_id=2
-        )
+        data = dict(user_id=2)
 
         dao_result = dao.revoke_admin_user(1, data)
 
@@ -250,16 +224,16 @@ class TestAdminDao(BaseTestCase):
     """
     Checks whether a user tries to revoke their own admin status.
     """
+
     def test_dao_revoke_admin_role_to_myself(self):
         dao = AdminDAO()
 
-        data = dict(
-            user_id=1
-        )
+        data = dict(user_id=1)
 
         dao_result = dao.revoke_admin_user(1, data)
 
-        self.assertEqual((messages.USER_CANNOT_REVOKE_ADMIN_STATUS, 403), dao_result)
+        self.assertEqual((messages.USER_CANNOT_REVOKE_ADMIN_STATUS, 403),
+                         dao_result)
 
 
 if __name__ == '__main__':
