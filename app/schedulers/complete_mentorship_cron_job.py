@@ -11,14 +11,16 @@ def complete_overdue_mentorship_relations_job():
     from run import application
     with application.app_context():
         from app.utils.enum_utils import MentorshipRelationState
-        from app.database.models.mentorship_relation import MentorshipRelationModel
+        from app.database.models.mentorship_relation import \
+            MentorshipRelationModel
         all_relations = MentorshipRelationModel.query.all()
 
         current_date_timestamp = datetime.now().timestamp()
 
         for relation in all_relations:
 
-            if relation.state == MentorshipRelationState.ACCEPTED and relation.end_date < current_date_timestamp:
+            if relation.state == MentorshipRelationState.ACCEPTED and \
+                    relation.end_date < current_date_timestamp:
                 relation.state = MentorshipRelationState.COMPLETED
                 relation.save_to_db()
 
