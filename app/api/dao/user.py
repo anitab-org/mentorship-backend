@@ -161,6 +161,32 @@ class UserDAO:
         return list_of_users, 200
 
     @staticmethod
+    def search_users(user_id, query, is_verified=None):
+        """ Retrieves a list of verified users with the specified ID based on search query.
+
+        Arguments:
+            user_id: The ID of the user to be listed.
+            query: Name to be searched
+            is_verified: Status of the user's verification; None when provided as an argument.
+
+        Returns:
+            A list of users matching conditions and the HTTP response code.
+
+        """
+
+        #like=True allows wildcard search in the format %query%
+        users_list = UserModel.query.whoosh_search(query, like = True).filter(UserModel.id != user_id)
+        list_of_users = []
+        if is_verified:
+            for user in users_list:
+                if user.is_email_verified:
+                    list_of_users += [user.json()]
+        else:
+            list_of_users = [user.json() for user in users_list]
+
+        return list_of_users, 200
+
+    @staticmethod
     @email_verification_required
     def update_user_profile(user_id, data):
         """ Updates the profile of a specified user with new data.
