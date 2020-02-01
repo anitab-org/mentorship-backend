@@ -22,15 +22,23 @@ class UserList(Resource):
 
     @classmethod
     @jwt_required
-    @users_ns.doc('list_users')
+    @users_ns.doc('list_users', params={'search': 'search_query'})
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
+    @users_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
     def get(cls):
         """
         Returns list of all the users.
         """
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id)
+        if not request.args.get('search'): #do not search
+            return DAO.list_users(user_id)
+        return DAO.search_users(user_id, request.args.get('search')) #search
 
 
 @users_ns.route('users/<int:user_id>')
