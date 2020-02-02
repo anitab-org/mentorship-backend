@@ -1,7 +1,6 @@
 from flask import Flask
 from config import get_env_config
-import flask_whooshalchemyplus
-from app.database.models.user import UserModel
+
 
 def create_app(config_filename):
     app = Flask(__name__)
@@ -25,8 +24,6 @@ def create_app(config_filename):
     from app.schedulers.background_scheduler import init_schedulers
     init_schedulers()
 
-    # index UserModel to allow searching
-    flask_whooshalchemyplus.whoosh_index(app,UserModel)
     return app
 
 

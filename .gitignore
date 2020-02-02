@@ -113,6 +113,3 @@ venv.bak/
 
 # aws-eb
 .elasticbeanstalk/
-
-# whoosh search
-whoosh/

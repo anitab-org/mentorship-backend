@@ -13,9 +13,6 @@ class UserModel(db.Model):
         email: A string for storing user email.
         terms_and_conditions_checked: A boolean indicating if user has agreed to terms and conditions or not.
     """
-
-    __searchable__ = ['name', 'username'] #to allow searching by whoosh
-
     # Specifying database table used for UserModel
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
