@@ -9,7 +9,6 @@ class BaseConfig(object):
     # SQLAlchemy settings
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    WHOOSH_BASE = 'whoosh' #whoosh index table
 
     UNVERIFIED_USER_THRESHOLD = 2592000  # 30 days
 
