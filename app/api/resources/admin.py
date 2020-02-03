@@ -13,6 +13,16 @@ add_models_to_namespace(admin_ns)
 
 
 @admin_ns.route('admin/new')
+@admin_ns.response(200, '%s'%messages.USER_IS_NOW_AN_ADMIN)
+@admin_ns.response(400, '%s'%messages.USER_IS_ALREADY_AN_ADMIN)
+@admin_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
+@admin_ns.response(403, '%s'%messages.USER_ASSIGN_NOT_ADMIN)
+@admin_ns.response(404, '%s'%messages.USER_DOES_NOT_EXIST)
 class AssignNewUserAdmin(Resource):
 
     @classmethod
@@ -33,6 +43,16 @@ class AssignNewUserAdmin(Resource):
 
 
 @admin_ns.route('admin/remove')
+@admin_ns.response(200, '%s'%messages.USER_ADMIN_STATUS_WAS_REVOKED)
+@admin_ns.response(400, '%s'%messages.USER_IS_NOT_AN_ADMIN)
+@admin_ns.response(401, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
+    )
+@admin_ns.response(403, '%s'%messages.USER_REVOKE_NOT_ADMIN)
+@admin_ns.response(404, '%s'%messages.USER_DOES_NOT_EXIST)
 class RevokeUserAdmin(Resource):
 
     @classmethod
