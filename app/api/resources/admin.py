@@ -31,6 +31,9 @@ class AssignNewUserAdmin(Resource):
     def post(cls):
         """
         Assigns a User as a new Admin.
+
+        An existing admin can use this endpoint to designate another user as an admin.
+        This is done by passing "user_id" of that particular user.
         """
         user_id = get_jwt_identity()
         user = UserDAO.get_user(user_id)
@@ -61,6 +64,9 @@ class RevokeUserAdmin(Resource):
     def post(cls):
         """
         Revoke admin status from another User Admin.
+
+        An existing admin can use this endpoint to revoke admin status of another user.
+        This is done by passing "user_id" of that particular user.
         """
         user_id = get_jwt_identity()
         user = UserDAO.get_user(user_id)
