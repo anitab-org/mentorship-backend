@@ -196,7 +196,7 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
     def test_user_password_change_request_password_inferior_to_limit(self):
         secure_random = SystemRandom()
         random_generated_password = "".join(secure_random.choice(ascii_lowercase) for x in range(PASSWORD_MIN_LENGTH-1))
-        data = dict(new_password=random_generated_password, current_password=random_generated_password)
+        data = dict(new_password=random_generated_password, current_password=user1['password'])
 
         expected_result = {"message": get_length_validation_error_message("new_password", PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)}
         actual_result = validate_new_password(data)
@@ -206,7 +206,7 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
     def test_user_password_change_request_password_superior_to_limit(self):
         secure_random = SystemRandom()
         random_generated_password = "".join(secure_random.choice(ascii_lowercase) for x in range(PASSWORD_MAX_LENGTH+1))
-        data = dict(new_password=random_generated_password, current_password=random_generated_password)
+        data = dict(new_password=random_generated_password, current_password=user1['password'])
 
         expected_result = {"message": get_length_validation_error_message("new_password", PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)}
         actual_result = validate_new_password(data)
