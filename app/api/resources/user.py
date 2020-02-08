@@ -29,12 +29,16 @@ class UserList(Resource):
 
     @classmethod
     @jwt_required
-    @users_ns.doc('list_users')
+    @users_ns.doc('list_users', params={'search': 'Search query'})
+    @users_ns.doc(responses={
+        401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+             f"{messages.TOKEN_IS_INVALID['message']}<br>"
+             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"})
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """
-        Returns list of all the users.
+        Returns list of all the users whose names contain the given query.
 
         A user with valid access token can view the list of users. The endpoint
         doesn't take any other input. A JSON array having an object for each user is
@@ -43,7 +47,7 @@ class UserList(Resource):
         available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id)
+        return DAO.list_users(user_id, request.args.get('search', ''))
 
 
 @users_ns.route('users/<int:user_id>')
@@ -194,12 +198,16 @@ class VerifiedUser(Resource):
 
     @classmethod
     @jwt_required
-    @users_ns.doc('get_verified_users')
+    @users_ns.doc('get_verified_users', params={'search': 'Search query'})
+    @users_ns.doc(responses={
+        401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+             f"{messages.TOKEN_IS_INVALID['message']}<br>"
+             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"})
     @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """
-        Returns all verified users.
+        Returns all verified users whose names contain the given query.
 
         A user with valid access token can view the list of verified users. The endpoint
         doesn't take any other input. A JSON array having an object for each user is
@@ -208,7 +216,7 @@ class VerifiedUser(Resource):
         available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, is_verified=True)
+        return DAO.list_users(user_id, request.args.get('search', ''), is_verified=True)
 
 
 @users_ns.route('register')
