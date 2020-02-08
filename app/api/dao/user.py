@@ -137,11 +137,12 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id, is_verified=None):
+    def list_users(user_id, search_query='', is_verified=None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
             user_id: The ID of the user to be listed.
+            search_query: The search query for name of the users to be found.
             is_verified: Status of the user's verification; None when provided as an argument.
         
         Returns:
@@ -150,13 +151,11 @@ class UserDAO:
         """
 
         users_list = UserModel.query.filter(UserModel.id != user_id).all()
-        list_of_users = []
-        if is_verified:
-            for user in users_list:
-                if user.is_email_verified:
-                    list_of_users += [user.json()]
-        else:
-            list_of_users = [user.json() for user in users_list]
+
+        list_of_users = [user.json() for user in filter(
+            lambda user: (not is_verified or user.is_email_verified)
+                         and search_query.lower() in user.name.lower(),
+            users_list)]
 
         return list_of_users, 200
 
