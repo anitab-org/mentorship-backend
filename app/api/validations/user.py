@@ -173,7 +173,11 @@ def validate_new_password(data):
     if 'new_password' not in data:
         return messages.NEW_PASSWORD_FIELD_IS_MISSING
 
+    current_password = data['current_password']
     new_password = data['new_password']
+
+    if current_password == new_password:
+        return messages.USER_ENTERED_CURRENT_PASSWORD
 
     if " " in new_password:
         return messages.USER_INPUTS_SPACE_IN_PASSWORD

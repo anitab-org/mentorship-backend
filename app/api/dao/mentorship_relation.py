@@ -174,7 +174,7 @@ class MentorshipRelationDAO:
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
+            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
 
         requests = user.mentee_relations + user.mentor_relations
 

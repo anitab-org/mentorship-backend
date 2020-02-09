@@ -3,9 +3,8 @@ from itsdangerous import URLSafeTimedSerializer, BadSignature
 from flask_mail import Message
 from flask import render_template
 
+import config
 from app.api.mail_extension import mail
-
-EMAIL_VERIFICATION_TOKEN_TIME_TO_EXPIRE = 86400  # 24 hours in seconds
 
 
 def generate_confirmation_token(email):
@@ -15,7 +14,7 @@ def generate_confirmation_token(email):
     return serializer.dumps(email, salt=application.config['SECURITY_PASSWORD_SALT'])
 
 
-def confirm_token(token, expiration=EMAIL_VERIFICATION_TOKEN_TIME_TO_EXPIRE):
+def confirm_token(token, expiration= config.BaseConfig.UNVERIFIED_USER_THRESHOLD):
     """Confirms the token matches the expected email address.
 
     Args:
@@ -71,6 +70,7 @@ def send_email_verification_message(user_name, email):
     from app.api.resources.user import UserEmailConfirmation  # import here to avoid circular imports
     from app.api.api_extension import api
     confirm_url = api.url_for(UserEmailConfirmation, token=confirmation_token, _external=True)
-    html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name)
+    html = render_template('email_confirmation.html', confirm_url=confirm_url, user_name=user_name,
+                           threshold=config.BaseConfig.UNVERIFIED_USER_THRESHOLD)
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)
