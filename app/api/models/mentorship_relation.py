@@ -63,6 +63,7 @@ list_task_comment_response_body = Model('List task comment response model', {
     'creation_date': fields.Float(required=True, description='Task comment creation date in UNIX timestamp format'),
     'modification_date': fields.Float(required=True, description='Latest task comment modification date in UNIX timestamp format'),
     'comment': fields.String(required=True, description='Comment value for task comment')
+    })
 
 user_dashboard_user_details = Model('user details for dashboard', {
     'id': fields.Integer(required=True, description='user ID'),
