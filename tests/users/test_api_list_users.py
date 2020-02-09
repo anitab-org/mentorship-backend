@@ -45,10 +45,11 @@ class TestListUsersApi(BaseTestCase):
         self.verified_user.is_email_verified = True
         self.verified_user.need_mentoring = True
 
-        # both users arenot in a current relationship
+        # all three users are not in a current relationship
         # verified_user needs mentoring -> is_available = True
         self.verified_user.is_available = True
         self.other_user.is_available = False
+        self.second_user.is_available = False
 
         db.session.add(self.verified_user)
         db.session.add(self.other_user)
@@ -153,7 +154,9 @@ class TestListUsersApi(BaseTestCase):
         self.other_user.is_available = False
 
         auth_header = get_test_request_header(self.admin_user.id)
-        expected_response = [marshal(self.verified_user, public_user_api_model), marshal(self.other_user, public_user_api_model)]
+        expected_response = [marshal(self.verified_user, public_user_api_model),
+                             marshal(self.other_user, public_user_api_model),
+                             marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get('/users', follow_redirects=True, headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)

@@ -167,8 +167,8 @@ class UserDAO:
                 # we don't need if statement for this case
                 # is_available is true
                 # when either need_mentoring or available_to_mentor is true
-                user['is_available'] = user['need_mentoring'] or user[
-                    'available_to_mentor']
+                user['is_available'] = user['need_mentoring'] or \
+                                       user['available_to_mentor']
 
         return list_of_users, 200
 
