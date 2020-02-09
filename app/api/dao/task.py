@@ -2,6 +2,7 @@ from datetime import datetime
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.task_comment import TaskCommentModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
@@ -104,6 +105,9 @@ class TaskDAO:
             return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 401
 
         relation.tasks_list.delete_task(task_id)
+        task_comments = TaskCommentModel.find_task_comments_list_by_task_id(relation_id=mentorship_relation_id,
+                                                                            task_id=task_id)
+        task_comments.delete_from_db()
 
         return messages.TASK_WAS_DELETED_SUCCESSFULLY, 200
 
