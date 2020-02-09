@@ -37,8 +37,8 @@ class TestTaskCommentDao(TasksBaseTestCase):
         self.create_task_comment()
 
         # Verify that find_all_by_user_id() function is working properly
-        task_comments = TaskCommentDAO.get_all_task_comments_by_user_id(
-            user_id=1, relation_id=2)[0]
+        task_comments = TaskCommentDAO.\
+            get_all_task_comments_by_user_id(user_id=1)[0]
         task_comment = task_comments[0]
         self.assertEqual(len(task_comments), 1)
         self.assertTrue(task_comment is not None)

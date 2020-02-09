@@ -114,7 +114,7 @@ class TaskCommentDAO:
             and the HTTP response code.
         """
 
-        return TaskCommentModel.find_all_by_task_id(user_id), 200
+        return TaskCommentModel.find_all_by_user_id(user_id), 200
 
     @staticmethod
     @email_verification_required
