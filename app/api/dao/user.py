@@ -3,7 +3,9 @@ from operator import itemgetter
 from flask_restplus import marshal
 
 from app import messages
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
@@ -151,11 +153,22 @@ class UserDAO:
         """
 
         users_list = UserModel.query.filter(UserModel.id != user_id).all()
-
         list_of_users = [user.json() for user in filter(
             lambda user: (not is_verified or user.is_email_verified)
                          and search_query.lower() in user.name.lower(),
             users_list)]
+
+        for user in list_of_users:
+            relation = MentorshipRelationDAO.list_current_mentorship_relation(
+                    user['id'])
+            if isinstance(relation, MentorshipRelationModel):
+                user['is_available'] = False
+            else:
+                # we don't need if statement for this case
+                # is_available is true
+                # when either need_mentoring or available_to_mentor is true
+                user['is_available'] = user['need_mentoring'] or \
+                                       user['available_to_mentor']
 
         return list_of_users, 200
 
@@ -203,7 +216,7 @@ class UserDAO:
                 user.location = data['location']
             else:
                 user.location = None
-            
+
         if 'occupation' in data:
             if data['occupation']:
                 user.occupation = data['occupation']
