@@ -1,4 +1,4 @@
-#Invalid fields
+# Invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
 USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your username is invalid"}
