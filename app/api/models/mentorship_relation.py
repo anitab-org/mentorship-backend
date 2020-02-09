@@ -11,7 +11,8 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
     api_namespace.models[create_task_comment_body.name] = create_task_comment_body
     api_namespace.models[list_task_comment_response_body.name] = list_task_comment_response_body
-
+    api_namespace.models[mentorship_request_response_body_for_user_dashboard_body.name] = mentorship_request_response_body_for_user_dashboard_body
+    api_namespace.models[user_dashboard_user_details.name] = user_dashboard_user_details
 
 send_mentorship_request_body = Model('Send mentorship relation request model', {
     'mentor_id': fields.Integer(required=True, description='Mentorship relation mentor ID'),
@@ -62,4 +63,22 @@ list_task_comment_response_body = Model('List task comment response model', {
     'creation_date': fields.Float(required=True, description='Task comment creation date in UNIX timestamp format'),
     'modification_date': fields.Float(required=True, description='Latest task comment modification date in UNIX timestamp format'),
     'comment': fields.String(required=True, description='Comment value for task comment')
+
+user_dashboard_user_details = Model('user details for dashboard', {
+    'id': fields.Integer(required=True, description='user ID'),
+    'user_name': fields.String(required=True, description='Mentorship relation user name'),
+    'photo_url': fields.String(required=True, description='Mentorship relation user profile picture URL'),
+})
+
+mentorship_request_response_body_for_user_dashboard_body = Model('List mentorship relation request model for user dashboard', {
+    'id': fields.Integer(required=True, description='Mentorship relation ID'),
+    'action_user_id': fields.Integer(required=True, description='Mentorship relation requester user ID'),
+    'mentor': fields.Nested(user_dashboard_user_details),
+    'mentee': fields.Nested(user_dashboard_user_details),
+    'creation_date': fields.Float(required=True, description='Mentorship relation creation date in UNIX timestamp format'),
+    'accept_date': fields.Float(required=True, description='Mentorship relation acceptance date in UNIX timestamp format'),
+    'start_date': fields.Float(required=True, description='Mentorship relation start date in UNIX timestamp format'),
+    'end_date': fields.Float(required=True, description='Mentorship relation end date in UNIX timestamp format'),
+    'state': fields.Integer(required=True, enum=MentorshipRelationState.values, description='Mentorship relation state'),
+    'notes': fields.String(required=True, description='Mentorship relation notes')
 })
