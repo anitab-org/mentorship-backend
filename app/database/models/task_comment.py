@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from app.api.validations.task_comment import COMMENT_MAX_LENGTH
 from app.database.sqlalchemy_extension import db
 
 
@@ -9,6 +10,7 @@ class TaskCommentModel(db.Model):
         Attributes:
             task_id: An integer for storing the task's id.
             user_id: An integer for storing the user's id.
+            relation_id: An integer for storing the relation's id.
             creation_date: A float indicating comment's creation date.
             modification_date: A float indicating the modification date.
             comment: A string indicating the comment.
@@ -19,16 +21,19 @@ class TaskCommentModel(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
-    task_id = db.Column(db.Integer, db.ForeignKey('tasks_list.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks_list.id'))
+    relation_id = db.Column(db.Integer,
+                            db.ForeignKey('mentorship_relations.id'))
     creation_date = db.Column(db.Float, nullable=False)
     modification_date = db.Column(db.Float)
-    comment = db.Column(db.String(400), nullable=False)
+    comment = db.Column(db.String(COMMENT_MAX_LENGTH), nullable=False)
 
-    def __init__(self, task_id, user_id, comment):
+    def __init__(self, user_id, task_id, relation_id, comment):
         # required fields
-        self.task_id = task_id
         self.user_id = user_id
+        self.task_id = task_id
+        self.relation_id = relation_id
         self.comment = comment
 
         # default fields
@@ -38,8 +43,9 @@ class TaskCommentModel(db.Model):
         """Returns information of task comment as a JSON object."""
         return {
             "id": self.id,
-            "task_id": self.task_id,
             "user_id": self.user_id,
+            "task_id": self.task_id,
+            "relation_id": self.relation_id,
             "creation_date": self.creation_date,
             "modification_date": self.modification_date,
             "comment": self.comment
@@ -47,9 +53,9 @@ class TaskCommentModel(db.Model):
 
     def __repr__(self):
         """Returns the task and user ids, creation date and the comment."""
-        return "Task's id is %d. User's id is %d. Comment was created on: " \
-               "%s.\nComment: %s" % \
-               (self.task_id, self.user_id, self.creation_date, self.comment)
+        return f"User's id is {self.user_id}. Task's id is {self.task_id}. " \
+               f"Comment was created on: {self.creation_date}\n" \
+               f"Comment: {self.comment}"
 
     @classmethod
     def find_by_id(cls, _id):
@@ -60,12 +66,14 @@ class TaskCommentModel(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_all_by_task_id(cls, task_id):
+    def find_all_by_task_id(cls, task_id, relation_id):
         """Returns all task comments that has the passed task id.
            Args:
                 task_id: The id of the task.
+                relation_id: The id of the relation.
         """
-        return cls.query.filter_by(task_id=task_id).all()
+        return cls.query.filter_by(task_id=task_id,
+                                   relation_id=relation_id).all()
 
     @classmethod
     def find_all_by_user_id(cls, user_id):
