@@ -174,6 +174,33 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
         self.assertEqual(test_need_mentoring, self.first_user.need_mentoring)
 
+    def test_change_password_to_current_password(self):
+        self.first_user = UserModel(
+            name=user1['name'],
+            email=user1['email'],
+            username=user1['username'],
+            password=user1['password'],
+            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+        )
+        self.first_user.is_email_verified = True
+        self.first_user.need_mentoring = True
+
+        db.session.add(self.first_user)
+        db.session.commit()
+
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = messages.USER_ENTERED_CURRENT_PASSWORD
+        actual_response = self.client.put(
+            '/user/change_password', follow_redirects=True,
+            headers=auth_header,
+            data=json.dumps(dict(current_password=user1['password'],
+                                 new_password=user1['password'])),
+            content_type='application/json')
+
+        self.assertEqual(400, actual_response.status_code)
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
+
 
 if __name__ == "__main__":
     unittest.main()
