@@ -145,6 +145,8 @@ MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE = {"message": "Mentorship relation is"
 
 # Login errors
 USER_ENTERED_INCORRECT_PASSWORD = {"message": "Current password is incorrect."}
+USER_ENTERED_CURRENT_PASSWORD = {"message": "New password should not be same "
+                                            "as the current password."}
 EMAIL_EXPIRED_OR_TOKEN_IS_INVALID = {"message": "The confirmation link is"
                                      " invalid or the token has expired."}
 WRONG_USERNAME_OR_PASSWORD = {"message": "Username or password is wrong."}
@@ -185,7 +187,7 @@ TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved"
                                           " successfully."}
 USER_WAS_CREATED_SUCCESSFULLY = {"message": "User was created successfully."
                                  "A confirmation email has been sent via"
-                                 " email.After confirming your email you "
+                                 " email. After confirming your email you "
                                  "can login."}
 ACCEPT_MENTORSHIP_RELATIONS_WITH_SUCCESS = {"message": "Accept mentorship"
                                             " relations with success."}
@@ -227,7 +229,7 @@ LIST_TASK_COMMENTS_WITH_SUCCESS = {
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}
 USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email"}
 ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {"message": "You have confirmed your"
-                                        " account.Thanks!"}
+                                        " account. Thanks!"}
 
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
