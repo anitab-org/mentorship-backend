@@ -1,4 +1,4 @@
-# Invalid fields
+#invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
 USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your username is invalid"}
@@ -28,7 +28,7 @@ MENTOR_ID_FIELD_IS_MISSING = {"message": "Mentor ID field is missing."}
 MENTEE_ID_FIELD_IS_MISSING = {"message": "Mentee ID field is missing."}
 END_DATE_FIELD_IS_MISSING = {"message": "End date field is missing."}
 NOTES_FIELD_IS_MISSING = {"message": "Notes field is missing."}
-USERNAME_FIELD_IS_MISSING = {"message": "Username field is missing."}
+USERNAME_FIELD_IS_MISSING = {"message": "The field username is missing."}
 PASSWORD_FIELD_IS_MISSING = {"message": "Password field is missing."}
 NAME_FIELD_IS_MISSING = {"message": "Name field is missing."}
 EMAIL_FIELD_IS_MISSING = {"message": "Email field is missing."}
@@ -74,7 +74,7 @@ MATCH_EITHER_MENTOR_OR_MENTEE = {"message": "Your ID has to match either"
 
 # Update
 NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {"message": "No data for updating"
-                                         " profile was sent"}
+                                         "profile was sent"}
 
 # Relation constraints
 MENTOR_ID_SAME_AS_MENTEE_ID = {"message": "You cannot have a mentorship"
