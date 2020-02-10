@@ -98,7 +98,8 @@ class GetAllMyMentorshipRelation(Resource):
     @jwt_required
     @mentorship_relation_ns.doc('get_all_user_mentorship_relations')
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations was successfully.',
+    @mentorship_relation_ns.param(name="relation_state",description="Mentorship relation state filter.",_in="query")
+    @mentorship_relation_ns.response(200, 'Return all user\'s mentorship relations, filtered by the relation state, was successfully.',
                                      model=mentorship_request_response_body)
     @mentorship_relation_ns.response(401, '%s\n%s\n%s'%(
         messages.TOKEN_HAS_EXPIRED,
@@ -119,7 +120,13 @@ class GetAllMyMentorshipRelation(Resource):
         """
 
         user_id = get_jwt_identity()
-        response = DAO.list_mentorship_relations(user_id=user_id)
+        rel_state_param = request.args
+        rel_state_filter = None
+
+        if rel_state_param:
+            rel_state_filter = rel_state_param['relation_state'].upper()
+
+        response = DAO.list_mentorship_relations(user_id=user_id, state=rel_state_filter)
 
         return response
 
