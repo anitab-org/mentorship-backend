@@ -57,7 +57,7 @@ class UserModel(db.Model):
     available_to_mentor = db.Column(db.Boolean)
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
-        """"Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
+        """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
         ## required fields
 
         self.name = name
@@ -109,7 +109,7 @@ class UserModel(db.Model):
 
     def __repr__(self):
         """Returns the user's name and username. """
-        return "User name id %s. Username is %s ." % (self.name, self.username)
+        return "User name %s. Username is %s ." % (self.name, self.username)
 
     @classmethod
     def find_by_username(cls, username):
