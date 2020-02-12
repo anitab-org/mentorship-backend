@@ -13,7 +13,7 @@ from app.api.validations.task_comment import \
     validate_task_comment_request_data, COMMENT_MAX_LENGTH
 from app.utils.validation_utils import get_length_validation_error_message
 from app.database.models.mentorship_relation import MentorshipRelationModel
-
+from app.api.email_utils import send_email_mentorship_relation_accepted
 from app.api.email_utils import send_email_new_request
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
@@ -24,7 +24,6 @@ add_models_to_namespace(mentorship_relation_ns)
 
 DAO = MentorshipRelationDAO()
 userDAO = UserDAO()
-
 
 @mentorship_relation_ns.route('mentorship_relation/send_request')
 class SendRequest(Resource):
@@ -192,6 +191,9 @@ class AcceptMentorshipRelation(Resource):
 
         user_id = get_jwt_identity()
         response = DAO.accept_request(user_id=user_id, request_id=request_id)
+
+        if response[1] == 200:
+            send_email_mentorship_relation_accepted(request_id)
 
         return response
 

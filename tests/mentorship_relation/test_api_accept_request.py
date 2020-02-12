@@ -1,5 +1,6 @@
 import json
 import unittest
+from unittest.mock import patch
 from datetime import datetime, timedelta
 
 from app import messages
@@ -36,7 +37,12 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-    def test_accept_mentorship_request(self):
+    def mail_send_mocked(self):
+        return self
+
+    # mocking mail.send function which connects with smtp server
+    @patch('flask_mail._MailMixin.send', side_effect=mail_send_mocked)
+    def test_accept_mentorship_request(self,send_email_function):
         self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
         with self.client:
             response = self.client.put('/mentorship_relation/%s/accept' % self.mentorship_relation.id,
