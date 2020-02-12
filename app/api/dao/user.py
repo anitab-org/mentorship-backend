@@ -1,16 +1,23 @@
 from datetime import datetime
 from operator import itemgetter
+from flask_restplus import marshal
 
 from app import messages
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
+from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.api.models.mentorship_relation import list_tasks_response_body, mentorship_request_response_body_for_user_dashboard_body
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.utils.validation_utils import is_email_valid
+
 
 class UserDAO:
     """Data Access Object for User functionalities"""
-    
+
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
     SUCCESS_USER_CREATED = "SUCCESS_USER_CREATED"
     MIN_NUMBER_OF_ADMINS = 1
@@ -27,7 +34,7 @@ class UserDAO:
         Returns:
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
-        
+
         name = data['name']
         username = data['username']
         password = data['password']
@@ -66,7 +73,7 @@ class UserDAO:
         Returns: 
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
-        
+
         user = UserModel.find_by_id(user_id)
 
         # check if this user is the only admin
@@ -96,7 +103,7 @@ class UserDAO:
             The UserModel class of the user whose ID was searched, containing the public information of their profile such as bio, location, etc.
         
         """
-        
+
         return UserModel.find_by_id(user_id)
 
     @staticmethod
@@ -112,7 +119,7 @@ class UserDAO:
             The UserModel class of the user whose email was searched, containing the public information of their profile such as bio, location, etc.
         
         """
-        
+
         return UserModel.find_by_email(email)
 
     @staticmethod
@@ -128,30 +135,40 @@ class UserDAO:
             The UserModel class of the user whose username was searched, containing the public information of their profile such as bio, location, etc.
         
         """
-        
+
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id, is_verified=None):
+    def list_users(user_id, search_query='', is_verified=None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
             user_id: The ID of the user to be listed.
+            search_query: The search query for name of the users to be found.
             is_verified: Status of the user's verification; None when provided as an argument.
         
         Returns:
             A list of users matching conditions and the HTTP response code.
         
         """
-        
-        users_list = UserModel.query.filter(UserModel.id!=user_id).all()
-        list_of_users = []
-        if is_verified:
-            for user in users_list:
-                if user.is_email_verified:
-                    list_of_users += [user.json()]
-        else:
-            list_of_users = [user.json() for user in users_list]
+
+        users_list = UserModel.query.filter(UserModel.id != user_id).all()
+        list_of_users = [user.json() for user in filter(
+            lambda user: (not is_verified or user.is_email_verified)
+                         and search_query.lower() in user.name.lower(),
+            users_list)]
+
+        for user in list_of_users:
+            relation = MentorshipRelationDAO.list_current_mentorship_relation(
+                    user['id'])
+            if isinstance(relation, MentorshipRelationModel):
+                user['is_available'] = False
+            else:
+                # we don't need if statement for this case
+                # is_available is true
+                # when either need_mentoring or available_to_mentor is true
+                user['is_available'] = user['need_mentoring'] or \
+                                       user['available_to_mentor']
 
         return list_of_users, 200
 
@@ -188,35 +205,65 @@ class UserDAO:
         if 'name' in data and data['name']:
             user.name = data['name']
 
-        if 'bio' in data and data['bio']:
-            user.bio = data['bio']
+        if 'bio' in data:
+            if data['bio']:
+                user.bio = data['bio']
+            else:
+                user.bio = None
 
-        if 'location' in data and data['location']:
-            user.location = data['location']
+        if 'location' in data:
+            if data['location']:
+                user.location = data['location']
+            else:
+                user.location = None
 
-        if 'occupation' in data and data['occupation']:
-            user.occupation = data['occupation']
+        if 'occupation' in data:
+            if data['occupation']:
+                user.occupation = data['occupation']
+            else:
+                user.occupation = None
 
-        if 'organization' in data and data['organization']:
-            user.organization = data['organization']
+        if 'organization' in data:
+            if data['organization']:
+                user.organization = data['organization']
+            else:
+                user.organization = None
 
-        if 'slack_username' in data and data['slack_username']:
-            user.slack_username = data['slack_username']
+        if 'slack_username' in data:
+            if data['slack_username']:
+                user.slack_username = data['slack_username']
+            else:
+                user.slack_username = None
 
-        if 'social_media_links' in data and data['social_media_links']:
-            user.social_media_links = data['social_media_links']
+        if 'social_media_links' in data:
+            if data['social_media_links']:
+                user.social_media_links = data['social_media_links']
+            else:
+                user.social_media_links = None
 
-        if 'skills' in data and data['skills']:
-            user.skills = data['skills']
+        if 'skills' in data:
+            if data['skills']:
+                user.skills = data['skills']
+            else:
+                user.skills = None
 
-        if 'interests' in data and data['interests']:
-            user.interests = data['interests']
+        if 'interests' in data:
+            if data['interests']:
+                user.interests = data['interests']
+            else:
+                user.interests = None
 
-        if 'resume_url' in data and data['resume_url']:
-            user.resume_url = data['resume_url']
+        if 'resume_url' in data:
+            if data['resume_url']:
+                user.resume_url = data['resume_url']
+            else:
+                user.resume_url = None
 
-        if 'photo_url' in data and data['photo_url']:
-            user.photo_url = data['photo_url']
+        if 'photo_url' in data:
+            if data['photo_url']:
+                user.photo_url = data['photo_url']
+            else:
+                user.photo_url = None
 
         if 'need_mentoring' in data:
             user.need_mentoring = data['need_mentoring']
@@ -243,7 +290,7 @@ class UserDAO:
             A message that indicates whether the password change was successful or not and a second element which is the HTTP response code.
         
         """
-        
+
         current_password = data['current_password']
         new_password = data['new_password']
 
@@ -271,7 +318,7 @@ class UserDAO:
 
         email_from_token = confirm_token(token)
 
-        if email_from_token is False or email_from_token is None:
+        if not email_from_token or email_from_token is None:
             return messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400
 
         user = UserModel.find_by_email(email_from_token)
@@ -387,3 +434,95 @@ class UserDAO:
             'achievements': achievements
         }
         return response
+
+    @staticmethod
+    def get_user_dashboard(user_id):
+        """
+        returns user dashboard: relations received. sent as mentor or mentee for all states.
+        Also returns all done, to be done tasks if in a relation
+
+        Args:
+            user_id: id of the user whose dashboard is to be returned
+        """
+        user = UserModel.find_by_id(user_id)
+        if not user:
+            return None
+
+        response = {}
+
+        all_user_relations = user.mentee_relations + user.mentor_relations
+        relations_in_response_form = [DashboardRelationResponseModel(relation) for relation in all_user_relations]
+
+        mentor_sent_relations = [relation for relation in relations_in_response_form if relation.action_user_id == user_id and relation.mentor_id == user_id]
+        mentor_received_relations = [relation for relation in relations_in_response_form if relation.action_user_id != user_id and relation.mentor_id == user_id]
+        mentee_sent_relations = [relation for relation in relations_in_response_form if relation.action_user_id == user_id and relation.mentee_id == user_id]
+        mentee_received_relations = [relation for relation in relations_in_response_form if relation.action_user_id != user_id and relation.mentee_id == user_id]
+
+        as_mentee = {
+            'sent': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []},
+            'received': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []}}
+        as_mentor = {
+            'sent': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []},
+            'received': {'accepted': [], 'rejected': [], 'completed': [], 'cancelled': [], 'pending': []}}
+
+        as_mentee['received']['accepted'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentee['received']['rejected'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentee['received']['completed'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentee['received']['cancelled'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentee['received']['pending'] = [relation.response for relation in mentee_received_relations if relation.state == MentorshipRelationState.PENDING]
+
+        as_mentor['received']['accepted'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentor['received']['rejected'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentor['received']['completed'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentor['received']['cancelled'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentor['received']['pending'] = [relation.response for relation in mentor_received_relations if relation.state == MentorshipRelationState.PENDING]
+
+        as_mentee['sent']['accepted'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentee['sent']['rejected'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentee['sent']['completed'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentee['sent']['cancelled'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentee['sent']['pending'] = [relation.response for relation in mentee_sent_relations if relation.state == MentorshipRelationState.PENDING]
+
+        as_mentor['sent']['accepted'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.ACCEPTED]
+        as_mentor['sent']['rejected'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.REJECTED]
+        as_mentor['sent']['completed'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.COMPLETED]
+        as_mentor['sent']['cancelled'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.CANCELLED]
+        as_mentor['sent']['pending'] = [relation.response for relation in mentor_sent_relations if relation.state == MentorshipRelationState.PENDING]
+
+        response['as_mentor'] = as_mentor
+        response['as_mentee'] = as_mentee
+
+        current_relation = MentorshipRelationDAO.list_current_mentorship_relation(user_id=user_id)
+        response['tasks_todo'] = marshal([task for task in current_relation.tasks_list.tasks if not task['is_done']], list_tasks_response_body)
+        response['tasks_done'] = marshal([task for task in current_relation.tasks_list.tasks if task['is_done']], list_tasks_response_body)
+
+        return response
+
+
+class DashboardRelationResponseModel:
+    """temp class used for storing mentorship_request_response_body_for_user_dashboard_body values"""
+    def __init__(self, relation: MentorshipRelationModel):
+        self.state = relation.state
+        self.mentor_id = relation.mentor_id
+        self.mentee_id = relation.mentee_id
+        self.action_user_id = relation.action_user_id
+        self.response = {
+            'id': relation.id,
+            'action_user_id': relation.action_user_id,
+            'mentor': {
+                'id': relation.mentor_id,
+                'user_name': relation.mentor.name,
+                'photo_url': relation.mentor.photo_url
+            },
+            'mentee': {
+                'id': relation.mentee_id,
+                'user_name': relation.mentee.name,
+                'photo_url': relation.mentee.photo_url
+            },
+            'creation_date': relation.creation_date,
+            'accept_date': relation.accept_date,
+            'start_date': relation.start_date,
+            'end_date': relation.end_date,
+            'state': relation.state,
+            'notes': relation.notes
+        }

@@ -1,5 +1,5 @@
-from datetime import timedelta
 import os
+from datetime import timedelta
 
 
 class BaseConfig(object):
@@ -9,6 +9,8 @@ class BaseConfig(object):
     # SQLAlchemy settings
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    UNVERIFIED_USER_THRESHOLD = 2592000  # 30 days
 
     # Flask JWT settings
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)

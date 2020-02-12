@@ -21,7 +21,7 @@ class AdminDAO:
         """
         new_admin_user_id = data['user_id']
 
-        if user_id is new_admin_user_id:
+        if user_id == new_admin_user_id:
             return messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, 403
 
         admin_user = UserModel.find_by_id(user_id)
@@ -63,7 +63,7 @@ class AdminDAO:
         """
         admin_user_id = data['user_id']
 
-        if user_id is admin_user_id:
+        if user_id == admin_user_id:
             return messages.USER_CANNOT_REVOKE_ADMIN_STATUS, 403
 
         new_admin_user = UserModel.find_by_id(admin_user_id)

@@ -21,8 +21,8 @@ def create_app(config_filename):
     from app.api.mail_extension import mail
     mail.init_app(app)
 
-    from app.schedulers.background_scheduler import init_scheduler
-    init_scheduler()
+    from app.schedulers.background_scheduler import init_schedulers
+    init_schedulers()
 
     return app
 
@@ -34,7 +34,6 @@ application = create_app(get_env_config())
 def create_tables():
     from app.database.sqlalchemy_extension import db
     db.create_all()
-
 
 if __name__ == "__main__":
     application.run(port=5000)
