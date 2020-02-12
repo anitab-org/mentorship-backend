@@ -14,7 +14,6 @@ from app.api.validations.task_comment import \
 from app.utils.validation_utils import get_length_validation_error_message
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.api.email_utils import send_email_mentorship_relation_accepted
-
 from app.api.email_utils import send_email_new_request
 
 mentorship_relation_ns = Namespace('Mentorship Relation',
