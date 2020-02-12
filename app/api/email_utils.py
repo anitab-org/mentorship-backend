@@ -1,3 +1,4 @@
+import datetime
 from itsdangerous import URLSafeTimedSerializer, BadSignature
 
 from flask_mail import Message
@@ -75,6 +76,37 @@ def send_email_verification_message(user_name, email):
     subject = "Mentorship System - Please confirm your email"
     send_email(email, subject, html)
 
+def send_email_mentorship_relation_accepted(request_id):
+    """
+    Sends a notification email to the sender of the mentorship relation request,
+    stating that his request has been accepted.
+
+    Args:
+        request_id: Request id of the mentorship request.
+    """
+
+    from app.database.models.user import UserModel
+    from app.database.models.mentorship_relation import MentorshipRelationModel
+
+    #Getting the request from id.
+    request = MentorshipRelationModel.find_by_id(request_id)
+
+    # Getting the sender and receiver of the mentorship request from their ids.
+    if request.action_user_id == request.mentor_id :
+        request_sender = UserModel.find_by_id(request.mentor_id)
+        request_receiver = UserModel.find_by_id(request.mentee_id)
+        role = "mentee"
+    else :
+        request_sender = UserModel.find_by_id(request.mentee_id)
+        request_receiver = UserModel.find_by_id(request.mentor_id)
+        role = "mentor"
+
+    end_date = request.end_date
+    date = datetime.datetime.fromtimestamp(end_date).strftime('%d-%m-%Y')
+
+    subject = "Mentorship relation accepted!"
+    html = render_template('mentorship_relation_accepted.html', request_sender=request_sender.name, request_receiver=request_receiver.name, role=role, end_date=date)
+    send_email(request_sender.email,subject,html)
 
 def send_email_new_request(user_sender, user_recipient, notes, sender_role):
     """Sends a notification html email message to the user_recipient user.
