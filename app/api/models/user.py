@@ -99,6 +99,11 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=True,
         description='User registration date'
     ),
+
+    'creation_time' :fields.Integer(
+
+        description='User creation time'
+    ),
     'is_email_verified': fields.Boolean(
         required=True,
         description='User email verification status'

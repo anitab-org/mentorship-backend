@@ -31,6 +31,8 @@ class UserModel(db.Model):
     registration_date = db.Column(db.Float)
     terms_and_conditions_checked = db.Column(db.Boolean)
 
+    #creation time
+    creation_time = db.Column(db.Integer)
     # admin
     is_admin = db.Column(db.Boolean)
 
@@ -72,7 +74,8 @@ class UserModel(db.Model):
         self.is_admin = True if self.is_empty() else False  # first user is admin
         self.is_email_verified = False
         self.registration_date = time.time()
-
+        self.creation_time = int(str(time.time()).replace('.', ''))
+        
         ## optional fields
 
         self.need_mentoring = False
@@ -105,6 +108,7 @@ class UserModel(db.Model):
             'photo_url': self.photo_url,
             'need_mentoring': self.need_mentoring,
             'available_to_mentor': self.available_to_mentor
+            'creation_time' : self.creation_time
         }
 
     def __repr__(self):
