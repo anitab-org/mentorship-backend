@@ -66,7 +66,7 @@ class TaskDAO:
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
 
-        if not (user_id is relation.mentee_id or user_id is relation.mentor_id):
+        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
             return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 401
 
         all_tasks = relation.tasks_list.tasks
@@ -100,7 +100,7 @@ class TaskDAO:
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
 
-        if not (user_id is relation.mentee_id or user_id is relation.mentor_id):
+        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
             return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 401
 
         relation.tasks_list.delete_task(task_id)
@@ -130,7 +130,7 @@ class TaskDAO:
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
 
-        if not (user_id is relation.mentee_id or user_id is relation.mentor_id):
+        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
             return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 401
 
         task = relation.tasks_list.find_task_by_id(task_id)

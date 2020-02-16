@@ -1,5 +1,5 @@
-from datetime import timedelta
 import os
+from datetime import timedelta
 
 
 class BaseConfig(object):
@@ -19,6 +19,8 @@ class BaseConfig(object):
     DB_PASSWORD = os.getenv('DB_PASSWORD')
     DB_ENDPOINT = os.getenv('DB_ENDPOINT')
     DB_NAME = os.getenv('DB_NAME')
+
+    UNVERIFIED_USER_THRESHOLD = 2592000  # 30 days
 
     # Flask JWT settings
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(weeks=1)

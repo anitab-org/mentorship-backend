@@ -55,6 +55,19 @@ export DB_NAME=<database_name>
 6. When you are done using the app, deactivate the virtual environment:
 `deactivate`
 
+### Run with docker
+1. Make sure you exported the following [environment variables](https://github.com/systers/mentorship-backend/wiki/Environment-Variables) to '.env' file
+
+2. Build docker image
+```
+docker build -t mentorship-backend:latest .
+```
+3. Deploy
+Docker container ports must be mapped to the host machine port using '--publish' so they're visible.
+```sh
+docker run --env "FLASK_APP=run.py" --publish 5000:5000 mentorship-backend:latest
+```
+
 ### Run tests
 
 To run the unitests run the following command in the terminal (while the virtual environment is activated):

@@ -1,5 +1,6 @@
 from app import messages
-from app.utils.validation_utils import is_name_valid, is_email_valid, is_username_valid, validate_length, get_stripped_string
+from app.utils.validation_utils import is_name_valid, is_email_valid, is_username_valid, validate_length, \
+    get_stripped_string
 
 # Field character limit
 
@@ -55,7 +56,7 @@ def validate_user_registration_request_data(data):
         return is_valid[1]
 
     # Verify business logic of request body
-    if terms_and_conditions_checked is False:
+    if not terms_and_conditions_checked:
         return messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED
 
     if not is_name_valid(name):
@@ -172,7 +173,11 @@ def validate_new_password(data):
     if 'new_password' not in data:
         return messages.NEW_PASSWORD_FIELD_IS_MISSING
 
+    current_password = data['current_password']
     new_password = data['new_password']
+
+    if current_password == new_password:
+        return messages.USER_ENTERED_CURRENT_PASSWORD
 
     if " " in new_password:
         return messages.USER_INPUTS_SPACE_IN_PASSWORD
