@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Travis build triggered on a forked repository
-if [ "$TRAVIS_REPO_SLUG" != "systers/mentorship-backend" ]; then
+if [ "$TRAVIS_REPO_SLUG" != "anitab-org/mentorship-backend" ]; then
     echo "Skip publishing, this is a forked repo."
     exit 0
 fi
@@ -26,7 +26,7 @@ fi
 
 # Get the latest code
 cd $HOME
-git clone --branch=$TRAVIS_BRANCH https://github.com/systers/mentorship-backend.git
+git clone --branch=$TRAVIS_BRANCH https://github.com/anitab-org/mentorship-backend.git
 cd mentorship-backend
 
 # Create AWS Elastic Beanstalk profile
