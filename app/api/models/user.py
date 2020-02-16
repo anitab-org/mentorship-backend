@@ -1,6 +1,5 @@
 from flask_restplus import fields, Model
-from app.api.models.mentorship_relation import list_tasks_response_body
-
+from app.api.models.mentorship_relation import list_tasks_response_body, mentorship_request_response_body_for_user_dashboard_body
 
 def add_models_to_namespace(api_namespace):
     api_namespace.models[public_user_api_model.name] = public_user_api_model
@@ -13,6 +12,9 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[refresh_response_body_model.name] = refresh_response_body_model
     api_namespace.models[resend_email_request_body_model.name] = resend_email_request_body_model
     api_namespace.models[home_response_body_model.name] = home_response_body_model
+    api_namespace.models[dashboard_response_body_model.name] = dashboard_response_body_model
+    api_namespace.models[dashboard_relations_by_state_model.name] = dashboard_relations_by_state_model
+    api_namespace.models[dashboard_sent_received_model.name] = dashboard_sent_received_model
 
 
 public_user_api_model = Model('User list model', {
@@ -63,6 +65,10 @@ public_user_api_model = Model('User list model', {
     'available_to_mentor': fields.Boolean(
         required=True,
         description='User availability to mentor indication'
+    ),
+    'is_available': fields.Boolean(
+        required=True,
+        description='User availability to mentor or to be mentored indication'
     )
 })
 
@@ -200,4 +206,24 @@ home_response_body_model = Model('Get statistics on the app usage of the current
     'cancelled_relations': fields.Integer(required=True, description='Number of cancelled relations'),
     'rejected_requests': fields.Integer(required=True, description='Number of rejected relations'),
     'achievements': fields.List(fields.Nested(list_tasks_response_body))
+})
+
+dashboard_relations_by_state_model = Model('relations by state', {
+    'accepted': fields.List(fields.Nested(mentorship_request_response_body_for_user_dashboard_body)),
+    'rejected': fields.List(fields.Nested(mentorship_request_response_body_for_user_dashboard_body)),
+    'completed': fields.List(fields.Nested(mentorship_request_response_body_for_user_dashboard_body)),
+    'cancelled': fields.List(fields.Nested(mentorship_request_response_body_for_user_dashboard_body)),
+    'pending': fields.List(fields.Nested(mentorship_request_response_body_for_user_dashboard_body))
+})
+
+dashboard_sent_received_model = Model('Get received and sent relations', {
+    'sent': fields.Nested(dashboard_relations_by_state_model),
+    'received': fields.Nested(dashboard_relations_by_state_model)
+})
+
+dashboard_response_body_model = Model('Get user dashboard', {
+    'as_mentor': fields.Nested(dashboard_sent_received_model),
+    'as_mentee': fields.Nested(dashboard_sent_received_model),
+    'tasks_todo': fields.List(fields.Nested(list_tasks_response_body)),
+    'tasks_done': fields.List(fields.Nested(list_tasks_response_body))
 })
