@@ -11,7 +11,8 @@ def init_schedulers():
     """Runs all schedulers"""
     init_complete_relation_scheduler()
     init_delete_unverified_users_scheduler()
-    scheduler.start()
+    if not scheduler.running:
+        scheduler.start()
 
 
 def init_complete_relation_scheduler():
