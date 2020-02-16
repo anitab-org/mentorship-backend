@@ -493,8 +493,10 @@ class UserDAO:
         response['as_mentee'] = as_mentee
 
         current_relation = MentorshipRelationDAO.list_current_mentorship_relation(user_id=user_id)
-        response['tasks_todo'] = marshal([task for task in current_relation.tasks_list.tasks if not task['is_done']], list_tasks_response_body)
-        response['tasks_done'] = marshal([task for task in current_relation.tasks_list.tasks if task['is_done']], list_tasks_response_body)
+        
+        if current_relation != (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200):
+            response['tasks_todo'] = marshal([task for task in current_relation.tasks_list.tasks if not task['is_done']], list_tasks_response_body)
+            response['tasks_done'] = marshal([task for task in current_relation.tasks_list.tasks if task['is_done']], list_tasks_response_body)
 
         return response
 
