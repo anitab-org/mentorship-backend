@@ -380,8 +380,8 @@ class ListCurrentMentorshipRelation(Resource):
 
         if isinstance(response, MentorshipRelationModel):
             return marshal(response, mentorship_request_response_body), 200
-        else:
-            return response
+
+        return response
 
 
 @mentorship_relation_ns.route('mentorship_relations/pending')
@@ -550,8 +550,8 @@ class ListTasks(Resource):
 
         if isinstance(response, tuple):
             return response
-        else:
-            return marshal(response, list_tasks_response_body), 200
+
+        return marshal(response, list_tasks_response_body), 200
 
 
 @mentorship_relation_ns.route('mentorship_relation/<int:request_id>/task/<int:task_id>/complete')
