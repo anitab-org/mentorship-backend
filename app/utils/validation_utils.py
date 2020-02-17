@@ -1,4 +1,5 @@
-"""This module is to check the validity of input for the "name", "email", "username" fields against predetermined patterns as well as to ensure the string input is within the accepted length.
+"""This module is to check the validity of input for the "name", "email", "username" fields
+against predetermined patterns as well as to ensure the string input is within the accepted length.
 
 For the "name" field to be valid, it may contain one or more character from:
 - letter "a" to "z" and/or "A" to "Z", 
