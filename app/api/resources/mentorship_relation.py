@@ -311,6 +311,7 @@ class ListTasks(Resource):
 
         if isinstance(response, tuple):
             return response
+
         return marshal(response, list_tasks_response_body), 200
 
 
