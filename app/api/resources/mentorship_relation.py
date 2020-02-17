@@ -206,6 +206,7 @@ class ListCurrentMentorshipRelation(Resource):
 
         if isinstance(response, MentorshipRelationModel):
             return marshal(response, mentorship_request_response_body), 200
+
         return response
 
 
