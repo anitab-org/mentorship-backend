@@ -91,7 +91,7 @@ class TestListUsersApi(BaseTestCase):
     def test_list_users_api_with_a_search_query_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.other_user, public_user_api_model)]
-        actual_response = self.client.get('/users?search=b', follow_redirects=True,
+        actual_response = self.client.get(f'/users?search={self.other_user.name[-3:]}', follow_redirects=True,
                                           headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)
@@ -102,7 +102,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [
             marshal(self.other_user, public_user_api_model)]
-        actual_response = self.client.get('/users?search=USERB',
+        actual_response = self.client.get(f'/users?search={self.other_user.name.upper()}',
                                           follow_redirects=True,
                                           headers=auth_header)
 
@@ -130,7 +130,7 @@ class TestListUsersApi(BaseTestCase):
         expected_response = [
             marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get(
-            f"/users?search=s_t-r%24a%2Fn'ge",
+            f"/users?search={self.second_user.name}",
             follow_redirects=True,
             headers=auth_header)
 
