@@ -17,7 +17,7 @@ user1 = {
 }
 
 user2 = {
-    "name": "User2",
+    "name": "Userb",
     "email": "user2@email.com",
     "username": "user2",
     "password": "user2_pwd",
@@ -25,7 +25,7 @@ user2 = {
 }
 
 user3 = {
-    "name": "User3",
+    "name": "s_t-r$a/n'ge   name",
     "email": "user3@email.com",
     "username": "user3",
     "password": "user3_pwd",
