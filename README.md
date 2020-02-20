@@ -28,7 +28,9 @@ The project runs on Python 3.
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`
 
-4. Make sure you exported the following [environment variables](https://github.com/systers/mentorship-backend/wiki/Environment-Variables):
+4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
+or
+make sure you exported the following [environment variables](https://github.com/systers/mentorship-backend/wiki/Environment-Variables):
 
 ```
 export FLASK_ENVIRONMENT_CONFIG=<dev-or-test-or-prod>
@@ -45,6 +47,19 @@ export APP_MAIL_PASSWORD=<app-mail-password>
 
 6. When you are done using the app, deactivate the virtual environment:
 `deactivate`
+
+### Run with docker
+1. Make sure you exported the following [environment variables](https://github.com/systers/mentorship-backend/wiki/Environment-Variables) to '.env' file
+
+2. Build docker image
+```
+docker build -t mentorship-backend:latest .
+```
+3. Deploy
+Docker container ports must be mapped to the host machine port using '--publish' so they're visible.
+```sh
+docker run --env "FLASK_APP=run.py" --publish 5000:5000 mentorship-backend:latest
+```
 
 ### Run tests
 

@@ -113,7 +113,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id=None, accepted=None, pending=None, completed=None, cancelled=None, rejected=None):
+    def list_mentorship_relations(user_id=None, state=None):
         """Lists all relationships of a given user.
 
         Lists all relationships of a given user. Support for filtering not yet implemented.
@@ -124,19 +124,22 @@ class MentorshipRelationDAO:
         Returns:
             message: A message corresponding to the completed action; success if all relationships of a given user are listed, failure if otherwise.
         """
-        if pending is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if completed is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if cancelled is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if accepted is not None:
-            return messages.NOT_IMPLEMENTED, 200
-        if rejected is not None:
-            return messages.NOT_IMPLEMENTED, 200
+        # To check if the entered 'state' is valid.
+        valid_states = ['PENDING','ACCEPTED','REJECTED','CANCELLED','COMPLETED']
+        def isValidState(rel_state):
+            if rel_state in valid_states:
+                return True
+            return False
 
         user = UserModel.find_by_id(user_id)
         all_relations = user.mentor_relations + user.mentee_relations
+
+        # Filtering the list of relations on the basis of 'state'.
+        if state:
+            if isValidState(state):
+                all_relations=list(filter(lambda rel: (rel.state.name == state), all_relations))
+            else:
+                return [], 400
 
         # add extra field for api response
         for relation in all_relations:
@@ -174,7 +177,7 @@ class MentorshipRelationDAO:
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
+            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, 400
 
         requests = user.mentee_relations + user.mentor_relations
 
@@ -319,13 +322,12 @@ class MentorshipRelationDAO:
 
         user = UserModel.find_by_id(user_id)
         now_timestamp = datetime.now().timestamp()
-        past_relations = []
-        all_relations = user.mentor_relations + user.mentee_relations
+        past_relations = list(filter(
+            lambda relation: relation.end_date < now_timestamp,
+            user.mentor_relations + user.mentee_relations))
 
-        for relation in all_relations:
-            if relation.end_date < now_timestamp:
-                setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
-                past_relations += [relation]
+        for relation in past_relations:
+            setattr(relation, 'sent_by_me', relation.action_user_id == user_id)
 
         return past_relations, 200
 
