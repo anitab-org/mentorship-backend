@@ -606,7 +606,7 @@ class CreateTaskComment(Resource):
     @mentorship_relation_ns.expect(auth_header_parser,
                                    task_comment_model)
     @mentorship_relation_ns.doc(responses={
-        201: messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY['message'],
+        200: messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY['message'],
         400: f"{messages.COMMENT_FIELD_IS_MISSING['message']}<br>"
              f"{messages.COMMENT_NOT_IN_STRING_FORMAT['message']}<br>"
              f"{get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}<br>"
