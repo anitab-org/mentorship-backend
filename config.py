@@ -3,12 +3,22 @@ from datetime import timedelta
 
 
 class BaseConfig(object):
+    """Base configuration."""
     DEBUG = False
     TESTING = False
 
     # SQLAlchemy settings
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_POOL_RECYCLE = 3600
+
+    # Example:
+    # MySQL: mysql+pymysql://{db_user}:{db_password}@{db_endpoint}/{db_name}
+    # SQLite: sqlite:///local_data.db
+    DB_TYPE = os.getenv('DB_TYPE')
+    DB_USERNAME = os.getenv('DB_USERNAME')
+    DB_PASSWORD = os.getenv('DB_PASSWORD')
+    DB_ENDPOINT = os.getenv('DB_ENDPOINT')
+    DB_NAME = os.getenv('DB_NAME')
 
     UNVERIFIED_USER_THRESHOLD = 2592000  # 30 days
 
@@ -25,7 +35,6 @@ class BaseConfig(object):
 
     BCRYPT_LOG_ROUNDS = 13
     WTF_CSRF_ENABLED = True
-    # TODO put this in dev only?
 
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
@@ -43,44 +52,68 @@ class BaseConfig(object):
     # mail accounts
     MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER')
 
+    @staticmethod
+    def build_db_uri(
+        db_type_arg=DB_TYPE,
+        db_user_arg=DB_USERNAME,
+        db_password_arg=DB_PASSWORD,
+        db_endpoint_arg=DB_ENDPOINT,
+        db_name_arg=DB_NAME
+        ):
+        """Build remote database uri using specific environment variables."""
+
+        return '{db_type}://{db_user}:{db_password}@{db_endpoint}/{db_name}'\
+            .format(db_type=db_type_arg,
+                    db_user=db_user_arg,
+                    db_password=db_password_arg,
+                    db_endpoint=db_endpoint_arg,
+                    db_name=db_name_arg)
+
 
 class ProductionConfig(BaseConfig):
-    ENV = 'production'
-
-    # SQLALCHEMY_DATABASE_URI = 'mysql://user@localhost/foo'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///prod_data.db'
+    """Production configuration."""
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
 
 
 class DevelopmentConfig(BaseConfig):
-    ENV = 'development'
+    """Development configuration."""
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
+
+
+class StagingConfig(BaseConfig):
+    """Staging configuration."""
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
+
+
+class LocalConfig(BaseConfig):
+    """Local configuration."""
     DEBUG = True
 
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///dev_data.db'
-
-    # mail accounts
-    MAIL_DEFAULT_SENDER = 'certain@example.com'
+    # Using a local sqlite database 
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///local_data.db'
 
 
 class TestingConfig(BaseConfig):
-    ENV = 'testing'
-    DEBUG = True
+    """Testing configuration."""
     TESTING = True
 
     # Use in-memory SQLite database for testing
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///test_data.db'
 
 
 def get_env_config():
     flask_config_name = os.getenv('FLASK_ENVIRONMENT_CONFIG', 'dev')
-    if flask_config_name not in ['prod', 'test', 'dev']:
+    if flask_config_name not in ['prod', 'test', 'dev', 'local', 'stag']:
         raise ValueError('The environment config value has to be within these values: prod, dev, test.')
     return CONFIGURATION_MAPPER[flask_config_name]
 
 
 CONFIGURATION_MAPPER = {
     'dev': 'config.DevelopmentConfig',
-    'test': 'config.TestingConfig',
-    'prod': 'config.ProductionConfig'
+    'prod': 'config.ProductionConfig',
+    'stag': 'config.StagingConfig',
+    'local': 'config.LocalConfig',
+    'test': 'config.TestingConfig'
 }
