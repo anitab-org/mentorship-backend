@@ -33,13 +33,22 @@ or
 make sure you exported the following [environment variables](https://github.com/systers/mentorship-backend/wiki/Environment-Variables):
 
 ```
-export FLASK_ENVIRONMENT_CONFIG=<dev-or-test-or-prod>
+export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
 export SECRET_KEY=<your-secret-key>
 export SECURITY_PASSWORD_SALT=<your-security-password-salt>
 export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
+```
+
+If you're testing any environment other than "local", then you have to also set these other variables:
+```
+export DB_TYPE=<database_type>
+export DB_USERNAME=<database_username>
+export DB_PASSWORD=<database_password>
+export DB_ENDPOINT=<database_endpoint>
+export DB_NAME=<database_name>
 ```
 
 5. Run the app:
