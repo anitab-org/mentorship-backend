@@ -81,21 +81,23 @@ class SendRequest(Resource):
             return is_valid, 400
 
         response = DAO.create_mentorship_relation(user_sender_id, data)
-
-        if user_sender_id == data["mentee_id"]:
-            sender_role = "mentee"
-            user_recipient_id = data["mentor_id"]
+        if response[1]!=200:
+            return response
         else:
-            sender_role = "mentor"
-            user_recipient_id = data["mentee_id"]
+            if user_sender_id == data["mentee_id"]:
+                sender_role = "mentee"
+                user_recipient_id = data["mentor_id"]
+            else:
+                sender_role = "mentor"
+                user_recipient_id = data["mentee_id"]
 
-        user_sender = userDAO.get_user(user_sender_id)
-        user_recipient = userDAO.get_user(user_recipient_id)
-        notes = data["notes"]
+            user_sender = userDAO.get_user(user_sender_id)
+            user_recipient = userDAO.get_user(user_recipient_id)
+            notes = data["notes"]
 
-        send_email_new_request(user_sender, user_recipient, notes, sender_role)
+            send_email_new_request(user_sender, user_recipient, notes, sender_role)
 
-        return response
+            return response
 
     @staticmethod
     def is_valid_data(data):
