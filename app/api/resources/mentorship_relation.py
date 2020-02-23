@@ -41,7 +41,7 @@ class SendRequest(Resource):
         messages.MENTOR_TIME_LESS_THAN_MIN_TIME,
         messages.MENTOR_NOT_AVAILABLE_TO_MENTOR,
         messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED,
-        messages.MENTOR_IN_RELATION,
+        messages.MENTOR_ALREADY_IN_A_RELATION,
         messages.MENTEE_ALREADY_IN_A_RELATION
     ))
     @mentorship_relation_ns.response(401, '%s\n%s\n%s'%(
