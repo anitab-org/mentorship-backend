@@ -64,7 +64,7 @@ USER_IS_NOW_AN_ADMIN = {"message": "User is now an Admin."}
 # Mentor availability
 MENTOR_NOT_AVAILABLE_TO_MENTOR = {"message": "Mentor user is not available to"
                                   " mentor."}
-MENTOR_IN_RELATION = {"message": "Mentor user is already in a relationship."}
+MENTOR_ALREADY_IN_A_RELATION = {"message": "Mentor user is already in a relationship."}
 
 # Mentee availability
 MENTEE_NOT_AVAIL_TO_BE_MENTORED = {"message": "Mentee user is not available"

@@ -213,7 +213,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.second_user.id, data)
 
-        self.assertEqual((messages.MENTOR_IN_RELATION, 400), result)
+        self.assertEqual((messages.MENTOR_ALREADY_IN_A_RELATION, 400), result)
 
         query_mentorship_relations = MentorshipRelationModel.query.all()
 
