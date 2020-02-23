@@ -54,7 +54,9 @@ export DB_NAME=<database_name>
 5. Run the app:
 `python run.py`
 
-6. When you are done using the app, deactivate the virtual environment:
+6. Navigate to http://localhost:5000 in your browser 
+
+7. When you are done using the app, deactivate the virtual environment:
 `deactivate`
 
 ### Run with docker
