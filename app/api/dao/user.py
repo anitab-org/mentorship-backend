@@ -1,12 +1,52 @@
 from datetime import datetime
 from operator import itemgetter
-
+from wtforms import validators
+import re
 from app import messages
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.utils.validation_utils import is_email_valid
+
+
+def check_security(password_check):
+    """Returns a boolean if the password is secure"""
+
+    flag = 0
+    flags = {
+        'len': 0,
+        'uppcas': 0,
+        'digits': 0,
+        'specchar': 0,
+        }
+    messages = {
+        'len': messages.INSUFFICIENT_LENGTH,
+        'uppcas': messages.ATLEAST_ONE_UPPERCASE,
+        'digits': messages.ATLEAST_NUMBER,
+        'specchar': messages.ATLEAST_ONE_SPECIAL_CHARACTER,
+        }
+
+    if len(password_check) < 8:
+        flags['len'] += 1
+    else:
+        for ch in password_check:
+            if ch.isupper():
+                flags['uppcas'] += 1
+            if ch.isdigit():
+                flags['digits'] += 1
+        regex = re.compile('[{(~!@#$%^&*_-|\:;?/+=)}]')
+        flags['specchar'] = regex.search(password_check)
+    for (key, value) in flags.items():
+        if value > 0:
+            error = key
+            print messages[error]
+            flag = 1
+    if flag == 1:
+        return False
+    elif flag == 0:
+        return True
+
 
 
 class UserDAO:
@@ -19,19 +59,22 @@ class UserDAO:
     @staticmethod
     def create_user(data):
         """Creates a new user.
-        
+
         Creates a new user with provided data.
-        
+
         Arguments:
             data: A list containing the user's name, username, password, and email, as well as recognition that they have read and agree to the Terms and Conditions.
-            
+
         Returns:
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
 
         name = data['name']
         username = data['username']
-        password = data['password']
+        x = data['password']
+        if(check_security(x)):
+            password = data['password']
+
         email = data['email']
         terms_and_conditions_checked = data['terms_and_conditions_checked']
 
@@ -54,17 +97,19 @@ class UserDAO:
 
         return messages.USER_WAS_CREATED_SUCCESSFULLY, 200
 
+    # checks if the password is secure (Password security validation function)
+
     @staticmethod
     @email_verification_required
     def delete_user(user_id):
         """ Deletes a user.
-        
+
         Deletes the specified user and removes them from the directory, with checks to make sure that the user exists and is not the only administrator.
-        
+
         Arguments:
             user_id: The ID of the user to be deleted.
-            
-        Returns: 
+
+        Returns:
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
 
@@ -87,15 +132,15 @@ class UserDAO:
     @email_verification_required
     def get_user(user_id):
         """ Retrieves a user's profile information using a specified ID.
-        
+
         Provides the user profile of the user whose ID matches the one specified.
-        
+
         Arguments:
             user_id: The ID of the user to be searched.
-        
+
         Returns:
             The UserModel class of the user whose ID was searched, containing the public information of their profile such as bio, location, etc.
-        
+
         """
 
         return UserModel.find_by_id(user_id)
@@ -103,15 +148,15 @@ class UserDAO:
     @staticmethod
     def get_user_by_email(email):
         """ Retrieves a user's profile information using a specified email.
-        
+
         Provides the user profile of the user whose email matches the one specified.
-        
+
         Arguments:
             email: The email of the user to be searched.
-        
+
         Returns:
             The UserModel class of the user whose email was searched, containing the public information of their profile such as bio, location, etc.
-        
+
         """
 
         return UserModel.find_by_email(email)
@@ -119,15 +164,15 @@ class UserDAO:
     @staticmethod
     def get_user_by_username(username):
         """ Retrieves a user's profile information using a specified username.
-        
+
         Provides the user profile of the user whose username matches the one specified.
-        
+
         Arguments:
             username: The ID of the user to be searched.
-        
+
         Returns:
             The UserModel class of the user whose username was searched, containing the public information of their profile such as bio, location, etc.
-        
+
         """
 
         return UserModel.find_by_username(username)
@@ -135,14 +180,14 @@ class UserDAO:
     @staticmethod
     def list_users(user_id, is_verified=None):
         """ Retrieves a list of verified users with the specified ID.
-        
+
         Arguments:
             user_id: The ID of the user to be listed.
             is_verified: Status of the user's verification; None when provided as an argument.
-        
+
         Returns:
             A list of users matching conditions and the HTTP response code.
-        
+
         """
 
         users_list = UserModel.query.filter(UserModel.id != user_id).all()
@@ -160,16 +205,16 @@ class UserDAO:
     @email_verification_required
     def update_user_profile(user_id, data):
         """ Updates the profile of a specified user with new data.
-        
+
         Replaces old data items with new ones in the provided data list, with a check for overlap between users in username and a check that a user with the specified ID exists
-        
+
         Arguments:
             user_id: The ID of the user whose data will be updated.
             data: A list containing the user's information such as name, bio, location, etc.
-        
+
         Returns:
             A message that indicates whether the update was successful or not and a second element which is the HTTP response code.
-        
+
         """
 
         user = UserModel.find_by_id(user_id)
@@ -189,35 +234,65 @@ class UserDAO:
         if 'name' in data and data['name']:
             user.name = data['name']
 
-        if 'bio' in data and data['bio']:
-            user.bio = data['bio']
+        if 'bio' in data:
+            if data['bio']:
+                user.bio = data['bio']
+            else:
+                user.bio = None
 
-        if 'location' in data and data['location']:
-            user.location = data['location']
+        if 'location' in data:
+            if data['location']:
+                user.location = data['location']
+            else:
+                user.location = None
 
-        if 'occupation' in data and data['occupation']:
-            user.occupation = data['occupation']
+        if 'occupation' in data:
+            if data['occupation']:
+                user.occupation = data['occupation']
+            else:
+                user.occupation = None
 
-        if 'organization' in data and data['organization']:
-            user.organization = data['organization']
+        if 'organization' in data:
+            if data['organization']:
+                user.organization = data['organization']
+            else:
+                user.organization = None
 
-        if 'slack_username' in data and data['slack_username']:
-            user.slack_username = data['slack_username']
+        if 'slack_username' in data:
+            if data['slack_username']:
+                user.slack_username = data['slack_username']
+            else:
+                user.slack_username = None
 
-        if 'social_media_links' in data and data['social_media_links']:
-            user.social_media_links = data['social_media_links']
+        if 'social_media_links' in data:
+            if data['social_media_links']:
+                user.social_media_links = data['social_media_links']
+            else:
+                user.social_media_links = None
 
-        if 'skills' in data and data['skills']:
-            user.skills = data['skills']
+        if 'skills' in data:
+            if data['skills']:
+                user.skills = data['skills']
+            else:
+                user.skills = None
 
-        if 'interests' in data and data['interests']:
-            user.interests = data['interests']
+        if 'interests' in data:
+            if data['interests']:
+                user.interests = data['interests']
+            else:
+                user.interests = None
 
-        if 'resume_url' in data and data['resume_url']:
-            user.resume_url = data['resume_url']
+        if 'resume_url' in data:
+            if data['resume_url']:
+                user.resume_url = data['resume_url']
+            else:
+                user.resume_url = None
 
-        if 'photo_url' in data and data['photo_url']:
-            user.photo_url = data['photo_url']
+        if 'photo_url' in data:
+            if data['photo_url']:
+                user.photo_url = data['photo_url']
+            else:
+                user.photo_url = None
 
         if 'need_mentoring' in data:
             user.need_mentoring = data['need_mentoring']
@@ -233,16 +308,16 @@ class UserDAO:
     @email_verification_required
     def change_password(user_id, data):
         """ Changes the user's password.
-        
+
         Finds the user with the given ID, checks their current password, and then updates to the new one.
-        
+
         Arguments:
             user_id: The ID of the user to be searched.
             data: The user's current and new password.
-        
+
         Returns:
             A message that indicates whether the password change was successful or not and a second element which is the HTTP response code.
-        
+
         """
 
         current_password = data['current_password']
@@ -250,24 +325,25 @@ class UserDAO:
 
         user = UserModel.find_by_id(user_id)
         if user.check_password(current_password):
-            user.set_password(new_password)
-            user.save_to_db()
-            return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
+            if check_security(new_password):
+                user.set_password(new_password)
+                user.save_to_db()
+                return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
 
         return messages.USER_ENTERED_INCORRECT_PASSWORD, 400
 
     @staticmethod
     def confirm_registration(token):
         """ Determines whether a user's email registration has been confirmed.
-        
+
         Determines whether a user's email registration was invalid, previously confirmed, or just confirmed.
-        
+
         Arguments:
             token: Serialized and signed email address as a URL safe string.
-        
+
         Returns:
             A message that indicates if the confirmation was invalid, already happened, or just happened, and the HTTP response code.
-        
+
         """
 
         email_from_token = confirm_token(token)
@@ -287,15 +363,15 @@ class UserDAO:
     @staticmethod
     def authenticate(username_or_email, password):
         """ User login process.
-        
+
         The user can login with two options:
         -> username + password
         -> email + password
-        
+
         Arguments:
             username_or_email: The username or email associated with the account being authenticated.
             password: The password associated with the account being authenticated.
-            
+
         Returns:
             Returns authenticated user if username and password are valid, otherwise returns None.
         """
