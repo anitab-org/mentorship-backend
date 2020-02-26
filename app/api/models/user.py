@@ -109,7 +109,7 @@ full_user_api_model = Model('User Complete model used in listing', {
         required=True,
         description='User email verification status'
     ),
-    'email_verification_date': fields.DateTime(
+    'email_verification_date': fields.Float(
         required=False,
         description='User email verification date'
     ),

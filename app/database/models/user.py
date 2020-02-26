@@ -36,7 +36,7 @@ class UserModel(db.Model):
 
     # email verification
     is_email_verified = db.Column(db.Boolean)
-    email_verification_date = db.Column(db.DateTime)
+    email_verification_date = db.Column(db.Float)
 
     # other info
     current_mentorship_role = db.Column(db.Integer)

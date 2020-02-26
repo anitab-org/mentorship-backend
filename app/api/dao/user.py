@@ -1,5 +1,6 @@
 from datetime import datetime
 from operator import itemgetter
+import time
 from flask_restplus import marshal
 
 from app import messages
@@ -326,7 +327,7 @@ class UserDAO:
             return messages.ACCOUNT_ALREADY_CONFIRMED, 200
         else:
             user.is_email_verified = True
-            user.email_verification_date = datetime.now()
+            user.email_verification_date = time.time()
             user.save_to_db()
             return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200
 

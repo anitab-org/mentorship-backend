@@ -1035,7 +1035,7 @@
                 },
                 "email_verification_date": {
                     "type": "string",
-                    "format": "date-time",
+                    "format": "float",
                     "description": "User email verification date"
                 },
                 "bio": {
