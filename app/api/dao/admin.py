@@ -102,4 +102,5 @@ class AdminDAO:
         users_list = UserModel.query.filter(UserModel.id != user_id).all()
         list_of_users = [user.json() for user in users_list if user.is_admin]
 
-        return list_of_users, 200
+        return list_of_users
+
