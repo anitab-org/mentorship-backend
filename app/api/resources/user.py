@@ -247,11 +247,12 @@ class UserRegister(Resource):
         if is_valid != {}:
             return is_valid, 400
 
-        result = DAO.create_user(data)
-
-        if result[1] is 200:
+        try:
             send_email_verification_message(data['name'], data['email'])
-
+            result = DAO.create_user(data)
+        except:
+            return messages.REGISTRATION_FAILED
+        
         return result
 
 

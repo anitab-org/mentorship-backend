@@ -234,3 +234,7 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {"message": "You have confirmed your"
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
 NOT_IMPLEMENTED = {"message": "Not implemented."}
+
+# Failed to send Email verification on Register new user
+REGISTRATION_FAILED = {"message": "We are unable to complete your request. Please try again later."}
+
