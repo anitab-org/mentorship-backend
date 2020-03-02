@@ -219,6 +219,23 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         self.assertTrue(1, len(query_mentorship_relations))
 
+    def test_dao_create_mentorship_relation_with_good_args_but_invalid_timestamp(self):
+        dao = MentorshipRelationDAO()
+        data = dict(
+            mentor_id=self.first_user.id,
+            mentee_id=self.second_user.id,
+            end_date=1580338800000000,
+            notes=self.notes_example,
+            tasks_list=TasksListModel()
+        )
+
+        # Use DAO to create a mentorship relation
+
+        result = dao.create_mentorship_relation(self.first_user.id, data)
+
+        self.assertEqual(messages.INVALID_END_DATE, result[0])
+        self.assertEqual(400, result[1])
+
 
 if __name__ == '__main__':
     unittest.main()
