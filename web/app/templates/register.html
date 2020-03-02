@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        .input{
+                width: 80%;
+                margin-bottom:1%;
+                border:none;
+                border-bottom: 2px solid #810539;
+                padding: 5px 10px;
+                outline: none;                
+            }
+        form {min-height: 300px;width:30%;background-color: white;margin-top: 7%;position: relative;}
+
+        h1 {margin-top: 5%;}
+        .btn {width: 20%;}
+    </style>
+    <center>
+    <form action="" method="post">
+        <h1>Register</h1>
+        {{ form.hidden_tag() }}
+        <p>
+            <!-- {{ form.username.label }}<br> -->
+            {{ form.username(size=32, class='input', placeholder='username') }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.email.label }}<br> -->
+            {{ form.email(size=64, class='input', placeholder='Email') }}<br>
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.password.label }}<br> -->
+            {{ form.password(size=32, class='input', placeholder='Password') }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.password2.label }}<br> -->
+            {{ form.password2(size=32, class='input', placeholder='Repeat Password') }}<br>
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.bio.label }}<br> -->
+            {{ form.bio(size=64, class='input', placeholder='Bio') }}<br>
+            {% for error in form.bio.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.location.label }}<br> -->
+            {{ form.location(size=64, class='input', placeholder='Location') }}<br>
+            {% for error in form.location.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.occupation.label }}<br> -->
+            {{ form.occupation(size=64, class='input', placeholder='Occupation') }}<br>
+            {% for error in form.occupation.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.organization.label }}<br> -->
+            {{ form.organization(size=64, class='input', placeholder='Organization') }}<br>
+            {% for error in form.organization.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.slack_username.label }}<br> -->
+            {{ form.slack_username(size=64, class='input', placeholder='Slack Username') }}<br>
+            {% for error in form.slack_username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.social_media_links.label }}<br> -->
+            {{ form.social_media_links(size=64, class='input', placeholder='Social Media Links') }}<br>
+            {% for error in form.social_media_links.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.skills.label }}<br> -->
+            {{ form.skills(size=64, class='input', placeholder='Skills') }}<br>
+            {% for error in form.skills.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.interests.label }}<br> -->
+            {{ form.interests(size=64, class='input', placeholder='Interests') }}<br>
+            {% for error in form.interests.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.resume_url.label }}<br> -->
+            {{ form.resume_url(size=64, class='input', placeholder='Resume url') }}<br>
+            {% for error in form.resume_url.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.photo_url.label }}<br> -->
+            {{ form.photo_url(size=64, class='input', placeholder='Photo url') }}<br>
+            {% for error in form.photo_url.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.need_mentoring.label }}<br>
+            {{ form.need_mentoring(size=64, class='input') }}<br>
+            {% for error in form.need_mentoring.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.available_to_mentor.label }}<br>
+            {{ form.available_to_mentor(size=64, class='input') }}<br>
+            {% for error in form.available_to_mentor.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit(class='btn btn-primary') }}</p>
+        <a href="{{ url_for('login') }}">Already have an account? Login</a>
+    </form>
+    </center>
+{% endblock %}

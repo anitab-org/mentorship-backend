@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+      body 
+      {
+        background-image: url('https://thumbs.dreamstime.com/b/autumn-oak-leaf-fantastic-beautiful-spray-bubbles-blue-background-magic-autumn-blue-background-yellow-oak-leaf-158238643.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    </style>
+</head>
+<body>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light" style="background-color: rgb(74, 78, 78);">
+    <a class="navbar-brand text-light" href="#">Mentorship System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    {% if current_user.is_anonymous %}
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="{{ url_for('register') }}">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="{{ url_for('login') }}">Log In</a>
+        </li>
+      </ul>
+    </div>
+    {% else %}
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link text-light" href="#">Dashboard <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="#">Mentorship</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="{{ url_for('logout') }}">logout</a>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
+  </nav>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</body>
+</html>

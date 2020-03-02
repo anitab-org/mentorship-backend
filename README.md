@@ -97,3 +97,14 @@ The repository has the following permanent branches:
 You can reach maintainers team @mentorship-team on [Systers Open Source Slack](http://systers.io/slack-systers-opensource/) or @systers/maintainers-mentorship-backend on GitHub.
 
 We use [#mentorship-system](https://systers-opensource.slack.com/messages/CAE8QK41L/) channel on Slack to discuss this project. If you're interested in contributing to this project, join us there!
+
+
+### Run Web
+Web is created in flask. Whole code for web resides in `web` Folder, To see the web in action follow these steps:
+
+```
+cd web
+pip install -r requirements.txt
+flask run
+Navigate to http://localhost:5000
+```

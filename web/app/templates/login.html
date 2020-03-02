@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        .input{
+            width: 80%;
+            margin-bottom:1%;
+            border:none;
+            border-bottom: 2px solid #810539;
+            padding: 5px 10px;
+            outline: none;                
+        }
+        form {min-height: 300px;width:30%;background-color: white;margin-top: 10%;}
+        h1 {margin-top: 20%;}
+        .btn {width:30%}
+    </style>
+    <center>
+    <form action="" method="post" novalidate>
+        <h1 class="text-">Log In</h1>
+        {{ form.hidden_tag() }}
+        <p style="margin-top: 5%;">
+            <!-- {{ form.username.label }}<br> -->
+            {{ form.username(size=32, class='input', placeholder='username') }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            <!-- {{ form.password.label }}<br> -->
+            {{ form.password(size=32, class='input', placeholder='Password') }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit(class='btn btn-primary') }}</p>
+        <a href="{{ url_for('register') }}" style="text-decoration: none;">Don't have an account? Register</a>
+    </form>
+    </center>
+{% endblock %}
