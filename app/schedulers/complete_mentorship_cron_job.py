@@ -22,6 +22,3 @@ def complete_overdue_mentorship_relations_job():
         for relation in all_relations:
             relation.state = MentorshipRelationState.COMPLETED
             relation.save_to_db()
-
-            # for tests purposes
-            # print('{} | hola hola hola hola hola'.format(datetime.now()))
