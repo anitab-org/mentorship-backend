@@ -212,6 +212,13 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "cancellation_reason",
+                        "in": "body",
+                        "type": "string",
+                        "required": false,
+                        "description": "Cancellation reason of mentorship relation."
                     }
                 ],
                 "tags": [

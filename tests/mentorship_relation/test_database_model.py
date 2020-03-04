@@ -106,7 +106,8 @@ class TestMentorshipRelationModel(BaseTestCase):
             'start_date': None,
             'end_date': self.end_date_example,
             'state': MentorshipRelationState.PENDING,
-            'notes': self.notes_example
+            'notes': self.notes_example,
+            'cancellation_reason': None
         }
         self.assertEqual(expected_json, self.mentorship_relation.json())
 

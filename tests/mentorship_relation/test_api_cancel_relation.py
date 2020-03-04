@@ -21,6 +21,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
         super(TestCancelMentorshipRelationApi, self).setUp()
 
         self.notes_example = 'description of a good mentorship relation'
+        self.cancellation_reason_example = 'description of cancellation reason of mentorship relation'
 
         self.now_datetime = datetime.now()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
@@ -43,23 +44,33 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
 
     def test__mentor_cancel_mentorship_relation(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        self.assertIsNone(self.mentorship_relation.cancellation_reason)
+        
         with self.client:
             response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
-                                       headers=get_test_request_header(self.first_user.id))
+                                       headers=get_test_request_header(self.first_user.id),
+                                       content_type='application/json',
+                                       data=json.dumps(dict(cancellation_reason = self.cancellation_reason_example)))
 
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
+            self.assertEqual(self.cancellation_reason_example, self.mentorship_relation.cancellation_reason)
             self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
                              json.loads(response.data))
 
     def test__mentee_cancel_mentorship_relation(self):
         self.assertEqual(MentorshipRelationState.ACCEPTED, self.mentorship_relation.state)
+        self.assertIsNone(self.mentorship_relation.cancellation_reason)
+        
         with self.client:
             response = self.client.put('/mentorship_relation/%s/cancel' % self.mentorship_relation.id,
-                                       headers=get_test_request_header(self.second_user.id))
+                                       headers=get_test_request_header(self.second_user.id),
+                                       content_type='application/json',
+                                       data=json.dumps(dict(cancellation_reason = self.cancellation_reason_example)))
 
             self.assertEqual(200, response.status_code)
             self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
+            self.assertEqual(self.cancellation_reason_example, self.mentorship_relation.cancellation_reason)
             self.assertDictEqual(messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
                              json.loads(response.data))
 

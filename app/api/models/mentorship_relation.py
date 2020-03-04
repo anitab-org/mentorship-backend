@@ -8,6 +8,7 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[mentorship_request_response_body.name] = mentorship_request_response_body
     api_namespace.models[relation_user_response_body.name] = relation_user_response_body
     api_namespace.models[create_task_request_body.name] = create_task_request_body
+    api_namespace.models[mentorship_relation_cancellation_reason_body.name] = mentorship_relation_cancellation_reason_body
     api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
     api_namespace.models[mentorship_request_response_body_for_user_dashboard_body.name] = mentorship_request_response_body_for_user_dashboard_body
     api_namespace.models[user_dashboard_user_details.name] = user_dashboard_user_details
@@ -37,11 +38,16 @@ mentorship_request_response_body = Model('List mentorship relation request model
     'start_date': fields.Float(required=True, description='Mentorship relation start date in UNIX timestamp format'),
     'end_date': fields.Float(required=True, description='Mentorship relation end date in UNIX timestamp format'),
     'state': fields.Integer(required=True, enum=MentorshipRelationState.values, description='Mentorship relation state'),
-    'notes': fields.String(required=True, description='Mentorship relation notes')
+    'notes': fields.String(required=True, description='Mentorship relation notes'),
+    'cancellation_reason': fields.String(required=False, description='Mentorship relation cancellation reason')
 })
 
 create_task_request_body = Model('Create task request model', {
     'description': fields.String(required=True, description='Mentorship relation task description')
+})
+
+mentorship_relation_cancellation_reason_body = Model('Cancel mentorship relationship reason model', {
+    'cancellation_reason' : fields.String(required=False, description='Mentorship relation cancellation reason description')
 })
 
 list_tasks_response_body = Model('List tasks response model', {
