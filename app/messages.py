@@ -6,10 +6,11 @@ NEW_USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your new username is"
                                          " invalid."}
 TOKEN_IS_INVALID = {"message": "The token is invalid!"}
 USER_ID_IS_NOT_VALID = {"message": "User id is not valid."}
-FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is"
-                                     " not valid."}
-FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {"message": "Field available_to_mentor"
-                                        " is not valid."}
+FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is" " not valid."}
+FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
+    "message": "Field available_to_mentor" " is not valid."
+}
+FIELD_FOR_SORT_ORDER_IS_INVALID = {"message": "sort_order: 1 for ascending order and -1 for descending order"}
 
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {"message": "This mentorship"

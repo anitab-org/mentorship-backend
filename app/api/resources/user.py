@@ -29,11 +29,14 @@ class UserList(Resource):
 
     @classmethod
     @jwt_required
-    @users_ns.doc('list_users', params={'search': 'Search query'})
+    @users_ns.doc('list_users', params={'search': 'Search query',
+                                        'sort_order': '1 for ascending order and -1 for descending order'})
     @users_ns.doc(responses={
         401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
              f"{messages.TOKEN_IS_INVALID['message']}<br>"
              f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"})
+    @users_ns.doc(responses={
+        400: f"{messages.FIELD_FOR_SORT_ORDER_IS_INVALID['message']}"})
     @users_ns.marshal_list_with(public_user_api_model)
     @users_ns.expect(auth_header_parser)
     def get(cls):
@@ -47,7 +50,7 @@ class UserList(Resource):
         available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get('search', ''))
+        return DAO.list_users(user_id, request.args.get('search', ''), sort_order=request.args.get('sort_order', ''))
 
 
 @users_ns.route('users/<int:user_id>')

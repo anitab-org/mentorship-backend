@@ -98,6 +98,36 @@ class TestListUsersApi(BaseTestCase):
         self.assertEqual(expected_response,
                          json.loads(actual_response.data))
 
+    def test_list_users_api_with_a_search_query_with_sort_by_ascending_order_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.other_user, public_user_api_model)]
+        actual_response = self.client.get('/users?search=b&sort_order=1', follow_redirects=True,
+                                          headers=auth_header)
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response,
+                         json.loads(actual_response.data))
+    
+    def test_list_users_api_with_a_search_query_with_sort_by_descending_order_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.other_user, public_user_api_model)]
+        actual_response = self.client.get('/users?search=b&sort_order=-1', follow_redirects=True,
+                                          headers=auth_header)
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response,
+                         json.loads(actual_response.data))
+    
+    def test_list_users_api_with_a_search_query_with_invalid_sort_order_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = {'message':messages.FIELD_FOR_SORT_ORDER_IS_INVALID['message']}
+        actual_response = self.client.get('/users?search=b&sort_order=abc', follow_redirects=True,
+                                          headers=auth_header)
+
+        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(expected_response,
+                         json.loads(actual_response.data))
+
     def test_list_users_api_with_a_search_query_all_caps_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [

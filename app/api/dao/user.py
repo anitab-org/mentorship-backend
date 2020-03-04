@@ -1,6 +1,7 @@
 from datetime import datetime
 from operator import itemgetter
 from flask_restplus import marshal
+from werkzeug.exceptions import BadRequest
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -139,13 +140,14 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id, search_query='', is_verified=None):
+    def list_users(user_id, search_query='', is_verified=None, sort_order=''):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
             user_id: The ID of the user to be listed.
             search_query: The search query for name of the users to be found.
             is_verified: Status of the user's verification; None when provided as an argument.
+            sort_order: Sort the list of users; 1 for ascending order and -1 for descending order
         
         Returns:
             A list of users matching conditions and the HTTP response code.
@@ -153,10 +155,24 @@ class UserDAO:
         """
 
         users_list = UserModel.query.filter(UserModel.id != user_id).all()
-        list_of_users = [user.json() for user in filter(
-            lambda user: (not is_verified or user.is_email_verified)
-                         and search_query.lower() in user.name.lower(),
-            users_list)]
+        list_of_users = [
+            user.json()
+            for user in filter(
+                lambda user: (not is_verified or user.is_email_verified)
+                and search_query.lower() in user.name.lower(),
+                users_list,
+            )
+        ]
+
+        filter_by_name = lambda list_of_users: list_of_users['name']
+
+        if sort_order!='':
+            if sort_order=='1':
+                list_of_users.sort(key=filter_by_name)
+            elif sort_order=='-1':
+                list_of_users.sort(key=filter_by_name,reverse=True)
+            else:
+                raise BadRequest(f"{messages.FIELD_FOR_SORT_ORDER_IS_INVALID['message']}")
 
         for user in list_of_users:
             relation = MentorshipRelationDAO.list_current_mentorship_relation(
