@@ -11,31 +11,30 @@ from tests.test_data import user1, user2, user3
 
 
 class TestDeleteUnverifiedUsersCronFunction(BaseTestCase):
-
     def setUp(self):
         super(TestDeleteUnverifiedUsersCronFunction, self).setUp()
 
         self.verified_user = UserModel(
-            name=user1['name'],
-            email=user1['email'],
-            username=user1['username'],
-            password=user1['password'],
-            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+            name=user1["name"],
+            email=user1["email"],
+            username=user1["username"],
+            password=user1["password"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
         )
         self.new_unverified_user = UserModel(
-            name=user2['name'],
-            email=user2['email'],
-            username=user2['username'],
-            password=user2['password'],
-            terms_and_conditions_checked=user2['terms_and_conditions_checked']
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
         )
 
         self.old_unverified_user = UserModel(
-            name=user3['name'],
-            email=user3['email'],
-            username=user3['username'],
-            password=user3['password'],
-            terms_and_conditions_checked=user3['terms_and_conditions_checked']
+            name=user3["name"],
+            email=user3["email"],
+            username=user3["username"],
+            password=user3["password"],
+            terms_and_conditions_checked=user3["terms_and_conditions_checked"],
         )
 
         threshold = config.BaseConfig.UNVERIFIED_USER_THRESHOLD
@@ -52,7 +51,7 @@ class TestDeleteUnverifiedUsersCronFunction(BaseTestCase):
     def get_test_app(self):
         return self.app
 
-    @patch('run.application', side_effect=get_test_app)
+    @patch("run.application", side_effect=get_test_app)
     def test_delete(self, get_test_app_fn):
         verified = UserModel.find_by_id(self.verified_user.id)
         new_unverified = UserModel.find_by_id(self.new_unverified_user.id)
