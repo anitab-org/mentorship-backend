@@ -16,7 +16,9 @@ def delete_unverified_users_job():
     with application.app_context():
         from app.database.models.user import UserModel
 
-        unverified_users = list(filter(lambda user: not user.is_email_verified, UserModel.query.all()))
+        unverified_users = list(
+            filter(lambda user: not user.is_email_verified, UserModel.query.all())
+        )
 
         for user in unverified_users:
             threshold = config.BaseConfig.UNVERIFIED_USER_THRESHOLD
