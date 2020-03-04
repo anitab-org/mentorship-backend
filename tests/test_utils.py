@@ -11,10 +11,12 @@ def get_test_request_header(user_identity, token_expiration_delta=None, refresh=
     :return: header dict with Authorization field
     """
     if refresh:
-        token = create_refresh_token(identity=user_identity, expires_delta=token_expiration_delta)
+        token = create_refresh_token(
+            identity=user_identity, expires_delta=token_expiration_delta
+        )
     else:
-        token = create_access_token(identity=user_identity, expires_delta=token_expiration_delta)
-    header = {
-        'Authorization': 'Bearer {}'.format(token)
-    }
+        token = create_access_token(
+            identity=user_identity, expires_delta=token_expiration_delta
+        )
+    header = {"Authorization": "Bearer {}".format(token)}
     return header
