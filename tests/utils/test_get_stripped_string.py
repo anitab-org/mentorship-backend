@@ -3,7 +3,6 @@ from app.utils.validation_utils import get_stripped_string
 
 
 class TestGetStrippedStringFunction(unittest.TestCase):
-
     def test_empty_string(self):
         test_string = ""
         expected_result = ""
@@ -23,5 +22,5 @@ class TestGetStrippedStringFunction(unittest.TestCase):
         self.assertEqual(expected_result, actual_result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
