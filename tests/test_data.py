@@ -6,6 +6,23 @@ test_admin_user = {
     "terms_and_conditions_checked": True
 }
 
+test_admin_user_2 = {
+    "name": "Admin_2",
+    "email": "admin2@email.com",
+    "username": "admin2_username",
+    "password": "admin2_pwd",
+    "terms_and_conditions_checked": True
+}
+
+test_admin_user_3 = {
+    "name": "Admin_3",
+    "email": "admin3@email.com",
+    "username": "admin3_username",
+    "password": "admin3_pwd",
+    "terms_and_conditions_checked": True
+}
+
+
 user1 = {
     "name": "User",
     "email": "user1@email.com",

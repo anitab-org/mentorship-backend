@@ -87,3 +87,20 @@ class AdminDAO:
             return messages.USER_ADMIN_STATUS_WAS_REVOKED, 200
 
         return messages.USER_DOES_NOT_EXIST, 404
+
+    @staticmethod
+    def list_admins(user_id):
+        """ Retrieves a list of admin users for the user with specified ID.
+        
+        Arguments:
+            user_id: The ID of the user querying the fellow admins.
+        
+        Returns:
+            A list of admin users matching conditions and the HTTP response code.
+        """
+
+        users_list = UserModel.query.filter(UserModel.id != user_id).all()
+        list_of_users = [user.json() for user in users_list if user.is_admin]
+
+        return list_of_users
+
