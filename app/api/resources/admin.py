@@ -8,26 +8,30 @@ from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
 from app.api.resources.common import auth_header_parser
 
-admin_ns = Namespace('Admins', description='Operations related to Admin users')
+admin_ns = Namespace("Admins", description="Operations related to Admin users")
 add_models_to_namespace(admin_ns)
 
 
-@admin_ns.route('admin/new')
-@admin_ns.response(200, '%s'%messages.USER_IS_NOW_AN_ADMIN)
-@admin_ns.response(400, '%s'%messages.USER_IS_ALREADY_AN_ADMIN)
-@admin_ns.response(401, '%s\n%s\n%s'%(
+@admin_ns.route("admin/new")
+@admin_ns.response(200, "%s" % messages.USER_IS_NOW_AN_ADMIN)
+@admin_ns.response(400, "%s" % messages.USER_IS_ALREADY_AN_ADMIN)
+@admin_ns.response(
+    401,
+    "%s\n%s\n%s"
+    % (
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING
-        )
-    )
-@admin_ns.response(403, '%s'%messages.USER_ASSIGN_NOT_ADMIN)
-@admin_ns.response(404, '%s'%messages.USER_DOES_NOT_EXIST)
+        messages.AUTHORISATION_TOKEN_IS_MISSING,
+    ),
+)
+@admin_ns.response(403, "%s" % messages.USER_ASSIGN_NOT_ADMIN)
+@admin_ns.response(404, "%s" % messages.USER_DOES_NOT_EXIST)
 class AssignNewUserAdmin(Resource):
-
     @classmethod
     @jwt_required
-    @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.expect(
+        auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
+    )
     def post(cls):
         """
         Assigns a User as a new Admin.
@@ -45,22 +49,26 @@ class AssignNewUserAdmin(Resource):
             return messages.USER_ASSIGN_NOT_ADMIN, 403
 
 
-@admin_ns.route('admin/remove')
-@admin_ns.response(200, '%s'%messages.USER_ADMIN_STATUS_WAS_REVOKED)
-@admin_ns.response(400, '%s'%messages.USER_IS_NOT_AN_ADMIN)
-@admin_ns.response(401, '%s\n%s\n%s'%(
+@admin_ns.route("admin/remove")
+@admin_ns.response(200, "%s" % messages.USER_ADMIN_STATUS_WAS_REVOKED)
+@admin_ns.response(400, "%s" % messages.USER_IS_NOT_AN_ADMIN)
+@admin_ns.response(
+    401,
+    "%s\n%s\n%s"
+    % (
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING
-        )
-    )
-@admin_ns.response(403, '%s'%messages.USER_REVOKE_NOT_ADMIN)
-@admin_ns.response(404, '%s'%messages.USER_DOES_NOT_EXIST)
+        messages.AUTHORISATION_TOKEN_IS_MISSING,
+    ),
+)
+@admin_ns.response(403, "%s" % messages.USER_REVOKE_NOT_ADMIN)
+@admin_ns.response(404, "%s" % messages.USER_DOES_NOT_EXIST)
 class RevokeUserAdmin(Resource):
-
     @classmethod
     @jwt_required
-    @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.expect(
+        auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
+    )
     def post(cls):
         """
         Revoke admin status from another User Admin.
@@ -78,18 +86,20 @@ class RevokeUserAdmin(Resource):
             return messages.USER_REVOKE_NOT_ADMIN, 403
 
 
-@admin_ns.route('admins')
+@admin_ns.route("admins")
 class ListAdmins(Resource):
-
     @classmethod
     @jwt_required
-    @admin_ns.doc('get_list_of_admins')
-    @admin_ns.response(200, 'Success.', public_admin_user_api_model)
-    @admin_ns.doc(responses={
-        401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-             f"{messages.TOKEN_IS_INVALID['message']}<br>"
-             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"})
-    @admin_ns.response(403, '%s'%messages.USER_IS_NOT_AN_ADMIN)
+    @admin_ns.doc("get_list_of_admins")
+    @admin_ns.response(200, "Success.", public_admin_user_api_model)
+    @admin_ns.doc(
+        responses={
+            401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+            f"{messages.TOKEN_IS_INVALID['message']}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
+        }
+    )
+    @admin_ns.response(403, "%s" % messages.USER_IS_NOT_AN_ADMIN)
     @admin_ns.expect(auth_header_parser)
     def get(cls):
         """
@@ -106,9 +116,10 @@ class ListAdmins(Resource):
 
         if user.is_admin:
             list_of_admins = AdminDAO.list_admins(user_id)
-            list_of_admins = [marshal(x,public_admin_user_api_model) for x in list_of_admins]
-            
+            list_of_admins = [
+                marshal(x, public_admin_user_api_model) for x in list_of_admins
+            ]
+
             return list_of_admins, 200
         else:
             return messages.USER_IS_NOT_AN_ADMIN, 403
-            

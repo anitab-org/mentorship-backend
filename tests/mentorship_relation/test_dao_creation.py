@@ -16,7 +16,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
     def setUp(self):
         super(TestMentorshipRelationCreationDAO, self).setUp()
 
-        self.notes_example = 'description of a good mentorship relation'
+        self.notes_example = "description of a good mentorship relation"
 
         self.now_datetime = datetime.now()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
@@ -28,7 +28,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         # Use DAO to create a mentorship relation
@@ -49,7 +49,9 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         # asserting dates
         self.assertIsNone(query_mentorship_relation.start_date)
-        self.assertEqual(self.end_date_example.timestamp(), query_mentorship_relation.end_date)
+        self.assertEqual(
+            self.end_date_example.timestamp(), query_mentorship_relation.end_date
+        )
 
         # asserting mentor and mentees setup
         self.assertEqual(self.first_user.id, query_mentorship_relation.mentor_id)
@@ -62,7 +64,9 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         # assert mentees' mentor_relations and mentee_relations
         self.assertEqual(1, len(self.second_user.mentee_relations))
-        self.assertEqual(query_mentorship_relation, self.second_user.mentee_relations[0])
+        self.assertEqual(
+            query_mentorship_relation, self.second_user.mentee_relations[0]
+        )
         self.assertEqual([], self.second_user.mentor_relations)
 
     def test_dao_create_mentorship_relation_with_good_args_mentor_is_receiver(self):
@@ -72,7 +76,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         # Use DAO to create a mentorship relation
@@ -94,7 +98,9 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         # asserting dates
         # asserting dates
         self.assertIsNone(query_mentorship_relation.start_date)
-        self.assertEqual(self.end_date_example.timestamp(), query_mentorship_relation.end_date)
+        self.assertEqual(
+            self.end_date_example.timestamp(), query_mentorship_relation.end_date
+        )
 
         # asserting mentor and mentees setup
         self.assertEqual(self.first_user.id, query_mentorship_relation.mentor_id)
@@ -107,7 +113,9 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         # assert mentees' mentor_relations and mentee_relations
         self.assertEqual(1, len(self.second_user.mentee_relations))
-        self.assertEqual(query_mentorship_relation, self.second_user.mentee_relations[0])
+        self.assertEqual(
+            query_mentorship_relation, self.second_user.mentee_relations[0]
+        )
         self.assertEqual([], self.second_user.mentor_relations)
 
     def test_dao_create_mentorship_relation_with_non_existent_mentor(self):
@@ -117,7 +125,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         # Use DAO to create a mentorship relation
@@ -137,7 +145,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             mentee_id=1234,
             end_date=self.end_date_example.timestamp(),
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         # Use DAO to create a mentorship relation
@@ -160,7 +168,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.ACCEPTED,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         db.session.add(self.mentorship_relation)
@@ -171,7 +179,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             mentee_id=self.second_user.id,
             end_date=self.end_date_example.timestamp(),
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         # Use DAO to create a mentorship relation
@@ -194,7 +202,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.ACCEPTED,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         db.session.add(self.mentorship_relation)
@@ -206,7 +214,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             mentee_id=self.first_user.id,
             end_date=self.end_date_example.timestamp(),
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         # Use DAO to create a mentorship relation
@@ -226,7 +234,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
             mentee_id=self.second_user.id,
             end_date=1580338800000000,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         # Use DAO to create a mentorship relation
@@ -237,5 +245,5 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         self.assertEqual(400, result[1])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
