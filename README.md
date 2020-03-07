@@ -25,6 +25,9 @@ The project runs on Python 3.
 2. Activate the virtual environment:
 `source ./venv/bin/activate`
 
+`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines. For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
+
+
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`
 
@@ -43,16 +46,11 @@ export APP_MAIL_PASSWORD=<app-mail-password>
 5. Run the app:
 `python run.py`
 
+If all steps were successful, it should say 'Running on http://127.0.0.1:5000'.
+
 6. When you are done using the app, deactivate the virtual environment:
 `deactivate`
 
-### Running the app on Windows machines
-
-`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines.
-
-For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
-
-If all steps were successful, it should say 'Running on http://127.0.0.1:5000'.
 
 ### Run tests
 
