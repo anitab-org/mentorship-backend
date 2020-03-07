@@ -1,7 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
 
-from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
@@ -12,13 +11,14 @@ from app.database.sqlalchemy_extension import db
 
 # TODO test combination of parameters while listing relations
 
+
 class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
     # Setup consists of adding 2 users into the database
     def setUp(self):
         super(TestMentorshipRelationListingDAO, self).setUp()
 
-        self.notes_example = 'description of a good mentorship relation'
+        self.notes_example = "description of a good mentorship relation"
         self.now_datetime = datetime.now()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
@@ -32,7 +32,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.PENDING,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         db.session.add(self.mentorship_relation)
@@ -45,9 +45,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, accepted=True)
+        result = DAO.list_mentorship_relations(
+            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+        )
+        expected_response = [self.mentorship_relation], 200
 
-        self.assertEqual((messages.NOT_IMPLEMENTED, 200), result)
+        self.assertEqual(expected_response, result)
 
     def test_dao_list_mentorship_relation_cancelled(self):
         DAO = MentorshipRelationDAO()
@@ -56,9 +59,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, cancelled=True)
+        result = DAO.list_mentorship_relations(
+            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+        )
+        expected_response = [self.mentorship_relation], 200
 
-        self.assertEqual((messages.NOT_IMPLEMENTED, 200), result)
+        self.assertEqual(expected_response, result)
 
     def test_dao_list_mentorship_relation_rejected(self):
         DAO = MentorshipRelationDAO()
@@ -67,9 +73,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, rejected=True)
+        result = DAO.list_mentorship_relations(
+            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+        )
+        expected_response = [self.mentorship_relation], 200
 
-        self.assertEqual((messages.NOT_IMPLEMENTED, 200), result)
+        self.assertEqual(expected_response, result)
 
     def test_dao_list_mentorship_relation_completed(self):
         DAO = MentorshipRelationDAO()
@@ -78,9 +87,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, completed=True)
+        result = DAO.list_mentorship_relations(
+            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+        )
+        expected_response = [self.mentorship_relation], 200
 
-        self.assertEqual((messages.NOT_IMPLEMENTED, 200), result)
+        self.assertEqual(expected_response, result)
 
     def test_dao_list_mentorship_relation_pending(self):
         DAO = MentorshipRelationDAO()
@@ -89,9 +101,30 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, pending=True)
+        result = DAO.list_mentorship_relations(
+            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+        )
+        expected_response = [self.mentorship_relation], 200
 
-        self.assertEqual((messages.NOT_IMPLEMENTED, 200), result)
+        self.assertEqual(expected_response, result)
+
+    def test_dao_list_mentorship_relation_state_none(self):
+        DAO = MentorshipRelationDAO()
+
+        result = DAO.list_mentorship_relations(user_id=self.first_user.id, state=None)
+        expected_response = [self.mentorship_relation], 200
+
+        self.assertEqual(expected_response, result)
+
+    def test_dao_list_mentorship_relation_state_invalid(self):
+        DAO = MentorshipRelationDAO()
+
+        result = DAO.list_mentorship_relations(
+            user_id=self.first_user.id, state="anything"
+        )
+        expected_response = [], 400
+
+        self.assertEqual(expected_response, result)
 
     def test_dao_list_mentorship_relation_all(self):
         DAO = MentorshipRelationDAO()
@@ -103,9 +136,9 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(user_id=self.first_user.id)
         expected_response = [self.mentorship_relation], 200
 
-        self.assertIsNotNone(result)
         self.assertEqual(expected_response, result)
+        self.assertIsNotNone(result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

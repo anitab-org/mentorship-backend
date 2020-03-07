@@ -2,6 +2,7 @@ from app import messages
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 
+
 class AdminDAO:
     """Data Access Object for Admin functionalities."""
 
@@ -19,19 +20,18 @@ class AdminDAO:
         Returns:
             message: A message corresponding to the completed action.
         """
-        new_admin_user_id = data['user_id']
+        new_admin_user_id = data["user_id"]
 
         if user_id == new_admin_user_id:
             return messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, 403
 
         admin_user = UserModel.find_by_id(user_id)
 
-        if admin_user: 
+        if admin_user:
             if not admin_user.is_admin:
                 return messages.USER_ASSIGN_NOT_ADMIN, 403
         else:
             return messages.USER_NOT_FOUND, 404
-        
 
         new_admin_user = UserModel.find_by_id(new_admin_user_id)
 
@@ -61,7 +61,7 @@ class AdminDAO:
         Returns:
             message: A message corresponding to the completed action.
         """
-        admin_user_id = data['user_id']
+        admin_user_id = data["user_id"]
 
         if user_id == admin_user_id:
             return messages.USER_CANNOT_REVOKE_ADMIN_STATUS, 403
@@ -70,7 +70,7 @@ class AdminDAO:
 
         admin_user = UserModel.find_by_id(user_id)
 
-        if admin_user: 
+        if admin_user:
             if not admin_user.is_admin:
                 return messages.USER_REVOKE_NOT_ADMIN, 403
         else:
@@ -87,3 +87,19 @@ class AdminDAO:
             return messages.USER_ADMIN_STATUS_WAS_REVOKED, 200
 
         return messages.USER_DOES_NOT_EXIST, 404
+
+    @staticmethod
+    def list_admins(user_id):
+        """ Retrieves a list of admin users for the user with specified ID.
+        
+        Arguments:
+            user_id: The ID of the user querying the fellow admins.
+        
+        Returns:
+            A list of admin users matching conditions and the HTTP response code.
+        """
+
+        users_list = UserModel.query.filter(UserModel.id != user_id).all()
+        list_of_users = [user.json() for user in users_list if user.is_admin]
+
+        return list_of_users

@@ -3,7 +3,6 @@ from app.utils.validation_utils import is_name_valid
 
 
 class TestNameValidation(unittest.TestCase):
-
     def test_empty_name(self):
         name = ""
         is_valid = is_name_valid(name)
@@ -25,5 +24,5 @@ class TestNameValidation(unittest.TestCase):
         self.assertFalse(is_valid)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
