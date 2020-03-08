@@ -85,17 +85,17 @@ class MentorshipRelationModel(db.Model):
     def json(self):
         """Returns information of mentorship as a json object."""
         return {
-            'id': self.id,
-            'action_user_id': self.action_user_id,
-            'mentor_id': self.mentor_id,
-            'mentee_id': self.mentee_id,
-            'creation_date': self.creation_date,
-            'accept_date': self.accept_date,
-            'start_date': self.start_date,
-            'end_date': self.end_date,
-            'state': self.state,
-            'notes': self.notes,
-            'cancellation_reason': self.cancellation_reason
+            "id": self.id,
+            "action_user_id": self.action_user_id,
+            "mentor_id": self.mentor_id,
+            "mentee_id": self.mentee_id,
+            "creation_date": self.creation_date,
+            "accept_date": self.accept_date,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "state": self.state,
+            "notes": self.notes,
+            "cancellation_reason": self.cancellation_reason,
         }
 
     # def __repr__(self):

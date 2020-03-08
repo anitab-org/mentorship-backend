@@ -284,7 +284,9 @@ class CancelMentorshipRelation(Resource):
     @classmethod
     @jwt_required
     @mentorship_relation_ns.doc("cancel_mentorship_relation")
-    @mentorship_relation_ns.expect(auth_header_parser, mentorship_relation_cancellation_reason_body)
+    @mentorship_relation_ns.expect(
+        auth_header_parser, mentorship_relation_cancellation_reason_body
+    )
     @mentorship_relation_ns.response(
         200, "%s" % messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY
     )
@@ -321,7 +323,9 @@ class CancelMentorshipRelation(Resource):
 
         data = request.json
         user_id = get_jwt_identity()
-        response = DAO.cancel_relation(user_id=user_id, relation_id=request_id, data=data)
+        response = DAO.cancel_relation(
+            user_id=user_id, relation_id=request_id, data=data
+        )
 
         return response
 

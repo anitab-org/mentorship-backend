@@ -290,12 +290,12 @@ class MentorshipRelationDAO:
 
         # All was checked
         request.state = MentorshipRelationState.CANCELLED
-        
+
         # Updates cancellation reason if it was passed in arguments
         if data:
-            if 'cancellation_reason' in data:
-                if data['cancellation_reason']:
-                    request.cancellation_reason = data['cancellation_reason']
+            if "cancellation_reason" in data:
+                if data["cancellation_reason"]:
+                    request.cancellation_reason = data["cancellation_reason"]
                 else:
                     request.cancellation_reason = None
 

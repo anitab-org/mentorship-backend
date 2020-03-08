@@ -105,17 +105,17 @@ class TestMentorshipRelationModel(BaseTestCase):
 
     def test_mentorship_relation_json_representation(self):
         expected_json = {
-            'id': 1,
-            'action_user_id': self.first_user.id,
-            'mentor_id': self.first_user.id,
-            'mentee_id': self.second_user.id,
-            'creation_date': self.now_datetime,
-            'accept_date': None,
-            'start_date': None,
-            'end_date': self.end_date_example,
-            'state': MentorshipRelationState.PENDING,
-            'notes': self.notes_example,
-            'cancellation_reason': None
+            "id": 1,
+            "action_user_id": self.first_user.id,
+            "mentor_id": self.first_user.id,
+            "mentee_id": self.second_user.id,
+            "creation_date": self.now_datetime,
+            "accept_date": None,
+            "start_date": None,
+            "end_date": self.end_date_example,
+            "state": MentorshipRelationState.PENDING,
+            "notes": self.notes_example,
+            "cancellation_reason": None,
         }
         self.assertEqual(expected_json, self.mentorship_relation.json())
 
