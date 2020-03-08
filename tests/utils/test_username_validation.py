@@ -3,7 +3,6 @@ from app.utils.validation_utils import is_username_valid
 
 
 class TestUsernameValidation(unittest.TestCase):
-
     def test_empty_username(self):
         username = ""
         is_valid = is_username_valid(username)
@@ -40,5 +39,5 @@ class TestUsernameValidation(unittest.TestCase):
         self.assertFalse(is_valid)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

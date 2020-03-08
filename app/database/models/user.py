@@ -13,9 +13,10 @@ class UserModel(db.Model):
         email: A string for storing user email.
         terms_and_conditions_checked: A boolean indicating if user has agreed to terms and conditions or not.
     """
+
     # Specifying database table used for UserModel
-    __tablename__ = 'users'
-    __table_args__ = {'extend_existing': True}
+    __tablename__ = "users"
+    __table_args__ = {"extend_existing": True}
 
     id = db.Column(db.Integer, primary_key=True)
 
@@ -57,7 +58,7 @@ class UserModel(db.Model):
     available_to_mentor = db.Column(db.Boolean)
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
-        """"Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
+        """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
         ## required fields
 
         self.name = name
@@ -81,35 +82,35 @@ class UserModel(db.Model):
     def json(self):
         """Returns Usermodel object in json format."""
         return {
-            'id': self.id,
-            'name': self.name,
-            'username': self.username,
-            'password_hash': self.password_hash,
-            'email': self.email,
-            'terms_and_conditions_checked': self.terms_and_conditions_checked,
-            'registration_date': self.registration_date,
-            'is_admin': self.is_admin,
-            'is_email_verified': self.is_email_verified,
-            'email_verification_date': self.email_verification_date,
-            'current_mentorship_role': self.current_mentorship_role,
-            'membership_status': self.membership_status,
-            'bio': self.bio,
-            'location': self.location,
-            'occupation': self.occupation,
-            'organization': self.organization,
-            'slack_username': self.slack_username,
-            'social_media_links': self.social_media_links,
-            'skills': self.skills,
-            'interests': self.interests,
-            'resume_url': self.resume_url,
-            'photo_url': self.photo_url,
-            'need_mentoring': self.need_mentoring,
-            'available_to_mentor': self.available_to_mentor
+            "id": self.id,
+            "name": self.name,
+            "username": self.username,
+            "password_hash": self.password_hash,
+            "email": self.email,
+            "terms_and_conditions_checked": self.terms_and_conditions_checked,
+            "registration_date": self.registration_date,
+            "is_admin": self.is_admin,
+            "is_email_verified": self.is_email_verified,
+            "email_verification_date": self.email_verification_date,
+            "current_mentorship_role": self.current_mentorship_role,
+            "membership_status": self.membership_status,
+            "bio": self.bio,
+            "location": self.location,
+            "occupation": self.occupation,
+            "organization": self.organization,
+            "slack_username": self.slack_username,
+            "social_media_links": self.social_media_links,
+            "skills": self.skills,
+            "interests": self.interests,
+            "resume_url": self.resume_url,
+            "photo_url": self.photo_url,
+            "need_mentoring": self.need_mentoring,
+            "available_to_mentor": self.available_to_mentor,
         }
 
     def __repr__(self):
         """Returns the user's name and username. """
-        return "User name id %s. Username is %s ." % (self.name, self.username)
+        return "User name %s. Username is %s ." % (self.name, self.username)
 
     @classmethod
     def find_by_username(cls, username):
