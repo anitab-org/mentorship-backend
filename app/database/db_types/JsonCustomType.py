@@ -10,7 +10,7 @@ class JsonCustomType(db.TypeDecorator):
     @classmethod
     def process_bind_param(cls, value, dialect):
         if value is None:
-            return '{}'
+            return "{}"
         else:
             return json.dumps(value)
 

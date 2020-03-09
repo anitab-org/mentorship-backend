@@ -13,25 +13,25 @@ class MentorshipRelationBaseTestCase(BaseTestCase):
         super(MentorshipRelationBaseTestCase, self).setUp()
 
         self.first_user = UserModel(
-            name=user1['name'],
-            email=user1['email'],
-            username=user1['username'],
-            password=user1['password'],
-            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+            name=user1["name"],
+            email=user1["email"],
+            username=user1["username"],
+            password=user1["password"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
         )
         self.second_user = UserModel(
-            name=user2['name'],
-            email=user2['email'],
-            username=user2['username'],
-            password=user2['password'],
-            terms_and_conditions_checked=user2['terms_and_conditions_checked']
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
         )
         self.third_user = UserModel(
-            name=user3['name'],
-            email=user3['email'],
-            username=user3['username'],
-            password=user3['password'],
-            terms_and_conditions_checked=user3['terms_and_conditions_checked']
+            name=user3["name"],
+            email=user3["email"],
+            username=user3["username"],
+            password=user3["password"],
+            terms_and_conditions_checked=user3["terms_and_conditions_checked"],
         )
 
         # making sure both are available to be mentor or mentee

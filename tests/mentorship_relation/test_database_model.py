@@ -27,25 +27,29 @@ class TestMentorshipRelationModel(BaseTestCase):
         db.create_all()
 
         self.first_user = UserModel(
-            name=user1['name'],
-            email=user1['email'],
-            username=user1['username'],
-            password=user1['password'],
-            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+            name=user1["name"],
+            email=user1["email"],
+            username=user1["username"],
+            password=user1["password"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
         )
         self.second_user = UserModel(
-            name=user2['name'],
-            email=user2['email'],
-            username=user2['username'],
-            password=user2['password'],
-            terms_and_conditions_checked=user2['terms_and_conditions_checked']
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
         )
 
-        self.notes_example = 'description of a good mentorship relation'
+        self.notes_example = "description of a good mentorship relation"
 
         now_datetime = datetime.now()
-        self.start_date_example = datetime(year=now_datetime.year + 1, month=3, day=1).timestamp()
-        self.end_date_example = datetime(year=now_datetime.year + 1, month=5, day=1).timestamp()
+        self.start_date_example = datetime(
+            year=now_datetime.year + 1, month=3, day=1
+        ).timestamp()
+        self.end_date_example = datetime(
+            year=now_datetime.year + 1, month=5, day=1
+        ).timestamp()
         self.now_datetime = datetime.now().timestamp()
 
         db.session.add(self.first_user)
@@ -60,7 +64,7 @@ class TestMentorshipRelationModel(BaseTestCase):
             end_date=self.end_date_example,
             state=MentorshipRelationState.PENDING,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
         db.session.add(self.mentorship_relation)
         db.session.commit()
@@ -79,7 +83,9 @@ class TestMentorshipRelationModel(BaseTestCase):
         self.assertIsNone(query_mentorship_relation.start_date)
         self.assertEqual(self.end_date_example, query_mentorship_relation.end_date)
         self.assertEqual(self.notes_example, query_mentorship_relation.notes)
-        self.assertEqual(MentorshipRelationState.PENDING, query_mentorship_relation.state)
+        self.assertEqual(
+            MentorshipRelationState.PENDING, query_mentorship_relation.state
+        )
 
         # asserting mentor and mentees setup
         self.assertEqual(self.first_user.id, query_mentorship_relation.mentor_id)
@@ -92,7 +98,9 @@ class TestMentorshipRelationModel(BaseTestCase):
 
         # assert mentees' mentor_relations and mentee_relations
         self.assertEqual(1, len(self.second_user.mentee_relations))
-        self.assertEqual(query_mentorship_relation, self.second_user.mentee_relations[0])
+        self.assertEqual(
+            query_mentorship_relation, self.second_user.mentee_relations[0]
+        )
         self.assertEqual([], self.second_user.mentor_relations)
 
     def test_mentorship_relation_json_representation(self):
@@ -132,7 +140,9 @@ class TestMentorshipRelationModel(BaseTestCase):
 
     def test_find_mentorship_relation_by_id(self):
         query_mentorship_relation = MentorshipRelationModel.query.first()
-        find_by_id_result = MentorshipRelationModel.find_by_id(query_mentorship_relation.id)
+        find_by_id_result = MentorshipRelationModel.find_by_id(
+            query_mentorship_relation.id
+        )
         self.assertEqual(query_mentorship_relation, find_by_id_result)
 
     def test_empty_table(self):
@@ -142,5 +152,5 @@ class TestMentorshipRelationModel(BaseTestCase):
         self.assertTrue(MentorshipRelationModel.is_empty())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
