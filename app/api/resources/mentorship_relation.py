@@ -284,7 +284,7 @@ class CancelMentorshipRelation(Resource):
     @classmethod
     @jwt_required
     @mentorship_relation_ns.doc("cancel_mentorship_relation")
-    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.expect(auth_header_parser, mentorship_relation_cancellation_reason_body)
     @mentorship_relation_ns.response(
         200, "%s" % messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY
     )
