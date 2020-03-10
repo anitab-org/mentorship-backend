@@ -98,10 +98,20 @@ class TestListUsersApi(BaseTestCase):
         self.assertEqual(expected_response,
                          json.loads(actual_response.data))
 
-    def test_list_users_api_with_a_search_query_with_filter_by_and_order_by_resource_auth(self):
+    def test_list_users_api_with_a_search_query_with_name_asc_by_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.other_user, public_user_api_model)]
-        actual_response = self.client.get('/users?search=b&filter_by=1&order_by=1', follow_redirects=True,
+        actual_response = self.client.get('/users?search=b&name_asc=1', follow_redirects=True,
+                                          headers=auth_header)
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response,
+                         json.loads(actual_response.data))
+    
+    def test_list_users_api_with_a_search_query_with_name_desc_by_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.other_user, public_user_api_model)]
+        actual_response = self.client.get('/users?search=b&name_desc=1', follow_redirects=True,
                                           headers=auth_header)
 
         self.assertEqual(200, actual_response.status_code)

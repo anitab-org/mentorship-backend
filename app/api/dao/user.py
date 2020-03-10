@@ -140,43 +140,33 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id, search_query='', is_verified=None, filter_by='', order_by=''):
+    def list_users(user_id, search_query='', is_verified=None, name_asc='', name_desc=''):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
             user_id: The ID of the user to be listed.
             search_query: The search query for name of the users to be found.
             is_verified: Status of the user's verification; None when provided as an argument.
-            filter: 0 for alphabetically order and 1 for creation date.
-            order: 0 for ascending order and 1 for descending order.
+            name_asc: 1 for sort ascending order by name.
+            name_desc: 1 for sort descending order by name.
         
         Returns:
             A list of users matching conditions and the HTTP response code.
         
         """
-        
-        if filter_by=="":
-            if order_by=="":
-                users_list = UserModel.query.filter(UserModel.id != user_id).all()
-            else:
-                raise BadRequest(f"{messages.FILTER_BY_IS_MISSING['message']}")
-        elif filter_by=="0":
-            if order_by=="0" or order_by=="":
+
+        if name_asc!="" or name_desc!="":
+            if name_asc=="1" and name_desc=="1":
+                raise BadRequest(f"{messages.FIELD_FOR_ORDER_BY_IS_NOT_VALID['message']}")
+            elif name_asc=="1":
                 users_list = UserModel.query.filter(UserModel.id != user_id).order_by(UserModel.name.asc()).all()
-            elif order_by=="1":
+            elif name_desc=="1":
                 users_list = UserModel.query.filter(UserModel.id != user_id).order_by(UserModel.name.desc()).all()
             else:
                 raise BadRequest(f"{messages.FIELD_FOR_ORDER_BY_IS_INVALID['message']}")
-
-        elif filter_by=="1":
-            if order_by=="0" or order_by=="":
-                users_list = UserModel.query.filter(UserModel.id != user_id).order_by(UserModel.email_verification_date.asc()).all()
-            elif order_by=="1":
-                users_list = UserModel.query.filter(UserModel.id != user_id).order_by(UserModel.email_verification_date.desc()).all()
-            else:
-                raise BadRequest(f"{messages.FIELD_FOR_ORDER_BY_IS_INVALID['message']}")
         else:
-            raise BadRequest(f"{messages.FIELD_FOR_FILTER_BY_IS_INVALID['message']}")
+            users_list = UserModel.query.filter(UserModel.id != user_id).all()
+
 
         list_of_users = [user.json() for user in filter(
             lambda user: (not is_verified or user.is_email_verified)

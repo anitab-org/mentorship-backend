@@ -10,8 +10,8 @@ FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is"
                                      " not valid."}
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {"message": "Field available_to_mentor"
                                         " is not valid."}
-FIELD_FOR_FILTER_BY_IS_INVALID = {"message": "Filter by should be either 0 or 1"}
-FIELD_FOR_ORDER_BY_IS_INVALID = {"message": "Order by should be either 0 or 1"}
+FIELD_FOR_ORDER_BY_IS_INVALID = {"message": "name_asc and name_desc should be 1"}
+FIELD_FOR_ORDER_BY_IS_NOT_VALID = {"message": "Both name_asc and name_desc should not be 1 at same time"}
 
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {"message": "This mentorship"
@@ -46,7 +46,6 @@ AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is"
                                   " missing!."}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing"}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing"}
-FILTER_BY_IS_MISSING = {"message": "Filter by is missing"}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}
