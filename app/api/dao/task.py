@@ -28,7 +28,7 @@ class TaskDAO:
             response code.
         """
 
-        description = data['description']
+        description = data["description"]
 
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
@@ -137,10 +137,11 @@ class TaskDAO:
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
 
-        if task.get('is_done'):
+        if task.get("is_done"):
             return messages.TASK_WAS_ALREADY_ACHIEVED, 400
         else:
             relation.tasks_list.update_task(
-                task_id=task_id, is_done=True, completed_at=datetime.now().timestamp())
+                task_id=task_id, is_done=True, completed_at=datetime.now().timestamp()
+            )
 
         return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, 200

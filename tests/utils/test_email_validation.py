@@ -3,7 +3,6 @@ from app.utils.validation_utils import is_email_valid
 
 
 class TestEmailValidation(unittest.TestCase):
-
     def test_empty_email(self):
         email = ""
         is_valid = is_email_valid(email)
@@ -25,5 +24,5 @@ class TestEmailValidation(unittest.TestCase):
         self.assertFalse(is_valid)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
