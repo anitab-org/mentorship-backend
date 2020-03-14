@@ -92,6 +92,10 @@ class SendRequest(Resource):
 
         response = DAO.create_mentorship_relation(user_sender_id, data)
 
+        # if the mentorship relation creation failed dont send email and return
+        if response[1] != 200:
+            return response
+
         if user_sender_id == data["mentee_id"]:
             sender_role = "mentee"
             user_recipient_id = data["mentor_id"]
