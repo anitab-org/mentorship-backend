@@ -56,7 +56,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.first_user.id),
                 content_type="application/json",
                 data=json.dumps(
-                    dict(cancellation_reason=self.cancellation_reason_example)
+                    {'cancellation_reason':self.cancellation_reason_example}
                 ),
             )
 
@@ -85,7 +85,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.second_user.id),
                 content_type="application/json",
                 data=json.dumps(
-                    dict(cancellation_reason=self.cancellation_reason_example)
+                    {'cancellation_reason':self.cancellation_reason_example}
                 ),
             )
 
