@@ -218,7 +218,7 @@ MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY = {
     "message": "Mentorship" " relation was" " rejected successfully."
 }
 MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY = {
-    "message": "Mentorship" " relation was " "cancelled successfully."
+    "message": "Mentorship relation was cancelled successfully."
 }
 TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
