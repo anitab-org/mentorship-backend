@@ -54,7 +54,7 @@ class TaskCommentDAO:
         task_comment = TaskCommentModel(user_id, task_id, relation_id, comment)
         task_comment.save_to_db()
 
-        return messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY, 200
+        return messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY, 201
 
     @staticmethod
     @email_verification_required
