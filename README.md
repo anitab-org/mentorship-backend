@@ -30,7 +30,7 @@ The project runs on Python 3.
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or
-make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/wiki/Environment-Variables):
+make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/blob/develop/.env.template):
 
 ```
 export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
@@ -60,7 +60,7 @@ export DB_NAME=<database_name>
 `deactivate`
 
 ### Run with docker
-1. Make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/wiki/Environment-Variables) to '.env' file
+1. Make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/blob/develop/.env.template) to '.env' file
 
 2. Build docker image
 ```
