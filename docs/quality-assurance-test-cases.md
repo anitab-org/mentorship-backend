@@ -172,3 +172,13 @@ Only admin users have access to this.
 | Revoke self the admin role when self is not the only admin | Success |
 | Revoking an admin user, when the current user is not an admin | Fail |
 
+## Tasks
+
+### Create
+**Service:** POST /mentorship_relation/{relation_id}/task
+
+| Test Case       | Outcome |
+| ------------- | ------------- |
+|Create a task if there is a valid relation exist between user and mentor and relation state is accepted | Success |
+| Create a task if there is no relation between user and mentor | Fail |
+| Create a task if relation state is not accepted | Fail |
