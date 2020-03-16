@@ -103,8 +103,9 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(200, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertEqual(201, actual_response.status_code)
+        self.assertDictEqual(expected_response,
+                             json.loads(actual_response.data))
 
         new_comment = TaskCommentDAO.get_task_comment(1, 1)[0]
         self.assertIsNotNone(new_comment)
