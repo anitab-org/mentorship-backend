@@ -42,7 +42,7 @@ class TaskDAO:
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
         relation.tasks_list.save_to_db()
 
-        return messages.TASK_WAS_CREATED_SUCCESSFULLY, 200
+        return messages.TASK_WAS_CREATED_SUCCESSFULLY, 201
 
     @staticmethod
     @email_verification_required
