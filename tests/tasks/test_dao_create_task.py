@@ -9,7 +9,7 @@ from tests.tasks.tasks_base_setup import TasksBaseTestCase
 class TestListTasksDao(TasksBaseTestCase):
     def test_create_task(self):
 
-        expected_response = messages.TASK_WAS_CREATED_SUCCESSFULLY, 200
+        expected_response = messages.TASK_WAS_CREATED_SUCCESSFULLY, 201
 
         non_existent_task = self.tasks_list_1.find_task_by_id(3)
         self.assertIsNone(non_existent_task)
