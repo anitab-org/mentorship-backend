@@ -14,8 +14,8 @@ class TasksListModel(db.Model):
         next_task_id: Id of the next task added to the list of tasks.
     """
 
-    __tablename__ = 'tasks_list'
-    __table_args__ = {'extend_existing': True}
+    __tablename__ = "tasks_list"
+    __table_args__ = {"extend_existing": True}
 
     id = db.Column(db.Integer, primary_key=True)
     tasks = db.Column(JsonCustomType)
@@ -56,7 +56,7 @@ class TasksListModel(db.Model):
             TasksFields.DESCRIPTION.value: description,
             TasksFields.IS_DONE.value: is_done,
             TasksFields.CREATED_AT.value: created_at,
-            TasksFields.COMPLETED_AT.value: completed_at
+            TasksFields.COMPLETED_AT.value: completed_at,
         }
         self.next_task_id += 1
         self.tasks = self.tasks + [task]
@@ -68,10 +68,9 @@ class TasksListModel(db.Model):
             task_id: Id of the task to be deleted.
         """
 
-        new_list = []
-        for task in self.tasks:
-            if task[TasksFields.ID.value] != task_id:
-                new_list = new_list + [task]
+        new_list = list(
+            filter(lambda task: task[TasksFields.ID.value] != task_id, self.tasks)
+        )
 
         self.tasks = new_list
         self.save_to_db()
@@ -118,11 +117,13 @@ class TasksListModel(db.Model):
         Returns:
             The task instance.
         """
-
-        for task in self.tasks:
-            if task[TasksFields.ID.value] == task_id:
-                return task
-        return None
+        task = list(
+            filter(lambda task: task[TasksFields.ID.value] == task_id, self.tasks)
+        )
+        if len(task) == 0:
+            return None
+        else:
+            return task[0]
 
     def is_empty(self) -> bool:
         """Checks if the list of tasks is empty.
@@ -141,10 +142,10 @@ class TasksListModel(db.Model):
         """
 
         return {
-            'id': self.id,
-            'mentorship_relation_id': self.mentorship_relation_id,
-            'tasks': self.tasks,
-            'next_task_id': self.next_task_id
+            "id": self.id,
+            "mentorship_relation_id": self.mentorship_relation_id,
+            "tasks": self.tasks,
+            "next_task_id": self.next_task_id,
         }
 
     def __repr__(self):
@@ -154,7 +155,11 @@ class TasksListModel(db.Model):
             A string representation of the task object.
         """
 
-        return "Task | id = %s; tasks = %s; next task id = %s" % (self.id, self.tasks, self.next_task_id)
+        return "Task | id = %s; tasks = %s; next task id = %s" % (
+            self.id,
+            self.tasks,
+            self.next_task_id,
+        )
 
     @classmethod
     def find_by_id(cls, _id: int):
@@ -189,11 +194,11 @@ class TasksFields(Enum):
         CREATED_AT: The date on which the task was created.
     """
 
-    ID = 'id'
-    DESCRIPTION = 'description'
-    IS_DONE = 'is_done'
-    COMPLETED_AT = 'completed_at'
-    CREATED_AT = 'created_at'
+    ID = "id"
+    DESCRIPTION = "description"
+    IS_DONE = "is_done"
+    COMPLETED_AT = "completed_at"
+    CREATED_AT = "created_at"
 
     def values(self):
         """Returns a list containing a task."""

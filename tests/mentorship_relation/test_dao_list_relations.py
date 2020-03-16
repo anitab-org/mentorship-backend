@@ -16,7 +16,7 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
     def setUp(self):
         super(TestListMentorshipRelationsDAO, self).setUp()
 
-        self.notes_example = 'description of a good mentorship relation'
+        self.notes_example = "description of a good mentorship relation"
         self.now_datetime = datetime.now()
         self.past_end_date_example = self.now_datetime - timedelta(weeks=5)
         self.future_end_date_example = self.now_datetime + timedelta(weeks=5)
@@ -31,7 +31,7 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
             end_date=self.past_end_date_example.timestamp(),
             state=MentorshipRelationState.PENDING,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         self.future_pending_mentorship_relation = MentorshipRelationModel(
@@ -42,7 +42,7 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
             end_date=self.future_end_date_example.timestamp(),
             state=MentorshipRelationState.PENDING,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         self.future_accepted_mentorship_relation = MentorshipRelationModel(
@@ -53,7 +53,7 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
             end_date=self.future_end_date_example.timestamp(),
             state=MentorshipRelationState.ACCEPTED,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         db.session.add(self.past_mentorship_relation)
@@ -63,7 +63,9 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
 
     def test_dao_list_past_mentorship_relations(self):
 
-        result = MentorshipRelationDAO.list_past_mentorship_relations(user_id=self.first_user.id)
+        result = MentorshipRelationDAO.list_past_mentorship_relations(
+            user_id=self.first_user.id
+        )
 
         expected_response = [self.past_mentorship_relation]
 
@@ -72,25 +74,31 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
 
     def test_dao_list_current_mentorship_relation(self):
 
-        result = MentorshipRelationDAO.list_current_mentorship_relation(user_id=self.first_user.id)
+        result = MentorshipRelationDAO.list_current_mentorship_relation(
+            user_id=self.first_user.id
+        )
         expected_response = self.future_accepted_mentorship_relation
 
         self.assertEqual(expected_response, result)
 
     def test_dao_list_non_existing_current_mentorship_relation(self):
-        result = MentorshipRelationDAO.list_current_mentorship_relation(user_id=self.admin_user.id)
+        result = MentorshipRelationDAO.list_current_mentorship_relation(
+            user_id=self.admin_user.id
+        )
         expected_response = (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200)
 
         self.assertEqual(expected_response, result)
 
     def test_dao_list_pending_mentorship_relation(self):
 
-        result = MentorshipRelationDAO.list_pending_mentorship_relations(user_id=self.first_user.id)
+        result = MentorshipRelationDAO.list_pending_mentorship_relations(
+            user_id=self.first_user.id
+        )
         expected_response = [self.future_pending_mentorship_relation]
 
         self.assertEqual(expected_response, result[0])
         self.assertEqual(200, result[1])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
