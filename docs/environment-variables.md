@@ -48,6 +48,28 @@ _Note:_
 - In the examples we use Gmail account example, but you are not restricted to use a Gmail account to send the verification email. If you use other email providers make sure to research about the correct SMTP server name.
 - The `'` character may be optional for environment variables without space on them.
 
+# Database Environment Variables
+
+To run the backend in other than `local` mode i.e `prod` or `develop` you need to export database environment variables.
+These are the required database environment variables.
+```
+export DB_TYPE=<database_type>
+export DB_USERNAME=<database_username>
+export DB_PASSWORD=<database_password>
+export DB_ENDPOINT=<database_endpoint>
+export DB_NAME=<database_name>
+```
+ ## Database environment variables description
+
+
+| Environment Variable | Description                                                                 | Example           |
+|----------------------|-----------------------------------------------------------------------------|-------------------|
+| DB_TYPE | Type of database you want to use | postgres, mysql
+| DB_USERNAME          | Username of the user through which you will be doing operations in database | admin123, jhonDoe | 
+| DB_PASSWORD | Database password of the `DB_USERNAME` user| admin@123, mypwd123|
+| DB_ENDPOINT | Path to database or connection string connecting to database | /path/to/database.db |
+| DB_Name | Name of the database to which you want to connect| Users.db, Tasks.db
+
 ## Exporting environment variables
 
 Assume that KEY is the name of the variable and VALUE is the actual value of the environment variable. 
