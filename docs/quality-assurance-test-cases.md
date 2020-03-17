@@ -88,6 +88,18 @@ This document contains some examples of test cases for each feature implemented 
 | Email in request body does not belong to a registered User                  | Fail    |
 | Email in request body is from a Verified User                               | Fail    |
 
+### Refresh token
+
+**Service:** POST /user/refresh
+
+| Test Case                                                        					  | Outcome |
+|------------------------------------------------------------------------------------ |---------|
+|Refresh token in Authorization field is the refresh token returned on login response | Success |
+|Refresh token in Authorization field is not valid or without Bearer                  | Fail    |
+|Refresh token in the Authorization field is expired               					  | Fail    |
+|No Refresh token is given in the Authorization field after Bearer    			      | Fail    |
+
+
 ## Mentorship Relation
 
 ### Send request
@@ -171,4 +183,6 @@ Only admin users have access to this.
 | Revoke self the admin role when self is the only admin | Fail |
 | Revoke self the admin role when self is not the only admin | Success |
 | Revoking an admin user, when the current user is not an admin | Fail |
+
+
 
