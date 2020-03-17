@@ -13,7 +13,7 @@ This is the Backend REST API for the Mentorship System.
 To setup the project locally read these wiki pages and follow the instructions:
 
  - [Fork, Clone and Remote](https://github.com/anitab-org/mentorship-backend/wiki/Fork%2C-Clone-%26-Remote)
- - [Export Environment Variables](https://github.com/anitab-org/mentorship-backend/wiki/Environment-Variables)
+ - [Export Environment Variables](https://github.com/anitab-org/mentorship-backend/blob/develop/docs/environment-variables.md)
 
 ### Run app
 
@@ -30,7 +30,7 @@ The project runs on Python 3.
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or
-make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/wiki/Environment-Variables):
+make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/blob/develop/docs/environment-variables.md):
 
 ```
 export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
@@ -60,7 +60,7 @@ export DB_NAME=<database_name>
 `deactivate`
 
 ### Run with docker
-1. Make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/wiki/Environment-Variables) to '.env' file
+1. Make sure you exported the following [environment variables](https://github.com/anitab-org/mentorship-backend/blob/develop/docs/environment-variables.md) to '.env' file
 
 2. Build docker image
 ```
