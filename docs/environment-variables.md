@@ -48,6 +48,30 @@ _Note:_
 - In the examples we use Gmail account example, but you are not restricted to use a Gmail account to send the verification email. If you use other email providers make sure to research about the correct SMTP server name.
 - The `'` character may be optional for environment variables without space on them.
 
+
+## Exporting environment variables
+
+Assume that KEY is the name of the variable and VALUE is the actual value of the environment variable. 
+To export an environment variable you have to run:
+```
+export KEY=VALUE
+```
+
+- Example:
+```
+export FLASK_ENVIRONMENT_CONFIG=dev
+```
+
+Another way to do this in flask applications is by having a file called `.env` which will have all of the environment variables. When a flask application runs, it will load these variables from the file.
+
+- Content of `.env` file:
+
+```
+FLASK_ENVIRONMENT_CONFIG=dev
+SECRET_KEY='some_random_key'
+(...)
+```
+
 # Database Environment Variables
 
 To run the backend in other than `local` mode i.e `prod` or `develop` you need to export database environment variables.
@@ -80,7 +104,7 @@ export KEY=VALUE
 
 - Example:
 ```
-export FLASK_ENVIRONMENT_CONFIG=dev
+export DB_PASSWORD="admindb@123"
 ```
 
 Another way to do this in flask applications is by having a file called `.env` which will have all of the environment variables. When a flask application runs, it will load these variables from the file.
@@ -88,7 +112,7 @@ Another way to do this in flask applications is by having a file called `.env` w
 - Content of `.env` file:
 
 ```
-FLASK_ENVIRONMENT_CONFIG=dev
-SECRET_KEY='some_random_key'
+DB_PASSWORD="admindb@123"
+DB_USERNAME="admin123"
 (...)
 ```
