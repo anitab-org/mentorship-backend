@@ -25,7 +25,7 @@ class UserModel(db.Model):
     # personal data
     name = db.Column(db.String(30))
     username = db.Column(db.String(30), unique=True)
-    email = db.Column(db.String(30), unique=True)
+    email = db.Column(db.String(254), unique=True)
 
     # security
     password_hash = db.Column(db.String(100))
