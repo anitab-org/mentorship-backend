@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Dict
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -12,7 +13,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def create_task(user_id, mentorship_relation_id, data):
+    def create_task(user_id: int, mentorship_relation_id: int, data: Dict[str, str]):
         """Creates a new task.
 
         Creates a new task in a mentorship relation if the specified user is already involved in it.
@@ -28,7 +29,7 @@ class TaskDAO:
             response code.
         """
 
-        description = data['description']
+        description = data["description"]
 
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
@@ -42,11 +43,11 @@ class TaskDAO:
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
         relation.tasks_list.save_to_db()
 
-        return messages.TASK_WAS_CREATED_SUCCESSFULLY, 200
+        return messages.TASK_WAS_CREATED_SUCCESSFULLY, 201
 
     @staticmethod
     @email_verification_required
-    def list_tasks(user_id, mentorship_relation_id):
+    def list_tasks(user_id: int, mentorship_relation_id: int):
         """Retrieves all tasks of a user in a mentorship relation.
 
         Lists all tasks from a mentorship relation for the specified user if the user is involved in a current mentorship relation.
@@ -75,7 +76,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def delete_task(user_id, mentorship_relation_id, task_id):
+    def delete_task(user_id: int, mentorship_relation_id: int, task_id: int):
         """Deletes a specified task from a mentorship relation.
 
         Deletes a task that belongs to a user who is involved in the specified
@@ -109,7 +110,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def complete_task(user_id, mentorship_relation_id, task_id):
+    def complete_task(user_id: int, mentorship_relation_id: int, task_id: int):
         """Marks a task as completed.
 
         Updates the task that belongs to a user who is involved in the specified
@@ -137,10 +138,11 @@ class TaskDAO:
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
 
-        if task.get('is_done'):
+        if task.get("is_done"):
             return messages.TASK_WAS_ALREADY_ACHIEVED, 400
         else:
             relation.tasks_list.update_task(
-                task_id=task_id, is_done=True, completed_at=datetime.now().timestamp())
+                task_id=task_id, is_done=True, completed_at=datetime.now().timestamp()
+            )
 
         return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, 200
