@@ -20,9 +20,9 @@ before_deploy:
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
 deploy:
   provider: script
-  script: docker push "${IMAGE_NAME}:develop"
+  script: docker push "${IMAGE_NAME}:add-Black-to-docker-travis-for-auto-pep8-linting"
   on:
-    branch: develop
+    branch: add-Black-to-docker-travis-for-auto-pep8-linting
 
 after_success:
   - ./deploy.sh
