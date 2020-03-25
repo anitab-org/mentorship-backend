@@ -13,7 +13,6 @@ def create_app(config_filename):
 
 
 
-
     from app.database.sqlalchemy_extension import db
 
     db.init_app(app)
