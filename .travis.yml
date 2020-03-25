@@ -14,18 +14,12 @@ script:
   - docker pull "$IMAGE_NAME" || true
   - docker build --no-cache --tag "$IMAGE_NAME" .
   - python -m unittest discover tests -v
+  - docker push "${IMAGE_NAME}:latest"
 after_script:
   - docker images
 
 before_deploy:
-  - git_sha="$(git rev-parse --short HEAD)"
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
-deploy:
-  provider: script
-  script: docker push "${IMAGE_NAME}:add-Black-to-docker-travis-for-auto-pep8-linting"
-  on:
-    branch: add-Black-to-docker-travis-for-auto-pep8-linting
-  skip_cleanup: true
 
 after_success:
   - ./deploy.sh
