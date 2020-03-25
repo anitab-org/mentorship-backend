@@ -3,7 +3,5 @@ COPY ./requirements.txt /dockerBuild/requirements.txt
 WORKDIR /dockerBuild
 RUN pip3 install -r requirements.txt
 COPY . /dockerBuild
-RUN black /dockerBuild --check && \
-    black /dockerBuild --diff && \
-    black /dockerBuild
+RUN /bin/sh -c "(cd /dockerBuild; black --check; black --diff; black .)"
 CMD ["flask", "run", "--host", "0.0.0.0"]
