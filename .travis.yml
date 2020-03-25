@@ -11,12 +11,14 @@ before_script:
  - chmod +x deploy.sh
 script:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - docker pull "$IMAGE_NAME" || true
   - docker build --no-cache --tag "$IMAGE_NAME" .
   - python -m unittest discover tests -v
 after_script:
   - docker images
 
 before_deploy:
+  - git_sha="$(git rev-parse --short HEAD)"
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
 deploy:
   provider: script
