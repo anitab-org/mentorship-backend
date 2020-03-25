@@ -37,7 +37,7 @@ DAO = UserDAO()  # User data access object
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query"})
+    @users_ns.doc("list_users", params={"search": "Search query", "is_verified":"Status of the user's verification. Type of this parameter is boolean. Default value is false."})
     @users_ns.doc(
         responses={
             401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -58,7 +58,10 @@ class UserList(Resource):
         available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""))
+
+        is_verified  = True if request.args.get("is_verified","false").lower() == "true" else False
+        
+        return DAO.list_users(user_id, request.args.get("search", ""), is_verified = is_verified)
 
 
 @users_ns.route("users/<int:user_id>")
