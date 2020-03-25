@@ -19,12 +19,7 @@ after_script:
 
 before_deploy:
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
-
-deploy:
-  provider: script
-  script: docker push "${IMAGE_NAME}:latest"
-  on:
-    branch: "$TRAVIS_REPO_SLUG"
+  - docker push "${IMAGE_NAME}:latest"
 
 after_success:
   - ./deploy.sh
