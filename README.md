@@ -22,8 +22,9 @@ The project runs on Python 3.
 1. Create a virtual environment:
 `virtualenv venv --python=python3`
 
-2. Activate the virtual environment:
-`source ./venv/bin/activate`
+2. Activate the virtual environment:<br />
+`source ./venv/bin/activate (for Linux/Mac Users)`<br />
+` .\venv\Scripts\activate (for Windows Users)`
 
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`

@@ -4,7 +4,7 @@ To run the backend you need to export environment variables.
 
 These are the needed environment variables:
 ```
-export FLASK_ENVIRONMENT_CONFIG=<dev-or-test-or-prod>
+export FLASK_ENVIRONMENT_CONFIG=<dev-or-test-or-prod-or-local>
 export SECRET_KEY=<your-secret-key>
 export SECURITY_PASSWORD_SALT=<your-security-password-salt>
 export MAIL_DEFAULT_SENDER=<mail-default-sender>
@@ -19,11 +19,12 @@ export APP_MAIL_PASSWORD=<app-mail-password>
 
 | Environment Variable     | Description                                                                                                                                                                                                                    | Example |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| FLASK_ENVIRONMENT_CONFIG | Short running environment name so that Flask know which configuration to load. Currently, there are 3 options for this: `dev`, `test` and `prod`.  To use the development environment configuration you should use "dev" as a value. | dev     |
+| FLASK_ENVIRONMENT_CONFIG | Short running environment name so that Flask know which configuration to load. Currently, there are 4 options for this: `dev`, `test`, `local` and `prod`.  To use the development environment configuration you should use "dev" as a value and If you want to use local database such as sqlite then set your environment config value as "local".| dev     |
 
 These are the currently available run configurations:
 - **dev:** Development environment used when developing locally
 - **test:** Testing environment used when running tests
+- **local:** Local environment used when developing locally
 - **prod:** Production environment used when a server is deployed
 
 ### Security
@@ -61,6 +62,7 @@ export KEY=VALUE
 export FLASK_ENVIRONMENT_CONFIG=dev
 ```
 
+Windows user should use **set** instead of **export** for setting these environment variables. <br/>
 Another way to do this in flask applications is by having a file called `.env` which will have all of the environment variables. When a flask application runs, it will load these variables from the file.
 
 - Content of `.env` file:
