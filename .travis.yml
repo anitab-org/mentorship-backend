@@ -6,7 +6,6 @@ cache: pip
 services:
   - docker
 env:
-
   - IMAGE_NAME=mtreacy002/mentorship-backend
 git:
     depth: false
