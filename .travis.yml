@@ -14,12 +14,9 @@ script:
   - docker pull "$IMAGE_NAME" || true
   - docker build --no-cache --tag "$IMAGE_NAME" .
   - python -m unittest discover tests -v
-after_script:
-  - docker images
-
-before_deploy:
-  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
-  - docker push "${IMAGE_NAME}:latest"
 
 after_success:
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+  - docker push "${IMAGE_NAME}:latest"
   - ./deploy.sh
+  
