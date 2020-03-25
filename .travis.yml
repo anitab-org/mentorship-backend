@@ -25,6 +25,7 @@ deploy:
   script: docker push "${IMAGE_NAME}:add-Black-to-docker-travis-for-auto-pep8-linting"
   on:
     branch: add-Black-to-docker-travis-for-auto-pep8-linting
+  skip_cleanup: true
 
 after_success:
   - ./deploy.sh
