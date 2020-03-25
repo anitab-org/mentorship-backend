@@ -1,7 +1,8 @@
 LICENSE
 README.md
 __pycache__
-dockerfile
+Dockerfile
+env
 docs
 venv
 .git
