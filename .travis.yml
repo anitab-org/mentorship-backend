@@ -3,11 +3,27 @@ sudo: required
 python:
   - '3.6'
 cache: pip
+services:
+  - docker
+env:
+  - IMAGE_NAME=mtreacy002mentorship-backend
 before_script:
  - chmod +x deploy.sh
-install:
-  - pip3 install -r requirements.txt
 script:
+  - docker pull "${IMAGE_NAME}:develop" || true
+  - docker build --pull --no-cache "${IMAGE_NAME}:develop" --tag "$IMAGE_NAME" .
   - python -m unittest discover tests -v
+after_script:
+  - docker images
+
+before_deploy:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+deploy:
+  provider: script
+  script: docker push "${IMAGE_NAME}:develop"
+  on:
+    branch: develop
+
 after_success:
   - ./deploy.sh
