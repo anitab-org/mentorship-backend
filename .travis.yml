@@ -6,7 +6,10 @@ cache: pip
 services:
   - docker
 env:
-  - IMAGE_NAME=anitab-org/mentorship-backend
+  - IMAGE_NAME=mtreacy002/mentorship-backend
+git:
+    depth: false
+
 before_script:
  - chmod +x deploy.sh
 script:
