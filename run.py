@@ -10,6 +10,10 @@ def create_app(config_filename):
     app.config.from_object(config_filename)
     app.url_map.strict_slashes = False
 
+
+
+
+
     from app.database.sqlalchemy_extension import db
 
     db.init_app(app)
