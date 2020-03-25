@@ -22,11 +22,10 @@ before_deploy:
   - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
 
 deploy:
-    provider: script
-    script: docker push "${IMAGE_NAME}:latest"
-    on: 
-      branch: develop
-
+  provider: script
+  script: docker push "${IMAGE_NAME}:latest"
+  on:
+    branch: develop
 
 after_success:
   - ./deploy.sh
