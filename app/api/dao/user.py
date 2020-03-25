@@ -1,6 +1,5 @@
 from datetime import datetime
 from operator import itemgetter
-from typing import Dict
 from flask_restplus import marshal
 
 from app import messages
@@ -27,7 +26,7 @@ class UserDAO:
     MIN_NUMBER_OF_ADMINS = 1
 
     @staticmethod
-    def create_user(data: Dict[str, str]):
+    def create_user(data):
         """Creates a new user.
         
         Creates a new user with provided data.
@@ -66,7 +65,7 @@ class UserDAO:
 
     @staticmethod
     @email_verification_required
-    def delete_user(user_id: int):
+    def delete_user(user_id):
         """ Deletes a user.
         
         Deletes the specified user and removes them from the directory, with checks to make sure that the user exists and is not the only administrator.
@@ -95,7 +94,7 @@ class UserDAO:
 
     @staticmethod
     @email_verification_required
-    def get_user(user_id: int):
+    def get_user(user_id):
         """ Retrieves a user's profile information using a specified ID.
         
         Provides the user profile of the user whose ID matches the one specified.
@@ -111,7 +110,7 @@ class UserDAO:
         return UserModel.find_by_id(user_id)
 
     @staticmethod
-    def get_user_by_email(email: str):
+    def get_user_by_email(email):
         """ Retrieves a user's profile information using a specified email.
         
         Provides the user profile of the user whose email matches the one specified.
@@ -127,7 +126,7 @@ class UserDAO:
         return UserModel.find_by_email(email)
 
     @staticmethod
-    def get_user_by_username(username: str):
+    def get_user_by_username(username):
         """ Retrieves a user's profile information using a specified username.
         
         Provides the user profile of the user whose username matches the one specified.
@@ -143,7 +142,7 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", is_verified = None):
+    def list_users(user_id, search_query="", is_verified=None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
@@ -184,7 +183,7 @@ class UserDAO:
 
     @staticmethod
     @email_verification_required
-    def update_user_profile(user_id: int, data: Dict[str, str]):
+    def update_user_profile(user_id, data):
         """ Updates the profile of a specified user with new data.
         
         Replaces old data items with new ones in the provided data list, with a check for overlap between users in username and a check that a user with the specified ID exists
@@ -287,7 +286,7 @@ class UserDAO:
 
     @staticmethod
     @email_verification_required
-    def change_password(user_id: int, data: Dict[str, str]):
+    def change_password(user_id, data):
         """ Changes the user's password.
         
         Finds the user with the given ID, checks their current password, and then updates to the new one.
@@ -313,7 +312,7 @@ class UserDAO:
         return messages.USER_ENTERED_INCORRECT_PASSWORD, 400
 
     @staticmethod
-    def confirm_registration(token: str):
+    def confirm_registration(token):
         """ Determines whether a user's email registration has been confirmed.
         
         Determines whether a user's email registration was invalid, previously confirmed, or just confirmed.
@@ -341,7 +340,7 @@ class UserDAO:
             return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200
 
     @staticmethod
-    def authenticate(username_or_email: str, password: str):
+    def authenticate(username_or_email, password):
         """ User login process.
         
         The user can login with two options:
@@ -368,7 +367,7 @@ class UserDAO:
 
     @staticmethod
     @email_verification_required
-    def get_achievements(user_id: int):
+    def get_achievements(user_id):
         """Shows a subset of the user's achievements
 
         Gets all the completed tasks of the user and
@@ -390,7 +389,7 @@ class UserDAO:
         return achievements
 
     @staticmethod
-    def get_user_statistics(user_id: int):
+    def get_user_statistics(user_id):
         """Shows some basic user statistics
 
         Gets the following statistics of the user:

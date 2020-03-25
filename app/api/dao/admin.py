@@ -1,5 +1,3 @@
-from typing import Dict
-
 from app import messages
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
@@ -10,7 +8,7 @@ class AdminDAO:
 
     @staticmethod
     @email_verification_required
-    def assign_new_user(user_id: int, data: Dict[str, str]):
+    def assign_new_user(user_id, data):
         """Creates a new admin.
 
         Creates a new admin if the assigned user exists and is assigned by another user. Otherwise returns a message.
@@ -51,7 +49,7 @@ class AdminDAO:
 
     @staticmethod
     @email_verification_required
-    def revoke_admin_user(user_id: int, data: Dict[str, str]):
+    def revoke_admin_user(user_id, data):
         """Revokes the admin status of an user.
 
         Revokes the admin status of an user if the user exists, is an admin and another user requests for this action. Otherwise returns a message.

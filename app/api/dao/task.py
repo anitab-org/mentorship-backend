@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -13,7 +12,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def create_task(user_id: int, mentorship_relation_id: int, data: Dict[str, str]):
+    def create_task(user_id, mentorship_relation_id, data):
         """Creates a new task.
 
         Creates a new task in a mentorship relation if the specified user is already involved in it.
@@ -47,7 +46,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def list_tasks(user_id: int, mentorship_relation_id: int):
+    def list_tasks(user_id, mentorship_relation_id):
         """Retrieves all tasks of a user in a mentorship relation.
 
         Lists all tasks from a mentorship relation for the specified user if the user is involved in a current mentorship relation.
@@ -76,7 +75,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def delete_task(user_id: int, mentorship_relation_id: int, task_id: int):
+    def delete_task(user_id, mentorship_relation_id, task_id):
         """Deletes a specified task from a mentorship relation.
 
         Deletes a task that belongs to a user who is involved in the specified
@@ -110,7 +109,7 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def complete_task(user_id: int, mentorship_relation_id: int, task_id: int):
+    def complete_task(user_id, mentorship_relation_id, task_id):
         """Marks a task as completed.
 
         Updates the task that belongs to a user who is involved in the specified

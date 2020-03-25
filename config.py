@@ -110,7 +110,7 @@ class TestingConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = "sqlite://"
 
 
-def get_env_config() -> str:
+def get_env_config():
     flask_config_name = os.getenv("FLASK_ENVIRONMENT_CONFIG", "dev")
     if flask_config_name not in ["prod", "test", "dev", "local", "stag"]:
         raise ValueError(
