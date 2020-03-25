@@ -14,9 +14,9 @@ script:
   - docker pull "$IMAGE_NAME" || true
   - docker build --no-cache --tag "$IMAGE_NAME" .
   - python -m unittest discover tests -v
-  - docker exec black --check
-  - docker exec black --diff
-  - docker exec black .
+  - black --check
+  - black --diff
+  - black .
   - docker push "${IMAGE_NAME}:latest"
 after_script:
   - docker images
