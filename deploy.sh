@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # Travis build triggered on a forked repository
-if [ "$TRAVIS_REPO_SLUG" != "systers/mentorship-backend" ]; then
+if [ "$TRAVIS_REPO_SLUG" != "anitab-org/mentorship-backend" ]; then
     echo "Skip publishing, this is a forked repo."
     exit 0
 fi
 
 # Travis build triggered by a PR
 if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-    echo "Skip publising, just a PR."
+    echo "Skip publishing, just a PR."
     exit 0
 fi
 
@@ -26,7 +26,7 @@ fi
 
 # Get the latest code
 cd $HOME
-git clone --branch=$TRAVIS_BRANCH https://github.com/systers/mentorship-backend.git
+git clone --branch=$TRAVIS_BRANCH https://github.com/anitab-org/mentorship-backend.git
 cd mentorship-backend
 
 # Create AWS Elastic Beanstalk profile
@@ -36,7 +36,7 @@ echo "aws_access_key_id = $AWS_ACCESS_ID" >> ~/.aws/config
 echo "aws_secret_access_key = $AWS_SECRET_KEY" >> ~/.aws/config
 
 # Add environment variables
-eb setenv FLASK_ENVIRONMENT_CONFIG=$FLASK_ENVIRONMENT_CONFIG MAIL_DEFAULT_SENDER=$MAIL_DEFAULT_SENDER MAIL_SERVER=$MAIL_SERVER APP_MAIL_USERNAME=$APP_MAIL_USERNAME APP_MAIL_PASSWORD=$APP_MAIL_PASSWORD SECRET_KEY=$SECRET_KEY SECURITY_PASSWORD_SALT=$SECURITY_PASSWORD_SALT
+eb setenv FLASK_ENVIRONMENT_CONFIG=$FLASK_ENVIRONMENT_CONFIG MAIL_DEFAULT_SENDER=$MAIL_DEFAULT_SENDER MAIL_SERVER=$MAIL_SERVER APP_MAIL_USERNAME=$APP_MAIL_USERNAME APP_MAIL_PASSWORD=$APP_MAIL_PASSWORD SECRET_KEY=$SECRET_KEY SECURITY_PASSWORD_SALT=$SECURITY_PASSWORD_SALT DB_TYPE=$DB_TYPE DB_USERNAME=$DB_USERNAME DB_PASSWORD=$DB_PASSWORD DB_ENDPOINT=$DB_ENDPOINT DB_NAME=$DB_NAME 
 
 # Publishing
 echo "Publishing to '$SERVER' server"

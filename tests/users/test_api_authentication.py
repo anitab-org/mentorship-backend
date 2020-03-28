@@ -20,11 +20,11 @@ class TestProtectedApi(BaseTestCase):
         super(TestProtectedApi, self).setUp()
 
         self.first_user = UserModel(
-            name=user1['name'],
-            email=user1['email'],
-            username=user1['username'],
-            password=user1['password'],
-            terms_and_conditions_checked=user1['terms_and_conditions_checked']
+            name=user1["name"],
+            email=user1["email"],
+            username=user1["username"],
+            password=user1["password"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
         )
         self.first_user.is_email_verified = True
 
@@ -34,33 +34,39 @@ class TestProtectedApi(BaseTestCase):
     def test_user_profile_with_header_api(self):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = marshal(self.first_user, full_user_api_model)
-        actual_response = self.client.get('/user', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/user", follow_redirects=True, headers=auth_header
+        )
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_without_header_api(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
-        actual_response = self.client.get('/user', follow_redirects=True)
+        actual_response = self.client.get("/user", follow_redirects=True)
 
         self.assertEqual(401, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_incomplete_token_api(self):
-        access_token = 'invalid_token'
-        auth_header = {
-            'Authorization': 'Bearer {}'.format(access_token)
-        }
+        access_token = "invalid_token"
+        auth_header = {"Authorization": "Bearer {}".format(access_token)}
         expected_response = messages.TOKEN_IS_INVALID
-        actual_response = self.client.get('/user', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/user", follow_redirects=True, headers=auth_header
+        )
 
         self.assertEqual(401, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_with_token_expired_api(self):
-        auth_header = get_test_request_header(self.first_user.id, token_expiration_delta=timedelta(minutes=-5))
+        auth_header = get_test_request_header(
+            self.first_user.id, token_expiration_delta=timedelta(minutes=-5)
+        )
         expected_response = messages.TOKEN_HAS_EXPIRED
-        actual_response = self.client.get('/user', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/user", follow_redirects=True, headers=auth_header
+        )
 
         self.assertEqual(401, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))

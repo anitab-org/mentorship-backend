@@ -12,7 +12,6 @@ from tests.test_utils import get_test_request_header
 
 
 class TestHomeStatisticsApi(BaseTestCase):
-
     def setUp(self):
         super(TestHomeStatisticsApi, self).setUp()
 
@@ -29,13 +28,17 @@ class TestHomeStatisticsApi(BaseTestCase):
 
     def test_relations_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
-        actual_response = self.client.get('/home', follow_redirects=True)
+        actual_response = self.client.get("/home", follow_redirects=True)
         self.assertEqual(401, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_relations_invalid_id(self):
-        auth_header = get_test_request_header(None)  # Supply invalid user ID for the test
-        actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
+        auth_header = get_test_request_header(
+            None
+        )  # Supply invalid user ID for the test
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
         self.assertEqual(404, actual_response.status_code)
         self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
@@ -46,28 +49,32 @@ class TestHomeStatisticsApi(BaseTestCase):
         end_date = end_date.timestamp()
         tasks_list = TasksListModel()
 
-        mentorship_relation = MentorshipRelationModel(action_user_id=self.user2.id,
-                                                      mentor_user=self.user1,
-                                                      mentee_user=self.user2,
-                                                      creation_date=start_date,
-                                                      end_date=end_date,
-                                                      state=MentorshipRelationState.PENDING,
-                                                      notes="",
-                                                      tasks_list=tasks_list)
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.user2.id,
+            mentor_user=self.user1,
+            mentee_user=self.user2,
+            creation_date=start_date,
+            end_date=end_date,
+            state=MentorshipRelationState.PENDING,
+            notes="",
+            tasks_list=tasks_list,
+        )
 
         db.session.add(mentorship_relation)
         db.session.commit()
         expected_response = {
-            'name': 'User1',
-            'pending_requests': 1,
-            'accepted_requests': 0,
-            'rejected_requests': 0,
-            'completed_relations': 0,
-            'cancelled_relations': 0,
-            'achievements': []
+            "name": "User1",
+            "pending_requests": 1,
+            "accepted_requests": 0,
+            "rejected_requests": 0,
+            "completed_relations": 0,
+            "cancelled_relations": 0,
+            "achievements": [],
         }
         auth_header = get_test_request_header(self.user1.id)
-        actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
@@ -78,28 +85,32 @@ class TestHomeStatisticsApi(BaseTestCase):
         end_date = end_date.timestamp()
         tasks_list = TasksListModel()
 
-        mentorship_relation = MentorshipRelationModel(action_user_id=self.user2.id,
-                                                      mentor_user=self.user1,
-                                                      mentee_user=self.user2,
-                                                      creation_date=start_date,
-                                                      end_date=end_date,
-                                                      state=MentorshipRelationState.ACCEPTED,
-                                                      notes="",
-                                                      tasks_list=tasks_list)
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.user2.id,
+            mentor_user=self.user1,
+            mentee_user=self.user2,
+            creation_date=start_date,
+            end_date=end_date,
+            state=MentorshipRelationState.ACCEPTED,
+            notes="",
+            tasks_list=tasks_list,
+        )
 
         db.session.add(mentorship_relation)
         db.session.commit()
         expected_response = {
-            'name': 'User1',
-            'pending_requests': 0,
-            'accepted_requests': 1,
-            'rejected_requests': 0,
-            'completed_relations': 0,
-            'cancelled_relations': 0,
-            'achievements': []
+            "name": "User1",
+            "pending_requests": 0,
+            "accepted_requests": 1,
+            "rejected_requests": 0,
+            "completed_relations": 0,
+            "cancelled_relations": 0,
+            "achievements": [],
         }
         auth_header = get_test_request_header(self.user1.id)
-        actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
@@ -110,28 +121,32 @@ class TestHomeStatisticsApi(BaseTestCase):
         end_date = end_date.timestamp()
         tasks_list = TasksListModel()
 
-        mentorship_relation = MentorshipRelationModel(action_user_id=self.user2.id,
-                                                      mentor_user=self.user1,
-                                                      mentee_user=self.user2,
-                                                      creation_date=start_date,
-                                                      end_date=end_date,
-                                                      state=MentorshipRelationState.REJECTED,
-                                                      notes="",
-                                                      tasks_list=tasks_list)
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.user2.id,
+            mentor_user=self.user1,
+            mentee_user=self.user2,
+            creation_date=start_date,
+            end_date=end_date,
+            state=MentorshipRelationState.REJECTED,
+            notes="",
+            tasks_list=tasks_list,
+        )
 
         db.session.add(mentorship_relation)
         db.session.commit()
         expected_response = {
-            'name': 'User1',
-            'pending_requests': 0,
-            'accepted_requests': 0,
-            'rejected_requests': 1,
-            'completed_relations': 0,
-            'cancelled_relations': 0,
-            'achievements': []
+            "name": "User1",
+            "pending_requests": 0,
+            "accepted_requests": 0,
+            "rejected_requests": 1,
+            "completed_relations": 0,
+            "cancelled_relations": 0,
+            "achievements": [],
         }
         auth_header = get_test_request_header(self.user1.id)
-        actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
@@ -142,28 +157,32 @@ class TestHomeStatisticsApi(BaseTestCase):
         end_date = end_date.timestamp()
         tasks_list = TasksListModel()
 
-        mentorship_relation = MentorshipRelationModel(action_user_id=self.user2.id,
-                                                      mentor_user=self.user1,
-                                                      mentee_user=self.user2,
-                                                      creation_date=start_date,
-                                                      end_date=end_date,
-                                                      state=MentorshipRelationState.COMPLETED,
-                                                      notes="",
-                                                      tasks_list=tasks_list)
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.user2.id,
+            mentor_user=self.user1,
+            mentee_user=self.user2,
+            creation_date=start_date,
+            end_date=end_date,
+            state=MentorshipRelationState.COMPLETED,
+            notes="",
+            tasks_list=tasks_list,
+        )
 
         db.session.add(mentorship_relation)
         db.session.commit()
         expected_response = {
-            'name': 'User1',
-            'pending_requests': 0,
-            'accepted_requests': 0,
-            'rejected_requests': 0,
-            'completed_relations': 1,
-            'cancelled_relations': 0,
-            'achievements': []
+            "name": "User1",
+            "pending_requests": 0,
+            "accepted_requests": 0,
+            "rejected_requests": 0,
+            "completed_relations": 1,
+            "cancelled_relations": 0,
+            "achievements": [],
         }
         auth_header = get_test_request_header(self.user1.id)
-        actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
@@ -173,28 +192,32 @@ class TestHomeStatisticsApi(BaseTestCase):
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
         tasks_list = TasksListModel()
-        mentorship_relation = MentorshipRelationModel(action_user_id=self.user2.id,
-                                                      mentor_user=self.user1,
-                                                      mentee_user=self.user2,
-                                                      creation_date=start_date,
-                                                      end_date=end_date,
-                                                      state=MentorshipRelationState.CANCELLED,
-                                                      notes="",
-                                                      tasks_list=tasks_list)
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.user2.id,
+            mentor_user=self.user1,
+            mentee_user=self.user2,
+            creation_date=start_date,
+            end_date=end_date,
+            state=MentorshipRelationState.CANCELLED,
+            notes="",
+            tasks_list=tasks_list,
+        )
 
         db.session.add(mentorship_relation)
         db.session.commit()
         expected_response = {
-            'name': 'User1',
-            'pending_requests': 0,
-            'accepted_requests': 0,
-            'rejected_requests': 0,
-            'completed_relations': 0,
-            'cancelled_relations': 1,
-            'achievements': []
+            "name": "User1",
+            "pending_requests": 0,
+            "accepted_requests": 0,
+            "rejected_requests": 0,
+            "completed_relations": 0,
+            "cancelled_relations": 1,
+            "achievements": [],
         }
         auth_header = get_test_request_header(self.user1.id)
-        actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
@@ -207,46 +230,56 @@ class TestHomeStatisticsApi(BaseTestCase):
         tasks_list = TasksListModel()
         task_created_time = datetime.now().timestamp()
         task_completed_time = task_created_time + 100
-        tasks_list.add_task(description='Test task',
-                            created_at=task_created_time,
-                            is_done=True,
-                            completed_at=task_completed_time)
-        tasks_list.add_task(description='Incomplete task: Should not appear in achievements',
-                            created_at=task_created_time,
-                            is_done=False,
-                            completed_at=task_completed_time)
+        tasks_list.add_task(
+            description="Test task",
+            created_at=task_created_time,
+            is_done=True,
+            completed_at=task_completed_time,
+        )
+        tasks_list.add_task(
+            description="Incomplete task: Should not appear in achievements",
+            created_at=task_created_time,
+            is_done=False,
+            completed_at=task_completed_time,
+        )
 
         db.session.add(tasks_list)
         db.session.commit()
 
-        mentorship_relation = MentorshipRelationModel(action_user_id=self.user2.id,
-                                                      mentor_user=self.user1,
-                                                      mentee_user=self.user2,
-                                                      creation_date=start_date,
-                                                      end_date=end_date,
-                                                      state=MentorshipRelationState.ACCEPTED,
-                                                      notes="",
-                                                      tasks_list=tasks_list)
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.user2.id,
+            mentor_user=self.user1,
+            mentee_user=self.user2,
+            creation_date=start_date,
+            end_date=end_date,
+            state=MentorshipRelationState.ACCEPTED,
+            notes="",
+            tasks_list=tasks_list,
+        )
 
         db.session.add(mentorship_relation)
         db.session.commit()
 
         expected_response = {
-            'name': 'User1',
-            'pending_requests': 0,
-            'accepted_requests': 1,
-            'rejected_requests': 0,
-            'completed_relations': 0,
-            'cancelled_relations': 0,
-            'achievements': [{
-                'completed_at': task_completed_time,
-                'created_at': task_created_time,
-                'description': 'Test task',
-                'id': 1,  # This is the only task in the list
-                'is_done': True
-            }]
+            "name": "User1",
+            "pending_requests": 0,
+            "accepted_requests": 1,
+            "rejected_requests": 0,
+            "completed_relations": 0,
+            "cancelled_relations": 0,
+            "achievements": [
+                {
+                    "completed_at": task_completed_time,
+                    "created_at": task_created_time,
+                    "description": "Test task",
+                    "id": 1,  # This is the only task in the list
+                    "is_done": True,
+                }
+            ],
         }
         auth_header = get_test_request_header(self.user1.id)
-        actual_response = self.client.get('/home', follow_redirects=True, headers=auth_header)
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
