@@ -46,6 +46,15 @@ class TestListTasksDao(TasksBaseTestCase):
 
         self.assertEqual(expected_response, actual_response)
 
+    def test_create_task_in_uninvolved_mentorship_relation(self):
+
+        expected_response = messages.CANT_CREATE_TASK_IN_UNINVOLVED_RELATION, 400
+
+        actual_response = TaskDAO.create_task(user_id=self.third_user.id,
+                                              mentorship_relation_id=self.mentorship_relation_w_second_user.id,
+                                              data=dict(description=self.test_description, is_done=self.test_is_done))
+        self.assertEqual(expected_response, actual_response)
+
 
 if __name__ == '__main__':
     unittest.main()

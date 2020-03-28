@@ -32,8 +32,12 @@ class TaskDAO:
 
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
+
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
+
+        if user.id != relation.mentee_id or user.id != relation.mentor_id:
+            return messages.CANT_CREATE_TASK_IN_UNINVOLVED_RELATION, 400
 
         if relation.state != MentorshipRelationState.ACCEPTED:
             return messages.UNACCEPTED_STATE_RELATION, 400

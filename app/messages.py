@@ -123,6 +123,9 @@ USER_INPUTS_INCORRECT_CONFIGURATION_VALUE = {"message": "The environment"
                                              " config value has to be within"
                                              " these values: prod,"
                                              "dev, test."}
+CANT_CREATE_TASK_IN_UNINVOLVED_RELATION = {"message": "You can't create a task "
+                                            " as you are not involved in this "
+                                            " mentorship relation. "}
 
 # Mentorship state
 NOT_PENDING_STATE_RELATION = {"message": "This mentorship relation is not in"
@@ -135,13 +138,13 @@ MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE = {"message": "Mentorship relation is"
 INSUFFICIENT_LENGTH = {
   "message": "Password should have minimum 8 characters"
 }
-ATLEAST_ONE_UPPERCASE = {
+AT_LEAST_ONE_UPPERCASE = {
   "message": "Password should have atleast 1 uppercase character"
 }
-ATLEAST_NUMBER = {
+AT_LEAST_NUMBER = {
   "message": "Password should have atleast 1 number"
 }
-ATLEAST_ONE_SPECIAL_CHARACTER = {
+AT_LEAST_ONE_SPECIAL_CHARACTER = {
   "message": "Password should have atleast 1 special character."
 }
 

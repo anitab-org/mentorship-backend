@@ -2,6 +2,10 @@ from datetime import datetime
 from operator import itemgetter
 from wtforms import validators
 import re
+from typing import Dict
+from flask_restplus import marshal
+
+
 from app import messages
 from app.api.email_utils import confirm_token
 from app.database.models.user import UserModel
@@ -40,7 +44,7 @@ def check_security(password_check):
     for (key, value) in flags.items():
         if value > 0:
             error = key
-            print messages[error]
+            print(messages[error])
             flag = 1
     if flag == 1:
         return False
@@ -231,74 +235,74 @@ class UserDAO:
 
             user.username = username
 
-        if 'name' in data and data['name']:
-            user.name = data['name']
+        if "name" in data and data["name"]:
+            user.name = data["name"]
 
-        if 'bio' in data:
-            if data['bio']:
-                user.bio = data['bio']
+        if "bio" in data:
+            if data["bio"]:
+                user.bio = data["bio"]
             else:
                 user.bio = None
 
-        if 'location' in data:
-            if data['location']:
-                user.location = data['location']
+        if "location" in data:
+            if data["location"]:
+                user.location = data["location"]
             else:
                 user.location = None
 
-        if 'occupation' in data:
-            if data['occupation']:
-                user.occupation = data['occupation']
+        if "occupation" in data:
+            if data["occupation"]:
+                user.occupation = data["occupation"]
             else:
                 user.occupation = None
 
-        if 'organization' in data:
-            if data['organization']:
-                user.organization = data['organization']
+        if "organization" in data:
+            if data["organization"]:
+                user.organization = data["organization"]
             else:
                 user.organization = None
 
-        if 'slack_username' in data:
-            if data['slack_username']:
-                user.slack_username = data['slack_username']
+        if "slack_username" in data:
+            if data["slack_username"]:
+                user.slack_username = data["slack_username"]
             else:
                 user.slack_username = None
 
-        if 'social_media_links' in data:
-            if data['social_media_links']:
-                user.social_media_links = data['social_media_links']
+        if "social_media_links" in data:
+            if data["social_media_links"]:
+                user.social_media_links = data["social_media_links"]
             else:
                 user.social_media_links = None
 
-        if 'skills' in data:
-            if data['skills']:
-                user.skills = data['skills']
+        if "skills" in data:
+            if data["skills"]:
+                user.skills = data["skills"]
             else:
                 user.skills = None
 
-        if 'interests' in data:
-            if data['interests']:
-                user.interests = data['interests']
+        if "interests" in data:
+            if data["interests"]:
+                user.interests = data["interests"]
             else:
                 user.interests = None
 
-        if 'resume_url' in data:
-            if data['resume_url']:
-                user.resume_url = data['resume_url']
+        if "resume_url" in data:
+            if data["resume_url"]:
+                user.resume_url = data["resume_url"]
             else:
                 user.resume_url = None
 
-        if 'photo_url' in data:
-            if data['photo_url']:
-                user.photo_url = data['photo_url']
+        if "photo_url" in data:
+            if data["photo_url"]:
+                user.photo_url = data["photo_url"]
             else:
                 user.photo_url = None
 
-        if 'need_mentoring' in data:
-            user.need_mentoring = data['need_mentoring']
+        if "need_mentoring" in data:
+            user.need_mentoring = data["need_mentoring"]
 
-        if 'available_to_mentor' in data:
-            user.available_to_mentor = data['available_to_mentor']
+        if "available_to_mentor" in data:
+            user.available_to_mentor = data["available_to_mentor"]
 
         user.save_to_db()
 

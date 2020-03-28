@@ -31,6 +31,13 @@ class TasksBaseTestCase(BaseTestCase):
             password=user2['password'],
             terms_and_conditions_checked=user2['terms_and_conditions_checked']
         )
+        self.third_user = UserModel(
+            name=user3['name'],
+            email=user3['email'],
+            username=user3['username'],
+            password=user3['password'],
+            terms_and_conditions_checked=user3['terms_and_conditions_checked']
+        )
 
         # making sure both are available to be mentor or mentee
         self.first_user.need_mentoring = True
@@ -39,7 +46,10 @@ class TasksBaseTestCase(BaseTestCase):
         self.second_user.need_mentoring = True
         self.second_user.available_to_mentor = True
         self.second_user.is_email_verified = True
-        
+        self.third_user.need_mentoring = True
+        self.third_user.available_to_mentor = True
+        self.third_user.is_email_verified = True
+
         self.notes_example = 'description of a good mentorship relation'
 
         self.now_datetime = datetime.now()
