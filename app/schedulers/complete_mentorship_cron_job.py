@@ -9,18 +9,19 @@ def complete_overdue_mentorship_relations_job():
     if True then marks the relation as COMPLETED, if False does nothing
     """
     from run import application
+
     with application.app_context():
         from app.utils.enum_utils import MentorshipRelationState
         from app.database.models.mentorship_relation import MentorshipRelationModel
-        all_relations = MentorshipRelationModel.query.all()
+
+        all_relations = filter(
+            lambda relation: relation.state == MentorshipRelationState.ACCEPTED
+            and relation.end_date < current_date_timestamp,
+            MentorshipRelationModel.query.all(),
+        )
 
         current_date_timestamp = datetime.now().timestamp()
 
         for relation in all_relations:
-
-            if relation.state == MentorshipRelationState.ACCEPTED and relation.end_date < current_date_timestamp:
-                relation.state = MentorshipRelationState.COMPLETED
-                relation.save_to_db()
-
-            # for tests purposes
-            # print('{} | hola hola hola hola hola'.format(datetime.now()))
+            relation.state = MentorshipRelationState.COMPLETED
+            relation.save_to_db()

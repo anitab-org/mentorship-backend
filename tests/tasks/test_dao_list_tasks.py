@@ -6,18 +6,21 @@ from tests.tasks.tasks_base_setup import TasksBaseTestCase
 
 
 class TestListTasksDao(TasksBaseTestCase):
-
     def test_list_tasks(self):
 
         expected_response = self.tasks_list_1.tasks
-        actual_response = TaskDAO.list_tasks(self.first_user.id, self.mentorship_relation_w_second_user.id)
+        actual_response = TaskDAO.list_tasks(
+            self.first_user.id, self.mentorship_relation_w_second_user.id
+        )
 
         self.assertEqual(expected_response, actual_response)
 
     def test_list_empty_tasks(self):
 
         expected_response = []
-        actual_response = TaskDAO.list_tasks(self.admin_user.id, self.mentorship_relation_without_first_user.id)
+        actual_response = TaskDAO.list_tasks(
+            self.admin_user.id, self.mentorship_relation_without_first_user.id
+        )
 
         self.assertEqual(expected_response, actual_response)
 
@@ -31,17 +34,21 @@ class TestListTasksDao(TasksBaseTestCase):
     def test_list_tasks_with_non_existent_user(self):
 
         expected_response = messages.USER_DOES_NOT_EXIST, 404
-        actual_response = TaskDAO.list_tasks(123123, self.mentorship_relation_w_second_user.id)
+        actual_response = TaskDAO.list_tasks(
+            123123, self.mentorship_relation_w_second_user.id
+        )
 
         self.assertEqual(expected_response, actual_response)
 
     def test_list_tasks_with_user_not_involved(self):
 
         expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 401
-        actual_response = TaskDAO.list_tasks(self.admin_user.id, self.mentorship_relation_w_second_user.id)
+        actual_response = TaskDAO.list_tasks(
+            self.admin_user.id, self.mentorship_relation_w_second_user.id
+        )
 
         self.assertEqual(expected_response, actual_response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

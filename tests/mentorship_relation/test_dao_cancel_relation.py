@@ -11,6 +11,7 @@ from tests.mentorship_relation.relation_base_setup import MentorshipRelationBase
 
 # TODO test when a user tries to cancel a relation where this user is not involved
 
+
 class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
     # Setup consists of adding 2 users into the database
@@ -19,7 +20,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
     def setUp(self):
         super(TestMentorshipRelationListingDAO, self).setUp()
 
-        self.notes_example = 'description of a good mentorship relation'
+        self.notes_example = "description of a good mentorship relation"
         self.now_datetime = datetime.now()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
@@ -33,7 +34,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
             end_date=self.end_date_example.timestamp(),
             state=MentorshipRelationState.PENDING,
             notes=self.notes_example,
-            tasks_list=TasksListModel()
+            tasks_list=TasksListModel(),
         )
 
         db.session.add(self.mentorship_relation)
@@ -44,8 +45,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.cancel_relation(self.first_user.id, 123)
 
-        self.assertEqual((messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404), result)
-        self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
+        self.assertEqual(
+            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404), result
+        )
+        self.assertEqual(
+            MentorshipRelationState.PENDING, self.mentorship_relation.state
+        )
 
     def test_dao_sender_does_not_exist_mentorship_request(self):
         DAO = MentorshipRelationDAO()
@@ -53,7 +58,9 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.cancel_relation(123, self.mentorship_relation.id)
 
         self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), result)
-        self.assertEqual(MentorshipRelationState.PENDING, self.mentorship_relation.state)
+        self.assertEqual(
+            MentorshipRelationState.PENDING, self.mentorship_relation.state
+        )
 
     def test_dao_receiver_cancel_mentorship_request(self):
         self.mentorship_relation.state = MentorshipRelationState.ACCEPTED
@@ -63,8 +70,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         DAO = MentorshipRelationDAO()
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
 
-        self.assertEqual((messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200), result)
-        self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
+        self.assertEqual(
+            (messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200), result
+        )
+        self.assertEqual(
+            MentorshipRelationState.CANCELLED, self.mentorship_relation.state
+        )
 
     def test_dao_sender_cancel_mentorship_request(self):
         self.mentorship_relation.state = MentorshipRelationState.ACCEPTED
@@ -74,8 +85,12 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         DAO = MentorshipRelationDAO()
         result = DAO.cancel_relation(self.first_user.id, self.mentorship_relation.id)
 
-        self.assertEqual((messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200), result)
-        self.assertEqual(MentorshipRelationState.CANCELLED, self.mentorship_relation.state)
+        self.assertEqual(
+            (messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200), result
+        )
+        self.assertEqual(
+            MentorshipRelationState.CANCELLED, self.mentorship_relation.state
+        )
 
     def test_dao_mentorship_cancel_relation_not_in_accepted_state(self):
         DAO = MentorshipRelationDAO()
