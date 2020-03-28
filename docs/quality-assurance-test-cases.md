@@ -156,6 +156,22 @@ This document contains some examples of test cases for each feature implemented 
 | User2 (received the request) cancels a mentorship relation that it is currently involved with User1 (the relation is in an ACCEPTED state)  | Success |
 | User1 cancel a mentorship relation which the User1 is not involved with | Fail |
 
+### Update task
+
+**Service:** PUT /mentorship_relation/{request_id}/task/{task_id}/complete
+
+| Test Case       | Outcome |
+| ------------- | ------------- |
+| Complete task from mentor with all data valid | Success |
+| Complete task from mentee with all data valid | Success |
+| Complete task from mentor/mentee with all data wrong | Fail |
+| Complete task from mentor/mentee with correct token and correct task_id but wrong request_id  | Fail |
+| Complete task from mentor/mentee with wrong token but correct task_id and wrong request_id | Fail |
+| Complete task from mentor/mentee with wrong token and wrong task_id but correct request_id | Fail |
+| Complete task from mentor/mentee with correct token and wrong task_id but wrong request_id | Fail |
+| Complete task from mentor/mentee with wrong token and correct task_id but correct request_id | Fail |
+| Complete task from mentor/mentee with correct token and wrong task_id but correct request_id | Fail |
+
 ## Admins
 
 Only admin users have access to this.
@@ -183,6 +199,3 @@ Only admin users have access to this.
 | Revoke self the admin role when self is the only admin | Fail |
 | Revoke self the admin role when self is not the only admin | Success |
 | Revoking an admin user, when the current user is not an admin | Fail |
-
-
-
