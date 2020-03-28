@@ -98,10 +98,10 @@ class LocalConfig(BaseConfig):
     DEBUG = True
 
     # Using a local sqlite database
-    #SQLALCHEMY_DATABASE_URI = "sqlite:///local_data.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///local_data.db"
 
     # Using a local postgre database
-    SQLALCHEMY_DATABASE_URI = "postgresql:///local_data"
+    # SQLALCHEMY_DATABASE_URI = "postgresql:///local_data"
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""
@@ -109,10 +109,10 @@ class TestingConfig(BaseConfig):
     TESTING = True
 
     # Use in-memory SQLite database for testing
-    #SQLALCHEMY_DATABASE_URI = "sqlite://"
+    SQLALCHEMY_DATABASE_URI = "sqlite://"
 
     # Use in-memory postgresql database for testing
-    SQLALCHEMY_DATABASE_URI = "postgresql://"
+    #SQLALCHEMY_DATABASE_URI = "postgresql://"
 
 def get_env_config() -> str:
     flask_config_name = os.getenv("FLASK_ENVIRONMENT_CONFIG", "dev")
