@@ -9,6 +9,7 @@ api = Api(
     + "For more information about the project here's a link to our wiki guide: https://github.com/anitab-org/mentorship-backend/wiki"
     # doc='/docs/'
 )
+api.namespaces.clear()
 
 # Adding namespaces
 from app.api.resources.user import users_ns as user_namespace
