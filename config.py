@@ -2,6 +2,23 @@ import os
 from datetime import timedelta
 
 
+def get_mock_email_config() -> bool:
+    MOCK_EMAIL = os.getenv("MOCK_EMAIL")
+
+    if  MOCK_EMAIL:
+        if MOCK_EMAIL=="True":
+            return True
+        elif MOCK_EMAIL=="False":
+            return False
+        else:
+            raise ValueError(
+                "MOCK_EMAIL environment variable has to valued either: 'True' or 'False' or <not defined>"
+            )
+    else:
+        # Default behaviour is to send the email if MOCK_EMAIL is not set
+        return False
+
+
 class BaseConfig(object):
     """Base configuration."""
 
@@ -41,6 +58,7 @@ class BaseConfig(object):
     DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     # mail settings
+    MOCK_EMAIL = get_mock_email_config()
     MAIL_SERVER = os.getenv("MAIL_SERVER")
     MAIL_PORT = 465
     MAIL_USE_TLS = False
@@ -76,6 +94,7 @@ class ProductionConfig(BaseConfig):
     """Production configuration."""
 
     SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
+    MOCK_EMAIL = False
 
 
 class DevelopmentConfig(BaseConfig):
@@ -90,7 +109,7 @@ class StagingConfig(BaseConfig):
 
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
-
+    MOCK_EMAIL = False
 
 class LocalConfig(BaseConfig):
     """Local configuration."""
@@ -105,6 +124,7 @@ class TestingConfig(BaseConfig):
     """Testing configuration."""
 
     TESTING = True
+    MOCK_EMAIL = True
 
     # Use in-memory SQLite database for testing
     SQLALCHEMY_DATABASE_URI = "sqlite://"
