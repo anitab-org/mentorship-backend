@@ -162,15 +162,17 @@ This document contains some examples of test cases for each feature implemented 
 
 | Test Case       | Outcome |
 | ------------- | ------------- |
-| Complete task from mentor with all data valid | Success |
-| Complete task from mentee with all data valid | Success |
-| Complete task from mentor/mentee with all data wrong | Fail |
-| Complete task from mentor/mentee with correct token and correct task_id but wrong request_id  | Fail |
-| Complete task from mentor/mentee with wrong token but correct task_id and wrong request_id | Fail |
-| Complete task from mentor/mentee with wrong token and wrong task_id but correct request_id | Fail |
-| Complete task from mentor/mentee with correct token and wrong task_id but wrong request_id | Fail |
-| Complete task from mentor/mentee with wrong token and correct task_id but correct request_id | Fail |
-| Complete task from mentor/mentee with correct token and wrong task_id but correct request_id | Fail |
+| Logged in user completes task from an existing request in the ACCEPTED state, that involves himself (as a mentor or as a mentee) | Success |
+| Logged in user tries to complete a task whose id does not exist, from an existing request in the ACCEPTED state, that involves himself (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task which has already been completed, from an existing request in the ACCEPTED state, that involves himself (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task, from an existing request in the ACCEPTED state, that does not involve himself (neither as a mentor nor as a mentee) | Fail |
+| Not logged in user (invalid token) tries to complete a task, from an existing request in the ACCEPTED state | Fail |
+| Logged in user tries to complete a task, with an invalid request (not an integer) | Fail |
+| Logged in user tries to complete a task which is invalid (not an integer), from an existing request in the ACCEPTED state   | Fail |
+| Logged in user tries to complete a task from an non existing request for this relationship (The request doesn't exist in any other relationship) | Fail |
+| Logged in user tries to complete a task from an non existing request (The request  exists in a different relationship) | Fail |
+| Logged in user tries to complete a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
+
 
 ## Admins
 
