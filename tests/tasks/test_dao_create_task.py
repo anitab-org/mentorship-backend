@@ -51,7 +51,7 @@ class TestListTasksDao(TasksBaseTestCase):
 
         self.assertEqual(expected_response, actual_response)
 
-    def test_create_task_with_user_not_involved_in_membership(self):
+    def test_create_task_with_user_not_involved_in_mentorship(self):
     
         expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 403
         self.mentorship_relation_w_second_user.state = MentorshipRelationState.ACCEPTED
