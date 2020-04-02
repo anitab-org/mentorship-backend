@@ -39,7 +39,7 @@ class TaskDAO:
         if relation.state != MentorshipRelationState.ACCEPTED:
             return messages.UNACCEPTED_STATE_RELATION, 400
 
-        if (relation.mentor_id != user_id) & (relation.mentee_id != user_id):
+        if (relation.mentor_id != user_id) and (relation.mentee_id != user_id):
             return messages.USER_NOT_INVOLVED_IN_MENTORSHIP_RELATION, 403
 
         now_timestamp = datetime.now().timestamp()
