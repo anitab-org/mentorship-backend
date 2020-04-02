@@ -53,7 +53,7 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task_with_user_not_involved_in_membership(self):
     
-        expected_response = messages.USER_NOT_INVOLVED_IN_MENTORSHIP_RELATION, 403
+        expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 403
         self.mentorship_relation_w_second_user.state = MentorshipRelationState.ACCEPTED
 
         actual_response = TaskDAO.create_task(

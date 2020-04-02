@@ -40,7 +40,7 @@ class TaskDAO:
             return messages.UNACCEPTED_STATE_RELATION, 400
 
         if (relation.mentor_id != user_id) and (relation.mentee_id != user_id):
-            return messages.USER_NOT_INVOLVED_IN_MENTORSHIP_RELATION, 403
+            return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 403
 
         now_timestamp = datetime.now().timestamp()
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)

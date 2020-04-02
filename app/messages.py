@@ -173,10 +173,6 @@ UNACCEPTED_STATE_RELATION = {
 MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE = {
     "message": "Mentorship relation is" " not in the accepted state."
 }
-USER_NOT_INVOLVED_IN_MENTORSHIP_RELATION = {
-    "message": "Logged-in user is not involved in the mentorship relation."
-}
-
 
 # Login errors
 USER_ENTERED_INCORRECT_PASSWORD = {"message": "Current password is incorrect."}
