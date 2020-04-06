@@ -3,7 +3,7 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.task_comment import TaskCommentModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
-
+from app import rep_code
 
 def validate_data_for_task_comment(user_id, task_id, relation_id):
     relation = MentorshipRelationModel.find_by_id(relation_id)

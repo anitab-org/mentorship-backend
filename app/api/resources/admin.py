@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from app import rep_code
 from app import messages
 from app.api.dao.user import UserDAO
 from app.api.models.admin import *
