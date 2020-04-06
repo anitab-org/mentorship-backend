@@ -47,8 +47,8 @@ def mock_send_email(recipient,subject,template):
     """Mocks the email sending behaviour by printing it as terminal output."""
 
     print("Mock Email Service")
-    print("Subject: {}".format(subject))
-    print("Recipient: {}".format(recipient))
+    print(f"Subject: {subject}")
+    print(f"Recipient: {recipient}")
     print(template)
 
 

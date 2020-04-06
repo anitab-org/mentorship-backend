@@ -5,14 +5,19 @@ from datetime import timedelta
 def get_mock_email_config() -> bool:
     MOCK_EMAIL = os.getenv("MOCK_EMAIL")
 
-    if  MOCK_EMAIL:
-        if MOCK_EMAIL=="True":
+    #if MOCK_EMAIL env variable is set
+    if  MOCK_EMAIL: 
+        # MOCK_EMAIL is case insensitive
+        MOCK_EMAIL = MOCK_EMAIL.lower()
+        
+        if MOCK_EMAIL=="true":
             return True
-        elif MOCK_EMAIL=="False":
+        elif MOCK_EMAIL=="false":
             return False
-        else:
+        else: 
+            # if MOCK_EMAIL env variable is set a wrong value
             raise ValueError(
-                "MOCK_EMAIL environment variable has to valued either: 'True' or 'False' or <not defined>"
+                "MOCK_EMAIL environment variable is optional if set, it has to be valued as either 'True' or 'False'"
             )
     else:
         # Default behaviour is to send the email if MOCK_EMAIL is not set
