@@ -1,4 +1,5 @@
 from http import HTTPStatus
+
 def main():
     if HTTPStatus.status_codes == 200:
         var = str(200)
