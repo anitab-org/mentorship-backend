@@ -162,10 +162,10 @@ This document contains some examples of test cases for each feature implemented 
 
 | Test Case       | Outcome |
 | ------------- | ------------- |
-| Logged in user completes task from an existing request in the ACCEPTED state, that involves himself (as a mentor or as a mentee) | Success |
-| Logged in user tries to complete a task whose id does not exist, from an existing request in the ACCEPTED state, that involves himself (as a mentor or as a mentee) | Fail |
-| Logged in user tries to complete a task which has already been completed, from an existing request in the ACCEPTED state, that involves himself (as a mentor or as a mentee) | Fail |
-| Logged in user tries to complete a task, from an existing request in the ACCEPTED state, that does not involve himself (neither as a mentor nor as a mentee) | Fail |
+| Logged in user completes task from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Success |
+| Logged in user tries to complete a task whose id does not exist, from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task which has already been completed, from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task, from an existing request in the ACCEPTED state, that does not involve the user (neither as a mentor nor as a mentee) | Fail |
 | Not logged in user (invalid token) tries to complete a task, from an existing request in the ACCEPTED state | Fail |
 | Logged in user tries to complete a task, with an invalid request (not an integer) | Fail |
 | Logged in user tries to complete a task which is invalid (not an integer), from an existing request in the ACCEPTED state   | Fail |
