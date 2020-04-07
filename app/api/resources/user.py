@@ -37,7 +37,7 @@ DAO = UserDAO()  # User data access object
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query"})
+    @users_ns.doc("list_users", params={"search": "Search query", "need_mentoring": "Flag for needing mentoring", "available_to_mentor": "Flag for availability to mentor"})
     @users_ns.doc(
         responses={
             401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -58,7 +58,7 @@ class UserList(Resource):
         available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""))
+        return DAO.list_users(user_id, request.args.get("search", ""), request.args.get("need_mentoring", None), request.args.get("available_to_mentor", None))
 
 
 @users_ns.route("users/<int:user_id>")
@@ -221,7 +221,7 @@ class ChangeUserPassword(Resource):
 class VerifiedUser(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("get_verified_users", params={"search": "Search query"})
+    @users_ns.doc("get_verified_users", params={"search": "Search query", "need_mentoring": "Flag for needing mentoring", "available_to_mentor": "Flag for availability to mentor"})
     @users_ns.doc(
         responses={
             401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -242,7 +242,7 @@ class VerifiedUser(Resource):
         available_to_mentor. The current user's details are not returned.
         """
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), is_verified=True)
+        return DAO.list_users(user_id, request.args.get("search", ""), request.args.get("need_mentoring", None), request.args.get("available_to_mentor", None), is_verified=True)
 
 
 @users_ns.route("register")

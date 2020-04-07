@@ -143,12 +143,14 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", is_verified = None):
+    def list_users(user_id: int, search_query: str = "", need_mentoring = None, available_to_mentor = None, is_verified = None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
-            user_id: The ID of the user to be listed.
+            user_id: The ID of the user requesting the list.
             search_query: The search query for name of the users to be found.
+	        need_mentoring: Flag to only pull users who need mentoring.
+	        available_to_mentor: Flag to only pull users who are available to mentor.
             is_verified: Status of the user's verification; None when provided as an argument.
         
         Returns:
@@ -161,7 +163,9 @@ class UserDAO:
             user.json()
             for user in filter(
                 lambda user: (not is_verified or user.is_email_verified)
-                and search_query.lower() in user.name.lower(),
+                and (search_query.lower() in user.name.lower())
+                and (need_mentoring == None or (need_mentoring.lower() == "true" and user.need_mentoring) or (need_mentoring.lower() == "false" and not user.need_mentoring))
+                and (available_to_mentor == None or (available_to_mentor.lower() == "true" and user.available_to_mentor) or (available_to_mentor.lower() == "false" and not user.available_to_mentor)),
                 users_list,
             )
         ]

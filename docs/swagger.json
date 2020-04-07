@@ -738,6 +738,20 @@
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
+                        "name": "need_mentoring",
+                        "in": "query",
+                        "type": "string",
+                        "required": false,
+                        "description": "Flag for needing mentoring"
+                    },
+                    {
+                        "name": "available_to_mentor",
+                        "in": "query",
+                        "type": "string",
+                        "required": false,
+                        "description": "Flag for availability to mentor"
+                    },
+                    {
                         "name": "X-Fields",
                         "in": "header",
                         "type": "string",
@@ -772,6 +786,20 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "need_mentoring",
+                        "in": "query",
+                        "type": "string",
+                        "required": false,
+                        "description": "Flag for needing mentoring"
+                    },
+                    {
+                        "name": "available_to_mentor",
+                        "in": "query",
+                        "type": "string",
+                        "required": false,
+                        "description": "Flag for availability to mentor"
                     },
                     {
                         "name": "X-Fields",
