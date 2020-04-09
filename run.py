@@ -3,7 +3,7 @@ from config import get_env_config
 from flask_migrate import Migrate
 
 
-def create_app(config_filename):
+def create_app(config_filename: str) -> Flask:
     app = Flask(__name__)
 
     # setup application environment

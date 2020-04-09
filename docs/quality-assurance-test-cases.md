@@ -7,7 +7,7 @@ This document contains some examples of test cases for each feature implemented 
 
 **Notes:**
 - Outcome _Fail_ means the test case as no effect in the database, so no changes are done in the data. An error message should be returned;
-- Outcome _Success_ means e that the test case was successful and had an effect in the database, so this changes/effect should be visible on the database. E.g.: If a user is registered successfully, you should be able to login, and be seen using the GET /users API;
+- Outcome _Success_ means that the test case was successful and had an effect in the database, so this change/effect should be visible on the database. E.g.: If a user is registered successfully, you should be able to login, and be seen using the GET /users API;
 - When testing something make sure only one aspect of the test is failing the requirements;
 - “Logged in” means that a valid access token is being sent in the Authorization header;
 - Nonrestricted API will have a marker -> (not restricted);
@@ -87,6 +87,18 @@ This document contains some examples of test cases for each feature implemented 
 | Email in request body is an email from an existing user which is unverified | Success |
 | Email in request body does not belong to a registered User                  | Fail    |
 | Email in request body is from a Verified User                               | Fail    |
+
+### Refresh token
+
+**Service:** POST /user/refresh
+
+| Test Case                                                        					  | Outcome |
+|------------------------------------------------------------------------------------ |---------|
+|Refresh token in Authorization field is the refresh token returned on login response | Success |
+|Refresh token in Authorization field is not valid or without Bearer                  | Fail    |
+|Refresh token in the Authorization field is expired               					  | Fail    |
+|No Refresh token is given in the Authorization field after Bearer    			      | Fail    |
+
 
 ## Mentorship Relation
 
@@ -172,6 +184,7 @@ Only admin users have access to this.
 | Revoke self the admin role when self is not the only admin | Success |
 | Revoking an admin user, when the current user is not an admin | Fail |
 
+
 ## Tasks
  
 ### Create
@@ -183,3 +196,4 @@ Only admin users have access to this.
 | Creating a task without a description (either empty or not in the request body at all)    | Fail    |
 | Create a task when a logged user is not involved in the relation                          | Fail    |
 | Create a task if relation state is different than accepted                                | Fail    | 
+

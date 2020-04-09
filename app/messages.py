@@ -1,7 +1,7 @@
 # Invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
-USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your username is invalid"}
+USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your username is invalid."}
 NEW_USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your new username is" " invalid."}
 TOKEN_IS_INVALID = {"message": "The token is invalid!"}
 USER_ID_IS_NOT_VALID = {"message": "User id is not valid."}
@@ -21,7 +21,7 @@ USER_NOT_FOUND = {"message": "User not found."}
 MENTOR_DOES_NOT_EXIST = {"message": "Mentor user does not exist."}
 MENTEE_DOES_NOT_EXIST = {"message": "Mentee user does not exist."}
 TASK_DOES_NOT_EXIST = {"message": "Task does not exist."}
-USER_DOES_NOT_EXIST = {"message": "User does not exist"}
+USER_DOES_NOT_EXIST = {"message": "User does not exist."}
 TASK_COMMENT_DOES_NOT_EXIST = {"message": "Task comment does not exist."}
 TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST = {
     "message": "Task comment with given task id does not exist."
@@ -41,9 +41,9 @@ TERMS_AND_CONDITIONS_FIELD_IS_MISSING = {
 }
 CURRENT_PASSWORD_FIELD_IS_MISSING = {"message": "Current password field is" " missing."}
 NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
-AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!."}
-DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing"}
-COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing"}
+AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!"}
+DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
+COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}
@@ -91,7 +91,7 @@ TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE = {
 
 # Update
 NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {
-    "message": "No data for updating" "profile was sent"
+    "message": "No data for updating" "profile was sent."
 }
 
 # Relation constraints
@@ -218,7 +218,7 @@ MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY = {
     "message": "Mentorship" " relation was" " rejected successfully."
 }
 MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY = {
-    "message": "Mentorship" " relation was " "cancelled successfully"
+    "message": "Mentorship relation was cancelled successfully."
 }
 TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
@@ -253,9 +253,9 @@ RETURNED_PENDING_MENTORSHIP_RELATIONS_WITH_SUCCESS = {
 DELETE_TASK_WITH_SUCCESS = {"message": "Delete task with success."}
 UPDATED_TASK_WITH_SUCCESS = {"message": "Updated task with success."}
 USER_SUCCESSFULLY_CREATED = {"message": "User successfully created."}
-USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully"}
+USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully."}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}
-PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated " "successfully"}
+PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated " "successfully."}
 TASK_COMMENT_WAS_CREATED_SUCCESSFULLY = {
     "message": "Task comment was created successfully."
 }
@@ -270,8 +270,8 @@ LIST_TASK_COMMENTS_WITH_SUCCESS = {
 }
 
 # confimation
-ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed"}
-USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email"}
+ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed."}
+USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email."}
 ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {
     "message": "You have confirmed your" " account. Thanks!"
 }
