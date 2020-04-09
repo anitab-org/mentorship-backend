@@ -149,3 +149,5 @@ def send_email_new_request(user_sender, user_recipient, notes, sender_role):
     )
     subject = "Mentorship System - You have got new relation request"
     send_email(user_recipient.email, subject, html)
+
+
