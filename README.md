@@ -91,24 +91,7 @@ The repository has the following permanent branches:
  * **master** This contains the code which has been released.
 
  * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch.
-## Features
 
-Some of the features of the app are:-
-
- * You can directly contact the mentor by sending a acceptation request.
- 
- * You can choose any mentor based on your field of interest.
- 
- * As a mentee you can choose to be a mentor anytime you want. 
- 
- * Enhance your capabilities in the technical field by directly questioning the mentor.
- 
- * Questions are answered within 24 hours, if the time limit exceeds you can directly ping the mentors.
- 
- * Learn and work on upgrading your skills, no payment required.
- 
- * Help women grow together as a whole irrespective of their background.
- 
 ## Contact
 
 You can reach the maintainers and our community on [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/). If you are interested in contributing to the mentorship system, we have a dedicated stream for this project [#mentorship-system](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system), where you can ask questions and interact with the community, join with us!
