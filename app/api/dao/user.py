@@ -143,13 +143,15 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", is_verified = None):
+    def list_users(user_id: int, search_query: str = "", page: int = 0, per_page: int = 10, is_verified = None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
             user_id: The ID of the user to be listed.
             search_query: The search query for name of the users to be found.
             is_verified: Status of the user's verification; None when provided as an argument.
+            page: The page of users to be returned
+            per_page: The number of users to return per page
         
         Returns:
             A list of users matching conditions and the HTTP response code.
@@ -165,6 +167,8 @@ class UserDAO:
                 users_list,
             )
         ]
+
+        list_of_users = list_of_users[page * per_page: (page * per_page) + per_page]
 
         for user in list_of_users:
             relation = MentorshipRelationDAO.list_current_mentorship_relation(
