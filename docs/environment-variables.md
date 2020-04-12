@@ -13,13 +13,15 @@ export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
 ```
 
-## Environment variables description
+## Environment Variables Description
 
-### Run configuration
+### Run Configuration
 
 | Environment Variable     | Description                                                                                                                                                                                                                    | Example |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+
 | FLASK_ENVIRONMENT_CONFIG | Short running environment name so that Flask know which configuration to load. Currently, there are 4 options for this: `dev`, `test`, `local` and `prod`.  If you want to use a simple local database (e.g.: sqlite) then set your environment config value as `local`. To use the development environment with a remote database configuration you should use `dev` as a value.  | dev     |
+
 
 These are the currently available run configurations:
 - **local:** Local environment used when developing locally
@@ -49,7 +51,7 @@ _Note:_
 - In the examples we use Gmail account example, but you are not restricted to use a Gmail account to send the verification email. If you use other email providers make sure to research about the correct SMTP server name.
 - The `'` character may be optional for environment variables without space on them.
 
-## Exporting environment variables
+## Exporting Environment Variables
 
 Assume that KEY is the name of the variable and VALUE is the actual value of the environment variable.
 To export an environment variable you have to run:
