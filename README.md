@@ -25,6 +25,9 @@ The project runs on Python 3.
 2. Activate the virtual environment:
 `source ./venv/bin/activate`
 
+`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines. For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
+
+
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`
 
