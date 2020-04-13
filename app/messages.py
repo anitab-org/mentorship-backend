@@ -282,3 +282,9 @@ INVALID_END_DATE = {
     "message": "Validation error. End date represented by the timestamp is invalid."
 }
 NOT_IMPLEMENTED = {"message": "Not implemented."}
+
+# Failed to send verification email due to security settings on default MAIL_SERVER
+EMAIL_SETTINGS_ERROR = {"message": "The application is not authorized to use the default email server. Please adjust your Email security settings."}
+
+# Failed to send verification email caused by SMTP error
+SMTP_ERROR = {"message": "Registration cannot be completed due to error in sending verification email. Please try again or contact our IT support-desk."}

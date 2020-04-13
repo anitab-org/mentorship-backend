@@ -16,6 +16,8 @@ from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
 from app.api.resources.common import auth_header_parser
+from smtplib import *
+from http import HTTPStatus
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -249,15 +251,17 @@ class VerifiedUser(Resource):
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(200, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
-        400,
-        "%s\n%s"
+        HTTPStatus.BAD_REQUEST,
+        "%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+            messages.SMTP_ERROR
         ),
     )
+    @users_ns.response(HTTPStatus.UNAUTHORIZED, "%s" % messages.EMAIL_SETTINGS_ERROR)
     @users_ns.expect(register_user_api_model, validate=True)
     def post(cls):
         """
@@ -274,12 +278,22 @@ class UserRegister(Resource):
         is_valid = validate_user_registration_request_data(data)
 
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
-        result = DAO.create_user(data)
-
-        if result[1] is 200:
+        failed_send = False
+        try:
             send_email_verification_message(data["name"], data["email"])
+        # for default email security settings error
+        except SMTPAuthenticationError:
+            failed_send = True
+            return messages.EMAIL_SETTINGS_ERROR, HTTPStatus.UNAUTHORIZED
+        # for other SMTP error
+        except SMTPException:
+            failed_send = True
+            return messages.SMTP_ERROR, HTTPStatus.BAD_REQUEST
+       
+        if failed_send == False:
+            result = DAO.create_user(data)
 
         return result
 
