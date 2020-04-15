@@ -7,7 +7,7 @@ This document contains some examples of test cases for each feature implemented 
 
 **Notes:**
 - Outcome _Fail_ means the test case as no effect in the database, so no changes are done in the data. An error message should be returned;
-- Outcome _Success_ means e that the test case was successful and had an effect in the database, so this changes/effect should be visible on the database. E.g.: If a user is registered successfully, you should be able to login, and be seen using the GET /users API;
+- Outcome _Success_ means that the test case was successful and had an effect in the database, so this change/effect should be visible on the database. E.g.: If a user is registered successfully, you should be able to login, and be seen using the GET /users API;
 - When testing something make sure only one aspect of the test is failing the requirements;
 - “Logged in” means that a valid access token is being sent in the Authorization header;
 - Nonrestricted API will have a marker -> (not restricted);
@@ -185,4 +185,15 @@ Only admin users have access to this.
 | Revoking an admin user, when the current user is not an admin | Fail |
 
 
+## Tasks
+ 
+### Create
+**Service:** POST /mentorship_relation/{relation_id}/task
+ 
+|  Test Case                                                                                | Outcome |
+| ----------------------------------------------------------------------------------------- |-------- |
+| Create a task for a relation, in the accepted state, between logged user and another user | Success |
+| Creating a task without a description (either empty or not in the request body at all)    | Fail    |
+| Create a task when a logged user is not involved in the relation                          | Fail    |
+| Create a task if relation state is different than accepted                                | Fail    | 
 
