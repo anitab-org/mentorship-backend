@@ -9,6 +9,7 @@ FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is" " not 
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
 }
+RELATION_STATE_FILTER_IS_INVALID = {"message": "Relation state filer is not valid."}
 
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {

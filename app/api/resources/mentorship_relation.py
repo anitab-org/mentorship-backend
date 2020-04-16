@@ -18,10 +18,67 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.api.email_utils import send_email_mentorship_relation_accepted
 from app.api.email_utils import send_email_new_request
 
-mentorship_relation_ns = Namespace(
+
+# tools for in inheritance
+from functools import wraps
+from flask import current_app, has_app_context
+from flask_restplus.utils import unpack
+from flask_restplus.marshalling import  marshal_with
+from flask_restplus.utils import merge
+from flask_restplus._http import HTTPStatus
+
+
+class sub_marshal_with(marshal_with):
+    def __call__(self, f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if 200 in f(*args, **kwargs):
+                resp = f(*args, **kwargs)
+                mask = self.mask
+                if has_app_context():
+                    mask_header = current_app.config['RESTPLUS_MASK_HEADER']
+                    mask = request.headers.get(mask_header) or mask
+                if isinstance(resp, tuple):
+                    data, code, headers = unpack(resp)
+                    return (
+                        marshal(data, self.fields, self.envelope, self.skip_none, mask, self.ordered),
+                        code,
+                        headers
+                    )
+                else:
+                    return marshal(resp, self.fields, self.envelope, self.skip_none, mask, self.ordered)
+            else:
+                return f(*args, **kwargs)
+
+        return wrapper
+
+class sub_Namespace(Namespace):
+    def marshal_with(self, fields, as_list=False, code=HTTPStatus.OK, description=None, **kwargs):
+        '''
+        A decorator specifying the fields to use for serialization.
+
+        :param bool as_list: Indicate that the return type is a list (for the documentation)
+        :param int code: Optionally give the expected HTTP response code if its different from 200
+
+        '''
+        def wrapper(func):
+            doc = {
+                'responses': {
+                    code: (description, [fields]) if as_list else (description, fields)
+                },
+                '__mask__': kwargs.get('mask', True),  # Mask values can't be determined outside app context
+            }
+            func.__apidoc__ = merge(getattr(func, '__apidoc__', {}), doc)
+            return sub_marshal_with(fields, ordered=self.ordered, **kwargs)(func)
+        return wrapper
+
+
+
+mentorship_relation_ns = sub_Namespace(
     "Mentorship Relation",
     description="Operations related to " "mentorship relations " "between users",
-)
+)        
+
 add_models_to_namespace(mentorship_relation_ns)
 
 DAO = MentorshipRelationDAO()
@@ -144,6 +201,13 @@ class GetAllMyMentorshipRelation(Resource):
         model=mentorship_request_response_body,
     )
     @mentorship_relation_ns.response(
+        400,
+        "%s"
+        % (
+            messages.RELATION_STATE_FILTER_IS_INVALID,
+        ),
+    )
+    @mentorship_relation_ns.response(
         401,
         "%s\n%s\n%s"
         % (
@@ -174,6 +238,7 @@ class GetAllMyMentorshipRelation(Resource):
         response = DAO.list_mentorship_relations(
             user_id=user_id, state=rel_state_filter
         )
+    
 
         return response
 
