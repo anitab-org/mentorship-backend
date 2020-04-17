@@ -656,7 +656,14 @@ class UpdateTask(Resource):
     @mentorship_relation_ns.response(
         200, "%s" % messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
     )
-    @mentorship_relation_ns.response(400, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED)
+    @mentorship_relation_ns.response(
+        400,
+        "%s\n%s"
+        % (
+            messages.TASK_WAS_ALREADY_ACHIEVED,
+            messages.UNACCEPTED_STATE_RELATION,
+        ),
+    )
     @mentorship_relation_ns.response(
         401,
         "%s\n%s\n%s\n%s"

@@ -133,7 +133,8 @@ class TaskDAO:
 
         if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
             return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 401
-
+        if relation.state != MentorshipRelationState.ACCEPTED:
+            return messages.UNACCEPTED_STATE_RELATION, 400
         task = relation.tasks_list.find_task_by_id(task_id)
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, 404
