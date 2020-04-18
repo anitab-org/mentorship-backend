@@ -508,6 +508,7 @@ class CreateTask(Resource):
         messages.AUTHORISATION_TOKEN_IS_MISSING
         )
     )
+    @mentorship_relation_ns.response(403, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
     def post(cls, request_id):
         """
         Create a task for a mentorship relation.
