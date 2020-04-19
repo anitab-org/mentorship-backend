@@ -36,9 +36,9 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
                                            headers=auth_header, content_type='application/json',
                                            data=json.dumps(test_payload))
         self.assertEqual(404, actual_response.status_code)
-	self.assertEqual(1, len(outbox))
+        self.assertEqual(1, len(outbox))
         self.assertEqual([self.second_user.email], outbox[0].recipients)
-	self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_fail_send_request_bad_mentor_id(self):
         auth_header = get_test_request_header(self.first_user.id)
@@ -53,7 +53,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
                                            headers=auth_header, content_type='application/json',
                                            data=json.dumps(test_payload))
         self.assertEqual(404, actual_response.status_code)
-	self.assertEqual(1, len(outbox))
+        self.assertEqual(1, len(outbox))
         self.assertEqual([self.second_user.email], outbox[0].recipients)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
@@ -72,7 +72,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
                                            headers=auth_header, content_type='application/json',
                                            data=json.dumps(test_payload))
         self.assertEqual(400, actual_response.status_code)
-	self.assertEqual(1, len(outbox))
+        self.assertEqual(1, len(outbox))
         self.assertEqual([self.second_user.email], outbox[0].recipients)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
