@@ -1,5 +1,6 @@
 from datetime import datetime
 from operator import itemgetter
+from http import HTTPStatus
 from typing import Dict
 from flask_restplus import marshal
 
@@ -47,11 +48,11 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
-            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, 400
+            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
         else:
             existing_user = UserModel.find_by_email(data["email"])
             if existing_user:
-                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, 400
+                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
@@ -62,7 +63,7 @@ class UserDAO:
 
         user.save_to_db()
 
-        return messages.USER_WAS_CREATED_SUCCESSFULLY, 200
+        return messages.USER_WAS_CREATED_SUCCESSFULLY, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
@@ -85,13 +86,13 @@ class UserDAO:
 
             admins_list_count = len(UserModel.get_all_admins())
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
-                return messages.USER_CANT_DELETE, 400
+                return messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST
 
         if user:
             user.delete_from_db()
-            return messages.USER_SUCCESSFULLY_DELETED, 200
+            return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
 
-        return messages.USER_DOES_NOT_EXIST, 404
+        return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
     @staticmethod
     @email_verification_required
@@ -180,7 +181,7 @@ class UserDAO:
                     user["need_mentoring"] or user["available_to_mentor"]
                 )
 
-        return list_of_users, 200
+        return list_of_users, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
@@ -200,7 +201,7 @@ class UserDAO:
 
         user = UserModel.find_by_id(user_id)
         if not user:
-            return messages.USER_DOES_NOT_EXIST, 404
+            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         username = data.get("username", None)
         if username:
@@ -208,7 +209,7 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, 400
+                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
 
             user.username = username
 
@@ -283,7 +284,7 @@ class UserDAO:
 
         user.save_to_db()
 
-        return messages.USER_SUCCESSFULLY_UPDATED, 200
+        return messages.USER_SUCCESSFULLY_UPDATED, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
@@ -308,9 +309,9 @@ class UserDAO:
         if user.check_password(current_password):
             user.set_password(new_password)
             user.save_to_db()
-            return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
+            return messages.PASSWORD_SUCCESSFULLY_UPDATED, HTTPStatus.CREATED
 
-        return messages.USER_ENTERED_INCORRECT_PASSWORD, 400
+        return messages.USER_ENTERED_INCORRECT_PASSWORD, HTTPStatus.BAD_REQUEST
 
     @staticmethod
     def confirm_registration(token: str):
@@ -329,16 +330,16 @@ class UserDAO:
         email_from_token = confirm_token(token)
 
         if not email_from_token or email_from_token is None:
-            return messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400
+            return messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, HTTPStatus.BAD_REQUEST
 
         user = UserModel.find_by_email(email_from_token)
         if user.is_email_verified:
-            return messages.ACCOUNT_ALREADY_CONFIRMED, 200
+            return messages.ACCOUNT_ALREADY_CONFIRMED, HTTPStatus.OK
         else:
             user.is_email_verified = True
             user.email_verification_date = datetime.now()
             user.save_to_db()
-            return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200
+            return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, HTTPStatus.OK
 
     @staticmethod
     def authenticate(username_or_email: str, password: str):
@@ -635,7 +636,7 @@ class UserDAO:
             user_id=user_id
         )
 
-        if current_relation != (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200):
+        if current_relation != (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK):
             response["tasks_todo"] = marshal(
                 [
                     task
