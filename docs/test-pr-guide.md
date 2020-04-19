@@ -39,3 +39,33 @@ In this example testusera is the mentee and testuserb is the mentor and testuser
 [Demo Video](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672)
 
 ![Mentorship Request screenshot1](https://user-images.githubusercontent.com/26095715/79673504-49bf8b00-81a8-11ea-9a1e-c136cb345440.png)
+
+<h3>Check pending requests</h3>
+
+Check pending requests for testusera. The relation should be in state 1 (pending). Note the request ID. Here it is 13.
+
+![Pending request testusera screenshot1](https://user-images.githubusercontent.com/26095715/79673502-4926f480-81a8-11ea-8695-882117830657.png)
+
+![Pending request testusera screenshot2](https://user-images.githubusercontent.com/26095715/79673501-4926f480-81a8-11ea-9d78-25704487ce28.png)
+
+<h3>Accept the mentorship request</h3>
+
+testuserb accepts the mentorship request from testusera.
+
+![Accepted request screenshot](https://user-images.githubusercontent.com/26095715/79673500-4926f480-81a8-11ea-9c97-bac8cc800f85.png)
+
+<h3>List current relations of a user</h3>
+
+List the current relationships of testusera. The relation should be state 2 (accepted).
+
+![Current relations screenshot](https://user-images.githubusercontent.com/26095715/79673499-4926f480-81a8-11ea-8641-79749fdc89ab.png)
+
+<h2>Create a task under a relation.</h2>
+
+Testusera creates a task for the relation 13. This will be successful because testusera is a part of this relation.
+
+![Create task screenshot](https://user-images.githubusercontent.com/26095715/79673498-4926f480-81a8-11ea-8e95-a7cd3ea24e56.png)
+
+Testuserc cannot create a task under this relation
+
+![Invalid task screenshot](https://user-images.githubusercontent.com/11148726/79637378-16b0d380-8177-11ea-96ef-202c17908e5c.png)
