@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from http import HTTPStatus
 from flask import request
 from flask_jwt_extended import (
     jwt_required,
@@ -25,7 +25,7 @@ DAO = UserDAO()  # User data access object
 
 @users_ns.route("users")
 @users_ns.response(
-    401,
+    HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
     % (
         messages.TOKEN_HAS_EXPIRED,
@@ -40,7 +40,7 @@ class UserList(Resource):
     @users_ns.doc("list_users", params={"search": "Search query"})
     @users_ns.doc(
         responses={
-            401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
@@ -68,10 +68,10 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(201, "Success.", public_user_api_model)
-    @users_ns.response(400, "%s" % messages.USER_ID_IS_NOT_VALID)
+    @users_ns.response(HTTPStatus.CREATED, "Success.", public_user_api_model)
+    @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ID_IS_NOT_VALID)
     @users_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -79,7 +79,7 @@ class OtherUser(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    @users_ns.response(404, "%s" % messages.USER_DOES_NOT_EXIST)
+    @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
     def get(cls, user_id):
         """
         Returns a user.
@@ -89,13 +89,13 @@ class OtherUser(Resource):
         """
         # Validate arguments
         if not OtherUser.validate_param(user_id):
-            return messages.USER_ID_IS_NOT_VALID, 400
+            return messages.USER_ID_IS_NOT_VALID, HTTPStatus.BAD_REQUEST
 
         requested_user = DAO.get_user(user_id)
         if requested_user is None:
-            return messages.USER_DOES_NOT_EXIST, 404
+            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
         else:
-            return marshal(requested_user, public_user_api_model), 201
+            return marshal(requested_user, public_user_api_model), HTTPStatus.CREATED
 
     @staticmethod
     def validate_param(user_id):
@@ -104,7 +104,7 @@ class OtherUser(Resource):
 
 @users_ns.route("user")
 @users_ns.response(
-    401,
+    HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
     % (
         messages.TOKEN_HAS_EXPIRED,
@@ -112,7 +112,7 @@ class OtherUser(Resource):
         messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
-@users_ns.response(404, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
 class MyUserProfile(Resource):
     @classmethod
     @jwt_required
@@ -133,8 +133,8 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(200, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
-    @users_ns.response(400, "Invalid input.")
+    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
+    @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
     def put(cls):
         """
         Updates user profile
@@ -151,7 +151,7 @@ class MyUserProfile(Resource):
         is_valid = validate_update_profile_request_data(data)
 
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         user_id = get_jwt_identity()
         return DAO.update_user_profile(user_id, data)
@@ -160,7 +160,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("delete_user")
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.response(200, "%s" % messages.USER_SUCCESSFULLY_DELETED)
+    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_DELETED)
     def delete(cls):
         """
         Deletes user.
@@ -173,10 +173,10 @@ class MyUserProfile(Resource):
         return DAO.delete_user(user_id)
 
 
-@users_ns.response(201, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
-@users_ns.response(400, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
+@users_ns.response(HTTPStatus.CREATED, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
+@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
 @users_ns.response(
-    401,
+    HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
     % (
         messages.TOKEN_HAS_EXPIRED,
@@ -204,12 +204,12 @@ class ChangeUserPassword(Resource):
         data = request.json
         is_valid = validate_new_password(data)
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
         return DAO.change_password(user_id, data)
 
 
 @users_ns.response(
-    401,
+    HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
     % (
         messages.TOKEN_HAS_EXPIRED,
@@ -224,7 +224,7 @@ class VerifiedUser(Resource):
     @users_ns.doc("get_verified_users", params={"search": "Search query"})
     @users_ns.doc(
         responses={
-            401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
@@ -249,9 +249,9 @@ class VerifiedUser(Resource):
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(200, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
-        400,
+        HTTPStatus.BAD_REQUEST,
         "%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
@@ -274,11 +274,11 @@ class UserRegister(Resource):
         is_valid = validate_user_registration_request_data(data)
 
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         result = DAO.create_user(data)
 
-        if result[1] is 200:
+        if result[1] is HTTPStatus.OK:
             send_email_verification_message(data["name"], data["email"])
 
         return result
@@ -286,14 +286,14 @@ class UserRegister(Resource):
 
 @users_ns.route("user/confirm_email/<string:token>")
 @users_ns.response(
-    200,
+    HTTPStatus.OK,
     "%s\n%s"
     % (
         messages.USER_SUCCESSFULLY_CREATED,
         messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS,
     ),
 )
-@users_ns.response(400, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
+@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
@@ -310,10 +310,10 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route("user/resend_email")
-@users_ns.response(200, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
-@users_ns.response(400, "Invalid input.")
-@users_ns.response(403, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
-@users_ns.response(404, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
+@users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
+@users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
+@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
@@ -330,18 +330,18 @@ class UserResendEmailConfirmation(Resource):
         is_valid = validate_resend_email_request_data(data)
 
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         user = DAO.get_user_by_email(data["email"])
         if user is None:
-            return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, 404
+            return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, HTTPStatus.NOT_FOUND
 
         if user.is_email_verified:
-            return messages.USER_ALREADY_CONFIRMED_ACCOUNT, 403
+            return messages.USER_ALREADY_CONFIRMED_ACCOUNT, HTTPStatus.FORBIDDEN
 
         send_email_verification_message(user.name, data["email"])
 
-        return messages.EMAIL_VERIFICATION_MESSAGE, 200
+        return messages.EMAIL_VERIFICATION_MESSAGE, HTTPStatus.OK
 
 
 @users_ns.route("refresh")
@@ -349,9 +349,9 @@ class RefreshUser(Resource):
     @classmethod
     @jwt_refresh_token_required
     @users_ns.doc("refresh")
-    @users_ns.response(200, "Successful refresh", refresh_response_body_model)
+    @users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
     @users_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -377,7 +377,7 @@ class RefreshUser(Resource):
 
         return (
             {"access_token": access_token, "access_expiry": access_expiry.timestamp()},
-            200,
+            HTTPStatus.OK,
         )
 
 
@@ -385,14 +385,14 @@ class RefreshUser(Resource):
 class LoginUser(Resource):
     @classmethod
     @users_ns.doc("login")
-    @users_ns.response(200, "Successful login", login_response_body_model)
+    @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
     @users_ns.response(
-        400,
+        HTTPStatus.BAD_REQUEST,
         "%s\n%s"
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
-    @users_ns.response(403, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
-    @users_ns.response(404, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
+    @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
+    @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -410,17 +410,17 @@ class LoginUser(Resource):
         password = request.json.get("password", None)
 
         if not username:
-            return messages.USERNAME_FIELD_IS_MISSING, 400
+            return messages.USERNAME_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST
         if not password:
-            return messages.PASSWORD_FIELD_IS_MISSING, 400
+            return messages.PASSWORD_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST
 
         user = DAO.authenticate(username, password)
 
         if not user:
-            return messages.WRONG_USERNAME_OR_PASSWORD, 404
+            return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.NOT_FOUND
 
         if not user.is_email_verified:
-            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, 403
+            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
 
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
@@ -441,16 +441,16 @@ class LoginUser(Resource):
                 "refresh_token": refresh_token,
                 "refresh_expiry": refresh_expiry.timestamp(),
             },
-            200,
+            HTTPStatus.OK,
         )
 
 
 @users_ns.route("home")
 @users_ns.doc("home")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(200, "Successful response", home_response_body_model)
+@users_ns.response(HTTPStatus.OK, "Successful response", home_response_body_model)
 @users_ns.response(
-    401,
+    HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
     % (
         messages.TOKEN_HAS_EXPIRED,
@@ -458,7 +458,7 @@ class LoginUser(Resource):
         messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
-@users_ns.response(404, "%s" % messages.USER_NOT_FOUND)
+@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_NOT_FOUND)
 class UserHomeStatistics(Resource):
     @classmethod
     @jwt_required
@@ -473,15 +473,15 @@ class UserHomeStatistics(Resource):
         user_id = get_jwt_identity()
         stats = DAO.get_user_statistics(user_id)
         if not stats:
-            return messages.USER_NOT_FOUND, 404
+            return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
 
-        return stats, 200
+        return stats, HTTPStatus.OK
 
 
 @users_ns.route("dashboard")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(200, "Successful response", dashboard_response_body_model)
-@users_ns.response(404, "User not found")
+@users_ns.response(HTTPStatus.OK, "Successful response", dashboard_response_body_model)
+@users_ns.response(HTTPStatus.NOT_FOUND, "User not found")
 class UserDashboard(Resource):
     @classmethod
     @jwt_required
@@ -495,6 +495,6 @@ class UserDashboard(Resource):
         user_id = get_jwt_identity()
         dashboard = DAO.get_user_dashboard(user_id)
         if not dashboard:
-            return messages.USER_NOT_FOUND, 404
+            return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
 
-        return dashboard, 200
+        return dashboard, HTTPStatus.OK
