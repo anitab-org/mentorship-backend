@@ -2,6 +2,7 @@ from datetime import datetime
 from operator import itemgetter
 from typing import Dict
 from flask_restplus import marshal
+import copy
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -507,22 +508,7 @@ class UserDAO:
                 "pending": [],
             },
         }
-        as_mentor = {
-            "sent": {
-                "accepted": [],
-                "rejected": [],
-                "completed": [],
-                "cancelled": [],
-                "pending": [],
-            },
-            "received": {
-                "accepted": [],
-                "rejected": [],
-                "completed": [],
-                "cancelled": [],
-                "pending": [],
-            },
-        }
+        as_mentor = copy.deepcopy(as_mentee)
 
         as_mentee["received"]["accepted"] = [
             relation.response
