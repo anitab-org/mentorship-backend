@@ -144,7 +144,7 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", is_verified = None):
+    def list_users(user_id: int, search_query: str = "", is_verified=None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
@@ -162,7 +162,7 @@ class UserDAO:
             user.json()
             for user in filter(
                 lambda user: (not is_verified or user.is_email_verified)
-                and search_query.lower() in user.name.lower(),
+                             and search_query.lower() in user.name.lower(),
                 users_list,
             )
         ]
@@ -178,7 +178,7 @@ class UserDAO:
                 # is_available is true
                 # when either need_mentoring or available_to_mentor is true
                 user["is_available"] = (
-                    user["need_mentoring"] or user["available_to_mentor"]
+                        user["need_mentoring"] or user["available_to_mentor"]
                 )
 
         return list_of_users, 200
@@ -452,6 +452,13 @@ class UserDAO:
         return response
 
     @staticmethod
+    def get_state(mentor_or_mentee_received_or_sent, mentorship_relation_state_wanted):
+        value = [relation.response
+                 for relation in mentor_or_mentee_received_or_sent
+                 if relation.state == mentorship_relation_state_wanted]
+        return value
+
+    @staticmethod
     def get_user_dashboard(user_id):
         """
         returns user dashboard: relations received. sent as mentor or mentee for all states.
@@ -510,109 +517,45 @@ class UserDAO:
         }
         as_mentor = copy.deepcopy(as_mentee)
 
-        as_mentee["received"]["accepted"] = [
-            relation.response
-            for relation in mentee_received_relations
-            if relation.state == MentorshipRelationState.ACCEPTED
-        ]
-        as_mentee["received"]["rejected"] = [
-            relation.response
-            for relation in mentee_received_relations
-            if relation.state == MentorshipRelationState.REJECTED
-        ]
-        as_mentee["received"]["completed"] = [
-            relation.response
-            for relation in mentee_received_relations
-            if relation.state == MentorshipRelationState.COMPLETED
-        ]
-        as_mentee["received"]["cancelled"] = [
-            relation.response
-            for relation in mentee_received_relations
-            if relation.state == MentorshipRelationState.CANCELLED
-        ]
-        as_mentee["received"]["pending"] = [
-            relation.response
-            for relation in mentee_received_relations
-            if relation.state == MentorshipRelationState.PENDING
-        ]
+        as_mentee["received"]["accepted"] = UserDAO.get_state(mentee_received_relations, MentorshipRelationState.ACCEPTED)
 
-        as_mentor["received"]["accepted"] = [
-            relation.response
-            for relation in mentor_received_relations
-            if relation.state == MentorshipRelationState.ACCEPTED
-        ]
-        as_mentor["received"]["rejected"] = [
-            relation.response
-            for relation in mentor_received_relations
-            if relation.state == MentorshipRelationState.REJECTED
-        ]
-        as_mentor["received"]["completed"] = [
-            relation.response
-            for relation in mentor_received_relations
-            if relation.state == MentorshipRelationState.COMPLETED
-        ]
-        as_mentor["received"]["cancelled"] = [
-            relation.response
-            for relation in mentor_received_relations
-            if relation.state == MentorshipRelationState.CANCELLED
-        ]
-        as_mentor["received"]["pending"] = [
-            relation.response
-            for relation in mentor_received_relations
-            if relation.state == MentorshipRelationState.PENDING
-        ]
+        as_mentee["received"]["rejected"] = UserDAO.get_state(mentee_received_relations, MentorshipRelationState.REJECTED)
 
-        as_mentee["sent"]["accepted"] = [
-            relation.response
-            for relation in mentee_sent_relations
-            if relation.state == MentorshipRelationState.ACCEPTED
-        ]
-        as_mentee["sent"]["rejected"] = [
-            relation.response
-            for relation in mentee_sent_relations
-            if relation.state == MentorshipRelationState.REJECTED
-        ]
-        as_mentee["sent"]["completed"] = [
-            relation.response
-            for relation in mentee_sent_relations
-            if relation.state == MentorshipRelationState.COMPLETED
-        ]
-        as_mentee["sent"]["cancelled"] = [
-            relation.response
-            for relation in mentee_sent_relations
-            if relation.state == MentorshipRelationState.CANCELLED
-        ]
-        as_mentee["sent"]["pending"] = [
-            relation.response
-            for relation in mentee_sent_relations
-            if relation.state == MentorshipRelationState.PENDING
-        ]
+        as_mentee["received"]["completed"] = UserDAO.get_state(mentee_received_relations, MentorshipRelationState.COMPLETED)
 
-        as_mentor["sent"]["accepted"] = [
-            relation.response
-            for relation in mentor_sent_relations
-            if relation.state == MentorshipRelationState.ACCEPTED
-        ]
-        as_mentor["sent"]["rejected"] = [
-            relation.response
-            for relation in mentor_sent_relations
-            if relation.state == MentorshipRelationState.REJECTED
-        ]
-        as_mentor["sent"]["completed"] = [
-            relation.response
-            for relation in mentor_sent_relations
-            if relation.state == MentorshipRelationState.COMPLETED
-        ]
-        as_mentor["sent"]["cancelled"] = [
-            relation.response
-            for relation in mentor_sent_relations
-            if relation.state == MentorshipRelationState.CANCELLED
-        ]
-        as_mentor["sent"]["pending"] = [
-            relation.response
-            for relation in mentor_sent_relations
-            if relation.state == MentorshipRelationState.PENDING
-        ]
+        as_mentee["received"]["cancelled"] = UserDAO.get_state(mentee_received_relations, MentorshipRelationState.CANCELLED)
+
+        as_mentee["received"]["pending"] = UserDAO.get_state(mentee_received_relations, MentorshipRelationState.PENDING)
+
+        as_mentor["received"]["accepted"] = UserDAO.get_state(mentor_received_relations, MentorshipRelationState.ACCEPTED)
+
+        as_mentor["received"]["rejected"] = UserDAO.get_state(mentor_received_relations, MentorshipRelationState.REJECTED)
+
+        as_mentor["received"]["completed"] = UserDAO.get_state(mentor_received_relations, MentorshipRelationState.COMPLETED)
+
+        as_mentor["received"]["cancelled"] = UserDAO.get_state(mentor_received_relations, MentorshipRelationState.CANCELLED)
+
+        as_mentor["received"]["pending"] = UserDAO.get_state(mentor_received_relations, MentorshipRelationState.PENDING)
+
+        as_mentee["sent"]["accepted"] = UserDAO.get_state(mentee_sent_relations, MentorshipRelationState.ACCEPTED)
+
+        as_mentee["sent"]["rejected"] = UserDAO.get_state(mentee_sent_relations, MentorshipRelationState.REJECTED)
+
+        as_mentee["sent"]["completed"] = UserDAO.get_state(mentee_sent_relations, MentorshipRelationState.COMPLETED)
+
+        as_mentee["sent"]["cancelled"] = UserDAO.get_state(mentee_sent_relations, MentorshipRelationState.CANCELLED)
+
+        as_mentee["sent"]["pending"] = UserDAO.get_state(mentee_sent_relations, MentorshipRelationState.PENDING)
+
+        as_mentor["sent"]["accepted"] = UserDAO.get_state(mentor_sent_relations, MentorshipRelationState.ACCEPTED)
+
+        as_mentor["sent"]["rejected"] = UserDAO.get_state(mentor_sent_relations, MentorshipRelationState.REJECTED)
+
+        as_mentor["sent"]["completed"] = UserDAO.get_state(mentor_sent_relations, MentorshipRelationState.COMPLETED)
+
+        as_mentor["sent"]["cancelled"] = UserDAO.get_state(mentor_sent_relations, MentorshipRelationState.CANCELLED)
+
+        as_mentor["sent"]["pending"] = UserDAO.get_state(mentor_sent_relations, MentorshipRelationState.PENDING)
 
         response["as_mentor"] = as_mentor
         response["as_mentee"] = as_mentee
@@ -636,7 +579,6 @@ class UserDAO:
             )
 
         return response
-
 
 class DashboardRelationResponseModel:
     """temp class used for storing mentorship_request_response_body_for_user_dashboard_body values"""
