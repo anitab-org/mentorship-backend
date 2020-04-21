@@ -1,6 +1,7 @@
 import json
 import unittest
 from datetime import datetime, timedelta
+from app import messages
 
 from flask_restplus import marshal
 
@@ -239,7 +240,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 "/mentorship_relations?relation_state=%s" % "invalid_param",
                 headers=get_test_request_header(self.second_user.id),
             )
-            expected_response = []
+            expected_response = messages.RELATION_STATE_FILTER_IS_INVALID
 
             self.assertEqual(400, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))

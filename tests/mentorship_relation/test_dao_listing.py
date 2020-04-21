@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
+from app import messages
 
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -122,7 +123,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(
             user_id=self.first_user.id, state="anything"
         )
-        expected_response = [], 400
+        expected_response = messages.RELATION_STATE_FILTER_IS_INVALID, 400
 
         self.assertEqual(expected_response, result)
 
