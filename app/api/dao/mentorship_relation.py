@@ -152,7 +152,7 @@ class MentorshipRelationDAO:
                     filter(lambda rel: (rel.state.name == state), all_relations)
                 )
             else:
-                return [], HTTPStatus.BAD_REQUEST
+                return messages.RELATION_STATE_FILTER_IS_INVALID, HTTPStatus.BAD_REQUEST
 
         # add extra field for api response
         for relation in all_relations:

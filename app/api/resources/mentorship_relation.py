@@ -18,7 +18,56 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.api.email_utils import send_email_mentorship_relation_accepted
 from app.api.email_utils import send_email_new_request
 
-mentorship_relation_ns = Namespace(
+
+# tools for inheritance
+from functools import wraps
+from flask import current_app, has_app_context
+from flask_restplus.utils import unpack
+from flask_restplus.marshalling import  marshal_with
+from flask_restplus.utils import merge
+
+class sub_marshal_with(marshal_with):
+    def __call__(self, f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            if HTTPStatus.OK in f(*args, **kwargs):
+                #if decorated function returns HTTPStatus.OK, decorator @mentorship_relation_ns.marshal_list_with works normally
+                #if not the decorator will not work. 
+                resp = f(*args, **kwargs)
+                mask = self.mask
+                if has_app_context():
+                    mask_header = current_app.config['RESTPLUS_MASK_HEADER']
+                    mask = request.headers.get(mask_header) or mask
+                if isinstance(resp, tuple):
+                    data, code, headers = unpack(resp)
+                    return (
+                        marshal(data, self.fields, self.envelope, self.skip_none, mask, self.ordered),
+                        code,
+                        headers
+                    )
+                else:
+                    return marshal(resp, self.fields, self.envelope, self.skip_none, mask, self.ordered)
+            else:
+                return f(*args, **kwargs)
+        return wrapper
+
+class sub_Namespace(Namespace):
+    def marshal_with(self, fields, as_list=False, code=HTTPStatus.OK, description=None, **kwargs):
+        def wrapper(func):
+            doc = {
+                'responses': {
+                    code: (description, [fields]) if as_list else (description, fields)
+                },
+                '__mask__': kwargs.get('mask', True),  
+            }
+            func.__apidoc__ = merge(getattr(func, '__apidoc__', {}), doc)
+            #use overridden function above
+            return sub_marshal_with(fields, ordered=self.ordered, **kwargs)(func)
+        return wrapper
+
+
+#use sub_Namespace inherited by Namespace
+mentorship_relation_ns = sub_Namespace(
     "Mentorship Relation",
     description="Operations related to " "mentorship relations " "between users",
 )
@@ -142,6 +191,13 @@ class GetAllMyMentorshipRelation(Resource):
         HTTPStatus.OK,
         "Return all user's mentorship relations, filtered by the relation state, was successfully.",
         model=mentorship_request_response_body,
+    )
+    @mentorship_relation_ns.response(
+        HTTPStatus.BAD_REQUEST,
+        "%s"
+        % (
+            messages.RELATION_STATE_FILTER_IS_INVALID,
+        ),
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
