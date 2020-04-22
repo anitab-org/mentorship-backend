@@ -11,6 +11,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
+export MOCK_EMAIL = <True-or-False>
 ```
 
 ## Environment Variables Description
@@ -51,7 +52,12 @@ _Note:_
 - In the examples we use Gmail account example, but you are not restricted to use a Gmail account to send the verification email. If you use other email providers make sure to research about the correct SMTP server name.
 - The `'` character may be optional for environment variables without space on them.
 
-## Exporting Environment Variables
+
+### Mock Email Service
+
+The email sending behaviour can be mocked by setting **MOCK_EMAIL** to 'True'. When set to 'True' it pipes the email as terminal output. Setting it to 'False' (or not setting it) will result in sending emails.
+
+## Exporting environment variables
 
 Assume that KEY is the name of the variable and VALUE is the actual value of the environment variable.
 To export an environment variable you have to run:
