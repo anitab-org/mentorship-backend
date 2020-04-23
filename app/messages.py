@@ -174,7 +174,6 @@ MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE = {
     "message": "Mentorship relation is" " not in the accepted state."
 }
 
-
 # Login errors
 USER_ENTERED_INCORRECT_PASSWORD = {"message": "Current password is incorrect."}
 USER_ENTERED_CURRENT_PASSWORD = {

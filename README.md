@@ -43,6 +43,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
+export MOCK_EMAIL = <True-or-False>
 ```
 
 If you're testing any environment other than "local", then you have to also set these other variables:
