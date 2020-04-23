@@ -84,6 +84,8 @@ class TaskCommentDAO:
 
         Arguments:
             user_id: The id of the user.
+            user_name: user_name of the user
+            photo_url: photo_url of the user
             task_id: The id of the task.
             relation_id: The id of the relation.
 
