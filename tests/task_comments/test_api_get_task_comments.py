@@ -66,7 +66,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
     def test_task_comment_listing_api(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = marshal(
-            TaskCommentDAO.get_all_task_comments_by_task_id(1, 1, 2),
+            TaskCommentDAO.get_all_task_comments_by_task_id(1, 'admin_username', None, 1, 2),
             task_comments_model,
         )
         actual_response = self.client.get(

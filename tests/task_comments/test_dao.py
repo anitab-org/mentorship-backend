@@ -27,9 +27,9 @@ class TestTaskCommentDao(TasksBaseTestCase):
 
         # Verify that find_all_by_task_id() function is working properly
         task_comments = TaskCommentDAO.get_all_task_comments_by_task_id(
-            user_id=1, task_id=1, relation_id=2
+            user_id=1, user_name="admin_username", photo_url=None, task_id=1, relation_id=2
         )[0]
-        task_comment = TaskCommentDAO.get_task_comment(1, 1)[0].json()
+        task_comment = TaskCommentDAO.get_task_comment(1, 1)[0].json("admin_username",None)
         self.assertEqual(task_comment, task_comments)
 
     def test_dao_find_by_user_id(self):

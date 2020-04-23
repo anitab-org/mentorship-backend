@@ -38,11 +38,15 @@ class TaskCommentModel(db.Model):
         # default fields
         self.creation_date = datetime.now().timestamp()
 
-    def json(self):
+    def json(self, user_name, photo_url):
         """Returns information of task comment as a JSON object."""
         return {
             "id": self.id,
-            "user_id": self.user_id,
+            "user": {
+            "id": self.user_id,
+            "user_name" : user_name,
+            "photo_url" : photo_url
+            },
             "task_id": self.task_id,
             "relation_id": self.relation_id,
             "creation_date": self.creation_date,

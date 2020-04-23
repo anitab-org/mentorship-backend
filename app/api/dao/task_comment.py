@@ -79,7 +79,7 @@ class TaskCommentDAO:
 
     @staticmethod
     @email_verification_required
-    def get_all_task_comments_by_task_id(user_id, task_id, relation_id):
+    def get_all_task_comments_by_task_id(user_id, user_name, photo_url, task_id, relation_id):
         """Returns all the task comments using specified task id.
 
         Arguments:
@@ -98,7 +98,7 @@ class TaskCommentDAO:
             return is_valid
 
         comments_list = TaskCommentModel.find_all_by_task_id(task_id, relation_id)
-        return [comment.json() for comment in comments_list]
+        return [comment.json(user_name, photo_url) for comment in comments_list]
 
     @staticmethod
     @email_verification_required

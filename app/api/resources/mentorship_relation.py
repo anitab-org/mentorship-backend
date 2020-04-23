@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from app.database.models.user import UserModel
 from app import messages
 from app.api.dao.task import TaskDAO
 from app.api.dao.task_comment import TaskCommentDAO
@@ -834,9 +834,12 @@ class TaskComments(Resource):
         """
         Lists the task comments.
         """
-
+        user_id = get_jwt_identity()
+        user = UserModel.find_by_id(user_id)
+        user_name = user.username
+        photo_url = user.photo_url
         response = TaskCommentDAO.get_all_task_comments_by_task_id(
-            get_jwt_identity(), task_id, relation_id
+            user_id ,user_name, photo_url, task_id, relation_id
         )
 
         if isinstance(response, tuple):
