@@ -502,17 +502,17 @@ class UserDashboard(Resource):
 @users_ns.route("user/forgot_password")
 class ForgotPassword(Resource):
     @classmethod
-    @users_ns.doc("forgot password")
-    @users_ns.response(200, "%s" % messages.PASSWORD_RESET_MAIL_MESSAGE)
-    @users_ns.response(400, "%s" % messages.EMAIL_FIELD_IS_MISSING)
-    @users_ns.response(403, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
-    @users_ns.response(404, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM)
+    @users_ns.doc(f"forgot password")
+    @users_ns.response(HTTPStatus.OK, f"{messages.PASSWORD_RESET_MAIL_MESSAGE}")
+    @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.EMAIL_FIELD_IS_MISSING}")
+    @users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN}")
+    @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM}")
     @users_ns.expect(forgot_password_change_request_data_model, validate=True)
  
     def post(self):
         """ Updates User's password by sending reset link to email
  
-        Argument: 
+        Args: 
           email : Verified email of the user
  
         Return:
@@ -522,41 +522,48 @@ class ForgotPassword(Resource):
         data = request.json
  
         if not data:
-            return messages.EMAIL_FIELD_IS_MISSING, 400
+            return messages.EMAIL_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST
  
         is_valid = validate_forgot_password_email(data)
  
         if is_valid!={}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
         
         user = DAO.get_user_by_email(data["email"])
  
         if user is None:
-            return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, 404
+            return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, HTTPStatus.NOT_FOUND
  
         if not user.is_email_verified:
-            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, 403    
+            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN    
  
         send_email_reset_password_message(user.name, data["email"])
  
-        return messages.PASSWORD_RESET_MAIL_MESSAGE, 200
+        return messages.PASSWORD_RESET_MAIL_MESSAGE, HTTPStatus.OK
  
 @users_ns.route("user/reset_password")
-@users_ns.response(201, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
+@users_ns.response(HTTPStatus.OK, f"{messages.PASSWORD_SUCCESSFULLY_UPDATED}")
 @users_ns.response(
-        401,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
-        ),
-    )
-@users_ns.response(400, "%s"%messages.PASSWORD_FIELD_IS_MISSING)    
+    HTTPStatus.UNAUTHORIZED,
+    "%s\n%s\n%s"
+    % (
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING,
+    ),
+)
+@users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.PASSWORD_FIELD_IS_MISSING}")    
  
 class ResetPassword(Resource):
     @classmethod
-    @users_ns.doc("reset")
+    @users_ns.doc(f"reset")
+    @users_ns.doc(
+        responses={
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+            f"{messages.TOKEN_IS_INVALID['message']}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
+        }
+    )
     @users_ns.expect(reset_password_forgot_request_data_model, validate=True)
  
     def post(self):
@@ -565,7 +572,7 @@ class ResetPassword(Resource):
         This will allow the user to change/create a new password 
         In case they forgot it.
  
-        Arguments:
+        Args:
         token: token of reset link sent on verified mail
         new_password: take the new validated password to login
  
@@ -575,20 +582,20 @@ class ResetPassword(Resource):
         data = request.json
        
         if not data["token"]:
-            return messages.AUTHORISATION_TOKEN_IS_MISSING, 401
+            return messages.AUTHORISATION_TOKEN_IS_MISSING, HTTPStatus.UNAUTHORIZED
  
         if not data["new_password"] :
-            return messages.PASSWORD_FIELD_IS_MISSING, 400    
+            return messages.PASSWORD_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST    
  
         is_valid = validate_reset_password(data)
  
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
  
         email_from_token = DAO.reset_password_token(data["token"])
  
         if not email_from_token:
-            return messages.TOKEN_HAS_EXPIRED, 401
+            return messages.TOKEN_HAS_EXPIRED, HTTPStatus.UNAUTHORIZED
  
         user = DAO.get_user_by_email(email_from_token)
  
@@ -597,5 +604,5 @@ class ResetPassword(Resource):
         user.set_password(new_password)
         user.save_to_db()
  
-        return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
+        return messages.PASSWORD_SUCCESSFULLY_UPDATED, HTTPStatus.OK
 

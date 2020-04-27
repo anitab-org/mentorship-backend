@@ -99,7 +99,7 @@ def send_email_verification_message(user_name, email):
     send_email(email, subject, html)
 
 
-def send_email_reset_password_message(user_name, email):
+def send_email_reset_password_message(user_name: str, email: str):
 
     from run import application
     import config
@@ -116,11 +116,10 @@ def send_email_reset_password_message(user_name, email):
         "email_reset_password.html",
         confirm_url=confirm_url,
         user_name=user_name,
-        threshold=3600,
+        threshold=config.BaseConfig.RESET_LINK_THRESHOLD,
     )
     subject = "Mentorship System - Password Reset Request!"
     send_email(email, subject, html)
-
 
 
 def send_email_mentorship_relation_accepted(request_id):
