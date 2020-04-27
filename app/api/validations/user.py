@@ -242,3 +242,37 @@ def validate_new_password(data):
         return is_valid[1]
 
     return {}
+
+
+def validate_forgot_password_email(data):
+    if "email" not in data:
+        return messages.EMAIL_FIELD_IS_MISSING
+
+    email = data["email"]
+
+    if not is_email_valid(email):
+        return messages.EMAIL_INPUT_BY_USER_IS_INVALID
+
+    return {}
+
+
+def validate_reset_password(data):
+    if "new_password" not in data:
+        return messages.NEW_PASSWORD_FIELD_IS_MISSING
+
+    new_password = data["new_password"]
+
+    if " " in new_password:
+        return messages.USER_INPUTS_SPACE_IN_PASSWORD
+
+    is_valid = validate_length(
+        len(get_stripped_string(new_password)),
+        PASSWORD_MIN_LENGTH,
+        PASSWORD_MAX_LENGTH,
+        "new_password",
+    )
+
+    if not is_valid[0]:
+        return is_valid[1]
+
+    return {}

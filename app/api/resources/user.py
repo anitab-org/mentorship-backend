@@ -12,7 +12,7 @@ from flask_restplus import Resource, marshal, Namespace
 
 from app import messages
 from app.api.validations.user import *
-from app.api.email_utils import send_email_verification_message
+from app.api.email_utils import send_email_verification_message, send_email_reset_password_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
 from app.api.resources.common import auth_header_parser
@@ -498,3 +498,104 @@ class UserDashboard(Resource):
             return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
 
         return dashboard, HTTPStatus.OK
+
+@users_ns.route("user/forgot_password")
+class ForgotPassword(Resource):
+    @classmethod
+    @users_ns.doc("forgot password")
+    @users_ns.response(200, "%s" % messages.PASSWORD_RESET_MAIL_MESSAGE)
+    @users_ns.response(400, "%s" % messages.EMAIL_FIELD_IS_MISSING)
+    @users_ns.response(403, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
+    @users_ns.response(404, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM)
+    @users_ns.expect(forgot_password_change_request_data_model, validate=True)
+ 
+    def post(self):
+        """ Updates User's password by sending reset link to email
+ 
+        Argument: 
+          email : Verified email of the user
+ 
+        Return:
+          token: a token link/reset link will be shared on verified mail of user
+        """
+ 
+        data = request.json
+ 
+        if not data:
+            return messages.EMAIL_FIELD_IS_MISSING, 400
+ 
+        is_valid = validate_forgot_password_email(data)
+ 
+        if is_valid!={}:
+            return is_valid, 400
+        
+        user = DAO.get_user_by_email(data["email"])
+ 
+        if user is None:
+            return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, 404
+ 
+        if not user.is_email_verified:
+            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, 403    
+ 
+        send_email_reset_password_message(user.name, data["email"])
+ 
+        return messages.PASSWORD_RESET_MAIL_MESSAGE, 200
+ 
+@users_ns.route("user/reset_password")
+@users_ns.response(201, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
+@users_ns.response(
+        401,
+        "%s\n%s\n%s"
+        % (
+            messages.TOKEN_HAS_EXPIRED,
+            messages.TOKEN_IS_INVALID,
+            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        ),
+    )
+@users_ns.response(400, "%s"%messages.PASSWORD_FIELD_IS_MISSING)    
+ 
+class ResetPassword(Resource):
+    @classmethod
+    @users_ns.doc("reset")
+    @users_ns.expect(reset_password_forgot_request_data_model, validate=True)
+ 
+    def post(self):
+        """ Updates User's password
+ 
+        This will allow the user to change/create a new password 
+        In case they forgot it.
+ 
+        Arguments:
+        token: token of reset link sent on verified mail
+        new_password: take the new validated password to login
+ 
+        Return:
+        Password Updated successfully
+        """
+        data = request.json
+       
+        if not data["token"]:
+            return messages.AUTHORISATION_TOKEN_IS_MISSING, 401
+ 
+        if not data["new_password"] :
+            return messages.PASSWORD_FIELD_IS_MISSING, 400    
+ 
+        is_valid = validate_reset_password(data)
+ 
+        if is_valid != {}:
+            return is_valid, 400
+ 
+        email_from_token = DAO.reset_password_token(data["token"])
+ 
+        if not email_from_token:
+            return messages.TOKEN_HAS_EXPIRED, 401
+ 
+        user = DAO.get_user_by_email(email_from_token)
+ 
+        new_password = data["new_password"]
+ 
+        user.set_password(new_password)
+        user.save_to_db()
+ 
+        return messages.PASSWORD_SUCCESSFULLY_UPDATED, 201
+

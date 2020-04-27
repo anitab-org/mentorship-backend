@@ -99,6 +99,30 @@ def send_email_verification_message(user_name, email):
     send_email(email, subject, html)
 
 
+def send_email_reset_password_message(user_name, email):
+
+    from run import application
+    import config
+    serializer = URLSafeTimedSerializer(application.config["SECRET_KEY"])
+    confirmation_token = serializer.dumps(
+        email, salt=application.config["RESET_PASSWORD_SALT"])
+    # import here to avoid circular imports
+    from app.api.resources.user import ResetPassword
+    from app.api.api_extension import api
+
+    confirm_url = api.url_for(ResetPassword, token=confirmation_token, _external=True)
+
+    html = render_template(
+        "email_reset_password.html",
+        confirm_url=confirm_url,
+        user_name=user_name,
+        threshold=3600,
+    )
+    subject = "Mentorship System - Password Reset Request!"
+    send_email(email, subject, html)
+
+
+
 def send_email_mentorship_relation_accepted(request_id):
     """
     Sends a notification email to the sender of the mentorship relation request,

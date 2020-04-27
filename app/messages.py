@@ -268,6 +268,10 @@ LIST_TASK_COMMENTS_WITH_SUCCESS = {
     "message": "List task comments from a mentorship relation with success."
 }
 
+PASSWORD_RESET_MAIL_MESSAGE = {
+    "message": "Check your email, a new password reset link sent."
+}
+
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed."}
 USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email."}

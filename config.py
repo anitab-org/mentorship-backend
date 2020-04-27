@@ -56,6 +56,8 @@ class BaseConfig(object):
 
     SECURITY_PASSWORD_SALT = os.getenv("SECURITY_PASSWORD_SALT")
 
+    RESET_PASSWORD_SALT = os.getenv("RESET_PASSWORD_SALT")
+
     BCRYPT_LOG_ROUNDS = 13
     WTF_CSRF_ENABLED = True
 

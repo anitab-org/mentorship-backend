@@ -391,6 +391,18 @@ class UserDAO:
         return achievements
 
     @staticmethod
+    def reset_password_token(token: str):
+        from itsdangerous import URLSafeTimedSerializer, BadSignature
+        from run import application
+        password_reset_serializer = URLSafeTimedSerializer(application.config['SECRET_KEY'])
+        try:
+            email = password_reset_serializer.loads(
+            token, salt=application.config["RESET_PASSWORD_SALT"], max_age=3600)
+        except BadSignature:
+            return False
+        return email
+
+    @staticmethod
     def get_user_statistics(user_id: int):
         """Shows some basic user statistics
 
@@ -681,3 +693,4 @@ class DashboardRelationResponseModel:
             "state": relation.state,
             "notes": relation.notes,
         }
+
