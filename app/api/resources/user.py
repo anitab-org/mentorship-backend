@@ -58,7 +58,7 @@ class UserList(Resource):
         available_to_mentor. The current user's details are not returned.
         """
 
-        page = request.args.get("page", default=0, type=int)
+        page = request.args.get("page", default=1, type=int)
         per_page = request.args.get("per_page", default=10, type=int)
 
         user_id = get_jwt_identity()
@@ -246,7 +246,7 @@ class VerifiedUser(Resource):
         available_to_mentor. The current user's details are not returned.
         """
 
-        page = request.args.get("page", default=0, type=int)
+        page = request.args.get("page", default=1, type=int)
         per_page = request.args.get("per_page", default=10, type=int)
 
         user_id = get_jwt_identity()

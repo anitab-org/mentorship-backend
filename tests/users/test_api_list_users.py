@@ -143,7 +143,7 @@ class TestListUsersApi(BaseTestCase):
             marshal(self.other_user, public_user_api_model),
             marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get(
-            "/users?page=0", follow_redirects=True, headers=auth_header
+            "/users?page=1", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -153,7 +153,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = []
         actual_response = self.client.get(
-            "/users?page=1", follow_redirects=True, headers=auth_header
+            "/users?page=2", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -163,7 +163,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]
         actual_response = self.client.get(
-            "/users?page=0&per_page=1", follow_redirects=True, headers=auth_header
+            "/users?page=1&per_page=1", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -173,7 +173,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get(
-            "/users?page=1&per_page=2", follow_redirects=True, headers=auth_header
+            "/users?page=2&per_page=2", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -193,7 +193,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]
         actual_response = self.client.get(
-            "/users/verified?page=0", follow_redirects=True, headers=auth_header
+            "/users/verified?page=1", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -203,7 +203,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = []
         actual_response = self.client.get(
-            "/users/verified?page=1", follow_redirects=True, headers=auth_header
+            "/users/verified?page=2", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -213,7 +213,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]
         actual_response = self.client.get(
-            "/users/verified?page=0&per_page=1", follow_redirects=True, headers=auth_header
+            "/users/verified?page=1&per_page=1", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -223,7 +223,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = []
         actual_response = self.client.get(
-            "/users/verified?page=0&per_page=0", follow_redirects=True, headers=auth_header
+            "/users/verified?page=1&per_page=0", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)

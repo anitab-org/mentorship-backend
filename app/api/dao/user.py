@@ -143,7 +143,7 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", page: int = 0, per_page: int = 10, is_verified = None):
+    def list_users(user_id: int, search_query: str = "", page: int = 1, per_page: int = 10, is_verified = None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
@@ -168,6 +168,7 @@ class UserDAO:
             )
         ]
 
+        page = page - 1
         list_of_users = list_of_users[page * per_page: (page * per_page) + per_page]
 
         for user in list_of_users:
