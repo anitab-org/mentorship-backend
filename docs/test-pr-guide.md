@@ -1,4 +1,29 @@
-<h1>This document contains steps to test multiple features (User Registration, List users, ...) of the Mentorship System.</h1>
+<h1>Steps to test a PR</h1>
+
+1. Follow instructions in 
+
+[README](https://github.com/anitab-org/mentorship-backend/blob/develop/README.md) to setup the system running locally.
+
+2. Check on Zulip chat if any of the PR's 
+[here](https://github.com/anitab-org/mentorship-backend/labels/Needs%20Testing) are high-priority if the priority is not set already.
+
+3. If the PR's are not priortized then pick any 1 PR from the list from the link in step 2 to test locally.
+
+4. Go to the Issue that PR is fixing and follow the steps to reproduce that issue while you are under the develop branch.
+
+5. Run the following commands to get to the PR branch
+
+git checkout -b <contributor>-<branch-name> develop
+  
+git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
+
+6. Verify the code addition/deletions in the PR.
+
+7. Reproduce the issue and test the fix.
+
+8. Get screenshots/gifs of before and after the fix and attach them to the PR comment.
+
+<h1>Steps to test multiple features (User Registration, List users, ...) of the Mentorship System.</h1>
 
 <h2>Registering users</h2>
 Register 3 users. Follow instructions in
