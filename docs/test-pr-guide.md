@@ -7,7 +7,7 @@
 2. Check on Zulip chat if any of the PR's 
 [here](https://github.com/anitab-org/mentorship-backend/labels/Needs%20Testing) are high-priority if the priority is not set already.
 
-3. If the PR's are not priortized then pick any 1 PR from the list from the link in step 2 to test locally.
+3. If the PRs are not prioritized then pick any 1 PR from the list from the link in step 2 to test locally.
 
 4. Go to the Issue that PR is fixing and follow the steps to reproduce that issue while you are under the develop branch.
 
