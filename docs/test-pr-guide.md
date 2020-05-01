@@ -32,7 +32,7 @@ Register 3 users. Follow instructions in
 
 * testusera
 * testuserb
-* testuserc.
+* testuserc
 
 ![Register user screenshot](https://user-images.githubusercontent.com/26095715/79673508-4a582180-81a8-11ea-87ce-fe0bfda82fea.png)
 
