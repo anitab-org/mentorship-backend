@@ -1,7 +1,6 @@
 <h1>Steps to test a PR</h1>
 
-1. Follow instructions in 
-
+1. Follow instructions in
 [README](https://github.com/anitab-org/mentorship-backend/blob/develop/README.md) to setup the system running locally.
 
 2. Check on Zulip chat if any of the PR's 
@@ -13,9 +12,10 @@
 
 5. Run the following commands to get to the PR branch, where `<contributor>` is the GitHub username of the contributor that submitted the PR:
 
+```
 git checkout -b <contributor>-<branch-name> develop
-  
 git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
+```
 
 6. Verify the code addition/deletions in the PR.
 
@@ -26,8 +26,11 @@ git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
 <h1>Steps to test multiple features (User Registration, List users, ...) of the Mentorship System.</h1>
 
 <h2>Registering users</h2>
-Register 3 users. Follow instructions in
-[this demo on Youtube](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672) to register users. The users used here are 
+
+Register 3 users. Follow instructions in 
+[this video](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672)
+
+The users used here are 
 
 * testusera
 * testuserb
@@ -38,7 +41,6 @@ Register 3 users. Follow instructions in
 <h2>Login as the users and capture the access tokens</h2>
 
 Steps to login and capture the token are shown in 
-
 [this video](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672)
 
 ![Login user screenshot](https://user-images.githubusercontent.com/26095715/79673507-4a582180-81a8-11ea-96ff-2268733e9673.png)
