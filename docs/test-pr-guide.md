@@ -11,7 +11,7 @@
 
 4. Go to the Issue that PR is fixing and follow the steps to reproduce that issue while you are under the develop branch.
 
-5. Run the following commands to get to the PR branch
+5. Run the following commands to get to the PR branch, where `<contributor>` is the GitHub username of the contributor that submitted the PR:
 
 git checkout -b <contributor>-<branch-name> develop
   
