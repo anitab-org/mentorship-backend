@@ -27,7 +27,6 @@ git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
 
 <h2>Registering users</h2>
 Register 3 users. Follow instructions in
-
 [this demo on Youtube](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672) to register users. The users used here are 
 
 * testusera
