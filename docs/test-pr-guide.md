@@ -32,9 +32,9 @@ Register 3 users. Follow instructions in
 
 The users used here are 
 
-* testusera
-* testuserb
-* testuserc
+* _testusera_
+* _testuserb_
+* _testuserc_
 
 ![Register user screenshot](https://user-images.githubusercontent.com/26095715/79673508-4a582180-81a8-11ea-87ce-fe0bfda82fea.png)
 
@@ -49,9 +49,9 @@ Steps to login and capture the token are shown in
 
 In this example they are:
 
-* testusera - ID: 120
-* testuserb - ID: 121
-* testuserc - ID: 122
+* _testusera_ - ID: 120
+* _testuserb_ - ID: 121
+* _testuserc_ - ID: 122
 
 ![User ID screenshot1](https://user-images.githubusercontent.com/26095715/79673506-49bf8b00-81a8-11ea-8bf3-0dffd8b269f5.png)
 
@@ -60,7 +60,7 @@ In this example they are:
 <h2>Create a mentorship relation between 2 users</h2>
 <h3>Send a mentorship request</h3>
 
-In this example testusera is the mentee and testuserb is the mentor and testusera is sending the request. The steps to do this is explained in this video.
+In this example _testusera_ is the mentee and _testuserb_ is the mentor and _testusera_ is sending the request. The steps to do this is explained in this video.
 
 [Demo Video](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672)
 
@@ -68,15 +68,15 @@ In this example testusera is the mentee and testuserb is the mentor and testuser
 
 <h3>Check pending requests</h3>
 
-Check pending requests for testusera. The relation should be in state 1 (pending). Note the request ID. Here it is 13.
+Check pending requests for _testusera_. The relation should be in state 1 (pending). Note the request ID. Here it is 13.
 
-![Pending request testusera screenshot1](https://user-images.githubusercontent.com/26095715/79673502-4926f480-81a8-11ea-8695-882117830657.png)
+![Pending request _testusera_ screenshot1](https://user-images.githubusercontent.com/26095715/79673502-4926f480-81a8-11ea-8695-882117830657.png)
 
-![Pending request testusera screenshot2](https://user-images.githubusercontent.com/26095715/79673501-4926f480-81a8-11ea-9d78-25704487ce28.png)
+![Pending request _testusera_ screenshot2](https://user-images.githubusercontent.com/26095715/79673501-4926f480-81a8-11ea-9d78-25704487ce28.png)
 
 <h3>Accept the mentorship request</h3>
 
-testuserb accepts the mentorship request from testusera.
+_testuserb_ accepts the mentorship request from _testusera_.
 
 ![Accepted request screenshot](https://user-images.githubusercontent.com/26095715/79673500-4926f480-81a8-11ea-9c97-bac8cc800f85.png)
 
@@ -88,10 +88,10 @@ List the current relationships of _testusera_. The relation should be state 2 (a
 
 <h2>Create a task under a relation.</h2>
 
-Testusera creates a task for the relation 13. This will be successful because testusera is a part of this relation.
+_testusera_ creates a task for the relation 13. This will be successful because _testusera_ is a part of this relation.
 
 ![Create task screenshot](https://user-images.githubusercontent.com/26095715/79673498-4926f480-81a8-11ea-8e95-a7cd3ea24e56.png)
 
-Testuserc cannot create a task under this relation
+_testuserc_ cannot create a task under this relation
 
 ![Invalid task screenshot](https://user-images.githubusercontent.com/11148726/79637378-16b0d380-8177-11ea-96ef-202c17908e5c.png)
