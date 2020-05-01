@@ -82,7 +82,7 @@ testuserb accepts the mentorship request from testusera.
 
 <h3>List current relations of a user</h3>
 
-List the current relationships of testusera. The relation should be state 2 (accepted).
+List the current relationships of _testusera_. The relation should be state 2 (accepted).
 
 ![Current relations screenshot](https://user-images.githubusercontent.com/26095715/79673499-4926f480-81a8-11ea-8641-79749fdc89ab.png)
 
