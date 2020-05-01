@@ -43,7 +43,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
     def test_pending_requests_auth(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -79,7 +79,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_accepted_requests_auth(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -115,7 +115,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_rejected_requests(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -151,7 +151,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_completed_relations(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -187,7 +187,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_cancelled_relations(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -222,13 +222,13 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_achievements(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
 
         tasks_list = TasksListModel()
-        task_created_time = datetime.now().timestamp()
+        task_created_time = datetime.utcnow().timestamp()
         task_completed_time = task_created_time + 100
         tasks_list.add_task(
             description="Test task",

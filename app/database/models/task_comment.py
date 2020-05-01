@@ -36,7 +36,7 @@ class TaskCommentModel(db.Model):
         self.comment = comment
 
         # default fields
-        self.creation_date = datetime.now().timestamp()
+        self.creation_date = datetime.utcnow().timestamp()
 
     def json(self):
         """Returns information of task comment as a JSON object."""
@@ -89,7 +89,7 @@ class TaskCommentModel(db.Model):
              comment: New comment.
         """
         self.comment = comment
-        self.modification_date = datetime.now().timestamp()
+        self.modification_date = datetime.utcnow().timestamp()
 
     @classmethod
     def is_empty(cls):
