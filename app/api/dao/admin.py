@@ -65,7 +65,10 @@ class AdminDAO:
         """
         admin_user_id = data["user_id"]
 
-        if user_id == admin_user_id:
+        users_list = UserModel.query.filter(UserModel.id != user_id).all()
+        list_of_users = [user.json() for user in users_list if user.is_admin]
+
+        if user_id == admin_user_id and len(list_of_users) == 0:
             return messages.USER_CANNOT_REVOKE_ADMIN_STATUS, HTTPStatus.FORBIDDEN
 
         new_admin_user = UserModel.find_by_id(admin_user_id)
