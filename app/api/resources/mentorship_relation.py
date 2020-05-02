@@ -658,12 +658,8 @@ class UpdateTask(Resource):
         HTTPStatus.OK, "%s" % messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.BAD_REQUEST,
-        "%s\n%s"
-        % (
-            messages.TASK_WAS_ALREADY_ACHIEVED,
-            messages.UNACCEPTED_STATE_RELATION,
-        ),
+            HTTPStatus.BAD_REQUEST,f"{messages.TASK_WAS_ALREADY_ACHIEVED}<br>"
+            f"{messages.UNACCEPTED_STATE_RELATION}<br>"
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
