@@ -131,14 +131,17 @@ class TaskDAO:
 
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
+        
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
             return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, HTTPStatus.UNAUTHORIZED
+
         if relation.state != MentorshipRelationState.ACCEPTED:
             return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
         task = relation.tasks_list.find_task_by_id(task_id)
+
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
