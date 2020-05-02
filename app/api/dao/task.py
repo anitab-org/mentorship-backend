@@ -25,7 +25,7 @@ class TaskDAO:
 
         Returns:
             A two element list where the first element is a dictionary containing a key 'message' indicating
-            in its value if the task creation was succesful or not as a string. The last element is the HTTP
+            in its value if the task creation was successful or not as a string. The last element is the HTTP
             response code.
         """
 
@@ -92,7 +92,7 @@ class TaskDAO:
 
         Returns:
             A two element list where the first element is a dictionary containing a key 'message' indicating in its value if the
-            task was deleted succesfully or not as a string. The last element is the HTTP response code.
+            task was deleted successfully or not as a string. The last element is the HTTP response code.
         """
 
         user = UserModel.find_by_id(user_id)
@@ -126,7 +126,7 @@ class TaskDAO:
 
         Returns:
             A two element list where the first element is a dictionary containing a key 'message' indicating in its value
-            if the task was set to complete succesfully or not as a string. The last element is the HTTP response code.
+            if the task was set to complete successfully or not as a string. The last element is the HTTP response code.
         """
 
         user = UserModel.find_by_id(user_id)
