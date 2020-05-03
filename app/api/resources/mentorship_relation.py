@@ -747,21 +747,21 @@ class TaskComment(Resource):
     @mentorship_relation_ns.expect(auth_header_parser, task_comment_model)
     @mentorship_relation_ns.doc(
         responses={
-            HTTPStatus.OK: messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY["message"],
-            HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING['message']}<br>"
-            f"{messages.COMMENT_NOT_IN_STRING_FORMAT['message']}<br>"
-            f"{get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}<br>"
-            f"{messages.UNACCEPTED_STATE_RELATION['message']}<br>"
-            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU['message']}",
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
-            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
-            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_COMMENT_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST['message']}",
+            HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY}",
+            HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
+            f"{messages.COMMENT_NOT_IN_STRING_FORMAT}<br>"
+            f"{ {'message':get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}}<br>"
+            f"{messages.UNACCEPTED_STATE_RELATION}<br>"
+            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU}",
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST}",
         }
     )
     def put(cls, relation_id, task_id, comment_id):
