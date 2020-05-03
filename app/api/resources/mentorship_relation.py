@@ -817,18 +817,18 @@ class TaskComments(Resource):
     @jwt_required
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, messages.LIST_TASK_COMMENTS_WITH_SUCCESS["message"], task_comments_model
+        HTTPStatus.OK, f"{ messages.LIST_TASK_COMMENTS_WITH_SUCCESS}", task_comments_model
     )
     @mentorship_relation_ns.doc(
         responses={
-            HTTPStatus.BAD_REQUEST: messages.UNACCEPTED_STATE_RELATION["message"],
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
-            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
-            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_DOES_NOT_EXIST['message']}",
+            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}",
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_DOES_NOT_EXIST}",
         }
     )
     def get(cls, relation_id, task_id):
