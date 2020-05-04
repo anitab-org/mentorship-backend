@@ -3,7 +3,7 @@ import time
 import config
 
 
-def delete_unverified_users_job():
+def delete_unverified_users_job() -> None:
     """
        This function iterates of all the users and
        checks if the email is verified. If email is not verified

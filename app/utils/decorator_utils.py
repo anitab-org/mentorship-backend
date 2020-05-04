@@ -5,8 +5,11 @@ from app import messages
 from http import HTTPStatus
 from app.database.models.user import UserModel
 
+from typing import Union, Tuple, TypeVar, Type
+HttpResponseAlias = TypeVar('http.client.HttpResponse')
 
-def email_verification_required(user_function):
+
+def email_verification_required(user_function) -> Tuple[str, Type[HttpResponseAlias]]:
     """
     This function is used to validate the
     input function i.e. user_function

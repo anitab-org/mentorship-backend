@@ -3,6 +3,9 @@ from http import HTTPStatus
 from app import messages
 from app.api.api_extension import api
 
+from typing import Union, TypeVar, Type
+HttpResponseAlias = TypeVar('http.client.HttpResponse')
+
 jwt = JWTManager()
 
 # This is needed for the error handlers to work with flask-restplus
@@ -15,10 +18,10 @@ def my_expired_token_callback():
 
 
 @jwt.invalid_token_loader
-def my_invalid_token_callback(error_message):
+def my_invalid_token_callback(error_message: str) -> Union[str, Type[HttpResponseAlias]]:
     return messages.TOKEN_IS_INVALID, HTTPStatus.UNAUTHORIZED
 
 
 @jwt.unauthorized_loader
-def my_unauthorized_request_callback(error_message):
+def my_unauthorized_request_callback(error_message: str) -> Union[str, Type[HttpResponseAlias]]:
     return messages.AUTHORISATION_TOKEN_IS_MISSING, HTTPStatus.UNAUTHORIZED

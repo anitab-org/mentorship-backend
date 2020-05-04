@@ -18,6 +18,10 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.api.email_utils import send_email_mentorship_relation_accepted
 from app.api.email_utils import send_email_new_request
 
+from typing import Tuple, List, Dict, Union, Type, TypeVar
+
+HttpResponseAlias = TypeVar('http.client.HTTPResponse') #Class Name of the HttpResponse Class for HTTPStatus responses
+
 mentorship_relation_ns = Namespace(
     "Mentorship Relation",
     description="Operations related to " "mentorship relations " "between users",
@@ -64,7 +68,7 @@ class SendRequest(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s\n%s" % (messages.MENTOR_DOES_NOT_EXIST, messages.MENTEE_DOES_NOT_EXIST)
     )
-    def post(cls):
+    def post(cls) -> Union[Tuple[str, Type[HttpResponseAlias]], Tuple[bool, Type[HttpResponseAlias]]]:
         """
         Creates a new mentorship relation request.
 
@@ -112,7 +116,7 @@ class SendRequest(Resource):
         return response
 
     @staticmethod
-    def is_valid_data(data):
+    def is_valid_data(data: Dict[str, str]) -> Union[Dict[str, str], str]:
 
         # Verify if request body has required fields
         if "mentor_id" not in data:
@@ -153,7 +157,7 @@ class GetAllMyMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
-    def get(cls):
+    def get(cls) -> Tuple[list, Type[HttpResponseAlias]]:
         """
         Lists all mentorship relations of current user.
 
@@ -209,7 +213,7 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, request_id):
+    def put(cls, request_id: int) -> Tuple[str, Type[HttpResponseAlias]]:
         """
         Accept a mentorship relation.
 
@@ -263,7 +267,7 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, request_id):
+    def put(cls, request_id: int) -> Tuple[str, Type[HttpResponseAlias]] :
         """
         Reject a mentorship relation.
 
@@ -309,7 +313,7 @@ class CancelMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, request_id):
+    def put(cls, request_id: int) -> Tuple[str, Type[HttpResponseAlias]]:
         """
         Cancel a mentorship relation.
 
@@ -358,7 +362,7 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def delete(cls, request_id):
+    def delete(cls, request_id: int) -> Tuple[str, Type[HttpResponseAlias]]:
         """
         Delete a mentorship request.
 
@@ -399,7 +403,7 @@ class ListPastMentorshipRelations(Resource):
         ),
     )
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
-    def get(cls):
+    def get(cls) -> Tuple[list, Type[HttpResponseAlias]]:
         """
         Lists past mentorship relations of the current user.
 
@@ -436,7 +440,7 @@ class ListCurrentMentorshipRelation(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    def get(cls):
+    def get(cls) -> Union[Tuple[Dict[str, str], str], Type[MentorshipRelationModel], Tuple[str, Type[HttpResponseAlias]]]:
         """
         Lists current mentorship relation of the current user.
 
@@ -477,7 +481,7 @@ class ListPendingMentorshipRequests(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    def get(cls):
+    def get(cls) -> Tuple[list, Type[HttpResponseAlias]]:
         """
         Lists pending mentorship requests of the current user.
 
@@ -509,7 +513,7 @@ class CreateTask(Resource):
         )
     )
     @mentorship_relation_ns.response(403, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
-    def post(cls, request_id):
+    def post(cls, request_id: int) -> Union[Tuple[bool, Type[HttpResponseAlias]], Tuple[str, Type[HttpResponseAlias]]]:
         """
         Create a task for a mentorship relation.
 
@@ -540,7 +544,7 @@ class CreateTask(Resource):
         return response
 
     @staticmethod
-    def is_valid_data(data):
+    def is_valid_data(data: Dict[str, str]) -> Union[str, Dict[str, str]]:
 
         if "description" not in data:
             return messages.DESCRIPTION_FIELD_IS_MISSING
@@ -570,7 +574,7 @@ class DeleteTask(Resource):
         "%s\n%s"
         % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
     )
-    def delete(cls, request_id, task_id):
+    def delete(cls, request_id: int, task_id: int) -> Tuple[str, Type[HttpResponseAlias]]:
         """
         Delete a task.
 
@@ -619,7 +623,7 @@ class ListTasks(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
     )
-    def get(cls, request_id):
+    def get(cls, request_id: int) -> Tuple[Dict[str, str], Type[HttpResponseAlias]]:
         """
         List all tasks from a mentorship relation.
 
@@ -673,7 +677,7 @@ class UpdateTask(Resource):
         "%s\n%s"
         % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
     )
-    def put(cls, request_id, task_id):
+    def put(cls, request_id: int, task_id: int) -> Tuple[str, Type[HttpResponseAlias]]:
         """
         Update a task to mark it as complate
 
@@ -721,7 +725,7 @@ class CreateTaskComment(Resource):
             f"{messages.TASK_DOES_NOT_EXIST['message']}",
         }
     )
-    def post(cls, relation_id, task_id):
+    def post(cls, relation_id: int, task_id: int) -> Union[Tuple[bool, Type[HttpResponseAlias]], Tuple[str, Type[HttpResponseAlias]], dict]:
         """
         Creates a new task comment.
         """
@@ -764,7 +768,7 @@ class TaskComment(Resource):
             f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST['message']}",
         }
     )
-    def put(cls, relation_id, task_id, comment_id):
+    def put(cls, relation_id: int, task_id: int, comment_id: int) -> Union[Tuple[bool, Type[HttpResponseAlias]], Tuple[str, Type[HttpResponseAlias]]]:
         """
         Modifies the task comment.
         """
@@ -799,7 +803,7 @@ class TaskComment(Resource):
             f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST['message']}",
         }
     )
-    def delete(cls, relation_id, task_id, comment_id):
+    def delete(cls, relation_id: int, task_id: int, comment_id: int) -> Tuple[str, Type[HttpResponseAlias]]:
         """
         Deletes the task comment.
         """
@@ -831,7 +835,7 @@ class TaskComments(Resource):
             f"{messages.TASK_DOES_NOT_EXIST['message']}",
         }
     )
-    def get(cls, relation_id, task_id):
+    def get(cls, relation_id: int, task_id: int) -> Union[Tuple[list, Type[HttpResponseAlias]], Tuple[Dict[str, str], Type[HttpResponseAlias]]]:
         """
         Lists the task comments.
         """

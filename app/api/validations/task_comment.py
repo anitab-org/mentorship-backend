@@ -1,10 +1,11 @@
 from app import messages
 from app.utils.validation_utils import validate_length, get_stripped_string
+from typing import Dict, Union
 
 COMMENT_MAX_LENGTH = 400
 
 
-def validate_task_comment_request_data(data):
+def validate_task_comment_request_data(data: Dict[str, str]) -> Union[str, bool, dict]:
     if "comment" not in data:
         return messages.COMMENT_FIELD_IS_MISSING
 

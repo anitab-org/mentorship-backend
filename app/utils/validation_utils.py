@@ -133,7 +133,7 @@ def get_length_validation_error_message(field_name, min_length, max_length):
         )
 
 
-def get_stripped_string(string_with_whitespaces):
+def get_stripped_string(string_with_whitespaces: str) -> str:
     """Returns a new string from key argument that has been cleaned from whitespaces (split and joined by delimiter "").
     
     Args:

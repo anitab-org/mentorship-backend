@@ -123,7 +123,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def list_mentorship_relations(user_id=None, state=None):
+    def list_mentorship_relations(user_id: int =None, state: str =None):
         """Lists all relationships of a given user.
 
         Lists all relationships of a given user. Support for filtering not yet implemented.
@@ -137,7 +137,7 @@ class MentorshipRelationDAO:
         # To check if the entered 'state' is valid.
         valid_states = ["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "COMPLETED"]
 
-        def isValidState(rel_state):
+        def isValidState(rel_state: str) -> bool:
             if rel_state in valid_states:
                 return True
             return False
