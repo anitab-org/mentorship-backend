@@ -99,7 +99,7 @@ def send_email_verification_message(user_name, email):
     send_email(email, subject, html)
 
 
-def send_email_mentorship_relation_accepted(request_id):
+def send_email_mentorship_relation_accepted(request_id: int):
     """
     Sends a notification email to the sender of the mentorship relation request,
     stating that his request has been accepted.
