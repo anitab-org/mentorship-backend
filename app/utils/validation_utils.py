@@ -33,8 +33,10 @@ name_regex = r"(^[a-zA-Z\s\-]+$)"
 email_regex = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
 username_regex = r"(^[a-zA-Z0-9_]+$)"
 
+from typing import Tuple, Dict
 
-def is_name_valid(name):
+
+def is_name_valid(name: str) -> bool:
     """Checks if name input is within the acceptable pattern defined in name_regex.
     
     Args:
@@ -47,7 +49,7 @@ def is_name_valid(name):
     return re.match(name_regex, name)
 
 
-def is_email_valid(email):
+def is_email_valid(email: str) -> bool:
     """Checks if email input is within the acceptable pattern defined in email_regex.
     
     Args:
@@ -60,7 +62,7 @@ def is_email_valid(email):
     return re.match(email_regex, email)
 
 
-def is_username_valid(username):
+def is_username_valid(username: str) -> bool:
     """Checks if username input is within the acceptable pattern defined in username_regex.
     
     Args:
@@ -73,7 +75,7 @@ def is_username_valid(username):
     return re.match(username_regex, username)
 
 
-def validate_length(field_length, min_length, max_length, field_name):
+def validate_length(field_length: int, min_length: int, max_length: int, field_name: str) -> Tuple[bool, Dict[str, str]]:
     """Validates string input.
 
     Checks the length of the string which is inserted in a particular field against the given values.
@@ -106,7 +108,7 @@ def validate_length(field_length, min_length, max_length, field_name):
         return True, {}
 
 
-def get_length_validation_error_message(field_name, min_length, max_length):
+def get_length_validation_error_message(field_name: str, min_length: int, max_length: int) -> str:
     """Returns an error message which content depends on the given keys.
 
     Args:
@@ -133,7 +135,7 @@ def get_length_validation_error_message(field_name, min_length, max_length):
         )
 
 
-def get_stripped_string(string_with_whitespaces):
+def get_stripped_string(string_with_whitespaces: str) -> str:
     """Returns a new string from key argument that has been cleaned from whitespaces (split and joined by delimiter "").
     
     Args:

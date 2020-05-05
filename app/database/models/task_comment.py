@@ -3,6 +3,7 @@ from datetime import datetime
 from app.api.validations.task_comment import COMMENT_MAX_LENGTH
 from app.database.sqlalchemy_extension import db
 
+from typing import Dict, Tuple
 
 class TaskCommentModel(db.Model):
     """Defines attributes for the task comment.
@@ -28,7 +29,7 @@ class TaskCommentModel(db.Model):
     modification_date = db.Column(db.Float)
     comment = db.Column(db.String(COMMENT_MAX_LENGTH), nullable=False)
 
-    def __init__(self, user_id, task_id, relation_id, comment):
+    def __init__(self, user_id: int, task_id: int, relation_id: int, comment: str):
         # required fields
         self.user_id = user_id
         self.task_id = task_id
@@ -38,7 +39,7 @@ class TaskCommentModel(db.Model):
         # default fields
         self.creation_date = datetime.now().timestamp()
 
-    def json(self):
+    def json(self) -> Dict[str, str]:
         """Returns information of task comment as a JSON object."""
         return {
             "id": self.id,
@@ -59,7 +60,7 @@ class TaskCommentModel(db.Model):
         )
 
     @classmethod
-    def find_by_id(cls, _id):
+    def find_by_id(cls, _id: int):
         """Returns the task comment that has the passed id.
            Args:
                 _id: The id of the task comment.
@@ -67,7 +68,7 @@ class TaskCommentModel(db.Model):
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_all_by_task_id(cls, task_id, relation_id):
+    def find_all_by_task_id(cls, task_id: int, relation_id: int):
         """Returns all task comments that has the passed task id.
            Args:
                 task_id: The id of the task.
@@ -76,14 +77,14 @@ class TaskCommentModel(db.Model):
         return cls.query.filter_by(task_id=task_id, relation_id=relation_id).all()
 
     @classmethod
-    def find_all_by_user_id(cls, user_id):
+    def find_all_by_user_id(cls, user_id: int):
         """Returns all task comments that has the passed user id.
            Args:
                 user_id: The id of the user.
         """
         return cls.query.filter_by(user_id=user_id).all()
 
-    def modify_comment(self, comment):
+    def modify_comment(self, comment: str) -> None:
         """Changes the comment and the modification date.
            Args:
                 comment: New comment.
@@ -92,16 +93,16 @@ class TaskCommentModel(db.Model):
         self.modification_date = datetime.now().timestamp()
 
     @classmethod
-    def is_empty(cls):
+    def is_empty(cls) -> bool:
         """Returns a boolean if the TaskCommentModel is empty or not."""
         return cls.query.first() is None
 
-    def save_to_db(self):
+    def save_to_db(self) -> None:
         """Adds a comment task to the database."""
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def delete_from_db(self) -> None:
         """Deletes a comment task from the database."""
         db.session.delete(self)
         db.session.commit()

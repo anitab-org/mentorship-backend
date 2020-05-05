@@ -6,9 +6,12 @@ from flask import render_template
 
 import config
 from app.api.mail_extension import mail
+from app.database.models.user import UserModel
+
+from typing import Tuple
 
 
-def generate_confirmation_token(email):
+def generate_confirmation_token(email: str):
     """Serializes and signs an email address into token with an expiry."""
     from run import application
 
@@ -16,7 +19,7 @@ def generate_confirmation_token(email):
     return serializer.dumps(email, salt=application.config["SECURITY_PASSWORD_SALT"])
 
 
-def confirm_token(token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD):
+def confirm_token(token: str, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD) -> Tuple[str, bool]:
     """Confirms the token matches the expected email address.
 
     Args:
@@ -43,16 +46,16 @@ def confirm_token(token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD)
     return email
 
 
-def mock_send_email(recipient,subject,template):
+def mock_send_email(recipient: str,subject: str, template: str) -> None:
     """Mocks the email sending behaviour by printing it as terminal output."""
 
-    print("Mock Email Service")
+    print("Mock Email Service") 
     print(f"Subject: {subject}")
     print(f"Recipient: {recipient}")
     print(template)
 
 
-def send_email(recipient, subject, template):
+def send_email(recipient, subject: str, template: str) -> None:
     """Sends a html email message with a subject to the specified recipient."""
     from run import application
 
@@ -68,7 +71,7 @@ def send_email(recipient, subject, template):
         mail.send(msg)
 
 
-def send_email_verification_message(user_name, email):
+def send_email_verification_message(user_name: str, email: str) -> None:
     """Sends a verification html email message to the specified user.
 
     First, the email address is serialized and signed for safety into a token.
@@ -99,7 +102,7 @@ def send_email_verification_message(user_name, email):
     send_email(email, subject, html)
 
 
-def send_email_mentorship_relation_accepted(request_id):
+def send_email_mentorship_relation_accepted(request_id: int) -> None:
     """
     Sends a notification email to the sender of the mentorship relation request,
     stating that his request has been accepted.
@@ -138,7 +141,7 @@ def send_email_mentorship_relation_accepted(request_id):
     send_email(request_sender.email, subject, html)
 
 
-def send_email_new_request(user_sender, user_recipient, notes, sender_role):
+def send_email_new_request(user_sender: UserModel, user_recipient: UserModel, notes: str, sender_role) -> None:
     """Sends a notification html email message to the user_recipient user.
 
     First, the email address is serialized and signed for safety into a token.

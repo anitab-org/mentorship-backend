@@ -5,6 +5,8 @@ from app import messages
 from http import HTTPStatus
 from app.database.models.user import UserModel
 
+from typing import Tuple
+
 
 def email_verification_required(user_function):
     """
@@ -15,7 +17,7 @@ def email_verification_required(user_function):
     exists and have its email verified
     """
 
-    def check_verification(*args, **kwargs):
+    def check_verification(*args, **kwargs) -> Tuple[str, int]:
         """
         Function to validate the input function ie user_function
         - It will return error 404 if user doesn't exist

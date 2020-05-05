@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import time
 from app.database.sqlalchemy_extension import db
 
+from typing import Dict
 
 class UserModel(db.Model):
     """Defines attributes for the user.
@@ -59,7 +60,7 @@ class UserModel(db.Model):
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
 
-    def __init__(self, name, username, password, email, terms_and_conditions_checked):
+    def __init__(self, name: str, username: str, password: str, email: str, terms_and_conditions_checked: bool):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
         ## required fields
 
@@ -81,7 +82,7 @@ class UserModel(db.Model):
         self.need_mentoring = False
         self.available_to_mentor = False
 
-    def json(self):
+    def json(self) -> Dict[str, str]:
         """Returns Usermodel object in json format."""
         return {
             "id": self.id,

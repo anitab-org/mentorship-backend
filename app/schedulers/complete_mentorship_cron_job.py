@@ -1,7 +1,6 @@
 from datetime import datetime
 
-
-def complete_overdue_mentorship_relations_job():
+def complete_overdue_mentorship_relations_job() -> None:
     """
     This function iterates of all the mentorship requests and
     checks if the end date of the relation has passed the current date

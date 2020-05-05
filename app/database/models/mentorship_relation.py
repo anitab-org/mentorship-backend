@@ -5,6 +5,7 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 
+from typing import Dict
 
 class MentorshipRelationModel(db.Model):
     """Data Model representation of a mentorship relation.
@@ -81,7 +82,7 @@ class MentorshipRelationModel(db.Model):
         self.notes = notes
         self.tasks_list = tasks_list
 
-    def json(self):
+    def json(self) -> Dict[str, str]:
         """Returns information of mentorship as a json object."""
         return {
             "id": self.id,
@@ -101,7 +102,7 @@ class MentorshipRelationModel(db.Model):
     #            % (self.id, self.mentor_id, self.mentee_id)
 
     @classmethod
-    def find_by_id(cls, _id) -> 'MentorshipRelationModel':
+    def find_by_id(cls, _id: int) -> 'MentorshipRelationModel':
 
         """Returns the mentorship that has the passed id.
            Args:

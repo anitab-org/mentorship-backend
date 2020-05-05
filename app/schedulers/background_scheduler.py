@@ -9,7 +9,7 @@ from app.schedulers.delete_unverified_users_cron_job import delete_unverified_us
 scheduler = BackgroundScheduler()
 
 
-def init_schedulers():
+def init_schedulers() -> None:
     """Runs all schedulers"""
     init_complete_relation_scheduler()
     init_delete_unverified_users_scheduler()
@@ -17,7 +17,7 @@ def init_schedulers():
         scheduler.start()
 
 
-def init_complete_relation_scheduler():
+def init_complete_relation_scheduler() -> None:
     # This cron job runs every day at 23:59h
     # Purpose: complete overdue accepted mentorship relations
     scheduler.add_job(
@@ -38,7 +38,7 @@ def init_complete_relation_scheduler():
     #                   replace_existing=True)
 
 
-def init_delete_unverified_users_scheduler():
+def init_delete_unverified_users_scheduler() -> None:
     threshold_days = config.BaseConfig.UNVERIFIED_USER_THRESHOLD // 86400
 
     scheduler.add_job(
