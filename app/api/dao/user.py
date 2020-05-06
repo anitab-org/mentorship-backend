@@ -25,6 +25,8 @@ class UserDAO:
     FAIL_USER_ALREADY_EXISTS = "FAIL_USER_ALREADY_EXISTS"
     SUCCESS_USER_CREATED = "SUCCESS_USER_CREATED"
     MIN_NUMBER_OF_ADMINS = 1
+    DEFAULT_PAGE = 1
+    DEFAULT_USERS_PER_PAGE = 10
 
     @staticmethod
     def create_user(data: Dict[str, str]):
