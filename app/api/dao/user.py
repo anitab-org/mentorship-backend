@@ -145,7 +145,7 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", page: int = 1, per_page: int = 10, is_verified = None):
+    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified = None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
@@ -160,7 +160,7 @@ class UserDAO:
         
         """
 
-        users_list = UserModel.query.filter(UserModel.id != user_id).all()
+        users_list = UserModel.query.filter(UserModel.id != user_id).paginate(page, per_page, False).items
         list_of_users = [
             user.json()
             for user in filter(
@@ -169,9 +169,6 @@ class UserDAO:
                 users_list,
             )
         ]
-
-        page = page - 1
-        list_of_users = list_of_users[page * per_page: (page * per_page) + per_page]
 
         for user in list_of_users:
             relation = MentorshipRelationDAO.list_current_mentorship_relation(
