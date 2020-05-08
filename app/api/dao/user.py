@@ -2,6 +2,7 @@ from datetime import datetime
 from operator import itemgetter
 from typing import Dict
 from flask_restplus import marshal
+from sqlalchemy import func
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -160,14 +161,10 @@ class UserDAO:
         
         """
 
-        users_list = UserModel.query.filter(UserModel.id != user_id).paginate(page=page, per_page=per_page, error_out=False, max_per_page=UserDAO.DEFAULT_USERS_PER_PAGE).items
+        users_list = UserModel.query.filter(UserModel.id != user_id, not is_verified or UserModel.is_email_verified == True, func.lower(UserModel.name).contains(search_query.lower())).paginate(page=page, per_page=per_page, error_out=False, max_per_page=UserDAO.DEFAULT_USERS_PER_PAGE).items
         list_of_users = [
             user.json()
-            for user in filter(
-                lambda user: (not is_verified or user.is_email_verified)
-                and search_query.lower() in user.name.lower(),
-                users_list,
-            )
+            for user in users_list
         ]
 
         for user in list_of_users:
