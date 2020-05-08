@@ -197,6 +197,9 @@ USER_INPUTS_SPACE_IN_PASSWORD = {"message": "Password shouldn't contain" " space
 TOKEN_HAS_EXPIRED = {
     "message": "The token has expired! Please, login again or refresh it."
 }
+RESET_PASSWORD_TOKEN_HAS_EXPIRED = {
+    "message": "Either Token has expired or Token is Invalid! Please, resend the link again to your valid email !"
+}
 TOKEN_SENT_TO_EMAIL_OF_USER = {"message": "Token sent to the user's email."}
 EMAIL_VERIFICATION_MESSAGE = {
     "message": "Check your email, a new verification" " email was sent."

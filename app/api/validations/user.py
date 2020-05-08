@@ -245,8 +245,6 @@ def validate_new_password(data):
 
 
 def validate_forgot_password_email(data):
-    if "email" not in data:
-        return messages.EMAIL_FIELD_IS_MISSING
 
     email = data["email"]
 

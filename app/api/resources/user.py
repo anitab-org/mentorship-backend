@@ -521,7 +521,7 @@ class ForgotPassword(Resource):
  
         data = request.json
  
-        if not data:
+        if "email" not in data:
             return messages.EMAIL_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST
  
         is_valid = validate_forgot_password_email(data)
@@ -545,12 +545,11 @@ class ForgotPassword(Resource):
 @users_ns.response(HTTPStatus.OK, f"{messages.PASSWORD_SUCCESSFULLY_UPDATED}")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-    "%s\n%s\n%s"
-    % (
-        messages.TOKEN_HAS_EXPIRED,
-        messages.TOKEN_IS_INVALID,
+    " %s\n%s"
+    %(
+        messages.RESET_PASSWORD_TOKEN_HAS_EXPIRED,
         messages.AUTHORISATION_TOKEN_IS_MISSING,
-    ),
+    )
 )
 @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.PASSWORD_FIELD_IS_MISSING}")    
  
@@ -559,11 +558,11 @@ class ResetPassword(Resource):
     @users_ns.doc(f"reset")
     @users_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
+            HTTPStatus.UNAUTHORIZED: f"{messages.RESET_PASSWORD_TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
+    
     @users_ns.expect(reset_password_forgot_request_data_model, validate=True)
  
     def post(self):
@@ -594,8 +593,8 @@ class ResetPassword(Resource):
  
         email_from_token = DAO.reset_password_token(data["token"])
  
-        if not email_from_token:
-            return messages.TOKEN_HAS_EXPIRED, HTTPStatus.UNAUTHORIZED
+        if not email_from_token :
+            return messages.RESET_PASSWORD_TOKEN_HAS_EXPIRED, HTTPStatus.UNAUTHORIZED
  
         user = DAO.get_user_by_email(email_from_token)
  
