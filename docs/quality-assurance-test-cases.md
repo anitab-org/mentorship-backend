@@ -156,6 +156,24 @@ This document contains some examples of test cases for each feature implemented 
 | User2 (received the request) cancels a mentorship relation that it is currently involved with User1 (the relation is in an ACCEPTED state)  | Success |
 | User1 cancel a mentorship relation which the User1 is not involved with | Fail |
 
+### Update task
+
+**Service:** PUT /mentorship_relation/{request_id}/task/{task_id}/complete
+
+| Test Case       | Outcome |
+| ------------- | ------------- |
+| Logged in user completes task from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Success |
+| Logged in user tries to complete a task whose id does not exist, from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task which has already been completed, from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task, from an existing request in the ACCEPTED state, that does not involve the user (neither as a mentor nor as a mentee) | Fail |
+| Not logged in user (invalid token) tries to complete a task, from an existing request in the ACCEPTED state | Fail |
+| Logged in user tries to complete a task, with an invalid request (not an integer) | Fail |
+| Logged in user tries to complete a task which is invalid (not an integer), from an existing request in the ACCEPTED state   | Fail |
+| Logged in user tries to complete a task from an non existing request for this relationship (The request doesn't exist in any other relationship) | Fail |
+| Logged in user tries to complete a task from an non existing request (The request  exists in a different relationship) | Fail |
+| Logged in user tries to complete a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
+
+
 ## Admins
 
 Only admin users have access to this.
@@ -186,14 +204,13 @@ Only admin users have access to this.
 
 
 ## Tasks
- 
+
 ### Create
 **Service:** POST /mentorship_relation/{relation_id}/task
- 
+
 |  Test Case                                                                                | Outcome |
 | ----------------------------------------------------------------------------------------- |-------- |
 | Create a task for a relation, in the accepted state, between logged user and another user | Success |
 | Creating a task without a description (either empty or not in the request body at all)    | Fail    |
 | Create a task when a logged user is not involved in the relation                          | Fail    |
-| Create a task if relation state is different than accepted                                | Fail    | 
-
+| Create a task if relation state is different than accepted                                | Fail    |
