@@ -161,7 +161,12 @@ class UserDAO:
         
         """
 
-        users_list = UserModel.query.filter(UserModel.id != user_id, not is_verified or UserModel.is_email_verified, func.lower(UserModel.name).contains(search_query.lower())).paginate(page=page, per_page=per_page, error_out=False, max_per_page=UserDAO.DEFAULT_USERS_PER_PAGE).items
+        users_list = UserModel.query.filter(
+            UserModel.id != user_id,
+            not is_verified or UserModel.is_email_verified,
+            func.lower(UserModel.name).contains(search_query.lower())
+        ).paginate(page=page, per_page=per_page, error_out=False, max_per_page=UserDAO.DEFAULT_USERS_PER_PAGE).items
+
         list_of_users = [
             user.json()
             for user in users_list
