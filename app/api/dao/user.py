@@ -160,7 +160,7 @@ class UserDAO:
         
         """
 
-        users_list = UserModel.query.filter(UserModel.id != user_id).paginate(page, per_page, False).items
+        users_list = UserModel.query.filter(UserModel.id != user_id).paginate(page=page, per_page=per_page, error_out=False, max_per_page=UserDAO.DEFAULT_USERS_PER_PAGE).items
         list_of_users = [
             user.json()
             for user in filter(
