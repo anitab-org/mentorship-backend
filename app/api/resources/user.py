@@ -504,7 +504,7 @@ class ForgotPassword(Resource):
     @classmethod
     @users_ns.doc(f"forgot password")
     @users_ns.response(HTTPStatus.OK, f"{messages.PASSWORD_RESET_MAIL_MESSAGE}")
-    @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.EMAIL_FIELD_IS_MISSING}")
+    @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.EMAIL_FIELD_IS_MISSING}"'\n'f"{messages.EMAIL_INPUT_BY_USER_IS_INVALID}")
     @users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN}")
     @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM}")
     @users_ns.expect(forgot_password_change_request_data_model, validate=True)
@@ -521,7 +521,7 @@ class ForgotPassword(Resource):
  
         data = request.json
  
-        if "email" not in data:
+        if not data["email"]:
             return messages.EMAIL_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST
  
         is_valid = validate_forgot_password_email(data)
@@ -545,24 +545,13 @@ class ForgotPassword(Resource):
 @users_ns.response(HTTPStatus.OK, f"{messages.PASSWORD_SUCCESSFULLY_UPDATED}")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-    " %s\n%s"
-    %(
-        messages.RESET_PASSWORD_TOKEN_HAS_EXPIRED,
-        messages.AUTHORISATION_TOKEN_IS_MISSING,
-    )
+    f"{messages.TOKEN_HAS_EXPIRED}"'\n'f"{messages.TOKEN_IS_INVALID}"'\n'f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
 )
 @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.PASSWORD_FIELD_IS_MISSING}")    
  
 class ResetPassword(Resource):
     @classmethod
     @users_ns.doc(f"reset")
-    @users_ns.doc(
-        responses={
-            HTTPStatus.UNAUTHORIZED: f"{messages.RESET_PASSWORD_TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
-        }
-    )
-    
     @users_ns.expect(reset_password_forgot_request_data_model, validate=True)
  
     def post(self):

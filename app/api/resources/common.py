@@ -7,3 +7,4 @@ auth_header_parser.add_argument(
     help="Authentication access token. E.g.: Bearer <access_token>",
     location="headers",
 )
+
