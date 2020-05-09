@@ -545,7 +545,7 @@ class ForgotPassword(Resource):
 @users_ns.response(HTTPStatus.OK, f"{messages.PASSWORD_SUCCESSFULLY_UPDATED}")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-    f"{messages.TOKEN_HAS_EXPIRED}"'\n'f"{messages.TOKEN_IS_INVALID}"'\n'f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
+    f"{messages.RESET_PASSWORD_TOKEN_HAS_EXPIRED}"'\n'f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
 )
 @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.PASSWORD_FIELD_IS_MISSING}")    
  
