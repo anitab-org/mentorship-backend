@@ -252,10 +252,11 @@ class UserRegister(Resource):
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s"
+        "%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+            messages.USERNAME_FIELD_HAS_INVALID_LENGTH
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)

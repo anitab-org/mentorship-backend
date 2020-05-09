@@ -525,6 +525,9 @@
         "/register": {
             "post": {
                 "responses": {
+                    "400": {
+                        "description": "Validation error."
+                    },
                     "201": {
                         "description": "User successfully created."
                     }
