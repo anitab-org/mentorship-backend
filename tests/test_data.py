@@ -48,3 +48,11 @@ user3 = {
     "password": "user3_pwd",
     "terms_and_conditions_checked": True,
 }
+
+user4 = {
+    "name": "user4@email.com",
+    "email": "user4@email.com",
+    "username": "user4",
+    "password": "user4_pwd",
+    "terms_and_conditions_checked": True,
+}
