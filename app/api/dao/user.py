@@ -28,6 +28,7 @@ class UserDAO:
     MIN_NUMBER_OF_ADMINS = 1
     DEFAULT_PAGE = 1
     DEFAULT_USERS_PER_PAGE = 10
+    MAX_USERS_PER_PAGE = 50
 
     @staticmethod
     def create_user(data: Dict[str, str]):
@@ -165,7 +166,7 @@ class UserDAO:
             UserModel.id != user_id,
             not is_verified or UserModel.is_email_verified,
             func.lower(UserModel.name).contains(search_query.lower())
-        ).paginate(page=page, per_page=per_page, error_out=False, max_per_page=UserDAO.DEFAULT_USERS_PER_PAGE).items
+        ).paginate(page=page, per_page=per_page, error_out=False, max_per_page=UserDAO.MAX_USERS_PER_PAGE).items
 
         list_of_users = [
             user.json()
