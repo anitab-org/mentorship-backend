@@ -174,7 +174,9 @@ class MyUserProfile(Resource):
 
 
 @users_ns.response(HTTPStatus.CREATED, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
-@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
+@users_ns.response(
+    HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD
+)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -293,7 +295,9 @@ class UserRegister(Resource):
         messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS,
     ),
 )
-@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
+@users_ns.response(
+    HTTPStatus.BAD_REQUEST, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID
+)
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
@@ -391,7 +395,9 @@ class LoginUser(Resource):
         "%s\n%s"
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
-    @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
+    @users_ns.response(
+        HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN
+    )
     @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
     @users_ns.expect(login_request_body_model)
     def post(cls):
@@ -420,7 +426,10 @@ class LoginUser(Resource):
             return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.NOT_FOUND
 
         if not user.is_email_verified:
-            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
+            return (
+                messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN,
+                HTTPStatus.FORBIDDEN,
+            )
 
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)

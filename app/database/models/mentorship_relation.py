@@ -101,7 +101,7 @@ class MentorshipRelationModel(db.Model):
     #            % (self.id, self.mentor_id, self.mentee_id)
 
     @classmethod
-    def find_by_id(cls, _id) -> 'MentorshipRelationModel':
+    def find_by_id(cls, _id) -> "MentorshipRelationModel":
 
         """Returns the mentorship that has the passed id.
            Args:

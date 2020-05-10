@@ -48,11 +48,17 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
-            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+            return (
+                messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                HTTPStatus.BAD_REQUEST,
+            )
         else:
             existing_user = UserModel.find_by_email(data["email"])
             if existing_user:
-                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+                return (
+                    messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+                    HTTPStatus.BAD_REQUEST,
+                )
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
@@ -144,7 +150,7 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", is_verified = None):
+    def list_users(user_id: int, search_query: str = "", is_verified=None):
         """ Retrieves a list of verified users with the specified ID.
         
         Arguments:
@@ -209,7 +215,10 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+                return (
+                    messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                    HTTPStatus.BAD_REQUEST,
+                )
 
             user.username = username
 
@@ -636,7 +645,10 @@ class UserDAO:
             user_id=user_id
         )
 
-        if current_relation != (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK):
+        if current_relation != (
+            messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
+            HTTPStatus.OK,
+        ):
             response["tasks_todo"] = marshal(
                 [
                     task

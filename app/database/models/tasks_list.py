@@ -21,7 +21,7 @@ class TasksListModel(db.Model):
     tasks = db.Column(JsonCustomType)
     next_task_id = db.Column(db.Integer)
 
-    def __init__(self, tasks: 'TasksListModel' = None):
+    def __init__(self, tasks: "TasksListModel" = None):
         """Initializes tasks.
 
         Args:
@@ -41,7 +41,9 @@ class TasksListModel(db.Model):
             else:
                 raise ValueError(TypeError)
 
-    def add_task(self, description: str, created_at: date, is_done=False, completed_at=None) -> None:
+    def add_task(
+        self, description: str, created_at: date, is_done=False, completed_at=None
+    ) -> None:
         """Adds a task to the list of tasks.
         
         Args:
@@ -75,8 +77,13 @@ class TasksListModel(db.Model):
         self.tasks = new_list
         self.save_to_db()
 
-    def update_task(self, task_id: int, description: str = None, is_done: bool = None,
-                    completed_at: date = None) -> None:
+    def update_task(
+        self,
+        task_id: int,
+        description: str = None,
+        is_done: bool = None,
+        completed_at: date = None,
+    ) -> None:
         """Updates a task.
         
         Args:

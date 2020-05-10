@@ -40,7 +40,6 @@ class TestRemoveAdminUsersApi(BaseTestCase):
             ],
         )
 
-
         # creating 3 admin users(first admin user created by basetestcase setup) and 1 normal user
         self.admin_user_1.is_email_verified = True
         self.admin_user_2.is_email_verified = True
@@ -57,11 +56,9 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_1.id,
-            },
+            json={"user_id": self.admin_user_1.id,},
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -73,11 +70,9 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_2.id,
-            },
+            json={"user_id": self.admin_user_2.id,},
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -88,27 +83,22 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": 1,
-            },
+            json={"user_id": 1,},
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
-
 
         # remove self
         auth_header = get_test_request_header(self.admin_user_1.id)
         expected_response = messages.USER_CANNOT_REVOKE_ADMIN_STATUS
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_1.id,
-            },
+            json={"user_id": self.admin_user_1.id,},
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(403, actual_response.status_code)
@@ -119,11 +109,9 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_2.id,
-            },
+            json={"user_id": self.admin_user_2.id,},
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
