@@ -137,7 +137,8 @@ class TestingConfig(BaseConfig):
 
 def get_env_config() -> str:
     flask_config_name = os.getenv("FLASK_ENVIRONMENT_CONFIG", "dev")
-    if flask_config_name not in ["prod", "test", "dev", "local", "stag"]:
+    configurations_list = ["prod", "test", "dev", "local", "stag"]
+    if flask_config_name not in configurations_list:
         raise ValueError(
             "The environment config value has to be within these values: prod, dev, test, local, stag."
         )
