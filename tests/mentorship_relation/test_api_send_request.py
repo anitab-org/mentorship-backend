@@ -15,7 +15,7 @@ from tests.test_utils import get_test_request_header
 class TestSendRequestApi(MentorshipRelationBaseTestCase):
     def setUp(self):
         super(TestSendRequestApi, self).setUp()
-	self.notes_example = 'description of a good mentorship relation'
+        self.notes_example = 'description of a good mentorship relation'
         self.now_datetime = datetime.now()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
