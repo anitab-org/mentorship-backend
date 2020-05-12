@@ -1,3 +1,4 @@
+import app.api.validations.user as user_fields_validation_constants
 # Invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
@@ -9,8 +10,8 @@ FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is" " not 
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
 }
-USERNAME_FIELD_HAS_INVALID_LENGTH={
-    "message": "The name field has to be longer than 1 characters and shorter than 31 characters."
+NAME_FIELD_HAS_INVALID_LENGTH={
+    "message": f"The name field has to be longer than {user_fields_validation_constants.NAME_MIN_LENGTH-1} characters and shorter than {user_fields_validation_constants.NAME_MAX_LENGTH+1} characters."
 }
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {

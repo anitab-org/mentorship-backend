@@ -256,7 +256,7 @@ class UserRegister(Resource):
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.USERNAME_FIELD_HAS_INVALID_LENGTH
+            messages.NAME_FIELD_HAS_INVALID_LENGTH
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
