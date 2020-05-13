@@ -1,6 +1,6 @@
 from datetime import datetime
 from http import HTTPStatus
-from flask import request
+from flask import request, current_app
 from flask_jwt_extended import (
     jwt_required,
     jwt_refresh_token_required,
@@ -16,12 +16,13 @@ from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
 from app.api.resources.common import auth_header_parser
+from app.api.dao.token import TokenDAO
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
 
 DAO = UserDAO()  # User data access object
-
+tDAO = TokenDAO()
 
 @users_ns.route("users")
 @users_ns.response(
@@ -368,6 +369,7 @@ class RefreshUser(Resource):
         """
         user_id = get_jwt_identity()
         access_token = create_access_token(identity=user_id)
+        tDAO.add_token_to_database(access_token, current_app.config['JWT_IDENTITY_CLAIM'])
 
         from run import application
 
@@ -424,6 +426,9 @@ class LoginUser(Resource):
 
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
+
+        tDAO.add_token_to_database(access_token, current_app.config['JWT_IDENTITY_CLAIM'])
+        tDAO.add_token_to_database(refresh_token, current_app.config['JWT_IDENTITY_CLAIM'])
 
         from run import application
 
@@ -498,3 +503,33 @@ class UserDashboard(Resource):
             return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
 
         return dashboard, HTTPStatus.OK
+
+
+@users_ns.route("logout")
+class UserLogout(Resource):
+    @classmethod
+    @jwt_required
+    @users_ns.doc("logout")
+    @users_ns.response(HTTPStatus.OK, "Successful logout.")
+    @users_ns.response(
+        HTTPStatus.UNAUTHORIZED,
+        "%s\n%s\n%s\n%s"
+        % (
+            messages.TOKEN_HAS_EXPIRED,
+            messages.TOKEN_IS_INVALID,
+            messages.AUTHORISATION_TOKEN_IS_MISSING,
+            messages.TOKEN_HAS_BEEN_REVOKED,
+        ),
+    )
+    @users_ns.expect(auth_header_parser)
+    def post(cls):
+        """
+        Logout user.
+
+        The user can logout with access token.
+        The return is that the access token and refresh token will be revoked.
+        This applies to all of access tokens and refresh tokens made by current user  . 
+        """
+        user_id = get_jwt_identity()
+        tDAO.revoke_tokens(user_id)
+        return  "Successful logout.", HTTPStatus.OK

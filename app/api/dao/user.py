@@ -11,7 +11,6 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
-from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.api.models.mentorship_relation import (
     list_tasks_response_body,
     mentorship_request_response_body_for_user_dashboard_body,
