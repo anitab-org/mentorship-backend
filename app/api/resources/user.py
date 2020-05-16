@@ -40,9 +40,9 @@ class UserList(Resource):
     @users_ns.doc("list_users", params={"search": "Search query"})
     @users_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         }
     )
     @users_ns.marshal_list_with(public_user_api_model)
@@ -68,7 +68,7 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(HTTPStatus.CREATED, "Success.", public_user_api_model)
+    @users_ns.response(HTTPStatus.CREATED, f"{messages.GENERAL_SUCCESS_MESSAGE}", public_user_api_model)
     @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ID_IS_NOT_VALID)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
@@ -134,7 +134,7 @@ class MyUserProfile(Resource):
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
-    @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
+    @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.INVALID_INPUT}")
     def put(cls):
         """
         Updates user profile
@@ -224,9 +224,9 @@ class VerifiedUser(Resource):
     @users_ns.doc("get_verified_users", params={"search": "Search query"})
     @users_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         }
     )
     @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
@@ -310,10 +310,10 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route("user/resend_email")
-@users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
-@users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
-@users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
-@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.OK, f"{messages.EMAIL_VERIFICATION_MESSAGE}")
+@users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.INVALID_INPUT}")
+@users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}")
+@users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
@@ -349,7 +349,7 @@ class RefreshUser(Resource):
     @classmethod
     @jwt_refresh_token_required
     @users_ns.doc("refresh")
-    @users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
+    @users_ns.response(HTTPStatus.OK, f"{messages.SUCCESSFUL_REFRESH}", refresh_response_body_model)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
@@ -385,7 +385,7 @@ class RefreshUser(Resource):
 class LoginUser(Resource):
     @classmethod
     @users_ns.doc("login")
-    @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
+    @users_ns.response(HTTPStatus.OK, f"{messages.SUCCESSFUL_LOGIN}", login_response_body_model)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
         "%s\n%s"
@@ -448,7 +448,7 @@ class LoginUser(Resource):
 @users_ns.route("home")
 @users_ns.doc("home")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK, "Successful response", home_response_body_model)
+@users_ns.response(HTTPStatus.OK, f"{messages.SUCCESSFUL_RESPONSE}", home_response_body_model)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -480,8 +480,8 @@ class UserHomeStatistics(Resource):
 
 @users_ns.route("dashboard")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK, "Successful response", dashboard_response_body_model)
-@users_ns.response(HTTPStatus.NOT_FOUND, "User not found")
+@users_ns.response(HTTPStatus.OK, f"{messages.GENERAL_SUCCESS_MESSAGE}", dashboard_response_body_model)
+@users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_NOT_FOUND}")
 class UserDashboard(Resource):
     @classmethod
     @jwt_required

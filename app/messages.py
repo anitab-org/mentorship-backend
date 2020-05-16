@@ -10,6 +10,8 @@ FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
 }
 
+INVALID_INPUT = {"message": "Invalid input."}
+
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {
     "message": "This mentorship" " relation request does not" " exist."
@@ -268,6 +270,22 @@ LIST_TASK_COMMENTS_WITH_SUCCESS = {
     "message": "List task comments from a mentorship relation with success."
 }
 
+GENERAL_SUCCESS_MESSAGE = {
+    "message": "Success."
+}
+
+SUCCESSFUL_REFRESH = {
+    "message": "Successful refresh."
+}
+
+SUCCESSFUL_RESPONSE = {
+    "message": "Successful response."
+}
+
+SUCCESSFUL_LOGIN = {
+    "message": "Successful login"
+}
+
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed."}
 USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email."}
@@ -281,3 +299,4 @@ INVALID_END_DATE = {
     "message": "Validation error. End date represented by the timestamp is invalid."
 }
 NOT_IMPLEMENTED = {"message": "Not implemented."}
+
