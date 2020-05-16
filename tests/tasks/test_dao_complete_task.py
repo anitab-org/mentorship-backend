@@ -1,6 +1,7 @@
 import unittest
 
 from app import messages
+from http import HTTPStatus
 from app.api.dao.task import TaskDAO
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 
@@ -37,6 +38,13 @@ class TestCompleteTasksDao(TasksBaseTestCase):
 
         self.assertEqual(expected_response, actual_response)
 
+    def test_achieve_not_existent_task_in_non_accepted_relationship(self):
+
+        expected_response = messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
+        actual_response = TaskDAO.complete_task(
+        self.fifth_user.id, self.mentorship_relation_w_fourth_user.id, 123123
+        )
+        self.assertEqual(expected_response, actual_response)
 
 if __name__ == "__main__":
     unittest.main()

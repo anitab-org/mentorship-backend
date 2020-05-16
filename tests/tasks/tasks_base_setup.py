@@ -6,7 +6,7 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_data import user1, user2, user4
+from tests.test_data import user1, user2, user4, user5
 
 
 class TasksBaseTestCase(BaseTestCase):
@@ -24,6 +24,7 @@ class TasksBaseTestCase(BaseTestCase):
             password=user1["password"],
             terms_and_conditions_checked=user1["terms_and_conditions_checked"],
         )
+
         self.second_user = UserModel(
             name=user2["name"],
             email=user2["email"],
@@ -39,6 +40,15 @@ class TasksBaseTestCase(BaseTestCase):
             password=user4["password"],
             terms_and_conditions_checked=user4["terms_and_conditions_checked"],
         )
+
+        self.fifth_user = UserModel(
+            name=user5["name"],
+            email=user5["email"],
+            username=user5["username"],
+            password=user5["password"],
+            terms_and_conditions_checked=user5["terms_and_conditions_checked"],
+        )
+
         # making sure both are available to be mentor or mentee
         self.first_user.need_mentoring = True
         self.first_user.available_to_mentor = True
@@ -48,6 +58,9 @@ class TasksBaseTestCase(BaseTestCase):
         self.second_user.is_email_verified = True
         self.fourth_user.available_to_mentor = True
         self.fourth_user.is_email_verified = True
+        self.fifth_user.is_email_verified = True
+        self.fifth_user.available_to_mentor = True
+        self.fifth_user.need_mentoring = True
 
         self.notes_example = "description of a good mentorship relation"
 
@@ -64,6 +77,7 @@ class TasksBaseTestCase(BaseTestCase):
         db.session.add(self.first_user)
         db.session.add(self.second_user)
         db.session.add(self.fourth_user)
+        db.session.add(self.fifth_user)
         db.session.commit()
 
         # create new mentorship relation
@@ -101,9 +115,21 @@ class TasksBaseTestCase(BaseTestCase):
             tasks_list=self.tasks_list_3,
         )
 
+        self.mentorship_relation_w_fourth_user = MentorshipRelationModel(
+            action_user_id=self.fifth_user.id,
+            mentor_user=self.fifth_user,
+            mentee_user=self.fourth_user,
+            creation_date=self.now_datetime.timestamp(),
+            end_date=self.end_date_example.timestamp(),
+            state=MentorshipRelationState.PENDING,
+            notes=self.notes_example,
+            tasks_list=self.tasks_list_3,
+        )
+
         db.session.add(self.mentorship_relation_w_second_user)
         db.session.add(self.mentorship_relation_w_admin_user)
         db.session.add(self.mentorship_relation_without_first_user)
+        db.session.add(self.mentorship_relation_w_fourth_user)
         db.session.commit()
 
         self.description_example = "This is an example of a description"
