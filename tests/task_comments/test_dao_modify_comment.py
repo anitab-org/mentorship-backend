@@ -17,7 +17,6 @@ class TestModifyCommentDao(TaskCommentsBaseTestCase):
         self.assertTrue(self.task_comment.id is not None)
         self.assertTrue(self.task_comment.task_id == 1)
         self.assertIsNotNone(self.task_comment.creation_date)
-        self.assertIsNotNone(self.task_comment.creation_date)
         self.assertEqual(self.task_comment.comment, "modified comment")
 
 
