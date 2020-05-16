@@ -32,9 +32,10 @@ This template can be use to add a review comment to a PR after testing is done. 
 
 The changes made in this PR was tested locally. Folowing are the results:
 
-1. Code review - _Done/Not Done_
+1. Code review - _Done_/_Not Done_
 
 2. All possible responses were tested as below
+
   * _Test1 Description_  
     _Screenshot/gif_:  
     _Expected Result_:  
@@ -45,8 +46,9 @@ The changes made in this PR was tested locally. Folowing are the results:
     _Actual Result_:  
     ...  
     
-3. Additional Testcases covered:
-   * _Test1 Description_  
+3. Additional testcases covered:
+
+  * _Test1 Description_  
     _Screenshot/gif_:  
     _Expected Result_:  
     _Actual Result_:
