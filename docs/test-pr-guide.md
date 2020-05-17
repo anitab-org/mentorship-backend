@@ -25,7 +25,7 @@ git checkout <branch-name>
 
 9. If the testing is unsuccessful and fixes are needed change then remove the label `Status: Needs Testing` and add `Status: Needs Review`.
 
-10. If the testing is successful and no improvements needed then remove the label `Needs Testing` and add `Ready to Merge`.
+10. If the testing is successful and no improvements needed then remove the label `Status: Needs Testing` and add `Status: Ready to Merge`.
 
 <h2>Template to report PR testing results</h2>
 This template can be used to add a review comment to a PR after testing is done. It can be used irrespective of the success or failure of testing.
