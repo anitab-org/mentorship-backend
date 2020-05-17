@@ -35,7 +35,7 @@ The changes made in this PR was tested locally. Folowing are the results:
 
 1. Code review - Done or Not Done
 
-2. All possible responses were tested as below
+2. All possible responses were tested as below:
 
   * _Test1 Description_  
     _Screenshot/gif_:  
