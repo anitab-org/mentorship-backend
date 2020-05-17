@@ -23,7 +23,7 @@ git checkout <branch-name>
 
 8. Get screenshots/gifs of before and after the fix and attach them to the PR comment.
 
-9. If the testing is unsuccessful and fixes are needed change then remove the label `Needs Testing` and add `Needs Review`.
+9. If the testing is unsuccessful and fixes are needed change then remove the label `Status: Needs Testing` and add `Status: Needs Review`.
 
 10. If the testing is successful and no improvements needed then remove the label `Needs Testing` and add `Ready to Merge`.
 
