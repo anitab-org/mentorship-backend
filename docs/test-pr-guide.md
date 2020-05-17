@@ -23,16 +23,17 @@ git checkout <branch-name>
 
 8. Get screenshots/gifs of before and after the fix and attach them to the PR comment.
 
-9. If the testing is unsuccessful and fixes are needed change then remove the label _Needs Testing_ and add _Needs Review_.
+9. If the testing is unsuccessful and fixes are needed change then remove the label `Needs Testing` and add `Needs Review`.
 
-10. If the testing is successful and no improvements needed then remove the label _Needs Testing_ and add _Ready to Merge_.
+10. If the testing is successful and no improvements needed then remove the label `Needs Testing` and add `Ready to Merge`.
 
 <h2>Template to report PR testing results</h2>
 This template can be used to add a review comment to a PR after testing is done. It can be used irrespective of the success or failure of testing.
 
+```
 The changes made in this PR was tested locally. Folowing are the results:
 
-1. Code review - _Done_/_Not Done_
+1. Code review - Done or Not Done
 
 2. All possible responses were tested as below
 
@@ -55,7 +56,8 @@ The changes made in this PR was tested locally. Folowing are the results:
     
 4. Additional Comments:
 
-5. Status of PR Changed to: _Needs Review_/_Ready to Merge_.
+5. Status of PR Changed to: Needs Review or Ready to Merge.
+```
 
 <h1>Steps to test multiple features (User Registration, List users, ...) of the Mentorship System.</h1>
 
