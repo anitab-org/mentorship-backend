@@ -28,7 +28,7 @@ git checkout <branch-name>
 10. If the testing is successful and no improvements needed then remove the label _Needs Testing_ and add _Ready to Merge_.
 
 <h2>Template to report PR testing results</h2>
-This template can be use to add a review comment to a PR after testing is done. It can used used irrespective of success or failure of testing.
+This template can be used to add a review comment to a PR after testing is done. It can be used irrespective of the success or failure of testing.
 
 The changes made in this PR was tested locally. Folowing are the results:
 
