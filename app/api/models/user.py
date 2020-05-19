@@ -1,4 +1,4 @@
-from flask_restplus import fields, Model
+from flask_restx import fields, Model
 from app.api.models.mentorship_relation import (
     list_tasks_response_body,
     mentorship_request_response_body_for_user_dashboard_body,

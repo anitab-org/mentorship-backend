@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
