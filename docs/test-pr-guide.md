@@ -31,11 +31,11 @@ git checkout <branch-name>
 This template can be used to add a review comment to a PR after testing is done. It can be used irrespective of the success or failure of testing.
 
 ```
-The changes made in this PR was tested locally. Folowing are the results:
+The changes made in this PR were tested locally. Following are the results:
 
 1. Code review - Done or Not Done
 
-2. All possible responses were tested as below:
+2. All possible responses (positive and negative tests) were tested as below:
 
   * _Test1 Description_  
     _Screenshot/gif_:  
