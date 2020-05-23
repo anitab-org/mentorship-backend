@@ -42,7 +42,6 @@ class UserList(Resource):
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
     @users_ns.marshal_list_with(public_user_api_model)
@@ -72,11 +71,10 @@ class OtherUser(Resource):
     @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ID_IS_NOT_VALID)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
+        "%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
             messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
     @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
@@ -105,11 +103,10 @@ class OtherUser(Resource):
 @users_ns.route("user")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-    "%s\n%s\n%s"
+    "%s\n%s"
     % (
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
 @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
@@ -210,11 +207,10 @@ class ChangeUserPassword(Resource):
 
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-    "%s\n%s\n%s"
+    "%s\n%s"
     % (
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
 @users_ns.route("users/verified")
@@ -226,7 +222,6 @@ class VerifiedUser(Resource):
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
     @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
@@ -353,11 +348,10 @@ class RefreshUser(Resource):
     @users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
+        "%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
             messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
     @users_ns.expect(auth_header_parser)
