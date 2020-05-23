@@ -2,7 +2,7 @@
 This module is used to define decorators for the app
 """
 from app import messages
-
+from http import HTTPStatus
 from app.database.models.user import UserModel
 
 
@@ -28,16 +28,16 @@ def email_verification_required(user_function):
         """
 
         if kwargs:
-            user = UserModel.find_by_id(kwargs['user_id'])
+            user = UserModel.find_by_id(kwargs["user_id"])
         else:
             user = UserModel.find_by_id(args[0])
 
         # verify if user exists
         if user:
             if not user.is_email_verified:
-                return  messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, 403
+                return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
             return user_function(*args, **kwargs)
         else:
-            return messages.USER_DOES_NOT_EXIST, 404
+            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
     return check_verification
