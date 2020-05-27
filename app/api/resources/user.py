@@ -30,14 +30,14 @@ DAO = UserDAO()  # User data access object
     % (
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
     ),
 )
 # TODO: @users_ns.response(404, 'User does not exist.')
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query"})
+    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -57,8 +57,12 @@ class UserList(Resource):
         location, occupation, organization, interests, skills, need_mentoring,
         available_to_mentor. The current user's details are not returned.
         """
+
+        page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
+        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""))
+        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page)
 
 
 @users_ns.route("users/<int:user_id>")
@@ -221,7 +225,7 @@ class ChangeUserPassword(Resource):
 class VerifiedUser(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("get_verified_users", params={"search": "Search query"})
+    @users_ns.doc("get_verified_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -241,8 +245,12 @@ class VerifiedUser(Resource):
         location, occupation, organization, interests, skills, need_mentoring,
         available_to_mentor. The current user's details are not returned.
         """
+
+        page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
+        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), is_verified=True)
+        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, is_verified=True)
 
 
 @users_ns.route("register")
@@ -252,11 +260,13 @@ class UserRegister(Resource):
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s"
+        "%s\n%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.USERNAME_FIELD_IS_MISSING
+            messages.USERNAME_FIELD_IS_MISSING,
+            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH
+
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
