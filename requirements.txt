@@ -38,7 +38,7 @@ itsdangerous==0.24
 Jinja2==2.10
 jmespath==0.9.3
 jsonschema==2.6.0
-MarkupSafe==1.0
+MarkupSafe==1.1.1
 mccabe==0.6.1
 paramiko==2.7.1
 pathspec==0.5.5
@@ -67,4 +67,4 @@ tzlocal==1.5.1
 urllib3==1.22
 wcwidth==0.1.7
 websocket-client==0.48.0
-Werkzeug==0.14.1
+Werkzeug==0.15.3

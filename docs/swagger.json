@@ -745,6 +745,20 @@
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
                     },
                     {
+                        "name": "page",
+                        "in": "query",
+                        "type": "int",
+                        "required": false,
+                        "description": "specify page of users",
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "type": "int",
+                        "required": false,
+                        "description": "specify number of users per page",
+                    },
+                    {
                         "name": "X-Fields",
                         "in": "header",
                         "type": "string",
@@ -779,6 +793,20 @@
                         "type": "string",
                         "required": true,
                         "description": "Authentication access token. E.g.: Bearer <access_token>"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "type": "int",
+                        "required": false,
+                        "description": "specify page of users",
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "type": "int",
+                        "required": false,
+                        "description": "specify number of users per page",
                     },
                     {
                         "name": "X-Fields",

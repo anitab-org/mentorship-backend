@@ -1,3 +1,5 @@
+from typing import Optional
+
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 from app.database.sqlalchemy_extension import db
@@ -23,7 +25,7 @@ class UserModel(db.Model):
     # personal data
     name = db.Column(db.String(30))
     username = db.Column(db.String(30), unique=True)
-    email = db.Column(db.String(30), unique=True)
+    email = db.Column(db.String(254), unique=True)
 
     # security
     password_hash = db.Column(db.String(100))
@@ -113,17 +115,17 @@ class UserModel(db.Model):
         return "User name %s. Username is %s ." % (self.name, self.username)
 
     @classmethod
-    def find_by_username(cls, username):
+    def find_by_username(cls, username: str) -> 'UserModel':
         """Returns the user that has the username we searched for. """
         return cls.query.filter_by(username=username).first()
 
     @classmethod
-    def find_by_email(cls, email):
+    def find_by_email(cls, email: str) -> 'UserModel':
         """Returns the user that has the email we searched for. """
         return cls.query.filter_by(email=email).first()
 
     @classmethod
-    def find_by_id(cls, _id):
+    def find_by_id(cls, _id: int) -> 'UserModel':
         """Returns the user that has the id we searched for. """
         return cls.query.filter_by(id=_id).first()
 
@@ -133,25 +135,25 @@ class UserModel(db.Model):
         return cls.query.filter_by(is_admin=is_admin).all()
 
     @classmethod
-    def is_empty(cls):
+    def is_empty(cls) -> bool:
         """Returns a boolean if the Usermodel is empty or not. """
         return cls.query.first() is None
 
-    def set_password(self, password_plain_text):
+    def set_password(self, password_plain_text: str) -> None:
         """Sets user password when they create an account or when they are changing their password. """
         self.password_hash = generate_password_hash(password_plain_text)
 
     # checks if password is the same, using its hash
-    def check_password(self, password_plain_text):
+    def check_password(self, password_plain_text: str) -> bool:
         """Returns a boolean if password is the same as it hash or not. """
         return check_password_hash(self.password_hash, password_plain_text)
 
-    def save_to_db(self):
+    def save_to_db(self) -> None:
         """Adds a user to the database. """
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def delete_from_db(self) -> None:
         """Deletes a user from the database. """
         db.session.delete(self)
         db.session.commit()

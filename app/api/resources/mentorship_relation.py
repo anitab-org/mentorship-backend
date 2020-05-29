@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from http import HTTPStatus
 from app import messages
 from app.api.dao.task import TaskDAO
 from app.api.dao.task_comment import TaskCommentDAO
@@ -35,10 +35,10 @@ class SendRequest(Resource):
     @mentorship_relation_ns.doc("send_request")
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(
-        200, "%s" % messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
+        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        400,
+        HTTPStatus.BAD_REQUEST,
         "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
         % (
             messages.MATCH_EITHER_MENTOR_OR_MENTEE,
@@ -53,7 +53,7 @@ class SendRequest(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -62,7 +62,7 @@ class SendRequest(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404, "%s\n%s" % (messages.MENTOR_DOES_NOT_EXIST, messages.MENTEE_DOES_NOT_EXIST)
+        HTTPStatus.NOT_FOUND, "%s\n%s" % (messages.MENTOR_DOES_NOT_EXIST, messages.MENTEE_DOES_NOT_EXIST)
     )
     def post(cls):
         """
@@ -88,12 +88,12 @@ class SendRequest(Resource):
         is_valid = SendRequest.is_valid_data(data)
 
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         response = DAO.create_mentorship_relation(user_sender_id, data)
 
         # if the mentorship relation creation failed dont send email and return
-        if response[1] != 200:
+        if response[1] != HTTPStatus.OK:
             return response
 
         if user_sender_id == data["mentee_id"]:
@@ -139,12 +139,12 @@ class GetAllMyMentorshipRelation(Resource):
         _in="query",
     )
     @mentorship_relation_ns.response(
-        200,
+        HTTPStatus.OK,
         "Return all user's mentorship relations, filtered by the relation state, was successfully.",
         model=mentorship_request_response_body,
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -185,10 +185,10 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("accept_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200, "%s" % messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY
+        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        400,
+        HTTPStatus.BAD_REQUEST,
         "%s\n%s\n%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,
@@ -198,7 +198,7 @@ class AcceptMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -207,7 +207,7 @@ class AcceptMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
     def put(cls, request_id):
         """
@@ -227,7 +227,7 @@ class AcceptMentorshipRelation(Resource):
         user_id = get_jwt_identity()
         response = DAO.accept_request(user_id=user_id, request_id=request_id)
 
-        if response[1] == 200:
+        if response[1] == HTTPStatus.OK:
             send_email_mentorship_relation_accepted(request_id)
 
         return response
@@ -240,10 +240,10 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("reject_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200, "%s" % messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY
+        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        400,
+        HTTPStatus.BAD_REQUEST,
         "%s\n%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,
@@ -252,7 +252,7 @@ class RejectMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -261,7 +261,7 @@ class RejectMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
     def put(cls, request_id):
         """
@@ -292,15 +292,15 @@ class CancelMentorshipRelation(Resource):
         auth_header_parser, mentorship_relation_cancellation_reason_body
     )
     @mentorship_relation_ns.response(
-        200, "%s" % messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY
+        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        400,
+        HTTPStatus.BAD_REQUEST,
         "%s\n%s"
         % (messages.UNACCEPTED_STATE_RELATION, messages.CANT_CANCEL_UNINVOLVED_REQUEST),
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -309,7 +309,7 @@ class CancelMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
     def put(cls, request_id):
         """
@@ -456,7 +456,7 @@ class ListCurrentMentorshipRelation(Resource):
         response = DAO.list_current_mentorship_relation(user_id)
 
         if isinstance(response, MentorshipRelationModel):
-            return marshal(response, mentorship_request_response_body), 200
+            return marshal(response, mentorship_request_response_body), HTTPStatus.OK
 
         return response
 
@@ -468,13 +468,13 @@ class ListPendingMentorshipRequests(Resource):
     @mentorship_relation_ns.doc("get_pending_mentorship_relations")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200,
+        HTTPStatus.OK,
         "Returned pending mentorship relation with success.",
         model=mentorship_request_response_body,
     )
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -505,20 +505,15 @@ class CreateTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc("create_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
-    @mentorship_relation_ns.response(200, "%s" % messages.TASK_WAS_CREATED_SUCCESSFULLY)
-    @mentorship_relation_ns.response(400, "%s" % messages.UNACCEPTED_STATE_RELATION)
-    @mentorship_relation_ns.response(
-        401,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
-        ),
+    @mentorship_relation_ns.response(HTTPStatus.CREATED, '%s'%messages.TASK_WAS_CREATED_SUCCESSFULLY)
+    @mentorship_relation_ns.response(HTTPStatus.BAD_REQUEST, '%s'%messages.UNACCEPTED_STATE_RELATION)
+    @mentorship_relation_ns.response(HTTPStatus.UNAUTHORIZED, '%s\n%s\n%s'%(
+        messages.TOKEN_HAS_EXPIRED,
+        messages.TOKEN_IS_INVALID,
+        messages.AUTHORISATION_TOKEN_IS_MISSING
+        )
     )
-    @mentorship_relation_ns.response(
-        404, "%s" % messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
-    )
+    @mentorship_relation_ns.response(403, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
     def post(cls, request_id):
         """
         Create a task for a mentorship relation.
@@ -541,7 +536,7 @@ class CreateTask(Resource):
         is_valid = CreateTask.is_valid_data(request_body)
 
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         response = TaskDAO.create_task(
             user_id=user_id, mentorship_relation_id=request_id, data=request_body
@@ -564,9 +559,9 @@ class DeleteTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc("delete_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(200, "%s" % messages.TASK_WAS_DELETED_SUCCESSFULLY)
+    @mentorship_relation_ns.response(HTTPStatus.OK, "%s" % messages.TASK_WAS_DELETED_SUCCESSFULLY)
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -576,7 +571,7 @@ class DeleteTask(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404,
+        HTTPStatus.NOT_FOUND,
         "%s\n%s"
         % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
     )
@@ -612,12 +607,12 @@ class ListTasks(Resource):
     @mentorship_relation_ns.doc("list_tasks_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200,
+        HTTPStatus.OK,
         "List tasks from a mentorship relation with success.",
         model=list_tasks_response_body,
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -627,7 +622,7 @@ class ListTasks(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404, "%s" % messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
     )
     def get(cls, request_id):
         """
@@ -653,7 +648,7 @@ class ListTasks(Resource):
         if isinstance(response, tuple):
             return response
 
-        return marshal(response, list_tasks_response_body), 200
+        return marshal(response, list_tasks_response_body), HTTPStatus.OK
 
 
 @mentorship_relation_ns.route(
@@ -665,11 +660,11 @@ class UpdateTask(Resource):
     @mentorship_relation_ns.doc("update_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200, "%s" % messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
+        HTTPStatus.OK, "%s" % messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
     )
-    @mentorship_relation_ns.response(400, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED)
+    @mentorship_relation_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED)
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -679,7 +674,7 @@ class UpdateTask(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404,
+        HTTPStatus.NOT_FOUND,
         "%s\n%s"
         % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
     )
@@ -717,18 +712,18 @@ class CreateTaskComment(Resource):
     @mentorship_relation_ns.expect(auth_header_parser, task_comment_model)
     @mentorship_relation_ns.doc(
         responses={
-            201: messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY["message"],
-            400: f"{messages.COMMENT_FIELD_IS_MISSING['message']}<br>"
-            f"{messages.COMMENT_NOT_IN_STRING_FORMAT['message']}<br>"
-            f"{get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}<br>"
-            f"{messages.UNACCEPTED_STATE_RELATION['message']}",
-            401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
-            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
-            404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_DOES_NOT_EXIST['message']}",
+            HTTPStatus.CREATED:f"{messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY}",
+            HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
+            f"{messages.COMMENT_NOT_IN_STRING_FORMAT}<br>"
+            f"{ {'message': get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}}<br>"
+            f"{messages.UNACCEPTED_STATE_RELATION}",
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_DOES_NOT_EXIST}",
         }
     )
     def post(cls, relation_id, task_id):
@@ -740,7 +735,7 @@ class CreateTaskComment(Resource):
 
         is_valid = validate_task_comment_request_data(data)
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         comment = data["comment"]
         return TaskCommentDAO.create_task_comment(
@@ -757,21 +752,21 @@ class TaskComment(Resource):
     @mentorship_relation_ns.expect(auth_header_parser, task_comment_model)
     @mentorship_relation_ns.doc(
         responses={
-            200: messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY["message"],
-            400: f"{messages.COMMENT_FIELD_IS_MISSING['message']}<br>"
-            f"{messages.COMMENT_NOT_IN_STRING_FORMAT['message']}<br>"
-            f"{get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}<br>"
-            f"{messages.UNACCEPTED_STATE_RELATION['message']}<br>"
-            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU['message']}",
-            401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
-            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
-            404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_COMMENT_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST['message']}",
+            HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY}",
+            HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
+            f"{messages.COMMENT_NOT_IN_STRING_FORMAT}<br>"
+            f"{ {'message':get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}}<br>"
+            f"{messages.UNACCEPTED_STATE_RELATION}<br>"
+            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU}",
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST}",
         }
     )
     def put(cls, relation_id, task_id, comment_id):
@@ -783,7 +778,7 @@ class TaskComment(Resource):
 
         is_valid = validate_task_comment_request_data(data)
         if is_valid != {}:
-            return is_valid, 400
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         comment = data["comment"]
         return TaskCommentDAO.modify_comment(
@@ -795,18 +790,18 @@ class TaskComment(Resource):
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.doc(
         responses={
-            200: messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY["message"],
-            400: f"{messages.UNACCEPTED_STATE_RELATION['message']}<br>"
-            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE['message']}",
-            401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
-            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
-            404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_COMMENT_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST['message']}",
+            HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY}",
+            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}<br>"
+            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE}",
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST}",
         }
     )
     def delete(cls, relation_id, task_id, comment_id):
@@ -827,18 +822,18 @@ class TaskComments(Resource):
     @jwt_required
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200, messages.LIST_TASK_COMMENTS_WITH_SUCCESS["message"], task_comments_model
+        HTTPStatus.OK, f"{ messages.LIST_TASK_COMMENTS_WITH_SUCCESS}", task_comments_model
     )
     @mentorship_relation_ns.doc(
         responses={
-            400: messages.UNACCEPTED_STATE_RELATION["message"],
-            401: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
-            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION['message']}",
-            404: f"{messages.USER_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST['message']}<br>"
-            f"{messages.TASK_DOES_NOT_EXIST['message']}",
+            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}",
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_DOES_NOT_EXIST}",
         }
     )
     def get(cls, relation_id, task_id):
@@ -853,4 +848,4 @@ class TaskComments(Resource):
         if isinstance(response, tuple):
             return response
         else:
-            return marshal(response, task_comments_model), 200
+            return marshal(response, task_comments_model), HTTPStatus.OK
