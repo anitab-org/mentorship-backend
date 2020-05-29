@@ -263,7 +263,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def cancel_relation(user_id: int, relation_id: int):
+    def cancel_relation(user_id: int, relation_id: int, data: dict):
         """Allows a given user to terminate a particular relationship.
 
         Args:
