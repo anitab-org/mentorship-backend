@@ -294,7 +294,7 @@ class MentorshipRelationDAO:
         # Updates cancellation reason if it was passed in arguments
         try:
             request.cancellation_reason = data["cancellation_reason"]
-        except:
+        except KeyError as e:
             request.cancellation_reason = None
 
         request.save_to_db()
