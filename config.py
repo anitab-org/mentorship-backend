@@ -42,6 +42,7 @@ class BaseConfig(object):
     DB_PASSWORD = os.getenv("DB_PASSWORD")
     DB_ENDPOINT = os.getenv("DB_ENDPOINT")
     DB_NAME = os.getenv("DB_NAME")
+    DB_TEST_NAME = os.getenv("DB_TEST_NAME")
 
     UNVERIFIED_USER_THRESHOLD = 2592000  # 30 days
 
@@ -84,15 +85,17 @@ class BaseConfig(object):
         db_endpoint_arg=DB_ENDPOINT,
         db_name_arg=DB_NAME,
     ):
-        """Build remote database uri using specific environment variables."""
+        return f"{db_type_arg}://{db_user_arg}:{db_password_arg}@{db_endpoint_arg}/{db_name_arg}"
 
-        return "{db_type}://{db_user}:{db_password}@{db_endpoint}/{db_name}".format(
-            db_type=db_type_arg,
-            db_user=db_user_arg,
-            db_password=db_password_arg,
-            db_endpoint=db_endpoint_arg,
-            db_name=db_name_arg,
-        )
+    @staticmethod
+    def build_db_test_uri(
+        db_type_arg=DB_TYPE,
+        db_user_arg=DB_USERNAME,
+        db_password_arg=DB_PASSWORD,
+        db_endpoint_arg=DB_ENDPOINT,
+        db_name_arg=DB_TEST_NAME,
+    ):
+        return f"{db_type_arg}://{db_user_arg}:{db_password_arg}@{db_endpoint_arg}/{db_name_arg}"
 
 
 class ProductionConfig(BaseConfig):
@@ -122,8 +125,11 @@ class LocalConfig(BaseConfig):
 
     DEBUG = True
 
-    # Using a local sqlite database
-    SQLALCHEMY_DATABASE_URI = "sqlite:///local_data.db"
+    # Using a local postgres database on MacOS
+    # SQLALCHEMY_DATABASE_URI = "postgresql:///bit_schema"
+
+    # Using a local postgres database on other OS
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
 
 
 class TestingConfig(BaseConfig):
@@ -132,8 +138,11 @@ class TestingConfig(BaseConfig):
     TESTING = True
     MOCK_EMAIL = True
 
-    # Use in-memory SQLite database for testing
-    SQLALCHEMY_DATABASE_URI = "sqlite://"
+    # Using a local postgres database on MacOS
+    # SQLALCHEMY_DATABASE_URI = "postgresql:///bit_schema_test"
+
+    # Using a local postgres database on other OS
+    SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_test_uri()
 
 
 def get_env_config() -> str:

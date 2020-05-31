@@ -5,28 +5,59 @@ name: Run tests
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ bit ]
   pull_request:
-    branches: [ develop ]
+    branches: [ bit ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      DB_TYPE: postgresql+psycopg2
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_ENDPOINT: localhost:5432 
+      DB_TEST_NAME: bit_schema_test
+    services:
+      postgres:
+        image: postgres
+        env: 
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     steps:
     - uses: actions/checkout@v2
+    - name: Connect to PostgreSQL
+      run: |
+        PGPASSWORD=postgres psql -h localhost -c 'CREATE DATABASE bit_schema_test;' -U postgres
+        PGPASSWORD=postgres psql -h localhost -c 'CREATE SCHEMA bitschema;' -U postgres -d bit_schema_test
+        PGPASSWORD=postgres psql -h localhost -c 'CREATE SCHEMA test_schema;' -U postgres -d bit_schema_test
+        PGPASSWORD=postgres psql -h localhost -c 'create SCHEMA test_schema_2;' -U postgres -d bit_schema_test
+        PGPASSWORD=postgres psql -h localhost -c '\dn;' -U postgres -d bit_schema_test
+        PGPASSWORD=postgres psql -h localhost -c 'show search_path;' -U postgres -d bit_schema_test
+        PGPASSWORD=postgres psql -h localhost -c "ALTER DATABASE bit_schema_test SET search_path TO bitschema,public;" -U postgres -d bit_schema_test
+        PGPASSWORD=postgres psql -h localhost -c 'show search_path;' -U postgres -d bit_schema_test
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
     - name: Set up Python 3.6
       uses: actions/setup-python@v2
       with:
         python-version: 3.6
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
+        sudo -H python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Run tests
       run: |
         python -m unittest discover tests -v
+       
     - name: Generate coverage report
       run: |
         pip install pytest

@@ -63,8 +63,8 @@ class UserList(Resource):
         A user with valid access token can view the list of users. The endpoint
         doesn't take any other input. A JSON array having an object for each user is
         returned. The array contains id, username, name, slack_username, bio,
-        location, occupation, organization, interests, skills, need_mentoring,
-        available_to_mentor, registration_date. The current user's details are not returned.
+        location, occupation, current_organization, interests, skills, need_mentoring,
+        available_to_mentor. The current user's details are not returned.
         """
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
@@ -158,7 +158,7 @@ class MyUserProfile(Resource):
 
         A user with valid access token can use this endpoint to edit his/her own
         user details. The endpoint takes any of the given parameters (name, username,
-        bio, location, occupation, organization, slack_username, social_media_links,
+        bio, location, occupation, current_organization, slack_username, social_media_links,
         skills, interests, resume_url, photo_url, need_mentoring, available_to_mentor).
         The response contains a success message.
         """
@@ -269,7 +269,7 @@ class VerifiedUser(Resource):
         A user with valid access token can view the list of verified users. The endpoint
         doesn't take any other input. A JSON array having an object for each user is
         returned. The array contains id, username, name, slack_username, bio,
-        location, occupation, organization, interests, skills, need_mentoring,
+        location, occupation, current_organization, interests, skills, need_mentoring,
         available_to_mentor. The current user's details are not returned.
         """
 
@@ -337,7 +337,6 @@ class UserRegister(Resource):
 
         if result[1] is HTTPStatus.CREATED:
             send_email_verification_message(data["name"], data["email"])
-
         return result
 
 
