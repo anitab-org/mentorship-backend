@@ -51,10 +51,8 @@ class MentorshipRelationDAO:
 
         try:
             end_date_datetime = datetime.fromtimestamp(end_date_timestamp)
-        except ValueError:
-            return messages.INVALID_END_DATE, HTTPStatus.BAD_REQUEST
         except OSError:
-            return messages.OSERROR_OR_INVALID_END_DATE, HTTPStatus.BAD_REQUEST
+            return messages.INVALID_END_DATE, HTTPStatus.BAD_REQUEST
 
         now_datetime = datetime.now()
         if end_date_datetime < now_datetime:

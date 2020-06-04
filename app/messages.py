@@ -281,11 +281,8 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
 INVALID_END_DATE = {
-    "message": """Validation error. End date represented by the
-    timestamp is invalid."""
-}
-OSERROR_OR_INVALID_END_DATE = {
-    "message": """Unexpected Error Occured! If using windows,check
-    for validation error. End date represented by the timestamp is invalid."""
+    "message": """End date represented by the
+    timestamp is invalid. Unix Timestamp only
+    supports date upto January 19, 2038."""
 }
 NOT_IMPLEMENTED = {"message": "Not implemented."}
