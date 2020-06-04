@@ -281,6 +281,6 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
 INVALID_END_DATE = {
-    "message": "Value too large for defined data type"
+    "message": "Value too large for date data type."
 }
 NOT_IMPLEMENTED = {"message": "Not implemented."}
