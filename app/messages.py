@@ -281,8 +281,6 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
 INVALID_END_DATE = {
-    "message": """End date represented by the
-    timestamp is invalid. Unix Timestamp only
-    supports date upto January 19, 2038."""
+    "message": "Value too large for defined data type"
 }
 NOT_IMPLEMENTED = {"message": "Not implemented."}

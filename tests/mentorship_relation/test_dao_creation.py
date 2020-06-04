@@ -232,7 +232,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         data = dict(
             mentor_id=self.first_user.id,
             mentee_id=self.second_user.id,
-            end_date=253402128000,
+            end_date=100000000000000000,
             notes=self.notes_example,
             tasks_list=TasksListModel(),
         )
