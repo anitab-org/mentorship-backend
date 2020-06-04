@@ -264,7 +264,7 @@ class UserRegister(Resource):
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.USERNAME_FIELD_IS_MISSING,
+            messages.USERNAME_FIELD_IS_EMPTY,
             messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH
 
         ),
