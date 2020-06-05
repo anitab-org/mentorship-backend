@@ -1,4 +1,4 @@
-from app.api.validations.user import (PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH)
+from app.api.validations.user import (PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH)
 
 # Invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
@@ -47,7 +47,7 @@ NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
 AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!"}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
-USERNAME_FIELD_IS_EMPTY = {"message": "The username field has to be longer than 4 characters and shorter than 26 characters."}
+USERNAME_FIELD_IS_EMPTY = {"message": f"The username field has to be longer than {USERNAME_MIN_LENGTH} characters and shorter than {USERNAME_MAX_LENGTH} characters."}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}
