@@ -1,0 +1,68 @@
+import unittest
+
+from flask import json
+from flask_restplus import marshal
+
+from app.api.models.user import public_user_api_model
+from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
+from tests.base_test_case import BaseTestCase
+from tests.test_data import user1, user2
+from tests.test_utils import get_test_request_header
+
+
+class TestUserApi(BaseTestCase):
+
+    def setUp(self):
+        super(TestUserApi, self).setUp()
+
+        self.verified_user = UserModel(
+            name=user1["name"] + "    Example",
+            email=user1["email"],
+            username=user1["username"],
+            password=user1["password"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
+        )
+        self.other_user = UserModel(
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
+        )
+
+        self.verified_user.is_email_verified = True
+        self.verified_user.is_available = False
+        self.other_user.is_email_verified = True
+        self.other_user.is_available = False
+        db.session.add(self.verified_user)
+        db.session.add(self.other_user)
+        db.session.commit()
+
+    def test_user_error_code_ok_for_other_user(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = marshal(self.verified_user, public_user_api_model)
+        actual_response = self.client.get(
+            f"/users/{self.verified_user.id}", follow_redirects=True, headers=auth_header
+        )
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_user_error_code_ok_for_invalid_other_user(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = marshal(self.other_user, public_user_api_model)
+        actual_response = self.client.get(
+            f"/users/{self.verified_user.id}", follow_redirects=True, headers=auth_header
+        )
+        self.assertEqual(200, actual_response.status_code)
+        self.assertNotEqual(expected_response, json.loads(actual_response.data))
+
+    def test_user_invalid_user_id_for_other_user(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        actual_response = self.client.get(
+            "/users/abc", follow_redirects=True, headers=auth_header
+        )
+        self.assertEqual(404, actual_response.status_code)
+
+if __name__ == "__main__":
+    unittest.main()
