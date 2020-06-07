@@ -322,7 +322,7 @@ class UserEmailConfirmation(Resource):
 @users_ns.route("user/resend_email")
 @users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
 @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
-@users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
+@users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
 @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
 class UserResendEmailConfirmation(Resource):
     @classmethod
@@ -347,7 +347,7 @@ class UserResendEmailConfirmation(Resource):
             return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, HTTPStatus.NOT_FOUND
 
         if user.is_email_verified:
-            return messages.USER_ALREADY_CONFIRMED_ACCOUNT, HTTPStatus.FORBIDDEN
+            return messages.USER_ALREADY_CONFIRMED_ACCOUNT, HTTPStatus.CONFLICT
 
         send_email_verification_message(user.name, data["email"])
 
