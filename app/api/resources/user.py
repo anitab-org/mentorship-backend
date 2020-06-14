@@ -426,7 +426,7 @@ class LoginUser(Resource):
         user = DAO.authenticate(username, password)
 
         if not user:
-            return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.NOT_FOUND
+            return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.UNAUTHORIZED
 
         if not user.is_email_verified:
             return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
