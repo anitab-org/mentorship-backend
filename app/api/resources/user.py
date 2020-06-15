@@ -73,7 +73,7 @@ class OtherUser(Resource):
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
     @users_ns.response(HTTPStatus.CREATED, "Success.", public_user_api_model)
-    @users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.USER_ID_IS_NOT_VALID)
+    @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ID_IS_NOT_VALID)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
@@ -93,7 +93,7 @@ class OtherUser(Resource):
         """
         # Validate arguments
         if not OtherUser.validate_param(user_id):
-            return messages.USER_ID_IS_NOT_VALID, HTTPStatus.CONFLICT
+            return messages.USER_ID_IS_NOT_VALID, HTTPStatus.BAD_REQUEST
 
         requested_user = DAO.get_user(user_id)
         if requested_user is None:
@@ -137,7 +137,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
+    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
     @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
     def put(cls):
         """
@@ -155,7 +155,7 @@ class MyUserProfile(Resource):
         is_valid = validate_update_profile_request_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.CONFLICT
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         user_id = get_jwt_identity()
         return DAO.update_user_profile(user_id, data)
@@ -178,7 +178,7 @@ class MyUserProfile(Resource):
 
 
 @users_ns.response(HTTPStatus.CREATED, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
-@users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
+@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -208,7 +208,7 @@ class ChangeUserPassword(Resource):
         data = request.json
         is_valid = validate_new_password(data)
         if is_valid != {}:
-            return is_valid, HTTPStatus.CONFLICT
+            return is_valid, HTTPStatus.BAD_REQUEST
         return DAO.change_password(user_id, data)
 
 
@@ -257,7 +257,7 @@ class VerifiedUser(Resource):
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
         "%s\n%s\n%s"
@@ -283,11 +283,11 @@ class UserRegister(Resource):
         is_valid = validate_user_registration_request_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.CONFLICT
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         result = DAO.create_user(data)
 
-        if result[1] is HTTPStatus.CREATED:
+        if result[1] is HTTPStatus.OK:
             send_email_verification_message(data["name"], data["email"])
 
         return result
@@ -295,14 +295,14 @@ class UserRegister(Resource):
 
 @users_ns.route("user/confirm_email/<string:token>")
 @users_ns.response(
-    HTTPStatus.CREATED,
+    HTTPStatus.OK,
     "%s\n%s"
     % (
         messages.USER_SUCCESSFULLY_CREATED,
         messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS,
     ),
 )
-@users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
+@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
@@ -319,8 +319,8 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route("user/resend_email")
-@users_ns.response(HTTPStatus.CREATED, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
-@users_ns.response(HTTPStatus.CONFLICT, "Invalid input.")
+@users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
+@users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
 @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
 @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
 class UserResendEmailConfirmation(Resource):
@@ -339,7 +339,7 @@ class UserResendEmailConfirmation(Resource):
         is_valid = validate_resend_email_request_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.CONFLICT
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         user = DAO.get_user_by_email(data["email"])
         if user is None:
@@ -350,7 +350,7 @@ class UserResendEmailConfirmation(Resource):
 
         send_email_verification_message(user.name, data["email"])
 
-        return messages.EMAIL_VERIFICATION_MESSAGE, HTTPStatus.CREATED
+        return messages.EMAIL_VERIFICATION_MESSAGE, HTTPStatus.OK
 
 
 @users_ns.route("refresh")
@@ -358,7 +358,7 @@ class RefreshUser(Resource):
     @classmethod
     @jwt_refresh_token_required
     @users_ns.doc("refresh")
-    @users_ns.response(HTTPStatus.CREATED, "Successful refresh", refresh_response_body_model)
+    @users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
@@ -394,9 +394,9 @@ class RefreshUser(Resource):
 class LoginUser(Resource):
     @classmethod
     @users_ns.doc("login")
-    @users_ns.response(HTTPStatus.CREATED, "Successful login", login_response_body_model)
+    @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
     @users_ns.response(
-        HTTPStatus.CONFLICT,
+        HTTPStatus.BAD_REQUEST,
         "%s\n%s"
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
@@ -419,9 +419,9 @@ class LoginUser(Resource):
         password = request.json.get("password", None)
 
         if not username:
-            return messages.USERNAME_FIELD_IS_MISSING, HTTPStatus.CONFLICT
+            return messages.USERNAME_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST
         if not password:
-            return messages.PASSWORD_FIELD_IS_MISSING, HTTPStatus.CONFLICT
+            return messages.PASSWORD_FIELD_IS_MISSING, HTTPStatus.BAD_REQUEST
 
         user = DAO.authenticate(username, password)
 
@@ -457,7 +457,7 @@ class LoginUser(Resource):
 @users_ns.route("home")
 @users_ns.doc("home")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.CREATED, "Successful response", home_response_body_model)
+@users_ns.response(HTTPStatus.OK, "Successful response", home_response_body_model)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -484,12 +484,12 @@ class UserHomeStatistics(Resource):
         if not stats:
             return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
 
-        return stats, HTTPStatus.CREATED
+        return stats, HTTPStatus.OK
 
 
 @users_ns.route("dashboard")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.CREATED, "Successful response", dashboard_response_body_model)
+@users_ns.response(HTTPStatus.OK, "Successful response", dashboard_response_body_model)
 @users_ns.response(HTTPStatus.NOT_FOUND, "User not found")
 class UserDashboard(Resource):
     @classmethod
@@ -506,4 +506,4 @@ class UserDashboard(Resource):
         if not dashboard:
             return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
 
-        return dashboard, HTTPStatus.CREATED
+        return dashboard, HTTPStatus.OK
