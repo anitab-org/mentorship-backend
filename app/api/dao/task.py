@@ -37,7 +37,7 @@ class TaskDAO:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if relation.state != MentorshipRelationState.ACCEPTED:
-            return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.CONFLICT
 
         if (relation.mentor_id != user_id) and (relation.mentee_id != user_id):
             return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 403
@@ -109,7 +109,7 @@ class TaskDAO:
 
         relation.tasks_list.delete_task(task_id)
 
-        return messages.TASK_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.TASK_WAS_DELETED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -142,11 +142,11 @@ class TaskDAO:
             return messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task.get("is_done"):
-            return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.BAD_REQUEST
+            return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.CONFLICT
         else:
             relation.tasks_list.update_task(
                 task_id=task_id, is_done=True, completed_at=datetime.now().timestamp()
             )
 
-        return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, HTTPStatus.CREATED
 

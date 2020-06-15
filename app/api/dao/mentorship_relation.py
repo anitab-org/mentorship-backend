@@ -43,29 +43,29 @@ class MentorshipRelationDAO:
         # user_id has to match either mentee_id or mentor_id
         is_valid_user_ids = action_user_id == mentor_id or action_user_id == mentee_id
         if not is_valid_user_ids:
-            return messages.MATCH_EITHER_MENTOR_OR_MENTEE, HTTPStatus.BAD_REQUEST
+            return messages.MATCH_EITHER_MENTOR_OR_MENTEE, HTTPStatus.CONFLICT
 
         # mentor_id has to be different from mentee_id
         if mentor_id == mentee_id:
-            return messages.MENTOR_ID_SAME_AS_MENTEE_ID, HTTPStatus.BAD_REQUEST
+            return messages.MENTOR_ID_SAME_AS_MENTEE_ID, HTTPStatus.CONFLICT
 
         try:
             end_date_datetime = datetime.fromtimestamp(end_date_timestamp)
         except ValueError:
-            return messages.INVALID_END_DATE, HTTPStatus.BAD_REQUEST
+            return messages.INVALID_END_DATE, HTTPStatus.CONFLICT
 
         now_datetime = datetime.now()
         if end_date_datetime < now_datetime:
-            return messages.END_TIME_BEFORE_PRESENT, HTTPStatus.BAD_REQUEST
+            return messages.END_TIME_BEFORE_PRESENT, HTTPStatus.CONFLICT
 
         # business logic constraints
 
         max_relation_duration = end_date_datetime - now_datetime
         if max_relation_duration > self.MAXIMUM_MENTORSHIP_DURATION:
-            return messages.MENTOR_TIME_GREATER_THAN_MAX_TIME, HTTPStatus.BAD_REQUEST
+            return messages.MENTOR_TIME_GREATER_THAN_MAX_TIME, HTTPStatus.CONFLICT
 
         if max_relation_duration < self.MINIMUM_MENTORSHIP_DURATION:
-            return messages.MENTOR_TIME_LESS_THAN_MIN_TIME, HTTPStatus.BAD_REQUEST
+            return messages.MENTOR_TIME_LESS_THAN_MIN_TIME, HTTPStatus.CONFLICT
 
         # validate if mentor user exists
         mentor_user = UserModel.find_by_id(mentor_id)
@@ -74,7 +74,7 @@ class MentorshipRelationDAO:
 
         # validate if mentor is available to mentor
         if not mentor_user.available_to_mentor:
-            return messages.MENTOR_NOT_AVAILABLE_TO_MENTOR, HTTPStatus.BAD_REQUEST
+            return messages.MENTOR_NOT_AVAILABLE_TO_MENTOR, HTTPStatus.CONFLICT
 
         # validate if mentee user exists
         mentee_user = UserModel.find_by_id(mentee_id)
@@ -83,7 +83,7 @@ class MentorshipRelationDAO:
 
         # validate if mentee is wants to be mentored
         if not mentee_user.need_mentoring:
-            return messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED, HTTPStatus.BAD_REQUEST
+            return messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED, HTTPStatus.CONFLICT
 
         # TODO add tests for this portion
 
@@ -92,14 +92,14 @@ class MentorshipRelationDAO:
         )
         for relation in all_mentor_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
-                return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
+                return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.CONFLICT
 
         all_mentee_relations = (
             mentee_user.mentor_relations + mentee_user.mentee_relations
         )
         for relation in all_mentee_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
-                return messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
+                return messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.CONFLICT
 
         # All validations were checked
 
@@ -119,7 +119,7 @@ class MentorshipRelationDAO:
 
         mentorship_relation.save_to_db()
 
-        return messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, HTTPStatus.OK
+        return messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -152,13 +152,13 @@ class MentorshipRelationDAO:
                     filter(lambda rel: (rel.state.name == state), all_relations)
                 )
             else:
-                return [], HTTPStatus.BAD_REQUEST
+                return [], HTTPStatus.CONFLICT
 
         # add extra field for api response
         for relation in all_relations:
             setattr(relation, "sent_by_me", relation.action_user_id == user_id)
 
-        return all_relations, HTTPStatus.OK
+        return all_relations, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -182,22 +182,22 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.CONFLICT
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
-            return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, HTTPStatus.BAD_REQUEST
+            return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, HTTPStatus.CONFLICT
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, HTTPStatus.CONFLICT
 
         my_requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
         for my_request in my_requests:
             if my_request.state == MentorshipRelationState.ACCEPTED:
-                return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, HTTPStatus.BAD_REQUEST
+                return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, HTTPStatus.CONFLICT
 
         mentee = request.mentee
         mentor = request.mentor
@@ -208,20 +208,20 @@ class MentorshipRelationDAO:
 
             for mentee_request in mentee_requests:
                 if mentee_request.state == MentorshipRelationState.ACCEPTED:
-                    return messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
+                    return messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.CONFLICT
         # If I am mentee : Check if the mentor isn't in any other relation already
         else:
             mentor_requests = mentor.mentee_relations + mentor.mentor_relations
 
             for mentor_request in mentor_requests:
                 if mentor_request.state == MentorshipRelationState.ACCEPTED:
-                    return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
+                    return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.CONFLICT
 
         # All was checked
         request.state = MentorshipRelationState.ACCEPTED
         request.save_to_db()
 
-        return messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -245,21 +245,21 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.CONFLICT
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
-            return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, HTTPStatus.BAD_REQUEST
+            return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, HTTPStatus.CONFLICT
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.BAD_REQUEST
+            return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.CONFLICT
 
         # All was checked
         request.state = MentorshipRelationState.REJECTED
         request.save_to_db()
 
-        return messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -283,17 +283,17 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.ACCEPTED:
-            return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.CONFLICT
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_CANCEL_UNINVOLVED_REQUEST, HTTPStatus.BAD_REQUEST
+            return messages.CANT_CANCEL_UNINVOLVED_REQUEST, HTTPStatus.CONFLICT
 
         # All was checked
         request.state = MentorshipRelationState.CANCELLED
         request.save_to_db()
 
-        return messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -319,16 +319,16 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.CONFLICT
 
         # verify if user created the mentorship request
         if request.action_user_id != user_id:
-            return messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.BAD_REQUEST
+            return messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.CONFLICT
 
         # All was checked
         request.delete_from_db()
 
-        return messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -354,7 +354,7 @@ class MentorshipRelationDAO:
         for relation in past_relations:
             setattr(relation, "sent_by_me", relation.action_user_id == user_id)
 
-        return past_relations, HTTPStatus.OK
+        return past_relations, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -376,7 +376,7 @@ class MentorshipRelationDAO:
                 setattr(relation, "sent_by_me", relation.action_user_id == user_id)
                 return relation
 
-        return messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK
+        return messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -403,4 +403,4 @@ class MentorshipRelationDAO:
                 setattr(relation, "sent_by_me", relation.action_user_id == user_id)
                 pending_requests += [relation]
 
-        return pending_requests, HTTPStatus.OK
+        return pending_requests, HTTPStatus.CREATED

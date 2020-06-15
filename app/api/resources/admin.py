@@ -14,7 +14,7 @@ add_models_to_namespace(admin_ns)
 
 @admin_ns.route("admin/new")
 @admin_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_IS_NOW_AN_ADMIN)
-@admin_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_IS_ALREADY_AN_ADMIN)
+@admin_ns.response(HTTPStatus.CONFLICT, "%s" % messages.USER_IS_ALREADY_AN_ADMIN)
 @admin_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -50,8 +50,8 @@ class AssignNewUserAdmin(Resource):
 
 
 @admin_ns.route("admin/remove")
-@admin_ns.response(HTTPStatus.OK, "%s" % messages.USER_ADMIN_STATUS_WAS_REVOKED)
-@admin_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_IS_NOT_AN_ADMIN)
+@admin_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_ADMIN_STATUS_WAS_REVOKED)
+@admin_ns.response(HTTPStatus.CONFLICT, "%s" % messages.USER_IS_NOT_AN_ADMIN)
 @admin_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -85,13 +85,12 @@ class RevokeUserAdmin(Resource):
         else:
             return messages.USER_REVOKE_NOT_ADMIN, HTTPStatus.FORBIDDEN
 
-
 @admin_ns.route("admins")
 class ListAdmins(Resource):
     @classmethod
     @jwt_required
     @admin_ns.doc("get_list_of_admins")
-    @admin_ns.response(HTTPStatus.OK, "Success.", public_admin_user_api_model)
+    @admin_ns.response(HTTPStatus.CREATED, "Success.", public_admin_user_api_model)
     @admin_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -120,6 +119,6 @@ class ListAdmins(Resource):
                 marshal(x, public_admin_user_api_model) for x in list_of_admins
             ]
 
-            return list_of_admins, HTTPStatus.OK
+            return list_of_admins, HTTPStatus.CREATED
         else:
             return messages.USER_IS_NOT_AN_ADMIN, HTTPStatus.FORBIDDEN

@@ -40,12 +40,12 @@ class AdminDAO:
         if new_admin_user:
 
             if new_admin_user.is_admin:
-                return messages.USER_IS_ALREADY_AN_ADMIN, HTTPStatus.BAD_REQUEST
+                return messages.USER_IS_ALREADY_AN_ADMIN, HTTPStatus.CONFLICT
 
             new_admin_user.is_admin = True
             new_admin_user.save_to_db()
 
-            return messages.USER_IS_NOW_AN_ADMIN, HTTPStatus.OK
+            return messages.USER_IS_NOW_AN_ADMIN, HTTPStatus.CREATED
 
         return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
@@ -83,12 +83,12 @@ class AdminDAO:
         if new_admin_user:
 
             if not new_admin_user.is_admin:
-                return messages.USER_IS_NOT_AN_ADMIN, HTTPStatus.BAD_REQUEST
+                return messages.USER_IS_NOT_AN_ADMIN, HTTPStatus.CONFLICT
 
             new_admin_user.is_admin = False
             new_admin_user.save_to_db()
 
-            return messages.USER_ADMIN_STATUS_WAS_REVOKED, HTTPStatus.OK
+            return messages.USER_ADMIN_STATUS_WAS_REVOKED, HTTPStatus.CREATED
 
         return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
