@@ -1,10 +1,14 @@
 from flask import Flask
 from config import get_env_config
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 
 def create_app(config_filename: str) -> Flask:
     app = Flask(__name__)
+
+    # setup for CORS policy
+    CORS(app)
 
     # setup application environment
     app.config.from_object(config_filename)
