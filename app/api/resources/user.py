@@ -257,14 +257,15 @@ class VerifiedUser(Resource):
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
-        HTTPStatus.CONFLICT,
-        "%s\n%s\n%s"
+        HTTPStatus.BAD_REQUEST,
+        "%s\n%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH
+            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
+            messages.EMAIL_INPUT_BY_USER_IS_INVALID
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
