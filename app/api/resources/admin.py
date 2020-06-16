@@ -14,7 +14,7 @@ add_models_to_namespace(admin_ns)
 
 @admin_ns.route("admin/new")
 @admin_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_IS_NOW_AN_ADMIN)
-@admin_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_IS_ALREADY_AN_ADMIN)
+@admin_ns.response(HTTPStatus.CONFLICT, "%s" % messages.USER_IS_ALREADY_AN_ADMIN)
 @admin_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
