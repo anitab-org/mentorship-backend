@@ -84,7 +84,7 @@ To run the unitests run the following command in the terminal (while the virtual
 
 ## Contributing
 
-Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
+Please read our [Contributing guidelines](https://github.com/anitab-org/mentorship-backend/blob/develop/.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
 
 Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) while sending PRs.
 
