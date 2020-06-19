@@ -15,6 +15,21 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
     def setUp(self):
         super(TestSendRequestApi, self).setUp()
 
+    def test_created_error_code_for_send_request(self):
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
+        test_payload={
+            "mentor_id": self.first_user.id,
+            "mentee_id": self.second_user.id,
+            "end_date": int((datetime.now()+timedelta(days=40)).timestamp()),
+            "notes": "some notes"
+        }
+        actual_response = self.client.post('/mentorship_relation/send_request',
+                                           headers=auth_header, content_type='application/json',
+                                           data=json.dumps(test_payload))
+        self.assertEqual(201, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
 
     def test_fail_send_request_bad_mentee_id(self):
         auth_header = get_test_request_header(self.first_user.id)
