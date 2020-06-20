@@ -1,6 +1,7 @@
 import json
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.database.models.tasks_list import TasksListModel
@@ -27,7 +28,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         actual_response = self.client.post('/mentorship_relation/send_request',
                                            headers=auth_header, content_type='application/json',
                                            data=json.dumps(test_payload))
-        self.assertEqual(201, actual_response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
