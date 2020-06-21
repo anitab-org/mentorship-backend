@@ -94,7 +94,7 @@ class UserDAO:
 
         if user:
             user.delete_from_db()
-            return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.CREATED
+            return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
 
         return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
@@ -219,7 +219,7 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
+                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
 
             user.username = username
 
