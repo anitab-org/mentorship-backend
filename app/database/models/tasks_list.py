@@ -155,11 +155,7 @@ class TasksListModel(db.Model):
             A string representation of the task object.
         """
 
-        return "Task | id = %s; tasks = %s; next task id = %s" % (
-            self.id,
-            self.tasks,
-            self.next_task_id,
-        )
+        return f"Task | id = {self.id}; tasks = {self.tasks}; next task id = {self.next_task_id}"
 
     @classmethod
     def find_by_id(cls, _id: int):
