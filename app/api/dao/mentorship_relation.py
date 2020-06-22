@@ -119,7 +119,7 @@ class MentorshipRelationDAO:
 
         mentorship_relation.save_to_db()
 
-        return messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, HTTPStatus.OK
+        return messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
