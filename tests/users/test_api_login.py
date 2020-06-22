@@ -7,6 +7,7 @@ from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
 
 from app.database.models.user import UserModel
+from http import HTTPStatus
 
 # Testing User API resources
 #
@@ -67,7 +68,7 @@ class TestUserLoginApi(BaseTestCase):
                 messages.WRONG_USERNAME_OR_PASSWORD, response.json
             )
 
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
     def test_user_login_invalid_credentials(self):
         with self.client:
 
