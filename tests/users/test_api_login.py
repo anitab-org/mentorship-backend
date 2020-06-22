@@ -5,6 +5,7 @@ from flask import json
 from app import messages
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
+
 from app.database.models.user import UserModel
 
 # Testing User API resources
@@ -14,6 +15,7 @@ from app.database.models.user import UserModel
 #     - invalid token
 #     - expired token
 from tests.test_data import user1, user2
+
 
 
 class TestUserLoginApi(BaseTestCase):
@@ -43,6 +45,54 @@ class TestUserLoginApi(BaseTestCase):
         db.session.add(self.first_user)
         db.session.add(self.second_user)
         db.session.commit()
+    def test_user_login_invalid_credentials(self):
+        with self.client:
+
+            response = self.client.post(
+                "/login",
+                data=json.dumps(
+                    dict(username="invaliduser", password="invalidpassowrd")
+                ),
+                follow_redirects=True,
+                content_type="application/json",
+            )
+
+            self.assertIsNone(response.json.get("access_token"))
+            self.assertIsNone(response.json.get("access_expiry"))
+            self.assertIsNone(response.json.get("refresh_token"))
+            self.assertIsNone(response.json.get("refresh_expiry"))
+
+            self.assertEqual(1, len(response.json))
+            self.assertEqual(
+                messages.WRONG_USERNAME_OR_PASSWORD, response.json
+            )
+
+            self.assertEqual(401, response.status_code)
+    def test_user_login_invalid_credentials(self):
+        with self.client:
+
+            response = self.client.post(
+                "/login",
+                data=json.dumps(
+                    dict(username="invaliduser", password="invalidpassowrd")
+                ),
+                follow_redirects=True,
+                content_type="application/json",
+            )
+
+            self.assertIsNone(response.json.get("access_token"))
+            self.assertIsNone(response.json.get("access_expiry"))
+            self.assertIsNone(response.json.get("refresh_token"))
+            self.assertIsNone(response.json.get("refresh_expiry"))
+
+            self.assertEqual(1, len(response.json))
+            self.assertEqual(
+                messages.WRONG_USERNAME_OR_PASSWORD, response.json
+            )
+
+            self.assertEqual(401, response.status_code)
+
+
 
     def test_user_login_non_verified_user(self):
         with self.client:
