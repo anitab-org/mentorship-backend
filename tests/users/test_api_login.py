@@ -69,31 +69,6 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
-    def test_user_login_invalid_credentials(self):
-        with self.client:
-
-            response = self.client.post(
-                "/login",
-                data=json.dumps(
-                    dict(username="invaliduser", password="invalidpassowrd")
-                ),
-                follow_redirects=True,
-                content_type="application/json",
-            )
-
-            self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
-            self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
-
-            self.assertEqual(1, len(response.json))
-            self.assertEqual(
-                messages.WRONG_USERNAME_OR_PASSWORD, response.json
-            )
-
-            self.assertEqual(401, response.status_code)
-
-
 
     def test_user_login_non_verified_user(self):
         with self.client:
