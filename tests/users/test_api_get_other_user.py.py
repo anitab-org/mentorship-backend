@@ -2,6 +2,7 @@ import unittest
 
 from flask import json
 from flask_restplus import marshal
+from http import HTTPStatus
 
 from app.api.models.user import public_user_api_model
 from app.database.models.user import UserModel
@@ -11,10 +12,10 @@ from tests.test_data import user1, user2
 from tests.test_utils import get_test_request_header
 
 
-class TestUserApi(BaseTestCase):
+class TestnGetOtherUserApi(BaseTestCase):
 
     def setUp(self):
-        super(TestUserApi, self).setUp()
+        super(TestnGetOtherUserApi, self).setUp()
 
         self.verified_user = UserModel(
             name=user1["name"] + "    Example",
@@ -45,7 +46,7 @@ class TestUserApi(BaseTestCase):
         actual_response = self.client.get(
             f"/users/{self.verified_user.id}", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_error_code_ok_for_invalid_other_user(self):
@@ -54,7 +55,7 @@ class TestUserApi(BaseTestCase):
         actual_response = self.client.get(
             f"/users/{self.verified_user.id}", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertNotEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_invalid_user_id_for_other_user(self):
@@ -62,7 +63,7 @@ class TestUserApi(BaseTestCase):
         actual_response = self.client.get(
             "/users/abc", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
 
 if __name__ == "__main__":
     unittest.main()
