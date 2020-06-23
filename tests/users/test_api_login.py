@@ -46,6 +46,7 @@ class TestUserLoginApi(BaseTestCase):
         db.session.add(self.first_user)
         db.session.add(self.second_user)
         db.session.commit()
+
     def test_user_login_invalid_credentials(self):
         with self.client:
 
