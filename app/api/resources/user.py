@@ -402,7 +402,7 @@ class LoginUser(Resource):
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
     @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
-    @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
+    @users_ns.response(HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -427,7 +427,7 @@ class LoginUser(Resource):
         user = DAO.authenticate(username, password)
 
         if not user:
-            return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.NOT_FOUND
+            return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.UNAUTHORIZED
 
         if not user.is_email_verified:
             return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
