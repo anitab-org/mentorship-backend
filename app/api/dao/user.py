@@ -52,11 +52,11 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
-            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
         else:
             existing_user = UserModel.find_by_email(data["email"])
             if existing_user:
-                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
@@ -67,7 +67,7 @@ class UserDAO:
 
         user.save_to_db()
 
-        return messages.USER_WAS_CREATED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.USER_WAS_CREATED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
