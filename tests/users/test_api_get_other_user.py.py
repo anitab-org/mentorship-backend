@@ -49,15 +49,6 @@ class TestnGetOtherUserApi(BaseTestCase):
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
-    def test_user_error_code_ok_for_invalid_other_user(self):
-        auth_header = get_test_request_header(self.admin_user.id)
-        expected_response = marshal(self.other_user, public_user_api_model)
-        actual_response = self.client.get(
-            f"/users/{self.verified_user.id}", follow_redirects=True, headers=auth_header
-        )
-        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
-        self.assertNotEqual(expected_response, json.loads(actual_response.data))
-
     def test_user_invalid_user_id_for_other_user(self):
         auth_header = get_test_request_header(self.admin_user.id)
         actual_response = self.client.get(
