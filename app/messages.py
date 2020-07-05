@@ -146,7 +146,7 @@ USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS = {
     "message": "A user with that " "email already exists."
 }
 USER_IS_NOT_REGISTERED_IN_THE_SYSTEM = {
-    "message": "You are not registered in the system."
+    "message": "You are not registered in " "the system."
 }
 NAME_LENGTH_GREATER_THAN_MAX_LIMIT = {
     "message": "The {field_name} field has"
@@ -201,7 +201,7 @@ TOKEN_HAS_EXPIRED = {
     "message": "The token has expired! Please, login again or refresh it."
 }
 RESET_PASSWORD_TOKEN_HAS_EXPIRED = {
-    "message": "Either Token has expired or Token is Invalid! Please, resend the link again to your valid email!"
+    "message": "Either Token has expired or Token is Invalid! Please, resend the link again to your valid email !"
 }
 TOKEN_SENT_TO_EMAIL_OF_USER = {"message": "Token sent to the user's email."}
 EMAIL_VERIFICATION_MESSAGE = {
@@ -275,7 +275,7 @@ LIST_TASK_COMMENTS_WITH_SUCCESS = {
 }
 
 PASSWORD_RESET_MAIL_MESSAGE = {
-    "message": "Check your email, a new password reset link was sent."
+    "message": "Check your email, a new password reset link sent."
 }
 
 # confimation
