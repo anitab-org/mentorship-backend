@@ -257,16 +257,22 @@ class VerifiedUser(Resource):
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s\n%s"
+        "%s\n%s\n%s"
+        % (
+            messages.USERNAME_FIELD_IS_EMPTY,
+            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
+            messages.EMAIL_INPUT_BY_USER_IS_INVALID
+        ),
+    )
+    @users_ns.response(
+        HTTPStatus.CONFLICT,
+        "%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
-            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.USERNAME_FIELD_IS_EMPTY,
-            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH
-
+            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
@@ -285,11 +291,12 @@ class UserRegister(Resource):
         is_valid = validate_user_registration_request_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.BAD_REQUEST
+            return is_valid, HTTPStatus.CONFLICT
+
 
         result = DAO.create_user(data)
 
-        if result[1] is HTTPStatus.OK:
+        if result[1] is HTTPStatus.CREATED:
             send_email_verification_message(data["name"], data["email"])
 
         return result
@@ -297,14 +304,14 @@ class UserRegister(Resource):
 
 @users_ns.route("user/confirm_email/<string:token>")
 @users_ns.response(
-    HTTPStatus.OK,
+    HTTPStatus.CREATED,
     "%s\n%s"
     % (
         messages.USER_SUCCESSFULLY_CREATED,
         messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS,
     ),
 )
-@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
+@users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
@@ -403,7 +410,7 @@ class LoginUser(Resource):
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
     @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
-    @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
+    @users_ns.response(HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -428,7 +435,7 @@ class LoginUser(Resource):
         user = DAO.authenticate(username, password)
 
         if not user:
-            return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.NOT_FOUND
+            return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.UNAUTHORIZED
 
         if not user.is_email_verified:
             return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
