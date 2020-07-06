@@ -3,7 +3,7 @@
 | Branch | [Travis](https://travis-ci.org/) | [Codacy](https://www.codacy.com/) | Server |
 | :---: | :---: | :---: | :---: |
 | [master](https://github.com/anitab-org/mentorship-backend/tree/master) | [![Build Status](https://api.travis-ci.org/anitab-org/mentorship-backend.svg?branch=develop)](https://travis-ci.org/anitab-org/mentorship-backend) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181ca06835045d1aea78fdd30fc37d9?branch=master)](https://www.codacy.com/app/systers/mentorship-backend) | [Production](http://systers-mentorship.eu-central-1.elasticbeanstalk.com/) |
-| [develop](https://github.com/anitab-org/mentorship-backend/tree/develop) | [![Build Status](https://api.travis-ci.org/anitab-org/mentorship-backend.svg?branch=develop)](https://travis-ci.org/anitab-org/mentorship-backend) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181ca06835045d1aea78fdd30fc37d9?branch=develop)](https://www.codacy.com/app/systers/mentorship-backend) | [Development](https://mentorship-backend-temp.herokuapp.com/) |
+| [develop](https://github.com/anitab-org/mentorship-backend/tree/develop) | [![Build Status](https://travis-ci.org/anitab-org/mentorship-backend.svg?branch=develop)](https://travis-ci.org/anitab-org/mentorship-backend) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181ca06835045d1aea78fdd30fc37d9?branch=develop)](https://www.codacy.com/app/systers/mentorship-backend) | [Development](https://mentorship-backend-temp.herokuapp.com/) |
 
 [Mentorship System](https://github.com/anitab-org/mentorship-backend) is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
@@ -99,5 +99,4 @@ The repository has the following permanent branches:
 ## Contact
 
 You can reach the maintainers and our community on [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/). If you are interested in contributing to the mentorship system, we have a dedicated stream for this project [#mentorship-system](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system), where you can ask questions and interact with the community, join with us!
-
 
