@@ -265,6 +265,7 @@ class UserRegister(Resource):
                 messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
                 messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
         ),
+
         HTTPStatus.BAD_REQUEST,
         "%s\n%s"
         % (
