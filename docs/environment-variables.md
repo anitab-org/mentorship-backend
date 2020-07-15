@@ -69,10 +69,12 @@ export KEY=VALUE
 ```
 export FLASK_ENVIRONMENT_CONFIG=dev
 ```
-
+Windows user should use **set** instead of **export** for setting these environment variables. <br/>
 Another way to do this in flask applications is by having a file called `.env` which will have all of the environment variables. When a flask application runs, it will load these variables from the file.
+
 - Content of `.env` file:
 ```
+
 FLASK_ENVIRONMENT_CONFIG=dev
 SECRET_KEY='some_random_key'
 (...)
