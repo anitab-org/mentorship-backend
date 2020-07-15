@@ -78,7 +78,7 @@ SECRET_KEY='some_random_key'
 (...)
 ```
 
-# Database Enviorment Variables
+# Database Environment Variables
 
 To run the backend in other than `local` mode i.e `prod` or `dev` you need to export database environment variables.
 These are the required database environment variables.
