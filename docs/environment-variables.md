@@ -87,7 +87,7 @@ export DB_TYPE=<database_type>
 export DB_USERNAME=<database_username>
 export DB_PASSWORD=<database_password>
 export DB_ENDPOINT=<database_endpoint>
-export DB_NAME=<database_name> |
+export DB_NAME=<database_name>
 ```
  ## Database environment variables description
 
