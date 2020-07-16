@@ -161,3 +161,27 @@ def send_email_new_request(user_sender, user_recipient, notes, sender_role):
     )
     subject = "Mentorship System - You have got new relation request"
     send_email(user_recipient.email, subject, html)
+
+def send_email_reset_password_message(user_name, email):
+ 
+    from run import application
+    import config
+    serializer = URLSafeTimedSerializer(application.config["SECRET_KEY"])
+    confirmation_token = serializer.dumps(email, salt=application.config["RESET_PASSWORD_SALT"])
+    from app.api.dao.user import UserDAO
+    from app.api.resources.user import ResetPassword # import here to avoid circular imports
+    from app.api.api_extension import api
+ 
+    DAO = UserDAO()
+    confirm_url = api.url_for(ResetPassword, token=confirmation_token, _external=True
+    )
+    
+    html = render_template(
+        "email_reset_password.html",
+        confirm_url=confirm_url,
+        user_name=user_name,
+        threshold=3600,
+    )
+    subject = "Mentorship System - Password Reset Request!"
+    send_email(email, subject, html)
+

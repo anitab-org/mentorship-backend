@@ -55,6 +55,7 @@ class BaseConfig(object):
     #     raise ValueError('You need to export SECRET_KEY set for Flask application')
 
     SECURITY_PASSWORD_SALT = os.getenv("SECURITY_PASSWORD_SALT")
+    RESET_PASSWORD_SALT = os.getenv("RESET_PASSWORD_SALT")
 
     BCRYPT_LOG_ROUNDS = 13
     WTF_CSRF_ENABLED = True
