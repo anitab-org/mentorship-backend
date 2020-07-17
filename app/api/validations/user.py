@@ -242,16 +242,6 @@ def validate_new_password(data):
         return is_valid[1]
 
     return {}
-
-def validate_forgot_password_email(data):
- 
-    email = data["email"]
- 
-    if not is_email_valid(email):
-        return messages.EMAIL_INPUT_BY_USER_IS_INVALID
- 
-    return {}
- 
  
 def validate_reset_password(data):
     if "new_password" not in data:
@@ -273,4 +263,3 @@ def validate_reset_password(data):
         return is_valid[1]
  
     return {}
-

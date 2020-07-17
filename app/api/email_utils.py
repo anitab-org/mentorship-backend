@@ -167,20 +167,19 @@ def send_email_reset_password_message(user_name, email):
     from run import application
     import config
     serializer = URLSafeTimedSerializer(application.config["SECRET_KEY"])
-    confirmation_token = serializer.dumps(email, salt=application.config["RESET_PASSWORD_SALT"])
+    confirmation_token = serializer.dumps(email, salt=application.config["SECURITY_RESET_SALT"])
     from app.api.dao.user import UserDAO
     from app.api.resources.user import ResetPassword # import here to avoid circular imports
     from app.api.api_extension import api
  
     DAO = UserDAO()
-    confirm_url = api.url_for(ResetPassword, token=confirmation_token, _external=True
-    )
+    confirm_url = api.url_for(ResetPassword, token=confirmation_token, _external=True)
     
     html = render_template(
         "email_reset_password.html",
         confirm_url=confirm_url,
         user_name=user_name,
-        threshold=3600,
+        token_expiry=1, # hours
     )
     subject = "Mentorship System - Password Reset Request!"
     send_email(email, subject, html)
