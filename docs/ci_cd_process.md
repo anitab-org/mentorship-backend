@@ -6,7 +6,7 @@ This document aims to explain everything related to Continuous Integration and C
 
 This app is in current development under the `develop` branch. The `master` branch is currently empty, because we have not yet put this into production (however this is in the works).
 
-Currently we have the development version oof this app deployed on [Heroku]. Because we have "Automatic Deploys" feature  enabled, everytime a new pull request is merged into `develop` branch a new version of the app is deployed to [Heroku].
+Currently, we have the development version of this app deployed on [Heroku]. Because we have "Automatic Deploys" feature enabled, every time a new pull request is merged into `develop` branch a new version of the app is deployed to [Heroku].
 
 🔗 https://mentorship-backend-temp.herokuapp.com/
 
