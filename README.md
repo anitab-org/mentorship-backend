@@ -108,23 +108,20 @@ python -m unittest discover tests
 
 You can learn more about this project throguh the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
-**Summary**
-
 - **Language:** Python 3.6
 - **Framework:** [Flask](http://flask.pocoo.org/)
 - **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
-- **Hosting Service:** Heroku
-- **Database:** Relational Database
+
+Here are some links to documentation for this project:
+
+- [How to use Backend Swagger UI](https://github.com/anitab-org/mentorship-backend/wiki/Using-Backend-Swagger-UI) and [test PR guide](/docs/test-pr-guide.md) contains a few resources for you to understand how to use the Swagger user interface provided by this app.
+- [Features Overview](/docs/features.md) has a high level understanding of the features this application has.
+- [Future ideas for the project](https://github.com/anitab-org/mentorship-backend/wiki/Future-ideas).
+- [Troubleshoot guide](/docs/troubleshoots.md) contains common isssues other contributors may run into in their setup.
+- [Quality Assurance test cases](/docs/quality-assurance-test-cases.md) has test cases for each endpoint we have which you can use to learn about how each feature should work.
+- [CI/CD Process](/docs/ci_cd_process.md) which explains the processes and tools involved in deploying new code.
 
 Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
-
-Here's some links to important documentation for this project:
-
-- [How to use Backend Swagger UI](https://github.com/anitab-org/mentorship-backend/wiki/Using-Backend-Swagger-UI) and [test PR guide](./docs/test-pr-guide.md) contains a few resources for you to understand how to use the Swagger user interface provided by this app.
-- [Features Overview](./docs/features.md) has a high level understanding of the features this application has.
-- [Future ideas for the project](https://github.com/anitab-org/mentorship-backend/wiki/Future-ideas).
-- [Troubleshoot guide](./docs/troubleshoots.md) contains common isssues other contributors may run into in their setup.
-- [Quality Assurance test cases](./docs/quality-assurance-test-cases.md) has test cases for each endpoint we have which you can use to learn about how each feature should work.
 
 ## Contributing
 
@@ -138,7 +135,7 @@ The repository has the following permanent branches:
 
  * **master** This contains the code which has been released.
 
- * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch.
+ * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch. This is the branch that is used in the deployed version of the app on Heroku.
 
 ## Contact
 
