@@ -106,11 +106,11 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.reject_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 403), result)
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.reject_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 403), result)
