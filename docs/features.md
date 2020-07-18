@@ -18,7 +18,7 @@ Cron jobs or schedulers are tasks that run from time to time. We have some that 
 
 2. Complete mentorship relations every day. Code can be found [here](/app/schedulers/complete_mentorship_cron_job.py).
 
-    Every day we run a job that completes mentorship relatioons which reached the end date agreed by mentor and mentee.
+    Every day we run a job that completes mentorship relations which reached the end date agreed upon by mentor and mentee.
 
 ## Main concepts
 
