@@ -14,7 +14,7 @@ Currently we have the development version oof this app deployed on [Heroku]. Bec
 ## Pull Request Checks
 
 We use [GitHub Actions](https://github.com/features/actions) to perform checks on every PR which runs unit tests and performs code coverage analysis.
-You can see the GitHub actions workflow [here](https://github.com/anitab-org/mentorship-backend/blob/develop/.github/workflows/main.yml).
+You can see the GitHub actions workflow [here](/.github/workflows/main.yml).
 
 We use [Codecov](https://codecov.io/) to check the code coverage in our code.
 
