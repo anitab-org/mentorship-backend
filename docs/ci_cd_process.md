@@ -19,7 +19,7 @@ We use [Codecov](https://codecov.io/) to check the code coverage in our code.
 
 ## Development environment
 
-As mentioned before in development environment we are hosting the app on [Heroku] so that it is available to anyone interested in testing it without having to setup the development envioronment locally.
+As mentioned before in the development environment we are hosting the app on [Heroku] so that it is available to anyone interested in testing it without having to set up the development environment locally.
 
 Regarding the data we host, we are using a PostgreSQL database as a service called [ElephantSQL], to which the Heroku app is connected.
 
