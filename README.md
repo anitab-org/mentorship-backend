@@ -6,6 +6,17 @@
 [Mentorship System](https://github.com/anitab-org/mentorship-backend) is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
 
+**Table of Contents**
+
+- [Setup and run](#setup-and-run)
+    - [Run app](#run-app)
+    - [Run with Docker](#run-with-docker)
+    - [Run tests](run-tests)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Branches](#branches)
+- [Contact](#contact)
+
 ## Setup and run
 
 To setup the project locally read these wiki pages and follow the instructions:

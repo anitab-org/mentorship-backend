@@ -14,11 +14,11 @@ Cron jobs or schedulers are tasks that run from time to time. We have some that 
 
 1. Delete unverified users every month. Code can be found [here](/app/schedulers/delete_unverified_users_cron_job.py).
 
-We have this because we don't want to keep users in our database if they are inactive and have not verified their email.
+    We have this because we don't want to keep users in our database if they are inactive and have not verified their email.
 
 2. Complete mentorship relations every day. Code can be found [here](/app/schedulers/complete_mentorship_cron_job.py).
 
-Every day we run a job that completes mentorship relatioons which reached the end date agreed by mentor and mentee.
+    Every day we run a job that completes mentorship relatioons which reached the end date agreed by mentor and mentee.
 
 ## Main concepts
 
