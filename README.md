@@ -54,14 +54,19 @@ export DB_NAME=<database_name>
 ```
 
 5. Run the app:
-`python run.py`
+```
+python run.py
+```
 
 6. Navigate to http://localhost:5000 in your browser
 
 7. When you are done using the app, deactivate the virtual environment:
-`deactivate`
+```
+deactivate
+```
 
 ### Run with docker
+
 1. Make sure you exported the following [environment variables](docs/environment-variables.md) to '.env' file
 
 2. Build docker image
@@ -78,13 +83,37 @@ docker run --env "FLASK_APP=run.py" --publish 5000:5000 mentorship-backend:lates
 
 To run the unitests run the following command in the terminal (while the virtual environment is activated):
 
-`python -m unittest discover tests`
+```
+python -m unittest discover tests
+```
+
+## Documentation
+
+You can learn more about this project throguh the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
+
+**Summary**
+
+- **Language:** Python 3.6
+- **Framework:** [Flask](http://flask.pocoo.org/)
+- **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
+- **Hosting Service:** Heroku
+- **Database:** Relational Database
+
+Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
+
+Here's some links to important documentation for this project:
+
+- [How to use Backend Swagger UI](https://github.com/anitab-org/mentorship-backend/wiki/Using-Backend-Swagger-UI) and [test PR guide](./docs/test-pr-guide.md) contains a few resources for you to understand how to use the Swagger user interface provided by this app.
+- [Features Overview](./docs/features.md) has a high level understanding of the features this application has.
+- [Future ideas for the project](https://github.com/anitab-org/mentorship-backend/wiki/Future-ideas).
+- [Troubleshoot guide](./docs/troubleshoots.md) contains common isssues other contributors may run into in their setup.
+- [Quality Assurance test cases](./docs/quality-assurance-test-cases.md) has test cases for each endpoint we have which you can use to learn about how each feature should work.
 
 ## Contributing
 
 Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
 
-Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) while sending PRs.
+Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
 
 ## Branches
 
