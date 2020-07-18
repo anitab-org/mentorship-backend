@@ -2,13 +2,13 @@
 
 This backend has many features that allow for members of Mentorship System to establish mentorship relations with each other for a certain period of time.
 
-High level capabilities:
+**High level capabilities:**
 
 - A member in the system can see other members and choose someone to send a mentorship request to.
 - Members can accept, reject mentorship requests and cancel an ongoing mentorship relation.
 - Members can wrtie their own profiles and make themselves available to mentor or be mentored.
 
-## Cron jobs
+## Cron jobs
 
 Cron jobs or schedulers are tasks that run from time to time. We have some that aare important for the functionality of the app.
 
@@ -52,8 +52,6 @@ Looking at the next image, you can consider these 3 stages:
 - (1): Before a request is sent
 - (2): When the User receives a request
 - (3): After a relation starts
-
----
 
 #### Relation states and stages
 
