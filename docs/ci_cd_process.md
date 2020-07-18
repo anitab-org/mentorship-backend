@@ -2,8 +2,7 @@
 
 This document aims to explain everything related to Continuous Integration and Continuous Development (CI / CD) processes of the app.
 
-
-## Deployment process
+## Deployment process
 
 This app is in current development under the `develop` branch. The `master` branch is currently empty, because we have not yet put this into production (however this is in the works).
 
