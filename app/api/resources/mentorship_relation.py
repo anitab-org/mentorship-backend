@@ -243,7 +243,7 @@ class RejectMentorshipRelation(Resource):
         HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.BAD_REQUEST,
+        HTTPStatus.FORBIDDEN,
         "%s\n%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,
