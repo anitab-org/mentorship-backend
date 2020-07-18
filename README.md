@@ -48,8 +48,7 @@ The project runs on Python 3.
 `pip install -r requirements.txt`
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
-or
-make sure you exported the following [environment variables](docs/environment-variables.md):
+or make sure you exported the following [environment variables](docs/environment-variables.md):
 
 ```
 export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
@@ -85,7 +84,7 @@ deactivate
 
 ### Run with docker
 
-1. Make sure you exported the following [environment variables](docs/environment-variables.md) to '.env' file
+1. Make sure you exported the following [environment variables](docs/environment-variables.md) to `.env` file
 
 2. Build docker image
 ```
