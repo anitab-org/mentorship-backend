@@ -2,9 +2,15 @@
 
 ![Build Status](https://github.com/anitab-org/mentorship-backend/workflows/Run%20tests/badge.svg)
 [![codecov](https://codecov.io/gh/anitab-org/mentorship-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/anitab-org/mentorship-backend)
+[![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system)
 
 [Mentorship System](https://github.com/anitab-org/mentorship-backend) is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
+
+This API is being used by 3 frontend projects currently being developed:
+- android: [anitab-org/mentorship-android](https://github.com/anitab-org/mentorship-android)
+- iOS: [anitab-org/mentorship-ios](https://github.com/anitab-org/mentorship-ios)
+- flutter: [anitab-org/mentorship-flutter](https://github.com/anitab-org/mentorship-flutter)
 
 **Table of Contents**
 
@@ -16,6 +22,7 @@ This is the Backend REST API for the Mentorship System.
 - [Contributing](#contributing)
 - [Branches](#branches)
 - [Contact](#contact)
+- [License](#license)
 
 ## Setup and run
 
@@ -137,3 +144,7 @@ The repository has the following permanent branches:
 ## Contact
 
 You can reach the maintainers and our community on [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/). If you are interested in contributing to the mentorship system, we have a dedicated stream for this project [#mentorship-system](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system), where you can ask questions and interact with the community, join with us!
+
+## License
+
+Mentorship System is licensed under the GNU General Public License v3.0. Learn more about it in the [LICENSE](LICENSE) file.
