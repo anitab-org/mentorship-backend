@@ -125,7 +125,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.admin_user.id),
             )
 
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(403, response.status_code)
             self.assertDictEqual(expected_response, json.loads(response.data))
 
 
