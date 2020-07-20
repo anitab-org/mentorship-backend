@@ -8,10 +8,10 @@ from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 
 
-class TestUserApi(BaseTestCase):
+class TestResendEmailApi(BaseTestCase):
 
     def setUp(self):
-        super(TestUserApi, self).setUp()
+        super(TestResendEmailApi, self).setUp()
 
         self.verified_user = UserModel(
             name=user1["name"] + "    Example",
