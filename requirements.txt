@@ -37,7 +37,7 @@ future==0.16.0
 gunicorn==20.0.4
 idna==2.6
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.10.1
 jmespath==0.9.3
 jsonschema==2.6.0
 Mako==1.1.3
