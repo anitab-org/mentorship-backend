@@ -1,12 +1,28 @@
 # Mentorship System (Backend)
 
-| Branch | [Travis](https://travis-ci.org/) | [Codacy](https://www.codacy.com/) | Server |
-| :---: | :---: | :---: | :---: |
-| [master](https://github.com/anitab-org/mentorship-backend/tree/master) | [![Build Status](https://travis-ci.org/systers/mentorship-backend.svg?branch=master)](https://travis-ci.org/anitab-org/mentorship-backend) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181ca06835045d1aea78fdd30fc37d9?branch=master)](https://www.codacy.com/app/systers/mentorship-backend) | [Production](http://systers-mentorship.eu-central-1.elasticbeanstalk.com/) |
-| [develop](https://github.com/anitab-org/mentorship-backend/tree/develop) | [![Build Status](https://travis-ci.org/systers/mentorship-backend.svg?branch=develop)](https://travis-ci.org/anitab-org/mentorship-backend) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181ca06835045d1aea78fdd30fc37d9?branch=develop)](https://www.codacy.com/app/systers/mentorship-backend) | [Development](http://systers-mentorship-dev.eu-central-1.elasticbeanstalk.com/) |
+![Build Status](https://github.com/anitab-org/mentorship-backend/workflows/Run%20tests/badge.svg)
+[![codecov](https://codecov.io/gh/anitab-org/mentorship-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/anitab-org/mentorship-backend)
+[![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system)
 
 [Mentorship System](https://github.com/anitab-org/mentorship-backend) is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
+
+This API is being used by 3 frontend projects currently being developed:
+- android: [anitab-org/mentorship-android](https://github.com/anitab-org/mentorship-android)
+- iOS: [anitab-org/mentorship-ios](https://github.com/anitab-org/mentorship-ios)
+- flutter: [anitab-org/mentorship-flutter](https://github.com/anitab-org/mentorship-flutter)
+
+**Table of Contents**
+
+- [Setup and run](#setup-and-run)
+    - [Run app](#run-app)
+    - [Run with Docker](#run-with-docker)
+    - [Run tests](run-tests)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Branches](#branches)
+- [Contact](#contact)
+- [License](#license)
 
 ## Setup and run
 
@@ -32,8 +48,7 @@ The project runs on Python 3.
 `pip install -r requirements.txt`
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
-or
-make sure you exported the following [environment variables](docs/environment-variables.md):
+or make sure you exported the following [environment variables](docs/environment-variables.md):
 
 ```
 export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
@@ -56,15 +71,20 @@ export DB_NAME=<database_name>
 ```
 
 5. Run the app:
-`python run.py`
+```
+python run.py
+```
 
-6. Navigate to http://localhost:5000 in your browser 
+6. Navigate to http://localhost:5000 in your browser
 
 7. When you are done using the app, deactivate the virtual environment:
-`deactivate`
+```
+deactivate
+```
 
 ### Run with docker
-1. Make sure you exported the following [environment variables](docs/environment-variables.md) to '.env' file
+
+1. Make sure you exported the following [environment variables](docs/environment-variables.md) to `.env` file
 
 2. Build docker image
 ```
@@ -80,13 +100,34 @@ docker run --env "FLASK_APP=run.py" --publish 5000:5000 mentorship-backend:lates
 
 To run the unitests run the following command in the terminal (while the virtual environment is activated):
 
-`python -m unittest discover tests`
+```
+python -m unittest discover tests
+```
+
+## Documentation
+
+You can learn more about this project throguh the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
+
+- **Language:** Python 3.6
+- **Framework:** [Flask](http://flask.pocoo.org/)
+- **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
+
+Here are some links to documentation for this project:
+
+- [How to use Backend Swagger UI](https://github.com/anitab-org/mentorship-backend/wiki/Using-Backend-Swagger-UI) and [test PR guide](/docs/test-pr-guide.md) contains a few resources for you to understand how to use the Swagger user interface provided by this app.
+- [Features Overview](/docs/features.md) has a high level understanding of the features this application has.
+- [Future ideas for the project](https://github.com/anitab-org/mentorship-backend/wiki/Future-ideas).
+- [Troubleshoot guide](/docs/troubleshoots.md) contains common isssues other contributors may run into in their setup.
+- [Quality Assurance test cases](/docs/quality-assurance-test-cases.md) has test cases for each endpoint we have which you can use to learn about how each feature should work.
+- [CI/CD Process](/docs/ci_cd_process.md) which explains the processes and tools involved in deploying new code.
+
+Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
 
 ## Contributing
 
 Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
 
-Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) while sending PRs.
+Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
 
 ## Branches
 
@@ -94,10 +135,12 @@ The repository has the following permanent branches:
 
  * **master** This contains the code which has been released.
 
- * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch.
+ * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch. This is the branch that is used in the deployed version of the app on Heroku.
 
 ## Contact
 
 You can reach the maintainers and our community on [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/). If you are interested in contributing to the mentorship system, we have a dedicated stream for this project [#mentorship-system](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system), where you can ask questions and interact with the community, join with us!
 
+## License
 
+Mentorship System is licensed under the GNU General Public License v3.0. Learn more about it in the [LICENSE](LICENSE) file.

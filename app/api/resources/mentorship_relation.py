@@ -35,7 +35,7 @@ class SendRequest(Resource):
     @mentorship_relation_ns.doc("send_request")
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
+        HTTPStatus.CREATED, "%s" % messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST,
@@ -93,7 +93,7 @@ class SendRequest(Resource):
         response = DAO.create_mentorship_relation(user_sender_id, data)
 
         # if the mentorship relation creation failed dont send email and return
-        if response[1] != HTTPStatus.OK:
+        if response[1] != HTTPStatus.CREATED:
             return response
 
         if user_sender_id == data["mentee_id"]:
@@ -243,7 +243,7 @@ class RejectMentorshipRelation(Resource):
         HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.BAD_REQUEST,
+        HTTPStatus.FORBIDDEN,
         "%s\n%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,

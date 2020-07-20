@@ -97,8 +97,8 @@ class MentorshipRelationModel(db.Model):
         }
 
     # def __repr__(self):
-    #     return "Mentorship Relation with id = %s, Mentor has id = %s and Mentee has id = %d" \
-    #            % (self.id, self.mentor_id, self.mentee_id)
+    #     return f"Mentorship Relation with id = {self.id}, Mentor has id = {self.mentor_id} and Mentee has id = {self.mentee_id}"
+
 
     @classmethod
     def find_by_id(cls, _id) -> 'MentorshipRelationModel':
