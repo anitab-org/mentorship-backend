@@ -17,7 +17,7 @@ class TestProtectedApi(BaseTestCase):
 
     # User 1 which has email verified
     def setUp(self):
-        super(TestProtectedApi, self).setUp()
+        super().setUp()
 
         self.first_user = UserModel(
             name=user1["name"],

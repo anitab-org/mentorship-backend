@@ -18,7 +18,7 @@ from tests.test_data import user1, user2, user3
 
 class TestListUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestListUsersApi, self).setUp()
+        super().setUp()
 
         self.verified_user = UserModel(
             name=user1["name"] + "    Example",

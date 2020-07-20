@@ -14,7 +14,7 @@ from tests.test_data import user1, user2
 
 class TestUserDao(BaseTestCase):
     def setUp(self):
-        super(TestUserDao, self).setUp()
+        super().setUp()
 
         self.first_user = UserModel(
             name=user1["name"],

@@ -14,7 +14,7 @@ from tests.test_utils import get_test_request_header
 
 class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
     def setUp(self):
-        super(TestAcceptMentorshipRequestApi, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
 

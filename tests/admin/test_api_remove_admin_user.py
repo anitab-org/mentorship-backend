@@ -18,7 +18,7 @@ from tests.test_data import test_admin_user_2, test_admin_user_3
 
 class TestRemoveAdminUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestRemoveAdminUsersApi, self).setUp()
+        super().setUp()
 
         self.admin_user_1 = UserModel(
             name=test_admin_user_2["name"],
