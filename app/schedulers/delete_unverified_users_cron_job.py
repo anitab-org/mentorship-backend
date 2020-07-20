@@ -17,7 +17,7 @@ def delete_unverified_users_job():
         from app.database.models.user import UserModel
 
         unverified_users = list(
-            filter(lambda user: not user.is_email_verified, UserModel.query.all())
+            UserModel.query.filter_by(is_email_verified=False).all()
         )
 
         for user in unverified_users:
