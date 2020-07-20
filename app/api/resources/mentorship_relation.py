@@ -531,7 +531,7 @@ class CreateTask(Resource):
         is_valid = CreateTask.is_valid_data(request_body)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.FORBIDDEN
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         response = TaskDAO.create_task(
             user_id=user_id, mentorship_relation_id=request_id, data=request_body

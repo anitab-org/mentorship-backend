@@ -148,5 +148,5 @@ class TaskDAO:
                 task_id=task_id, is_done=True, completed_at=datetime.now().timestamp()
             )
 
-        return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, HTTPStatus.CREATED
 
