@@ -48,6 +48,7 @@ AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " miss
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
 USERNAME_FIELD_IS_EMPTY = {"message": f"The username field has to be longer than {USERNAME_MIN_LENGTH} characters and shorter than {USERNAME_MAX_LENGTH} characters."}
+USER_AND_USERNAME_FIELD_IS_MISSING ={"message":"The name and username fields are missing."}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}

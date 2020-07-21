@@ -213,7 +213,6 @@ def validate_update_profile_request_data(data):
 
     if "available_to_mentor" in data and data["available_to_mentor"] is None:
         return messages.FIELD_AVAILABLE_TO_MENTOR_IS_INVALID
-
     return {}
 
 

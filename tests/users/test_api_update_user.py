@@ -78,6 +78,63 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
         self.assertEqual(user1_new_username, self.first_user.username)
 
+    def test_update_missing_username(self):
+
+        self.first_user = UserModel(
+            name=user1["name"],
+            email=user1["email"],
+            username=user1["username"],
+            password=user1["password"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
+        )
+        self.first_user.is_email_verified = True
+
+        db.session.add(self.first_user)
+        db.session.commit()
+
+        user1_new_username = ""
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = messages.USERNAME_FIELD_IS_MISSING
+        actual_response = self.client.put(
+            "/user",
+            follow_redirects=True,
+            headers=auth_header,
+            data=json.dumps(dict(username=user1_new_username)),
+            content_type="application/json",
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
+    def test_update_missing_name(self):
+
+        self.first_user = UserModel(
+            name=user1["name"],
+            email=user1["email"],
+            username=user1["username"],
+            password=user1["password"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
+        )
+        self.first_user.is_email_verified = True
+
+        db.session.add(self.first_user)
+        db.session.commit()
+
+        user1_new_username = "new_username"
+        user1_new_name = ""
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = messages.NAME_FIELD_IS_MISSING
+        actual_response = self.client.put(
+            "/user",
+            follow_redirects=True,
+            headers=auth_header,
+            data=json.dumps(dict(name=user1_new_name)),
+            content_type="application/json",
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        
     def test_update_username_invalid_length(self):
 
         self.first_user = UserModel(

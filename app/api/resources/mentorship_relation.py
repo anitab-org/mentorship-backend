@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, Namespace, marshal
+from flask_restx import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
 from app import messages
@@ -501,7 +501,7 @@ class CreateTask(Resource):
     @mentorship_relation_ns.doc("create_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
     @mentorship_relation_ns.response(HTTPStatus.CREATED, '%s'%messages.TASK_WAS_CREATED_SUCCESSFULLY)
-    @mentorship_relation_ns.response(HTTPStatus.BAD_REQUEST, '%s'%messages.UNACCEPTED_STATE_RELATION)
+    @mentorship_relation_ns.response(HTTPStatus.FORBIDDEN, '%s'%messages.UNACCEPTED_STATE_RELATION)
     @mentorship_relation_ns.response(HTTPStatus.UNAUTHORIZED, '%s\n%s\n%s'%(
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,

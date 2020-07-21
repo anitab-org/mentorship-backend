@@ -40,7 +40,7 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task_with_mentorship_relation_non_accepted_state(self):
 
-        expected_response = messages.UNACCEPTED_STATE_RELATION, 400
+        expected_response = messages.UNACCEPTED_STATE_RELATION, 403
         self.mentorship_relation_w_second_user.state = MentorshipRelationState.CANCELLED
 
         actual_response = TaskDAO.create_task(
