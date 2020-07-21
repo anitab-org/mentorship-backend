@@ -29,7 +29,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
     def test_task_comment_listing_api_without_auth_header(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comments/",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comments/",
             follow_redirects=True,
             content_type="application/json",
         )
@@ -70,7 +70,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             task_comments_model,
         )
         actual_response = self.client.get(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comments",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comments",
             follow_redirects=True,
             headers=auth_header,
         )
