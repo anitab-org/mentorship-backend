@@ -14,7 +14,7 @@ class TestResendEmailApi(BaseTestCase):
         super(TestResendEmailApi, self).setUp()
 
         self.verified_user = UserModel(
-            name=user1["name"] + "    Example",
+            name=user1["name"] + "Example",
             email=user1["email"],
             username=user1["username"],
             password=user1["password"],
