@@ -14,7 +14,7 @@ def validate_data_for_task_comment(user_id, task_id, relation_id):
         return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, HTTPStatus.UNAUTHORIZED
 
     if relation.state != MentorshipRelationState.ACCEPTED:
-        return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
+        return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN
 
     task = relation.tasks_list.find_task_by_id(task_id)
     if task is None:
@@ -146,7 +146,7 @@ class TaskCommentDAO:
             return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task_comment.user_id != user_id:
-            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU, HTTPStatus.BAD_REQUEST
+            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU, HTTPStatus.FORBIDDEN
 
         if task_comment.task_id != task_id:
             return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -185,7 +185,7 @@ class TaskCommentDAO:
             return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task_comment.user_id != user_id:
-            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE, HTTPStatus.BAD_REQUEST
+            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE, HTTPStatus.FORBIDDEN
 
         if task_comment.task_id != task_id:
             return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND

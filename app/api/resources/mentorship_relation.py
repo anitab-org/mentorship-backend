@@ -748,7 +748,7 @@ class TaskComment(Resource):
     @mentorship_relation_ns.doc(
         responses={
             HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY}",
-            HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
+            HTTPStatus.FORBIDDEN: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
             f"{messages.COMMENT_NOT_IN_STRING_FORMAT}<br>"
             f"{ {'message':get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}}<br>"
             f"{messages.UNACCEPTED_STATE_RELATION}<br>"
