@@ -4,7 +4,7 @@ appdirs==1.4.3
 APScheduler==3.5.1
 asn1crypto==0.24.0
 attrs==19.3.0
-awsebcli==3.14.1
+awsebcli==3.18.2
 bcrypt==3.1.7
 black==19.3b0
 blessed==1.15.0
