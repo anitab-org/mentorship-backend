@@ -821,7 +821,7 @@ class TaskComments(Resource):
     )
     @mentorship_relation_ns.doc(
         responses={
-            HTTPStatus.BAD_REQUEST: messages.UNACCEPTED_STATE_RELATION["message"],
+            HTTPStatus.FORBIDDEN: messages.UNACCEPTED_STATE_RELATION["message"],
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}<br>"
