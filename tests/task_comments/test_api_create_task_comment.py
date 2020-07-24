@@ -19,7 +19,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.COMMENT_FIELD_IS_MISSING
         actual_response = self.client.post(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comment",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",
@@ -33,7 +33,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.COMMENT_NOT_IN_STRING_FORMAT
         actual_response = self.client.post(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comment",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",
@@ -51,7 +51,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             )
         }
         actual_response = self.client.post(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comment",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",
@@ -96,7 +96,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY
         actual_response = self.client.post(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comment",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",

@@ -95,7 +95,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
         actual_response = self.client.put(
-            f"mentorship_relation/0/task/{self.task_id}/comment/" f"{self.comment_id}",
+            f"mentorship_relation/0/task/{self.task_id}/comment/{self.comment_id}",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",
@@ -124,7 +124,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.TASK_COMMENT_DOES_NOT_EXIST
         actual_response = self.client.put(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comment/0",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/0",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",

@@ -119,7 +119,7 @@ class MentorshipRelationDAO:
 
         mentorship_relation.save_to_db()
 
-        return messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, HTTPStatus.OK
+        return messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required
@@ -245,15 +245,15 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
-            return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, HTTPStatus.BAD_REQUEST
+            return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, HTTPStatus.FORBIDDEN
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.BAD_REQUEST
+            return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.FORBIDDEN
 
         # All was checked
         request.state = MentorshipRelationState.REJECTED

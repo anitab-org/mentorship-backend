@@ -13,8 +13,8 @@
 5. Run the following commands to get to the PR branch, where `<contributor>` is the GitHub username of the contributor that submitted the PR:
 
 ```
-git checkout -b <contributor>-<branch-name> develop
-git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
+git clone https://github.com/<contributor>/mentorship-backend/
+git checkout <branch-name>
 ```
 
 6. Verify the code addition/deletions in the PR.
@@ -22,6 +22,42 @@ git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
 7. Reproduce the issue and test the fix.
 
 8. Get screenshots/gifs of before and after the fix and attach them to the PR comment.
+
+9. If the testing is unsuccessful and fixes are needed change then remove the label `Status: Needs Testing` and add `Status: Needs Review`.
+
+10. If the testing is successful and no improvements needed then remove the label `Status: Needs Testing` and add `Status: Ready to Merge`.
+
+<h2>Template to report PR testing results</h2>
+This template can be used to add a review comment to a PR after testing is done. It can be used irrespective of the success or failure of testing.
+
+```
+The changes made in this PR were tested locally. Following are the results:
+
+1. Code review - Done or Not Done
+
+2. All possible responses (positive and negative tests) were tested as below:
+
+  * _Test1 Description_  
+    _Screenshot/gif_:  
+    _Expected Result_:  
+    _Actual Result_:
+  * _Test2 Description_  
+    _Screenshot/gif_:  
+    _Expected Result_:  
+    _Actual Result_:  
+    ...  
+    
+3. Additional testcases covered:
+
+  * _Test1 Description_  
+    _Screenshot/gif_:  
+    _Expected Result_:  
+    _Actual Result_:
+    
+4. Additional Comments:
+
+5. Status of PR Changed to: Needs Review or Ready to Merge.
+```
 
 <h1>Steps to test multiple features (User Registration, List users, ...) of the Mentorship System.</h1>
 

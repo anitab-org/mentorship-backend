@@ -1,3 +1,5 @@
+from app.api.validations.user import (PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH)
+
 # Invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
@@ -9,6 +11,7 @@ FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is" " not 
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
 }
+PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH={"message": f"The password field has to be longer than {PASSWORD_MIN_LENGTH} characters and shorter than {PASSWORD_MAX_LENGTH} characters."}
 
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {
@@ -44,6 +47,7 @@ NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
 AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!"}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
+USERNAME_FIELD_IS_EMPTY = {"message": f"The username field has to be longer than {USERNAME_MIN_LENGTH} characters and shorter than {USERNAME_MAX_LENGTH} characters."}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}
