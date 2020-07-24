@@ -112,7 +112,7 @@ class UserModel(db.Model):
 
     def __repr__(self):
         """Returns the user's name and username. """
-        return "User name %s. Username is %s ." % (self.name, self.username)
+        return f"User name {self.name} . Username is {self.username} ."
 
     @classmethod
     def find_by_username(cls, username: str) -> 'UserModel':
