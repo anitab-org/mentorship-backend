@@ -260,12 +260,12 @@ class UserRegister(Resource):
     @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s"
+        "%s\n%s\n%s\n%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.NAME_FIELD_HAS_INVALID_LENGTH
-            messages.USERNAME_FIELD_IS_EMPTY,
+            messages.NAME_FIELD_HAS_INVALID_LENGTH,
+            messages.USERNAME_FIELD_IS_INVALID_LENGTH,
             messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
             messages.EMAIL_INPUT_BY_USER_IS_INVALID
         ),
@@ -295,7 +295,7 @@ class UserRegister(Resource):
         is_valid = validate_user_registration_request_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.CONFLICT
+            return is_valid, HTTPStatus.BAD_REQUEST
 
 
         result = DAO.create_user(data)

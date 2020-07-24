@@ -219,7 +219,7 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
 
             user.username = username
 
