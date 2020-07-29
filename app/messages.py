@@ -182,9 +182,7 @@ USER_ENTERED_INCORRECT_PASSWORD = {"message": "Current password is incorrect."}
 USER_ENTERED_CURRENT_PASSWORD = {
     "message": "New password should not be same " "as the current password."
 }
-EMAIL_EXPIRED_OR_TOKEN_IS_INVALID = {
-    "message": "The confirmation link is" " invalid or the token has expired."
-}
+
 WRONG_USERNAME_OR_PASSWORD = {"message": "Username or password is wrong."}
 USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN = {
     "message": "Please verify your" " email before login."
@@ -197,9 +195,7 @@ TERMS_AND_CONDITIONS_ARE_NOT_CHECKED = {
     "message": "Terms and conditions are" " not checked."
 }
 USER_INPUTS_SPACE_IN_PASSWORD = {"message": "Password shouldn't contain" " spaces."}
-TOKEN_HAS_EXPIRED = {
-    "message": "The token has expired! Please, login again or refresh it."
-}
+
 TOKEN_SENT_TO_EMAIL_OF_USER = {"message": "Token sent to the user's email."}
 EMAIL_VERIFICATION_MESSAGE = {
     "message": "Check your email, a new verification" " email was sent."
