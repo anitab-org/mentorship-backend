@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     create_refresh_token,
     get_jwt_identity,
 )
-from flask_restplus import Resource, marshal, Namespace
+from flask_restx import Resource, marshal, Namespace
 
 from app import messages
 from app.api.validations.user import *

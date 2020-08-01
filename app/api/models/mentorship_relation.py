@@ -1,4 +1,4 @@
-from flask_restplus import fields, Model
+from flask_restx import fields, Model
 
 from app.utils.enum_utils import MentorshipRelationState
 
