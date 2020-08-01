@@ -2,7 +2,7 @@ import json
 import unittest
 from datetime import datetime, timedelta
 
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from app.api.models.mentorship_relation import mentorship_request_response_body
 from app.database.models.tasks_list import TasksListModel
