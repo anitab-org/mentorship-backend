@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime, timedelta
 
 from flask import json
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from app import messages
 from app.api.models.user import public_user_api_model
