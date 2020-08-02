@@ -89,7 +89,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
                 headers=get_test_request_header(self.second_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(403, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.ACCEPTED, mentorship_relation_current.state
             )  # current
@@ -112,7 +112,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
                 headers=get_test_request_header(self.first_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(403, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -134,7 +134,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
                 headers=get_test_request_header(self.admin_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(403, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )

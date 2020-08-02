@@ -82,7 +82,7 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.accept_request(self.first_user.id, self.mentorship_relation.id)
 
-        self.assertEqual((messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, 400), result)
+        self.assertEqual((messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, 403), result)
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
         )
@@ -117,28 +117,28 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 403), result)
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 403), result)
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 403), result)
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 403), result)
 
     def test_dao_mentor_user_already_in_relationship(self):
         DAO = MentorshipRelationDAO()
