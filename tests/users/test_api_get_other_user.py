@@ -1,7 +1,7 @@
 import unittest
 
 from flask import json
-from flask_restplus import marshal
+from flask_restx import marshal
 from http import HTTPStatus
 
 from app.api.models.user import public_user_api_model
