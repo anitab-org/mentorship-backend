@@ -169,6 +169,24 @@ class TestHappyPath1(BaseTestCase):
 
         self.assertEqual(200, complete_task_response.status_code)
 
+        tasks_response = self.client.get(
+            f"/mentorship_relation/{request_id}/tasks", headers=mentor_auth_header
+        )
+
+        self.assertEqual(200, tasks_response.status_code)
+
+        tasks = json.loads(tasks_response.data)
+        updated_task = tasks[0]
+        updated_task_id = updated_task["id"]
+        updated_task_description = updated_task["description"]
+        updated_task_state = updated_task["is_done"]
+        updated_task_completed_at = updated_task["completed_at"]
+
+        self.assertEqual(task_id, updated_task_id)
+        self.assertTrue(updated_task_state)
+        self.assertIsNotNone(updated_task_completed_at)
+        self.assertEqual(self.test_description, updated_task_description)
+
 
 if __name__ == "__main__":
     unittest.main()
