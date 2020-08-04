@@ -7,6 +7,7 @@ from flask_restx import marshal
 from app import messages
 from app.api.models.user import public_user_api_model
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
@@ -14,6 +15,7 @@ from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2, user3
+from app.api.models.mentorship_relation import mentorship_request_response_body
 
 
 class TestHappyPath1(BaseTestCase):
@@ -79,26 +81,45 @@ class TestHappyPath1(BaseTestCase):
         self.assertEqual(201, send_request_response.status_code)
 
         request_sent_response = self.client.get('/mentorship_relations',
-                                           headers=mentee_auth_header,
+                                           headers=mentor_auth_header,
                                            content_type='application/json')
 
         requests = json.loads(request_sent_response.data)
-        request_id = requests[0]["id"]
+        mentorship_request = requests[0]
+        request_id = mentorship_request["id"]
+        request_state = mentorship_request["state"]
+
         self.assertIsNotNone(request_id)
+        self.assertEqual(MentorshipRelationState.PENDING, request_state)
 
         # - User A (mentor) accepts request
-        # POST ​/mentorship_relation​/{request_id}​/accept
+        # POST /mentorship_relation​/{request_id}​/accept
 
         accept_response = self.client.put(f"/mentorship_relation/{request_id}/accept",
                                            headers=mentor_auth_header)
 
         self.assertEqual(200, accept_response.status_code)
 
+        mentee_current_relation = self.client.get(f"/mentorship_relations/current",
+                                           headers=mentor_auth_header)
+        mentor_current_relation = self.client.get(f"/mentorship_relations/current",
+                                           headers=mentor_auth_header)
+
+        self.assertEqual(200, mentee_current_relation.status_code)
+        self.assertEqual(200, mentor_current_relation.status_code)
+        self.assertEqual(json.loads(mentor_current_relation.data), json.loads(mentee_current_relation.data))
+
+        current_relation = json.loads(mentee_current_relation.data)
+        request_id = current_relation["id"]
+        request_state = current_relation["state"]
+
+        self.assertEqual(MentorshipRelationState.ACCEPTED, request_state)
+
         # - User A (mentor) or User B (mentee) creates a task
-        # POST ​/mentorship_relation​/{request_id}​/task
+        # POST /mentorship_relationn/{request_id}/task
 
         # - User B (mentee) completes the task
-        # PUT ​/mentorship_relation​/{request_id}​/task​/{task_id}​/complete
+        # PUT /mentorship_relationn/{request_id}/task/{task_id}/complete
 
 
 if __name__ == "__main__":
