@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, Namespace, marshal
+from flask_restx import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
 from app import messages
@@ -108,7 +108,7 @@ class ListAdmins(Resource):
         A admin user with valid access token can view the list of all admins. The endpoint
         doesn't take any other input. A JSON array having an object for each admin user is
         returned. The array contains id, username, name, slack_username, bio,
-        location, occupation, organization, skills. 
+        location, occupation, organization, skills.
         The current admin user's details are not returned.
         """
         user_id = get_jwt_identity()

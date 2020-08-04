@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     create_refresh_token,
     get_jwt_identity,
 )
-from flask_restplus import Resource, marshal, Namespace
+from flask_restx import Resource, marshal, Namespace
 
 from app import messages
 from app.api.validations.user import *
@@ -72,8 +72,7 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(HTTPStatus.CREATED, "Success.", public_user_api_model)
-    @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ID_IS_NOT_VALID)
+    @users_ns.response(HTTPStatus.OK, "Success.", public_user_api_model)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
@@ -91,19 +90,11 @@ class OtherUser(Resource):
         A user with valid access token can view the details of another user. The endpoint
         takes "user_id" of such user has input.
         """
-        # Validate arguments
-        if not OtherUser.validate_param(user_id):
-            return messages.USER_ID_IS_NOT_VALID, HTTPStatus.BAD_REQUEST
-
         requested_user = DAO.get_user(user_id)
         if requested_user is None:
             return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
         else:
-            return marshal(requested_user, public_user_api_model), HTTPStatus.CREATED
-
-    @staticmethod
-    def validate_param(user_id):
-        return isinstance(user_id, int)
+            return marshal(requested_user, public_user_api_model), HTTPStatus.OK
 
 
 @users_ns.route("user")

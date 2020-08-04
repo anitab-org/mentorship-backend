@@ -182,22 +182,22 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         # verify if I'm the receiver of the request
         if request.action_user_id == user_id:
-            return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, HTTPStatus.BAD_REQUEST
+            return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, HTTPStatus.FORBIDDEN
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, HTTPStatus.FORBIDDEN
 
         my_requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
         for my_request in my_requests:
             if my_request.state == MentorshipRelationState.ACCEPTED:
-                return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, HTTPStatus.BAD_REQUEST
+                return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, HTTPStatus.FORBIDDEN
 
         mentee = request.mentee
         mentor = request.mentor

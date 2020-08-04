@@ -1,5 +1,5 @@
 from flask import request
-from flask_restplus import Resource, Namespace, marshal
+from flask_restx import Resource, Namespace, marshal
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
 from app import messages
@@ -188,7 +188,7 @@ class AcceptMentorshipRelation(Resource):
         HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.BAD_REQUEST,
+        HTTPStatus.FORBIDDEN,
         "%s\n%s\n%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,
@@ -501,7 +501,7 @@ class CreateTask(Resource):
     @mentorship_relation_ns.doc("create_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
     @mentorship_relation_ns.response(HTTPStatus.CREATED, '%s'%messages.TASK_WAS_CREATED_SUCCESSFULLY)
-    @mentorship_relation_ns.response(HTTPStatus.BAD_REQUEST, '%s'%messages.UNACCEPTED_STATE_RELATION)
+    @mentorship_relation_ns.response(HTTPStatus.FORBIDDEN, '%s'%messages.UNACCEPTED_STATE_RELATION)
     @mentorship_relation_ns.response(HTTPStatus.UNAUTHORIZED, '%s\n%s\n%s'%(
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
@@ -786,12 +786,12 @@ class TaskComment(Resource):
     @mentorship_relation_ns.doc(
         responses={
             HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY}",
-            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}<br>"
-            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE}",
+            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}",
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
             f"{messages.TOKEN_IS_INVALID}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.FORBIDDEN: f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE}",
             HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_DOES_NOT_EXIST}<br>"
