@@ -58,6 +58,8 @@ class TestHappyPath1(BaseTestCase):
         db.session.add(self.mentee)
         db.session.commit()
 
+        self.test_description = "A nice task description"
+
     def test_happy_path_1(self):
 
         mentor_auth_header = get_test_request_header(self.mentor.id)
@@ -122,13 +124,50 @@ class TestHappyPath1(BaseTestCase):
         request_id = current_relation["id"]
         request_state = current_relation["state"]
 
+        # TODO: assert mentee is the mentee and mentor is the mentor
         self.assertEqual(MentorshipRelationState.ACCEPTED, request_state)
 
         # - User A (mentor) or User B (mentee) creates a task
-        # POST /mentorship_relationn/{request_id}/task
+        # POST /mentorship_relation/{request_id}/task
+
+        task_request_body = json.dumps(dict(description=self.test_description))
+        task_creation_response = self.client.post(
+            f"/mentorship_relation/{request_id}/task",
+            headers=mentor_auth_header,
+            # follow_redirects=True,
+            content_type="application/json",
+            data=task_request_body,
+        )
+
+        self.assertEqual(201, task_creation_response.status_code)
+
+        tasks_response = self.client.get(
+            f"/mentorship_relation/{request_id}/tasks", headers=mentor_auth_header
+        )
+
+        self.assertEqual(200, tasks_response.status_code)
+
+        tasks = json.loads(tasks_response.data)
+        new_task = tasks[0]
+        task_id = new_task["id"]
+        task_description = new_task["description"]
+        task_state = new_task["is_done"]
+        task_completed_at = new_task["completed_at"]
+
+        self.assertIsNotNone(task_id)
+        self.assertFalse(task_state)
+        self.assertIsNone(task_completed_at)
+        self.assertEqual(self.test_description, task_description)
 
         # - User B (mentee) completes the task
-        # PUT /mentorship_relationn/{request_id}/task/{task_id}/complete
+        # PUT /mentorship_relation/{request_id}/task/{task_id}/complete
+
+        complete_task_response = self.client.put(
+            f"/mentorship_relation/{request_id}/task/{task_id}/complete",
+            headers=mentee_auth_header,
+        )
+
+        self.assertEqual(200, complete_task_response.status_code)
 
 
 if __name__ == "__main__":
