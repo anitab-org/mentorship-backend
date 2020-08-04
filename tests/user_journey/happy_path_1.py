@@ -30,7 +30,7 @@ class TestHappyPath1(BaseTestCase):
     """
 
     def setUp(self):
-        super(TestHappyPath1, self).setUp()
+        super().setUp()
 
         self.mentor = UserModel(
             name="Mentor A",
