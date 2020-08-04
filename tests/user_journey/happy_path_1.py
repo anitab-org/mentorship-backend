@@ -27,6 +27,8 @@ class TestHappyPath1(BaseTestCase):
     - User A (mentor) accepts request
     - User A (mentor) or User B (mentee) creates a task
     - User B (mentee) completes the task
+    - User B (mentee) comments on the task
+    - User A (mentor) comments on the task
     """
 
     def setUp(self):
@@ -186,6 +188,9 @@ class TestHappyPath1(BaseTestCase):
         self.assertTrue(updated_task_state)
         self.assertIsNotNone(updated_task_completed_at)
         self.assertEqual(self.test_description, updated_task_description)
+
+        # TODO - User B (mentee) comments on the task
+        # TODO - User A (mentor) comments on the task
 
 
 if __name__ == "__main__":
