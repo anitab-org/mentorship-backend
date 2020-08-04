@@ -40,7 +40,6 @@ class TestUserRefreshApi(BaseTestCase):
             )
 
             self.assertIsNotNone(response.json.get("access_token"))
-            self.assertIsNotNone(response.json.get("access_expiry"))
             self.assertEqual(2, len(response.json))
             self.assertEqual(200, response.status_code)
 
@@ -72,7 +71,6 @@ class TestUserRefreshApi(BaseTestCase):
             token_expiration_delta=timedelta(minutes=-5),
             refresh=True,
         )
-        expected_response = messages.TOKEN_HAS_EXPIRED
         actual_response = self.client.post(
             "/refresh",
             follow_redirects=True,
