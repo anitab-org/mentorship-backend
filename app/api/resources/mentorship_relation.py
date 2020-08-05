@@ -39,7 +39,7 @@ class SendRequest(Resource):
     )
     @mentorship_relation_ns.response(
         400,
-        "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
+        "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
         % (
             messages.MATCH_EITHER_MENTOR_OR_MENTEE,
             messages.MENTOR_ID_SAME_AS_MENTEE_ID,
@@ -50,6 +50,7 @@ class SendRequest(Resource):
             messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED,
             messages.MENTOR_ALREADY_IN_A_RELATION,
             messages.MENTEE_ALREADY_IN_A_RELATION,
+            messages.MENTOR_ID_FIELD_IS_MISSING,
         ),
     )
     @mentorship_relation_ns.response(
