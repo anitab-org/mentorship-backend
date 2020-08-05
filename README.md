@@ -16,16 +16,15 @@ This API is being used by 3 frontend projects currently being developed:
 
 **Table of Contents**
 
-- [Mentorship System (Backend)](#mentorship-system-backend)
-  - [Setup and run](#setup-and-run)
+- [Setup and run](#setup-and-run)
     - [Run app](#run-app)
-    - [Run with docker](#run-with-docker)
-    - [Run tests](#run-tests)
-  - [Documentation](#documentation)
-  - [Contributing](#contributing)
-  - [Branches](#branches)
-  - [Contact](#contact)
-  - [License](#license)
+    - [Run with Docker](#run-with-docker)
+    - [Run tests](run-tests)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Branches](#branches)
+- [Contact](#contact)
+- [License](#license)
 
 ## Setup and run
 
@@ -105,6 +104,21 @@ To run the unitests run the following command in the terminal (while the virtual
 
 ```
 python -m unittest discover tests
+```
+
+### Auto-formatting with black
+
+We use [_Black_](https://github.com/psf/black) to format code automatically so that we don't have to worry about clean and
+readable code. To install _Black_:
+
+```
+pip install black
+```
+
+To run black:
+
+```
+black .
 ```
 
 ## Documentation
