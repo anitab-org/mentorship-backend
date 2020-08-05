@@ -17,6 +17,7 @@ from app.utils.validation_utils import get_length_validation_error_message
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.api.email_utils import send_email_mentorship_relation_accepted
 from app.api.email_utils import send_email_new_request
+from app.api.email_utils import send_email_report_violation
 
 mentorship_relation_ns = Namespace(
     "Mentorship Relation",
@@ -232,6 +233,61 @@ class AcceptMentorshipRelation(Resource):
 
         return response
 
+@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/task/<int:task_id>/comment/<int:comment_id>/report")
+class ReportViolationForComment(Resource):
+    @classmethod
+    @jwt_required
+    @mentorship_relation_ns.doc("report_violation_for_comment")
+    @mentorship_relation_ns.expect(auth_header_parser)
+    @mentorship_relation_ns.response(
+        HTTPStatus.OK, "%s" % messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY
+    )
+    @mentorship_relation_ns.response(
+        HTTPStatus.FORBIDDEN, "%s" % messages.USER_CANT_REPORT_THEIR_OWN_COMMENT
+    )
+    @mentorship_relation_ns.response(
+        HTTPStatus.BAD_REQUEST, "%s" % messages.UNACCEPTED_STATE_RELATION
+    )
+    @mentorship_relation_ns.response(
+        HTTPStatus.UNAUTHORIZED,
+        "%s\n%s\n%s\n%s"
+        % (
+            messages.TOKEN_HAS_EXPIRED,
+            messages.TOKEN_IS_INVALID,
+            messages.AUTHORISATION_TOKEN_IS_MISSING,
+            messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+        ),
+    )
+    @mentorship_relation_ns.response(
+        HTTPStatus.NOT_FOUND,
+        "%s\n%s\n%s\n%s"
+        % (
+            messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+            messages.TASK_DOES_NOT_EXIST,
+            messages.TASK_COMMENT_DOES_NOT_EXIST,
+            messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST,
+        ),
+    )
+    def put(cls, request_id, task_id, comment_id):
+        """
+        Report Violation for a task comment by the other person in relation.
+
+        Input:
+        1. Header: valid access token
+        2. Path: ID of request (request_id)
+        3. Path: ID of task of the mentorship relation (task_id)
+        4. Path: ID of the comment on the task (comment_id)
+        """
+
+        user_id  = get_jwt_identity()
+        response = TaskCommentDAO.report_violation(
+            user_id=user_id, relation_id=request_id, task_id=task_id, _id=comment_id
+        )
+
+        if response[1] == HTTPStatus.OK:
+            send_email_report_violation(user_id, comment_id)
+
+        return response
 
 @mentorship_relation_ns.route("mentorship_relation/<int:request_id>/reject")
 class RejectMentorshipRelation(Resource):

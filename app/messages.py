@@ -279,6 +279,10 @@ ACCOUNT_ALREADY_CONFIRMED_AND_THANKS = {
     "message": "You have confirmed your" " account. Thanks!"
 }
 
+# Report Violations
+VIOLATION_WAS_REPORTED_SUCCESSFULLY = {"message": "Violation for this comment was reported successfully."}
+USER_CANT_REPORT_THEIR_OWN_COMMENT = {"message": "You can't report a violation for your own comment"}
+
 # Miscellaneous
 VALIDATION_ERROR = {"message": "Validation error."}
 INVALID_END_DATE = {

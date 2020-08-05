@@ -137,6 +137,36 @@ def send_email_mentorship_relation_accepted(request_id):
     )
     send_email(request_sender.email, subject, html)
 
+def send_email_report_violation(user_id, comment_id):
+    """
+    Sends an email to the admins as a notification,
+    for a violation reported by a user on a task comment.
+
+    Args:
+        user_id: ID of user reporting the violation
+        comment_id: ID of comment that is being reported
+    """
+
+    from app.database.models.user import UserModel
+    from app.database.models.task_comment import TaskCommentModel
+
+    # Get the name of the user who's reporting the violation
+    user_name = UserModel.find_by_id(user_id).name
+    # Get task comment
+    task_comment = TaskCommentModel.find_by_id(comment_id)
+    # Get comment string from task comment
+    comment = task_comment.comment
+    # Get commentor name
+    commentor_name = UserModel.find_by_id(task_comment.user_id).name
+
+    subject = "Violation Reported"
+    html = render_template(
+        "email_report_violation.html",
+        reporter_name=user_name,
+        comment=comment,
+        commentor_name=commentor_name,
+    )
+    send_email("", subject, html)
 
 def send_email_new_request(user_sender, user_recipient, notes, sender_role):
     """Sends a notification html email message to the user_recipient user.

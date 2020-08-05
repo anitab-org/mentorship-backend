@@ -195,3 +195,38 @@ class TaskCommentDAO:
             return messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
 
         return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+
+    @staticmethod
+    @email_verification_required
+    def report_violation(user_id: int, relation_id: int, task_id: int, _id: int):
+        """Allows a given user to report a violation for a task comment.
+
+        Args:
+            user_id: ID of the user reporting the violation
+            relation_id: ID of the relation
+            task_id: ID of the task
+            _id: ID of the comment
+
+        Returns:
+            message: A message telling the user whether the violation was successfully reported or not
+        """
+
+        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
+        if is_valid != {}:
+            return is_valid
+
+        task_comment = TaskCommentModel.find_by_id(_id)
+
+        if task_comment is None:
+            return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+
+        if task_comment.user_id == user_id:
+            return messages.USER_CANT_REPORT_THEIR_OWN_COMMENT, HTTPStatus.FORBIDDEN
+
+        if task_comment.task_id != task_id:
+            return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+
+        if task_comment:
+            return messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY, HTTPStatus.OK
+
+        return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
