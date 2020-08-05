@@ -68,7 +68,7 @@ export DB_NAME=<database_name>
 
 5. Run the app:
 ```
-poetry run
+poetry run start
 ```
 
 6. Navigate to http://localhost:5000 in your browser
@@ -97,7 +97,7 @@ docker run --env "FLASK_APP=run.py" --publish 5000:5000 mentorship-backend:lates
 To run the unitests run the following command in the terminal (while the virtual environment is activated):
 
 ```
-python -m unittest discover tests
+poetry run test
 ```
 
 ## Documentation

@@ -101,8 +101,8 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.poetry.scripts]
-run = "run.py"
-test = "python -m unittest discover tests"
+start = "scripts:start"
+test = "scripts:test"
 
 [tool.poetry.urls]
 issues = "https://github.com/anitab-org/mentorship-backend/issues"
