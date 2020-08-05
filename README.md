@@ -33,19 +33,15 @@ To setup the project locally read these wiki pages and follow the instructions:
 
 ### Run app
 
-The project runs on Python 3.
+The project runs on Python 3. We use [Poetry](https://python-poetry.org/) to manage dependencies.
 
-1. Create a virtual environment:
-`virtualenv venv --python=python3`
+1. [Install Poetry](https://python-poetry.org/docs/#installation:
 
-2. Activate the virtual environment:
-`source ./venv/bin/activate`
+2. Install dependencies using Poetry:
+`poetry install`
 
-`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines. For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
-
-
-3. Install all the dependencies in `requirements.txt` file:
-`pip install -r requirements.txt`
+3. Activate the virtual environment (auto-crated by Poetry):
+`poetry shell`
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or make sure you exported the following [environment variables](docs/environment-variables.md):
@@ -72,7 +68,7 @@ export DB_NAME=<database_name>
 
 5. Run the app:
 ```
-python run.py
+poetry run
 ```
 
 6. Navigate to http://localhost:5000 in your browser
