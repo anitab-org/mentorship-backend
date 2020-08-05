@@ -94,11 +94,11 @@ class AdminDAO:
 
     @staticmethod
     def list_admins(user_id):
-        """ Retrieves a list of admin users for the user with specified ID.
-        
+        """Retrieves a list of admin users for the user with specified ID.
+
         Arguments:
             user_id: The ID of the user querying the fellow admins.
-        
+
         Returns:
             A list of admin users matching conditions and the HTTP response code.
         """
