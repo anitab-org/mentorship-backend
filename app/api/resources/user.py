@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     create_refresh_token,
     get_jwt_identity,
 )
-from flask_restx import Resource, marshal, Namespace
+from flask_restplus import Resource, marshal, Namespace
 
 from app import messages
 from app.api.validations.user import *
@@ -50,6 +50,7 @@ class UserList(Resource):
     def get(cls):
         """
         Returns list of all the users whose names contain the given query.
+        
         A user with valid access token can view the list of users. The endpoint
         doesn't take any other input. A JSON array having an object for each user is
         returned. The array contains id, username, name, slack_username, bio,
@@ -71,7 +72,8 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(HTTPStatus.OK, "Success.", public_user_api_model)
+    @users_ns.response(HTTPStatus.CREATED, "Success.", public_user_api_model)
+    @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ID_IS_NOT_VALID)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
@@ -85,13 +87,23 @@ class OtherUser(Resource):
     def get(cls, user_id):
         """
         Returns a user.
+        
         A user with valid access token can view the details of another user. The endpoint
         takes "user_id" of such user has input.
         """
+        # Validate arguments
+        if not OtherUser.validate_param(user_id):
+            return messages.USER_ID_IS_NOT_VALID, HTTPStatus.BAD_REQUEST
+
         requested_user = DAO.get_user(user_id)
         if requested_user is None:
             return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
         else:
+            return marshal(requested_user, public_user_api_model), HTTPStatus.CREATED
+
+    @staticmethod
+    def validate_param(user_id):
+        return isinstance(user_id, int)
             return marshal(requested_user, public_user_api_model), HTTPStatus.OK
 
 
@@ -115,6 +127,7 @@ class MyUserProfile(Resource):
     def get(cls):
         """
         Returns details of current user.
+        
         A user with valid access token can use this endpoint to view his/her own
         user details. The endpoint doesn't take any other input.
         """
@@ -130,6 +143,7 @@ class MyUserProfile(Resource):
     def put(cls):
         """
         Updates user profile
+        
         A user with valid access token can use this endpoint to edit his/her own
         user details. The endpoint takes any of the given parameters (name, username,
         bio, location, occupation, organization, slack_username, social_media_links,
@@ -155,6 +169,7 @@ class MyUserProfile(Resource):
     def delete(cls):
         """
         Deletes user.
+        
         A user with valid access token can use this endpoint to delete his/her own
         user details. The endpoint doesn't take any other input. The response contains
         a success message.
@@ -185,6 +200,7 @@ class ChangeUserPassword(Resource):
     def put(cls):
         """
         Updates the user's password
+        
         A user with valid access token can use this endpoint to change his/her own
         password. The endpoint takes current password and new password as input.
         The response contains a success message.
@@ -223,6 +239,7 @@ class VerifiedUser(Resource):
     def get(cls):
         """
         Returns all verified users whose names contain the given query.
+        
         A user with valid access token can view the list of verified users. The endpoint
         doesn't take any other input. A JSON array having an object for each user is
         returned. The array contains id, username, name, slack_username, bio,
@@ -243,26 +260,20 @@ class UserRegister(Resource):
     @users_ns.doc("create_user")
     @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
     @users_ns.response(
-        HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s"
-        % (
-            messages.USERNAME_FIELD_IS_EMPTY,
-            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
-            messages.EMAIL_INPUT_BY_USER_IS_INVALID
-        ),
-    )
-    @users_ns.response(
         HTTPStatus.CONFLICT,
-        "%s\n%s"
+        "%s\n%s\n%s\n%s"
         % (
-            messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
-            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS
+                messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+                messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
+                messages.EMAIL_INPUT_BY_USER_IS_INVALID,
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
     def post(cls):
         """
         Creates a new user.
+        
         The endpoint accepts details like name, username, password, email,
         terms_and_conditions_checked(true/false), need_mentoring(true/false),
         available_to_mentor(true/false). A success message is displayed and
@@ -300,6 +311,7 @@ class UserEmailConfirmation(Resource):
     @classmethod
     def get(cls, token):
         """Confirms the user's account.
+        
         This endpoint is called when a new user clicks the verification link
         sent on the users' email. It takes the verification token through URL
         as input parameter.The verification token is valid for 24 hours. A success or
@@ -319,6 +331,7 @@ class UserResendEmailConfirmation(Resource):
     @users_ns.expect(resend_email_request_body_model)
     def post(cls):
         """Sends the user a new verification email.
+        
         This endpoint is called when a user wants the verification email to be
         resent. The verification token is valid for 24 hours. A success or
         failure response is returned by the API.
@@ -361,6 +374,7 @@ class RefreshUser(Resource):
     @users_ns.expect(auth_header_parser)
     def post(cls):
         """Refresh user's access
+        
         The return value is an access token and the expiry timestamp.
         The token is valid for 1 week.
         """
@@ -395,6 +409,7 @@ class LoginUser(Resource):
     def post(cls):
         """
         Login user
+        
         The user can login with (username or email) + password.
         Username field can be either the User's username or the email.
         The return value is an access token and the expiry timestamp.
@@ -462,6 +477,7 @@ class UserHomeStatistics(Resource):
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """Get Statistics regarding the current user
+        
         Returns:
             A dict containing user stats(name, pending_requests, accepted_requests,
             completed_relations, cancelled_relations, rejected_requests, achievements)
@@ -484,6 +500,7 @@ class UserDashboard(Resource):
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """Get current User's dashboard
+        
         Returns:
             A dict containing user dashboard
         """
