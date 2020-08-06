@@ -163,11 +163,11 @@ def send_email_report_violation(user_id, comment_id):
     comment = task_comment.comment
 
     # Commentor of the task comment being reported
-    commentor = UserModel.find_by_id(task_comment.user_id)
+    commenter = UserModel.find_by_id(task_comment.user_id)
     # Commentor name
-    commentor_name = commentor.name
+    commenter_name = commenter.name
     # Commentor email
-    commentor_email = commentor.email
+    commenter_email = commenter.email
 
     subject = "Violation Reported"
     html = render_template(
@@ -175,8 +175,8 @@ def send_email_report_violation(user_id, comment_id):
         reporter_name=user_name,
         reporter_email=user_email,
         comment=comment,
-        commentor_name=commentor_name,
-        commentor_email=commentor_email
+        commenter_name=commenter_name,
+        commenter_email=commenter_email
     )
     send_email("opensource@anitab.org", subject, html)
 
