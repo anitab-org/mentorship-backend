@@ -16,14 +16,15 @@ class TestReportViolationOnTaskCommentAPI(TasksBaseTestCase):
         self.task_id = 1
 
         TaskCommentDAO().create_task_comment(
-            user_id=1, task_id=1, relation_id=self.relation_id, comment="comment"
+            user_id=1, task_id=self.task_id, relation_id=self.relation_id, comment="comment"
         )
 
     def test_report_violation_without_auth_header(self):
         # Call API without header
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
+        comment_id = 1
         actual_response = self.client.post(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/{1}/report",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/{comment_id}/report",
             follow_redirects=True,
             content_type="application/json",
         )
@@ -35,8 +36,9 @@ class TestReportViolationOnTaskCommentAPI(TasksBaseTestCase):
         # Set headers, expected response, and actual response.
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.USER_CANT_REPORT_THEIR_OWN_COMMENT
+        comment_id = 1
         actual_response = self.client.post(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/{1}/report",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/{comment_id}/report",
             follow_redirects=True,
             content_type="application/json",
             headers=auth_header
@@ -50,11 +52,12 @@ class TestReportViolationOnTaskCommentAPI(TasksBaseTestCase):
         TaskCommentDAO().create_task_comment(
             user_id=2, task_id=1, relation_id=self.relation_id, comment="comment"
         )
+        comment_id = 2
         # Set headers, expected response, and actual response.
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY
         actual_response = self.client.post(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/{2}/report",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/{comment_id}/report",
             follow_redirects=True,
             content_type="application/json",
             headers=auth_header
