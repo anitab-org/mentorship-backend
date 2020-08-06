@@ -104,7 +104,7 @@ class OtherUser(Resource):
     @staticmethod
     def validate_param(user_id):
         return isinstance(user_id, int)
-    
+
 
 @users_ns.route("user")
 @users_ns.response(
