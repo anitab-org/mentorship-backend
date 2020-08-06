@@ -3,7 +3,7 @@ import unittest
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
-
+from http import HTTPStatus
 
 class TestTaskCommentDao(TasksBaseTestCase):
     @staticmethod
@@ -72,6 +72,29 @@ class TestTaskCommentDao(TasksBaseTestCase):
         # Verify that task comment was deleted
         self.assertEqual(expected_response, actual_response)
 
+    def test_dao_report_violation(self):
+        self.create_task_comment()
+
+        # 1. User not involved in this relation
+        self.assertEqual(
+            TaskCommentDAO.report_violation(user_id=3, relation_id=2, task_id=1, _id=1)[1], HTTPStatus.UNAUTHORIZED
+        )
+        # 2. Task comment does not exist
+        self.assertEqual(
+            TaskCommentDAO.report_violation(user_id=1, relation_id=2, task_id=1, _id=2)[1], HTTPStatus.NOT_FOUND
+        )
+        # 3. User can't report their own comment
+        self.assertEqual(
+            TaskCommentDAO.report_violation(user_id=1, relation_id=2, task_id=1, _id=1)[1], HTTPStatus.FORBIDDEN
+        )
+        # 4. Task Comment does not exist
+        self.assertEqual(
+            TaskCommentDAO.report_violation(user_id=1, relation_id=2, task_id=2, _id=1)[1], HTTPStatus.NOT_FOUND
+        )
+        # 5. Success. Task comment reported successfully
+        self.assertEqual(
+            TaskCommentDAO.report_violation(user_id=2, relation_id=2, task_id=1, _id=1)[1], HTTPStatus.OK
+        )
 
 if __name__ == "__main__":
     unittest.main()
