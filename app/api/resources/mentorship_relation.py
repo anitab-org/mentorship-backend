@@ -239,34 +239,20 @@ class ReportViolationForComment(Resource):
     @jwt_required
     @mentorship_relation_ns.doc("report_violation_for_comment")
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(
-        HTTPStatus.OK, "%s" % messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY
-    )
-    @mentorship_relation_ns.response(
-        HTTPStatus.FORBIDDEN, "%s" % messages.USER_CANT_REPORT_THEIR_OWN_COMMENT
-    )
-    @mentorship_relation_ns.response(
-        HTTPStatus.BAD_REQUEST, "%s" % messages.UNACCEPTED_STATE_RELATION
-    )
-    @mentorship_relation_ns.response(
-        HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
-            messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
-        ),
-    )
-    @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND,
-        "%s\n%s\n%s\n%s"
-        % (
-            messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
-            messages.TASK_DOES_NOT_EXIST,
-            messages.TASK_COMMENT_DOES_NOT_EXIST,
-            messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST,
-        ),
+    @mentorship_relation_ns.doc(
+        responses={
+            HTTPStatus.OK: f"{messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY}",
+            HTTPStatus.FORBIDDEN: f"{messages.USER_CANT_REPORT_THEIR_OWN_COMMENT}",
+            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}",
+            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.NOT_FOUND: f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_DOES_NOT_EXIST}<br>"
+            f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST}",
+        }
     )
     def put(cls, request_id, task_id, comment_id):
         """
