@@ -104,8 +104,7 @@ class OtherUser(Resource):
     @staticmethod
     def validate_param(user_id):
         return isinstance(user_id, int)
-            return marshal(requested_user, public_user_api_model), HTTPStatus.OK
-
+            
 
 @users_ns.route("user")
 @users_ns.response(
