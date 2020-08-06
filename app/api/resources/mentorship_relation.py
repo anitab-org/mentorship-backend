@@ -17,7 +17,6 @@ from app.utils.validation_utils import get_length_validation_error_message
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.api.email_utils import send_email_mentorship_relation_accepted
 from app.api.email_utils import send_email_new_request
-from app.api.email_utils import send_email_report_violation
 
 mentorship_relation_ns = Namespace(
     "Mentorship Relation",
@@ -254,7 +253,7 @@ class ReportViolationForComment(Resource):
             f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST}",
         }
     )
-    def put(cls, request_id, task_id, comment_id):
+    def post(cls, request_id, task_id, comment_id):
         """
         Report Violation for a task comment by the other person in relation.
 
@@ -269,9 +268,6 @@ class ReportViolationForComment(Resource):
         response = TaskCommentDAO.report_violation(
             user_id=user_id, relation_id=request_id, task_id=task_id, _id=comment_id
         )
-
-        if response[1] == HTTPStatus.OK:
-            send_email_report_violation(user_id, comment_id)
 
         return response
 

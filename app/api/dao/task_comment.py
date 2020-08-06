@@ -3,6 +3,7 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.task_comment import TaskCommentModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
+from app.api.email_utils import send_email_report_violation
 from http import HTTPStatus
 
 def validate_data_for_task_comment(user_id, task_id, relation_id):
@@ -226,7 +227,9 @@ class TaskCommentDAO:
         if task_comment.task_id != task_id:
             return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
+        # If successful, send email and return success response.
         if task_comment:
+            send_email_report_violation(user_id, _id)
             return messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY, HTTPStatus.OK
 
         return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
