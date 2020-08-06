@@ -164,7 +164,7 @@ def send_email_report_violation(user_id, comment_id):
         "email_report_violation.html",
         reporter_name=user_name,
         comment=comment,
-        commentor_name=commentor_name,
+        commentor_name=commentor_name
     )
     send_email("opensource@anitab.org", subject, html)
 
