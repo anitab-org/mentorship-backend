@@ -188,7 +188,7 @@ class AcceptMentorshipRelation(Resource):
         HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.BAD_REQUEST,
+        HTTPStatus.FORBIDDEN,
         "%s\n%s\n%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,
@@ -786,12 +786,12 @@ class TaskComment(Resource):
     @mentorship_relation_ns.doc(
         responses={
             HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY}",
-            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}<br>"
-            f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE}",
+            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}",
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
             f"{messages.TOKEN_IS_INVALID}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
+            HTTPStatus.FORBIDDEN: f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE}",
             HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_DOES_NOT_EXIST}<br>"
