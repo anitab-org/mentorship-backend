@@ -166,7 +166,7 @@ def send_email_report_violation(user_id, comment_id):
         comment=comment,
         commentor_name=commentor_name,
     )
-    send_email("", subject, html)
+    send_email("opensource@anitab.org", subject, html)
 
 def send_email_new_request(user_sender, user_recipient, notes, sender_role):
     """Sends a notification html email message to the user_recipient user.
