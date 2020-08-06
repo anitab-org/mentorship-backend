@@ -150,21 +150,33 @@ def send_email_report_violation(user_id, comment_id):
     from app.database.models.user import UserModel
     from app.database.models.task_comment import TaskCommentModel
 
-    # Get the name of the user who's reporting the violation
-    user_name = UserModel.find_by_id(user_id).name
+    # User who's reporting the violation
+    user = UserModel.find_by_id(user_id)
+    # Get the name of the user
+    user_name = user.name
+    # Email of user
+    user_email = user.email
+
     # Get task comment
     task_comment = TaskCommentModel.find_by_id(comment_id)
-    # Get comment string from task comment
+    # Comment string
     comment = task_comment.comment
-    # Get commentor name
-    commentor_name = UserModel.find_by_id(task_comment.user_id).name
+
+    # Commentor of the task comment being reported
+    commentor = UserModel.find_by_id(task_comment.user_id)
+    # Commentor name
+    commentor_name = commentor.name
+    # Commentor email
+    commentor_email = commentor.email
 
     subject = "Violation Reported"
     html = render_template(
         "email_report_violation.html",
         reporter_name=user_name,
+        reporter_email=user_email,
         comment=comment,
-        commentor_name=commentor_name
+        commentor_name=commentor_name,
+        commentor_email=commentor_email
     )
     send_email("opensource@anitab.org", subject, html)
 
