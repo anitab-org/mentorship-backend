@@ -33,7 +33,12 @@ To setup the project locally read these wiki pages and follow the instructions:
 
 ### Run app
 
-The project runs on Python 3. We use [Poetry](https://python-poetry.org/) to manage dependencies.
+The project runs on Python 3. We use [Poetry](https://python-poetry.org/) to manage dependencies. It's powerful yet simple to use.
+Here are a few basic commands you'll use the most:
+- `poetry install` - installs the dependencies from `pyproject.toml` package
+- `poetry add <package>` - adds the `<package>` to `pyproject.toml` and installs it
+- `poetry remove <package>`- removes the `<package>` from `pyproject.toml` and uninstalls it
+- `poetry shell` - spawns a shell within the virtual environment. Equivalent of `virtualenv activate`, for those familiar with [`virtualenv`](https://pypi.org/project/virtualenv/)
 
 1. [Install Poetry](https://python-poetry.org/docs/#installation):
 
