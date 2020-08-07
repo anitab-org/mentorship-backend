@@ -15,6 +15,10 @@ keywords = ["REST API",
     "Flask",
     "Women in Technology"]
 
+packages = [
+    { include = "**/*.py", from = "." },
+]
+
 [tool.poetry.dependencies]
 python = "^3.6"
 alembic = "^1.4.2"
@@ -81,14 +85,7 @@ semantic-version = "^2.5.0"
 six = "^1.11.0"
 SQLAlchemy = "^1.2.7"
 tabulate = "^0.7.5"
-termcolor = "^1.1.0"
-texttable = "^0.9.1"
 toml = "^0.10.0"
-typed-ast = "^1.4.1"
-tzlocal = "^1.5.1"
-urllib3 = "^1.22"
-wcwidth = "^0.1.7"
-websocket-client = "^0.48.0"
 Werkzeug = "^0.15.3"
 
 
