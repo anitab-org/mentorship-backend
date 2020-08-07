@@ -20,7 +20,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 alembic = "^1.4.2"
 APScheduler = "^3.5.1"
 click = "^6.7"
