@@ -35,7 +35,7 @@ To setup the project locally read these wiki pages and follow the instructions:
 
 The project runs on Python 3. We use [Poetry](https://python-poetry.org/) to manage dependencies.
 
-1. [Install Poetry](https://python-poetry.org/docs/#installation:
+1. [Install Poetry](https://python-poetry.org/docs/#installation):
 
 2. Install dependencies using Poetry:
 `poetry install`
