@@ -2,8 +2,8 @@
 name = "mentorship-backend"
 version = "1.0.0"
 description = " Backend REST API for the Mentorship System."
-authors = ["Isabel Costa <unknown>"]
-maintainers = ["Isabel Costa <unknown>"]
+authors = ["Isabel Costa <isabelcmdcosta@gmail.com>"]
+maintainers = ["Isabel Costa <isabelcmdcosta@gmail.com>"]
 license = "GNU GPL v3"
 readme = "README.md"
 homepage = "https://github.com/anitab-org/mentorship-backend"
