@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "mentorship-backend"
 version = "1.0.0"
-description = " Backend REST API for the Mentorship System."
-authors = ["Isabel Costa <isabelcmdcosta@gmail.com>"]
-maintainers = ["Isabel Costa <isabelcmdcosta@gmail.com>"]
+description = "Backend REST API for the Mentorship System."
+authors = ["AnitaB.org opensource@anitab.org"]
+maintainers = ["AnitaB.org opensource@anitab.org"]
 license = "GNU GPL v3"
 readme = "README.md"
 homepage = "https://github.com/anitab-org/mentorship-backend"
