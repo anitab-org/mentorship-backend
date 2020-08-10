@@ -378,6 +378,27 @@ class UserDAO:
         return None
 
     @staticmethod
+    def get_user_for_google_login(email: str):
+        """Returns user for google login
+
+        Checks email of the user to find an existing user. 
+        If found, the user is returned.
+        Else, a new user is created and returned
+
+        Arguments:
+            email: email of the user, used to check for existing user
+
+        Returns:
+            Returns authenticated user
+        """
+        user = UserModel.find_by_email(email)
+
+        if user:
+            return user
+        else:
+            return None
+
+    @staticmethod
     @email_verification_required
     def get_achievements(user_id: int):
         """Shows a subset of the user's achievements

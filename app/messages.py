@@ -205,6 +205,7 @@ TOKEN_SENT_TO_EMAIL_OF_USER = {"message": "Token sent to the user's email."}
 EMAIL_VERIFICATION_MESSAGE = {
     "message": "Check your email, a new verification" " email was sent."
 }
+GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED = "Google auth token verification failed"
 
 # Success messages
 TASK_WAS_ALREADY_ACHIEVED = {"message": "Task was already achieved."}

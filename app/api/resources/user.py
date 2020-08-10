@@ -16,6 +16,8 @@ from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
 from app.api.resources.common import auth_header_parser
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -388,6 +390,63 @@ class RefreshUser(Resource):
             {"access_token": access_token, "access_expiry": access_expiry.timestamp()},
             HTTPStatus.OK,
         )
+
+@users_ns.route("google/auth/callback")
+class GoogleAuth(Resource):
+    @classmethod
+    @users_ns.doc("google-auth callback")
+    @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
+    @users_ns.response(HTTPStatus.UNAUTHORIZED, f"{messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED}")
+    @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_NOT_FOUND}")
+    @users_ns.expect(google_auth_body_model)
+    def post(cls):
+        """
+        Login/Sign-in user using Google Sign-In.
+
+        The Google user idToken is received from the client side, which is then verified for its authenticity.
+        On verification, the user is either logged-in or sign-up depending upon wheter it is an existing
+        or a new user.
+        """
+
+        token = request.json.get("id_token")
+        email = request.json.get("email")
+        client_id = "992237180107-lsibe891591qcubpbd8qom4fts74i5in.apps.googleusercontent.com"
+
+        # Verify google auth id token
+        try:
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), client_id)
+
+            # id_token is valid. Get user.
+            user = DAO.get_user_for_google_login(email)
+
+            if not user:
+                return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
+
+            # create tokens and expiry timestamps
+            access_token = create_access_token(identity=user.id)
+            refresh_token = create_refresh_token(identity=user.id)
+
+            from run import application
+            access_expiry = datetime.utcnow() + application.config.get(
+                "JWT_ACCESS_TOKEN_EXPIRES"
+            )
+            refresh_expiry = datetime.utcnow() + application.config.get(
+                "JWT_REFRESH_TOKEN_EXPIRES"
+            )
+
+            # return data
+            return (
+                {
+                    "access_token": access_token,
+                    "access_expiry": access_expiry.timestamp(),
+                    "refresh_token": refresh_token,
+                    "refresh_expiry": refresh_expiry.timestamp(),
+                },
+                HTTPStatus.OK,
+            )
+
+        except ValueError:
+            return messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED, HTTPStatus.UNAUTHORIZED
 
 
 @users_ns.route("login")

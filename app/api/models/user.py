@@ -16,6 +16,7 @@ def add_models_to_namespace(api_namespace):
         update_user_request_body_model.name
     ] = update_user_request_body_model
     api_namespace.models[login_request_body_model.name] = login_request_body_model
+    api_namespace.models[google_auth_body_model.name] = google_auth_body_model
     api_namespace.models[login_response_body_model.name] = login_response_body_model
     api_namespace.models[refresh_response_body_model.name] = refresh_response_body_model
     api_namespace.models[
@@ -149,6 +150,14 @@ login_request_body_model = Model(
     {
         "username": fields.String(required=True, description="User's username"),
         "password": fields.String(required=True, description="User's password"),
+    },
+)
+
+google_auth_body_model = Model(
+    "Google authentication data model",
+    {
+        "id_token": fields.String(required=True, description="User's idToken given by Google auth"),
+        "email": fields.String(required=True, description="User's email given by Google auth"),
     },
 )
 
