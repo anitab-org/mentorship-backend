@@ -70,6 +70,30 @@ class UserDAO:
         return messages.USER_WAS_CREATED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
+    def create_user_using_google(data: Dict[str, str]):
+        """
+        Creates a new user using Google Auth.
+
+        Arguments:
+            data: A list containing the user's name and email
+
+        Returns:
+            The new user created
+        """
+
+        name = data["name"]
+        username = None
+        password = None
+        email = data["email"]
+        terms_and_conditions_checked = True
+        social_login = True
+
+        user = UserModel(name, username, password, email, terms_and_conditions_checked, social_login)
+        user.save_to_db()
+
+        return user
+
+    @staticmethod
     @email_verification_required
     def delete_user(user_id: int):
         """ Deletes a user.

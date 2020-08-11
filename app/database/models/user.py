@@ -59,7 +59,7 @@ class UserModel(db.Model):
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
 
-    def __init__(self, name, username, password, email, terms_and_conditions_checked):
+    def __init__(self, name, username, password, email, terms_and_conditions_checked, social_login=False):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
         ## required fields
 
@@ -69,11 +69,15 @@ class UserModel(db.Model):
         self.terms_and_conditions_checked = terms_and_conditions_checked
 
         # saving hash instead of saving password in plain text
-        self.set_password(password)
+        if not social_login:
+            self.set_password(password)
 
         # default values
         self.is_admin = True if self.is_empty() else False  # first user is admin
-        self.is_email_verified = False
+        if social_login:
+            self.is_email_verified = True
+        else:
+            self.is_email_verified = False
         self.registration_date = time.time()
 
         ## optional fields

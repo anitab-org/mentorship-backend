@@ -120,8 +120,8 @@ register_user_api_model = Model(
     "User registration model",
     {
         "name": fields.String(required=True, description="User name"),
-        "username": fields.String(required=True, description="User username"),
-        "password": fields.String(required=True, description="User password"),
+        "username": fields.String(required=False, description="User username"),
+        "password": fields.String(required=False, description="User password"),
         "email": fields.String(required=True, description="User email"),
         "terms_and_conditions_checked": fields.Boolean(
             required=True, description="User check Terms and Conditions value"
@@ -157,6 +157,7 @@ google_auth_body_model = Model(
     "Google authentication data model",
     {
         "id_token": fields.String(required=True, description="User's idToken given by Google auth"),
+        "name": fields.String(required=True, description="User's name given by Google auth"),
         "email": fields.String(required=True, description="User's email given by Google auth"),
     },
 )

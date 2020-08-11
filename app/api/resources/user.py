@@ -420,7 +420,9 @@ class GoogleAuth(Resource):
             user = DAO.get_user_for_google_login(email)
 
             if not user:
-                return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
+                # create a new user
+                data = request.json
+                user = DAO.create_user_using_google(data)
 
             # create tokens and expiry timestamps
             access_token = create_access_token(identity=user.id)
