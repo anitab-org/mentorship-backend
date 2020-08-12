@@ -391,14 +391,67 @@ class RefreshUser(Resource):
             HTTPStatus.OK,
         )
 
+
+@users_ns.route("apple/auth/callback")
+class AppleAuth(Resource):
+    @classmethod
+    @users_ns.doc("apple-auth callback")
+    @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
+    @users_ns.expect(social_auth_body_model)
+    def post(cls):
+        """
+        Login/Sign-in user using Apple Sign-In.
+
+        The Apple user id (id_token) is recieved which becomes the primary basis for user identification.
+        If not found then that means user is using apple sign-in for first time. In this case, email is checked.
+        If email found, that account is used. Else, a new account is created.
+        """
+
+        apple_auth_id = request.json.get("id_token")
+        email = request.json.get("email")
+        
+        # get existing user
+        user = DAO.get_user_for_social_login(email, apple_auth_id)
+
+        # if user not found, create a new user
+        if not user:
+            data = request.json
+            user = DAO.create_user_using_social_login(data, apple_auth_id)
+        # else, set apple auth id to later identify the user
+        else:
+            user.apple_auth_id = apple_auth_id
+            user.save_to_db()
+
+        # create tokens and expiry timestamps
+        access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
+
+        from run import application
+        access_expiry = datetime.utcnow() + application.config.get(
+            "JWT_ACCESS_TOKEN_EXPIRES"
+        )
+        refresh_expiry = datetime.utcnow() + application.config.get(
+            "JWT_REFRESH_TOKEN_EXPIRES"
+        )
+
+        # return data
+        return (
+            {
+                "access_token": access_token,
+                "access_expiry": access_expiry.timestamp(),
+                "refresh_token": refresh_token,
+                "refresh_expiry": refresh_expiry.timestamp(),
+            },
+            HTTPStatus.OK,
+        )
+
 @users_ns.route("google/auth/callback")
 class GoogleAuth(Resource):
     @classmethod
     @users_ns.doc("google-auth callback")
     @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
     @users_ns.response(HTTPStatus.UNAUTHORIZED, f"{messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED}")
-    @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_NOT_FOUND}")
-    @users_ns.expect(google_auth_body_model)
+    @users_ns.expect(social_auth_body_model)
     def post(cls):
         """
         Login/Sign-in user using Google Sign-In.
@@ -417,12 +470,12 @@ class GoogleAuth(Resource):
             idinfo = id_token.verify_oauth2_token(token, requests.Request(), client_id)
 
             # id_token is valid. Get user.
-            user = DAO.get_user_for_google_login(email)
+            user = DAO.get_user_for_social_login(email)
 
             if not user:
                 # create a new user
                 data = request.json
-                user = DAO.create_user_using_google(data)
+                user = DAO.create_user_using_social_login(data)
 
             # create tokens and expiry timestamps
             access_token = create_access_token(identity=user.id)

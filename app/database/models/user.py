@@ -29,6 +29,7 @@ class UserModel(db.Model):
 
     # security
     password_hash = db.Column(db.String(100))
+    apple_auth_id = db.Column(db.String(100))
 
     # registration
     registration_date = db.Column(db.Float)
@@ -59,7 +60,7 @@ class UserModel(db.Model):
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
 
-    def __init__(self, name, username, password, email, terms_and_conditions_checked, social_login=False):
+    def __init__(self, name, username, password, email, terms_and_conditions_checked, social_login=False, apple_auth_id=None):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
         ## required fields
 
@@ -71,6 +72,10 @@ class UserModel(db.Model):
         # saving hash instead of saving password in plain text
         if not social_login:
             self.set_password(password)
+
+        # save auth id for sign in with apple (if present)
+        if apple_auth_id:
+            self.apple_auth_id = apple_auth_id
 
         # default values
         self.is_admin = True if self.is_empty() else False  # first user is admin
@@ -132,6 +137,11 @@ class UserModel(db.Model):
     def find_by_id(cls, _id: int) -> 'UserModel':
         """Returns the user that has the id we searched for. """
         return cls.query.filter_by(id=_id).first()
+
+    @classmethod
+    def find_by_apple_auth_id(cls, _id: str) -> 'UserModel':
+        """Returns the user that has apple auth id we searched for."""
+        return cls.query.filter_by(apple_auth_id=_id).first()
 
     @classmethod
     def get_all_admins(cls, is_admin=True):

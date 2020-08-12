@@ -70,7 +70,7 @@ class UserDAO:
         return messages.USER_WAS_CREATED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
-    def create_user_using_google(data: Dict[str, str]):
+    def create_user_using_social_login(data: Dict[str, str], apple_auth_id: str=None):
         """
         Creates a new user using Google Auth.
 
@@ -88,7 +88,7 @@ class UserDAO:
         terms_and_conditions_checked = True
         social_login = True
 
-        user = UserModel(name, username, password, email, terms_and_conditions_checked, social_login)
+        user = UserModel(name, username, password, email, terms_and_conditions_checked, social_login, apple_auth_id)
         user.save_to_db()
 
         return user
@@ -402,7 +402,7 @@ class UserDAO:
         return None
 
     @staticmethod
-    def get_user_for_google_login(email: str):
+    def get_user_for_social_login(email: str, apple_auth_id: str=None):
         """Returns user for google login
 
         Checks email of the user to find an existing user. 
@@ -415,7 +415,17 @@ class UserDAO:
         Returns:
             Returns authenticated user
         """
-        user = UserModel.find_by_email(email)
+
+        # If apple auth id given, first try to find existing user using it
+        if apple_auth_id:
+            user = UserModel.find_by_apple_auth_id(apple_auth_id)
+            # if user not found, try finding using email
+            if not user:
+                user = UserModel.find_by_email(email)
+
+        # If apple auth id not given, try finding using email
+        else:
+            user = UserModel.find_by_email(email)
 
         if user:
             return user
