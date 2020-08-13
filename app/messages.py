@@ -206,6 +206,7 @@ EMAIL_VERIFICATION_MESSAGE = {
     "message": "Check your email, a new verification" " email was sent."
 }
 GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED = "Google auth token verification failed"
+USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER = "An account for this email is already present with a different login method."
 
 # Success messages
 TASK_WAS_ALREADY_ACHIEVED = {"message": "Task was already achieved."}

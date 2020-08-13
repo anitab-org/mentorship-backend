@@ -434,16 +434,18 @@ class AppleAuth(Resource):
         email = request.json.get("email")
         
         # get existing user
-        user = DAO.get_user_for_social_login(email, apple_auth_id)
+        user = DAO.get_user_by_email(email)
 
         # if user not found, create a new user
         if not user:
             data = request.json
             user = DAO.create_user_using_social_login(data, apple_auth_id)
-        # else, set apple auth id to later identify the user
+        # if user found, confirm it is for the same social sign in provider
         else:
-            user.apple_auth_id = apple_auth_id
-            user.save_to_db()
+            social_sign_in_details = DAO.get_social_sign_in_details(user.id, "apple")
+            # if details not present, return error
+            if not social_sign_in_details:
+                return messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER, HTTPStatus.NOT_FOUND
 
         return create_tokens_for_new_user_and_return(user)
 
@@ -472,12 +474,18 @@ class GoogleAuth(Resource):
             idinfo = id_token.verify_oauth2_token(token, requests.Request(), client_id)
 
             # id_token is valid. Get user.
-            user = DAO.get_user_for_social_login(email)
-
+            user = DAO.get_user_by_email(email)
+            
             if not user:
                 # create a new user
                 data = request.json
                 user = DAO.create_user_using_social_login(data)
+            # if user found, confirm it is for the same social sign in provider
+            else:
+                social_sign_in_details = DAO.get_social_sign_in_details(user.id, "google")
+                # if details not present, return error
+                if not social_sign_in_details:
+                    return messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER, HTTPStatus.NOT_FOUND
 
             return create_tokens_for_new_user_and_return(user)
 

@@ -10,6 +10,7 @@ from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
+from app.database.models.social_sign_in import SocialSignInModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -88,10 +89,34 @@ class UserDAO:
         terms_and_conditions_checked = True
         social_login = True
 
-        user = UserModel(name, username, password, email, terms_and_conditions_checked, social_login, apple_auth_id)
+        # create and save user
+        user = UserModel(name, username, password, email, terms_and_conditions_checked, social_login)
         user.save_to_db()
 
+        # create and save social sign in details for the user
+        user_id = UserModel.find_by_email(email).id
+        social_sign_in_type = "apple" if apple_auth_id else "google"
+        id_token = data["id_token"]
+        social_sign_in_details = SocialSignInModel(user_id, social_sign_in_type, id_token, email, name)
+        social_sign_in_details.save_to_db()
+
         return user
+
+    @staticmethod
+    def get_social_sign_in_details(user_id: int, social_sign_in_type: str):
+        """
+        Returns social sign in details of the user.
+
+        Arguments:
+            user_id: user_id whose details are to be fetched
+            social_sign_in_type: social sign in type whole details are to be fetched
+
+        Returns:
+            social sign in details of the user for the specificed type
+        """
+
+        social_sign_in_details = SocialSignInModel.get_social_sign_in_details(user_id, social_sign_in_type)
+        return social_sign_in_details
 
     @staticmethod
     @email_verification_required
@@ -400,37 +425,6 @@ class UserDAO:
             return user
 
         return None
-
-    @staticmethod
-    def get_user_for_social_login(email: str, apple_auth_id: str=None):
-        """Returns user for google login
-
-        Checks email of the user to find an existing user. 
-        If found, the user is returned.
-        Else, a new user is created and returned
-
-        Arguments:
-            email: email of the user, used to check for existing user
-
-        Returns:
-            Returns authenticated user
-        """
-
-        # If apple auth id given, first try to find existing user using it
-        if apple_auth_id:
-            user = UserModel.find_by_apple_auth_id(apple_auth_id)
-            # if user not found, try finding using email
-            if not user:
-                user = UserModel.find_by_email(email)
-
-        # If apple auth id not given, try finding using email
-        else:
-            user = UserModel.find_by_email(email)
-
-        if user:
-            return user
-        else:
-            return None
 
     @staticmethod
     @email_verification_required
