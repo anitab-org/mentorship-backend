@@ -24,6 +24,29 @@ add_models_to_namespace(users_ns)
 
 DAO = UserDAO()  # User data access object
 
+def create_tokens_for_new_user_and_return(user):
+    # create tokens and expiry timestamps
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+
+    from run import application
+    access_expiry = datetime.utcnow() + application.config.get(
+        "JWT_ACCESS_TOKEN_EXPIRES"
+    )
+    refresh_expiry = datetime.utcnow() + application.config.get(
+        "JWT_REFRESH_TOKEN_EXPIRES"
+    )
+
+    # return data
+    return (
+        {
+            "access_token": access_token,
+            "access_expiry": access_expiry.timestamp(),
+            "refresh_token": refresh_token,
+            "refresh_expiry": refresh_expiry.timestamp(),
+        },
+        HTTPStatus.OK,
+    )
 
 @users_ns.route("users")
 @users_ns.response(
@@ -422,28 +445,7 @@ class AppleAuth(Resource):
             user.apple_auth_id = apple_auth_id
             user.save_to_db()
 
-        # create tokens and expiry timestamps
-        access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
-
-        from run import application
-        access_expiry = datetime.utcnow() + application.config.get(
-            "JWT_ACCESS_TOKEN_EXPIRES"
-        )
-        refresh_expiry = datetime.utcnow() + application.config.get(
-            "JWT_REFRESH_TOKEN_EXPIRES"
-        )
-
-        # return data
-        return (
-            {
-                "access_token": access_token,
-                "access_expiry": access_expiry.timestamp(),
-                "refresh_token": refresh_token,
-                "refresh_expiry": refresh_expiry.timestamp(),
-            },
-            HTTPStatus.OK,
-        )
+        return create_tokens_for_new_user_and_return(user)
 
 @users_ns.route("google/auth/callback")
 class GoogleAuth(Resource):
@@ -477,28 +479,7 @@ class GoogleAuth(Resource):
                 data = request.json
                 user = DAO.create_user_using_social_login(data)
 
-            # create tokens and expiry timestamps
-            access_token = create_access_token(identity=user.id)
-            refresh_token = create_refresh_token(identity=user.id)
-
-            from run import application
-            access_expiry = datetime.utcnow() + application.config.get(
-                "JWT_ACCESS_TOKEN_EXPIRES"
-            )
-            refresh_expiry = datetime.utcnow() + application.config.get(
-                "JWT_REFRESH_TOKEN_EXPIRES"
-            )
-
-            # return data
-            return (
-                {
-                    "access_token": access_token,
-                    "access_expiry": access_expiry.timestamp(),
-                    "refresh_token": refresh_token,
-                    "refresh_expiry": refresh_expiry.timestamp(),
-                },
-                HTTPStatus.OK,
-            )
+            return create_tokens_for_new_user_and_return(user)
 
         except ValueError:
             return messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED, HTTPStatus.UNAUTHORIZED
@@ -545,28 +526,7 @@ class LoginUser(Resource):
         if not user.is_email_verified:
             return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
 
-        access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
-
-        from run import application
-
-        access_expiry = datetime.utcnow() + application.config.get(
-            "JWT_ACCESS_TOKEN_EXPIRES"
-        )
-        refresh_expiry = datetime.utcnow() + application.config.get(
-            "JWT_REFRESH_TOKEN_EXPIRES"
-        )
-
-        return (
-            {
-                "access_token": access_token,
-                "access_expiry": access_expiry.timestamp(),
-                "refresh_token": refresh_token,
-                "refresh_expiry": refresh_expiry.timestamp(),
-            },
-            HTTPStatus.OK,
-        )
-
+        return create_tokens_for_new_user_and_return(user)
 
 @users_ns.route("home")
 @users_ns.doc("home")
