@@ -205,9 +205,9 @@ TOKEN_SENT_TO_EMAIL_OF_USER = {"message": "Token sent to the user's email."}
 EMAIL_VERIFICATION_MESSAGE = {
     "message": "Check your email, a new verification" " email was sent."
 }
-GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED = "Google auth token verification failed"
-USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER = "An account for this email is already present with a different login method."
-ANOTHER_USER_FOR_ID_TOKEN_EXISTS = "User for this id token already exists. A new account can't be created."
+GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED = {"message": "Google auth token verification failed"}
+USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER = {"message": "An account for this email is already present with a different login method."}
+ANOTHER_USER_FOR_ID_TOKEN_EXISTS = {"message": "User for this id token already exists. A new account can't be created."}
 
 # Success messages
 TASK_WAS_ALREADY_ACHIEVED = {"message": "Task was already achieved."}

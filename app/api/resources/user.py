@@ -48,6 +48,26 @@ def create_tokens_for_new_user_and_return(user):
         HTTPStatus.OK,
     )
 
+def perform_social_sign_in_and_return_response(email:str, provider: str):
+    # get existing user
+    user = DAO.get_user_by_email(email)
+
+    # if user not found, create a new user
+    if not user:
+        data = request.json
+        user = DAO.create_user_using_social_login(data, provider)
+        # If any error occured, return error
+        if user[1] == HTTPStatus.BAD_REQUEST:
+            return user
+    # if user found, confirm it is for the same social sign in provider
+    else:
+        social_sign_in_details = DAO.get_social_sign_in_details(user.id, provider)
+        # if details not present, return error
+        if not social_sign_in_details:
+            return messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER, HTTPStatus.NOT_FOUND
+
+    return create_tokens_for_new_user_and_return(user)
+
 @users_ns.route("users")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
@@ -420,6 +440,12 @@ class AppleAuth(Resource):
     @classmethod
     @users_ns.doc("apple-auth callback")
     @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
+    @users_ns.doc(
+        responses={
+            HTTPStatus.BAD_REQUEST: f"{messages.ANOTHER_USER_FOR_ID_TOKEN_EXISTS}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER}"
+        }
+    )
     @users_ns.expect(social_auth_body_model)
     def post(cls):
         """
@@ -430,34 +456,22 @@ class AppleAuth(Resource):
         If email found, that account is used. Else, a new account is created.
         """
 
-        apple_auth_id = request.json.get("id_token")
         email = request.json.get("email")
-        
-        # get existing user
-        user = DAO.get_user_by_email(email)
 
-        # if user not found, create a new user
-        if not user:
-            data = request.json
-            user = DAO.create_user_using_social_login(data, "apple")
-            # If any error occured, return error
-            if user[1] == HTTPStatus.BAD_REQUEST:
-                return user
-        # if user found, confirm it is for the same social sign in provider
-        else:
-            social_sign_in_details = DAO.get_social_sign_in_details(user.id, "apple")
-            # if details not present, return error
-            if not social_sign_in_details:
-                return messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER, HTTPStatus.NOT_FOUND
-
-        return create_tokens_for_new_user_and_return(user)
+        return perform_social_sign_in_and_return_response(email, "apple")
 
 @users_ns.route("google/auth/callback")
 class GoogleAuth(Resource):
     @classmethod
     @users_ns.doc("google-auth callback")
     @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
-    @users_ns.response(HTTPStatus.UNAUTHORIZED, f"{messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED}")
+    @users_ns.doc(
+        responses={
+            HTTPStatus.UNAUTHORIZED: f"{messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED}",
+            HTTPStatus.BAD_REQUEST: f"{messages.ANOTHER_USER_FOR_ID_TOKEN_EXISTS}",
+            HTTPStatus.NOT_FOUND: f"{messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER}"
+        }
+    )
     @users_ns.expect(social_auth_body_model)
     def post(cls):
         """
@@ -476,21 +490,8 @@ class GoogleAuth(Resource):
         try:
             idinfo = id_token.verify_oauth2_token(token, requests.Request(), client_id)
 
-            # id_token is valid. Get user.
-            user = DAO.get_user_by_email(email)
-
-            if not user:
-                # create a new user
-                data = request.json
-                user = DAO.create_user_using_social_login(data, "google")
-            # if user found, confirm it is for the same social sign in provider
-            else:
-                social_sign_in_details = DAO.get_social_sign_in_details(user.id, "google")
-                # if details not present, return error
-                if not social_sign_in_details:
-                    return messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER, HTTPStatus.NOT_FOUND
-
-            return create_tokens_for_new_user_and_return(user)
+            # id_token is valid. Perform social sign in.
+            return perform_social_sign_in_and_return_response(email, "google")
 
         except ValueError:
             return messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED, HTTPStatus.UNAUTHORIZED
