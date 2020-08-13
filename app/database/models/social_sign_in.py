@@ -35,6 +35,11 @@ class SocialSignInModel(db.Model):
         """Returns social sign in details of the user for the specified type"""
         return cls.query.filter_by(user_id=user_id, social_sign_in_type=social_sign_in_type).first()
 
+    @classmethod
+    def find_by_id_token(cls, id_token: str):
+        """Finds user using id_token"""
+        return cls.query.filter_by(id_token=id_token).first()
+
     def save_to_db(self):
         """Adds the social sign in details to the database."""
         db.session.add(self)

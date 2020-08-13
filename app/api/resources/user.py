@@ -440,6 +440,9 @@ class AppleAuth(Resource):
         if not user:
             data = request.json
             user = DAO.create_user_using_social_login(data, apple_auth_id)
+            # If any error occured, return error
+            if user[1] == HTTPStatus.BAD_REQUEST:
+                return user
         # if user found, confirm it is for the same social sign in provider
         else:
             social_sign_in_details = DAO.get_social_sign_in_details(user.id, "apple")
@@ -475,7 +478,7 @@ class GoogleAuth(Resource):
 
             # id_token is valid. Get user.
             user = DAO.get_user_by_email(email)
-            
+
             if not user:
                 # create a new user
                 data = request.json

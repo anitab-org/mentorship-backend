@@ -82,6 +82,7 @@ class UserDAO:
             The new user created
         """
 
+        id_token = data["id_token"]
         name = data["name"]
         username = None
         password = None
@@ -89,15 +90,17 @@ class UserDAO:
         terms_and_conditions_checked = True
         social_login = True
 
+        # Check if user for this id_token already exists
+        if SocialSignInModel.find_by_id_token(id_token):
+            return messages.ANOTHER_USER_FOR_ID_TOKEN_EXISTS, HTTPStatus.BAD_REQUEST
+
         # create and save user
         user = UserModel(name, username, password, email, terms_and_conditions_checked, social_login)
         user.save_to_db()
 
         # create and save social sign in details for the user
-        user_id = UserModel.find_by_email(email).id
         social_sign_in_type = "apple" if apple_auth_id else "google"
-        id_token = data["id_token"]
-        social_sign_in_details = SocialSignInModel(user_id, social_sign_in_type, id_token, email, name)
+        social_sign_in_details = SocialSignInModel(user.id, social_sign_in_type, id_token, email, name)
         social_sign_in_details.save_to_db()
 
         return user
