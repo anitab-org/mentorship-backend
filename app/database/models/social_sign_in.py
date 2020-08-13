@@ -6,7 +6,7 @@ class SocialSignInModel(db.Model):
 
     Attributes:
         user_id: user_id, to identify the user in user model
-        social_sign_in_type: social sign in type (google, apple)
+        social_sign_in_type: social sign in type (apple, google)
         id_token: id_token sent by the social sign in provider
         associated_email: email of the user associated with the social sign in provider
         full_name: full name of the user associated with the social sign in provider

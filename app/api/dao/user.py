@@ -71,12 +71,13 @@ class UserDAO:
         return messages.USER_WAS_CREATED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
-    def create_user_using_social_login(data: Dict[str, str], apple_auth_id: str=None):
+    def create_user_using_social_login(data: Dict[str, str], social_sign_in_type: str):
         """
         Creates a new user using Google Auth.
 
         Arguments:
             data: A list containing the user's name and email
+            social_sign_in_type: social sign in provider (apple, google)
 
         Returns:
             The new user created
@@ -99,7 +100,6 @@ class UserDAO:
         user.save_to_db()
 
         # create and save social sign in details for the user
-        social_sign_in_type = "apple" if apple_auth_id else "google"
         social_sign_in_details = SocialSignInModel(user.id, social_sign_in_type, id_token, email, name)
         social_sign_in_details.save_to_db()
 

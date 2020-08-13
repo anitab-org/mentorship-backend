@@ -154,7 +154,7 @@ login_request_body_model = Model(
 )
 
 social_auth_body_model = Model(
-    "Google authentication data model",
+    "Social sign-in authentication data model",
     {
         "id_token": fields.String(required=True, description="User's idToken given by Google auth"),
         "name": fields.String(required=True, description="User's name given by Google auth"),
