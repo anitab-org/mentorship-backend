@@ -152,7 +152,6 @@ login_request_body_model = Model(
     },
 )
 
-# TODO: Remove 'expiry' after the android app refactoring.
 login_response_body_model = Model(
     "Login response data model",
     {
