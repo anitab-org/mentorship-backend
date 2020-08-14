@@ -15,6 +15,7 @@ from app.api.validations.user import *
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
+from app.database.models.user import UserModel
 from app.api.resources.common import auth_header_parser
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -57,7 +58,7 @@ def perform_social_sign_in_and_return_response(email:str, provider: str):
         data = request.json
         user = DAO.create_user_using_social_login(data, provider)
         # If any error occured, return error
-        if user[1] == HTTPStatus.BAD_REQUEST:
+        if not isinstance(user, UserModel):
             return user
     # if user found, confirm it is for the same social sign in provider
     else:
