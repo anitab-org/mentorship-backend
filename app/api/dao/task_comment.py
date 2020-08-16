@@ -234,4 +234,5 @@ class TaskCommentDAO:
         for admin in admins:
             email.append(admin.email)
         send_email_report_violation(user_id, _id, email)
+        
         return messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY, HTTPStatus.OK
