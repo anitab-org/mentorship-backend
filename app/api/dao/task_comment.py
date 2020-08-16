@@ -1,6 +1,7 @@
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.task_comment import TaskCommentModel
+from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from app.api.email_utils import send_email_report_violation
@@ -229,7 +230,11 @@ class TaskCommentDAO:
 
         # If successful, send email and return success response.
         if task_comment:
-            send_email_report_violation(user_id, _id)
+            admins = UserModel.get_all_admins()
+            email = []
+            for admin in admins:
+                email.append(admin.email)
+            send_email_report_violation(user_id, _id, email)
             return messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY, HTTPStatus.OK
 
         return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND

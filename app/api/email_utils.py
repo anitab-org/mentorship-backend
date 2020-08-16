@@ -137,7 +137,7 @@ def send_email_mentorship_relation_accepted(request_id):
     )
     send_email(request_sender.email, subject, html)
 
-def send_email_report_violation(user_id, comment_id):
+def send_email_report_violation(user_id, comment_id, email):
     """
     Sends an email to the admins as a notification,
     for a violation reported by a user on a task comment.
@@ -178,7 +178,7 @@ def send_email_report_violation(user_id, comment_id):
         commenter_name=commenter_name,
         commenter_email=commenter_email
     )
-    send_email("opensource@anitab.org", subject, html)
+    send_email(email, subject, html)
 
 def send_email_new_request(user_sender, user_recipient, notes, sender_role):
     """Sends a notification html email message to the user_recipient user.
