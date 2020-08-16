@@ -228,13 +228,10 @@ class TaskCommentDAO:
         if task_comment.task_id != task_id:
             return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
-        # If successful, send email and return success response.
-        if task_comment:
-            admins = UserModel.get_all_admins()
-            email = []
-            for admin in admins:
-                email.append(admin.email)
-            send_email_report_violation(user_id, _id, email)
-            return messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY, HTTPStatus.OK
-
-        return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        # Success. Send email and return success response.
+        admins = UserModel.get_all_admins()
+        email = []
+        for admin in admins:
+            email.append(admin.email)
+        send_email_report_violation(user_id, _id, email)
+        return messages.VIOLATION_WAS_REPORTED_SUCCESSFULLY, HTTPStatus.OK
