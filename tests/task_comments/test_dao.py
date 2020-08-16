@@ -72,26 +72,37 @@ class TestTaskCommentDao(TasksBaseTestCase):
         # Verify that task comment was deleted
         self.assertEqual(expected_response, actual_response)
 
-    def test_dao_report_violation(self):
+    def test_dao_report_violation_user_not_involved_in_relation(self):
         self.create_task_comment()
 
-        # 1. User not involved in this relation
         self.assertEqual(
             TaskCommentDAO.report_violation(user_id=3, relation_id=2, task_id=1, _id=1)[1], HTTPStatus.UNAUTHORIZED
         )
-        # 2. Task comment does not exist
+
+    def test_report_violation_comment_does_not_exist(self):
+        self.create_task_comment()
+
         self.assertEqual(
             TaskCommentDAO.report_violation(user_id=1, relation_id=2, task_id=1, _id=2)[1], HTTPStatus.NOT_FOUND
         )
-        # 3. User can't report their own comment
+
+    def test_report_comment_user_cant_report_own_comment(self):
+        self.create_task_comment()
+
         self.assertEqual(
             TaskCommentDAO.report_violation(user_id=1, relation_id=2, task_id=1, _id=1)[1], HTTPStatus.FORBIDDEN
         )
-        # 4. Task Comment does not exist
+
+    def test_report_comment_comment_does_not_exist(self):
+        self.create_task_comment()
+
         self.assertEqual(
             TaskCommentDAO.report_violation(user_id=1, relation_id=2, task_id=2, _id=1)[1], HTTPStatus.NOT_FOUND
         )
-        # 5. Success. Task comment reported successfully
+
+    def test_report_comment_successful(self):
+        self.create_task_comment()
+
         self.assertEqual(
             TaskCommentDAO.report_violation(user_id=2, relation_id=2, task_id=1, _id=1)[1], HTTPStatus.OK
         )
