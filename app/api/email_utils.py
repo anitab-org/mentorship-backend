@@ -169,7 +169,7 @@ def send_email_report_violation(user_id, comment_id, email):
     # Commentor email
     commenter_email = commenter.email
 
-    subject = "Violation Reported"
+    subject = "Violation reported on a task comment in the mentorship system"
     html = render_template(
         "email_report_violation.html",
         reporter_name=user_name,
