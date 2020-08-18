@@ -59,6 +59,7 @@ def perform_social_sign_in_and_return_response(email:str, provider: str):
         user = DAO.create_user_using_social_login(data, provider)
         # If any error occured, return error
         if not isinstance(user, UserModel):
+            # If variable user is not of type UserModel, then that means it contains the error message and the HTTP code.
             return user
     # if user found, confirm it is for the same social sign in provider
     else:
