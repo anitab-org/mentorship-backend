@@ -1,8 +1,6 @@
 import os
 from datetime import timedelta
 
-GOOGLE_AUTH_CLIENT_ID = "992237180107-lsibe891591qcubpbd8qom4fts74i5in.apps.googleusercontent.com"
-
 def get_mock_email_config() -> bool:
     MOCK_EMAIL = os.getenv("MOCK_EMAIL")
 

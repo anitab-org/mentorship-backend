@@ -19,7 +19,7 @@ from app.database.models.user import UserModel
 from app.api.resources.common import auth_header_parser
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from config import GOOGLE_AUTH_CLIENT_ID
+import os
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -492,7 +492,7 @@ class GoogleAuth(Resource):
 
         # Verify google auth id token
         try:
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_AUTH_CLIENT_ID)
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.getenv("GOOGLE_AUTH_CLIENT_ID"))
 
             # id_token is valid. Perform social sign in.
             return perform_social_sign_in_and_return_response(email, "google")
