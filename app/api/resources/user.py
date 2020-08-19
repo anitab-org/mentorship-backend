@@ -19,6 +19,7 @@ from app.database.models.user import UserModel
 from app.api.resources.common import auth_header_parser
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from config import GOOGLE_AUTH_CLIENT_ID
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -60,7 +61,9 @@ def perform_social_sign_in_and_return_response(email:str, provider: str):
         # If any error occured, return error
         if not isinstance(user, UserModel):
             # If variable user is not of type UserModel, then that means it contains the error message and the HTTP code.
-            return user
+            error_message = user[0]
+            http_code = user[1]
+            return error_message, http_code
     # if user found, confirm it is for the same social sign in provider
     else:
         social_sign_in_details = DAO.get_social_sign_in_details(user.id, provider)
@@ -486,11 +489,10 @@ class GoogleAuth(Resource):
 
         token = request.json.get("id_token")
         email = request.json.get("email")
-        client_id = "992237180107-lsibe891591qcubpbd8qom4fts74i5in.apps.googleusercontent.com"
 
         # Verify google auth id token
         try:
-            idinfo = id_token.verify_oauth2_token(token, requests.Request(), client_id)
+            idinfo = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_AUTH_CLIENT_ID)
 
             # id_token is valid. Perform social sign in.
             return perform_social_sign_in_and_return_response(email, "google")
