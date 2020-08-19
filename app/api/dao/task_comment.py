@@ -146,7 +146,7 @@ class TaskCommentDAO:
             return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task_comment.user_id != user_id:
-            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU, HTTPStatus.BAD_REQUEST
+            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU, HTTPStatus.FORBIDDEN
 
         if task_comment.task_id != task_id:
             return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -154,7 +154,7 @@ class TaskCommentDAO:
         task_comment.modify_comment(comment)
         task_comment.save_to_db()
 
-        return messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY, HTTPStatus.OK
+        return messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY, HTTPStatus.CREATED
 
     @staticmethod
     @email_verification_required

@@ -88,7 +88,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(403, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_relation_not_existing(self):
@@ -161,7 +161,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="Modified comment.")),
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(201, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         modified_comment = TaskCommentDAO.get_task_comment(1, 1)[0]
