@@ -60,7 +60,7 @@ class TestHappyPath1(BaseTestCase):
         db.session.add(self.mentee)
         db.session.commit()
 
-        self.test_description = "A nice task description"
+        self.task_description = "A nice task description"
 
     def test_happy_path_1(self):
 
