@@ -213,9 +213,9 @@ class TaskCommentDAO:
             message: A message telling the user whether the violation was successfully reported or not
         """
 
-        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
-        if is_valid:
-            return is_valid
+        is_invalid = validate_data_for_task_comment(user_id, task_id, relation_id)
+        if is_invalid:
+            return is_invalid
 
         task_comment = TaskCommentModel.find_by_id(_id)
 
