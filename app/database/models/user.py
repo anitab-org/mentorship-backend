@@ -74,10 +74,8 @@ class UserModel(db.Model):
 
         # default values
         self.is_admin = True if self.is_empty() else False  # first user is admin
-        if social_login:
-            self.is_email_verified = True
-        else:
-            self.is_email_verified = False
+        # email is verified (True) for social login, False for normal login
+        self.is_email_verified = social_login
         self.registration_date = time.time()
 
         ## optional fields
