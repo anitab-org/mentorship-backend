@@ -52,15 +52,13 @@ Anyone asked to stop unacceptable behavior is expected to comply immediately.
 If a community member engages in unacceptable behavior, the community admins may take any action they deem appropriate, up to and including a temporary ban or permanent expulsion from the community without warning (and without refund in the case of a paid event).
 
 ## 6. Reporting Guidelines
-If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a [community admin](mailto:opensource@anitab.org) as soon as possible.
+If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community admin as soon as possible by emailing opensource@anitab.org. Please read [Reporting Guidelines](../.github/reporting_guidelines.md) for details.
 
-
-
-Additionally, community admins are available to help community members engage with local law enforcement or to otherwise help those experiencing unacceptable behavior feel safe. In the context of in-person events, admins will also provide escorts as desired by the person experiencing distress.
+Additionally, community admins are available to help community members engage with local law enforcement or to otherwise help those experiencing unacceptable behavior feel safe. In the context of in-person events, community admins (or event managers) will also provide escorts as desired by the person experiencing distress.
 
 ## 7. Addressing Grievances
 
-If you feel you have been falsely or unfairly accused of violating this Code of Conduct, you should notify [AnitaB.org staff](opensource@anitab.org) with a concise description of your grievance. Your grievance will be handled in accordance with our existing governing policies.
+Only permanent resolutions (such as bans) may be appealed. To appeal a decision of the working group, contact AnitaB.org staff at opensource@anitab.org with your appeal and we will review the case.
 
 
 ## 8. Scope
@@ -79,4 +77,4 @@ This Code of Conduct is distributed under a [Creative Commons Attribution-ShareA
 
 Portions of text derived from the [Django Code of Conduct](https://www.djangoproject.com/conduct/) and the [Geek Feminism Anti-Harassment Policy](https://geekfeminism.wikia.org/wiki/Conference_anti-harassment/Policy).
 
-Retrieved on November 22, 2016 from [Citizen Code of Conduct](http://citizencodeofconduct.org/).
+Retrieved on November 22, 2016 from http://citizencodeofconduct.org/
