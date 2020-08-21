@@ -136,7 +136,6 @@ class TestHappyPath1(BaseTestCase):
         task_creation_response = self.client.post(
             f"/mentorship_relation/{request_id}/task",
             headers=mentor_auth_header,
-            # follow_redirects=True,
             content_type="application/json",
             data=task_request_body,
         )
