@@ -19,15 +19,15 @@ class TestSocialSignIn(BaseTestCase):
 
         # Test the user created
         user = UserDAO.get_user_by_email("test_email")
-        self.assertTrue(user.name == user_data["name"])
+        self.assertEqual(user.name, user_data["name"])
         self.assertTrue(user.username is None)
         self.assertTrue(user.password_hash is None)
 
         # Test the social sign in details of the user created
         social_sign_in_details = UserDAO.get_social_sign_in_details(user.id, "test_type")
-        self.assertTrue(social_sign_in_details.id_token == user_data["id_token"])
-        self.assertTrue(social_sign_in_details.associated_email == user_data["email"])
-        self.assertTrue(social_sign_in_details.full_name == user_data["name"])
+        self.assertEqual(social_sign_in_details.id_token, user_data["id_token"])
+        self.assertEqual(social_sign_in_details.associated_email, user_data["email"])
+        self.assertEqual(social_sign_in_details.full_name, user_data["name"])
 
 if __name__ == "__main__":
     unittest.main()

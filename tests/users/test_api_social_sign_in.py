@@ -50,7 +50,7 @@ class TestSocialSignInAPI(BaseTestCase):
             self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
             self.assertIsNone(response.json.get("refresh_expiry"))
-            self.assertTrue({"message": response.json.get("message")} == messages.ANOTHER_USER_FOR_ID_TOKEN_EXISTS)
+            self.assertEqual({"message": response.json.get("message")}, messages.ANOTHER_USER_FOR_ID_TOKEN_EXISTS)
 
     def test_user_email_signed_in_with_different_provider(self):
         # Create user (email = test_email)
@@ -76,7 +76,7 @@ class TestSocialSignInAPI(BaseTestCase):
             self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
             self.assertIsNone(response.json.get("refresh_expiry"))
-            self.assertTrue({"message": response.json.get("message")} == messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER)
+            self.assertEqual({"message": response.json.get("message")}, messages.USER_NOT_SIGNED_IN_WITH_THIS_PROVIDER)
 
     def test_google_auth_token_not_verified(self):
         with self.client:
@@ -92,7 +92,7 @@ class TestSocialSignInAPI(BaseTestCase):
             self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
             self.assertIsNone(response.json.get("refresh_expiry"))
-            self.assertTrue({"message": response.json.get("message")} == messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED)
+            self.assertEqual({"message": response.json.get("message")}, messages.GOOGLE_AUTH_TOKEN_VERIFICATION_FAILED)
 
 if __name__ == "__main__":
     unittest.main()

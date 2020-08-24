@@ -28,5 +28,5 @@ The callback APIs work as follows:
 3. If a user is found, the social sign-in details are verified for the user id and the exact provider (apple/google). If a social sign-in record is not found, an error is returned. Else, tokens are generated an returned, successfully signing in the user.
 
 Official Developer Documentation:
-[Sign In with Apple](https://developer.apple.com/sign-in-with-apple/get-started/)
-[Sign In with Google](https://developers.google.com/identity/sign-in/ios/start?ver=swift)
+* [Sign In with Apple](https://developer.apple.com/sign-in-with-apple/get-started/)
+* [Sign In with Google](https://developers.google.com/identity/sign-in/ios/start?ver=swift)
