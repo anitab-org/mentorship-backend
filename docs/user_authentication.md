@@ -20,7 +20,7 @@ In addition to authenticating a user using username and password using the (`POS
 
 All the three APIs return the same data model for a successful login, making the implementation in the client app simpler. The flow of social sign-in starts with the client app, where the user uses a provider (Apple or Google) to sign-in with. The provider authenticates the user on their end and sends a user unique `id_token`, `full_name`, and `email`. This data is then used in the callback APIs to authenticate the user on the Mentorship System backend.
 
-To enable the social-sign in functionality, a separate social sign in table has been created which links with the users table using the user id and stores the social sign in data such as id_token, associated_email, etc. The functionality has been designed in a way where linking of different accounts can be enabled as a future scope.
+To enable the social sign-in functionality, a separate social sign-in table has been created which links with the `users` table using the user id and stores the social sign-in data such as id_token, associated_email, etc. The functionality has been designed in a way where linking of different accounts can be enabled as a future scope.
 
 The callback APIs work as follows:
 1. The email of the user is used to find an existing user in the database.
