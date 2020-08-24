@@ -35,34 +35,36 @@ class SendRequest(Resource):
     @mentorship_relation_ns.doc("send_request")
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(
-        HTTPStatus.CREATED, "%s" % messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
+        HTTPStatus.CREATED, f"{messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY}"
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
-        % (
-            messages.MATCH_EITHER_MENTOR_OR_MENTEE,
-            messages.MENTOR_ID_SAME_AS_MENTEE_ID,
-            messages.END_TIME_BEFORE_PRESENT,
-            messages.MENTOR_TIME_GREATER_THAN_MAX_TIME,
-            messages.MENTOR_TIME_LESS_THAN_MIN_TIME,
-            messages.MENTOR_NOT_AVAILABLE_TO_MENTOR,
-            messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED,
-            messages.MENTOR_ALREADY_IN_A_RELATION,
-            messages.MENTEE_ALREADY_IN_A_RELATION,
+        (
+            f"{messages.MATCH_EITHER_MENTOR_OR_MENTEE}<br>"
+            f"{messages.MENTOR_ID_SAME_AS_MENTEE_ID}<br>"
+            f"{messages.END_TIME_BEFORE_PRESENT}<br>"
+            f"{messages.MENTOR_TIME_GREATER_THAN_MAX_TIME}<br>"
+            f"{messages.MENTOR_TIME_LESS_THAN_MIN_TIME}<br>"
+            f"{messages.MENTOR_NOT_AVAILABLE_TO_MENTOR}<br>"
+            f"{messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED}<br>"
+            f"{messages.MENTOR_ALREADY_IN_A_RELATION}<br>"
+            f"{messages.MENTEE_ALREADY_IN_A_RELATION}"
         ),
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, "%s\n%s" % (messages.MENTOR_DOES_NOT_EXIST, messages.MENTEE_DOES_NOT_EXIST)
+        HTTPStatus.NOT_FOUND, 
+        (
+            f"{messages.MENTOR_DOES_NOT_EXIST}<br>"
+            f"{messages.MENTEE_DOES_NOT_EXIST}"
+        )
     )
     def post(cls):
         """
@@ -145,11 +147,10 @@ class GetAllMyMentorshipRelation(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
@@ -185,29 +186,27 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("accept_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY
+        HTTPStatus.OK, f"{messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY}"
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN,
-        "%s\n%s\n%s\n%s"
-        % (
-            messages.NOT_PENDING_STATE_RELATION,
-            messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER,
-            messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION,
-            messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION,
+        (
+            f"{messages.NOT_PENDING_STATE_RELATION}<br>"
+            f"{messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER}<br>"
+            f"{messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION}<br>"
+            f"{messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION}"
         ),
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
     )
     def put(cls, request_id):
         """
@@ -240,28 +239,26 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("reject_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY
+        HTTPStatus.OK, f"{messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY}"
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN,
-        "%s\n%s\n%s"
-        % (
-            messages.NOT_PENDING_STATE_RELATION,
-            messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER,
-            messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST,
+        (
+            f"{messages.NOT_PENDING_STATE_RELATION}<br>"
+            f"{messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER}<br>"
+            f"{messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST}"
         ),
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
     )
     def put(cls, request_id):
         """
@@ -290,24 +287,22 @@ class CancelMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("cancel_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY
+        HTTPStatus.OK, f"{messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY}"
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s"
-        % (messages.UNACCEPTED_STATE_RELATION, messages.CANT_CANCEL_UNINVOLVED_REQUEST),
+        f"{messages.UNACCEPTED_STATE_RELATION}<br> {messages.CANT_CANCEL_UNINVOLVED_REQUEST}"
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
     )
     def put(cls, request_id):
         """
@@ -336,27 +331,25 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("delete_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200, "%s" % messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY
+        200, f"{messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY}"
     )
     @mentorship_relation_ns.response(
         400,
-        "%s\n%s"
-        % (
-            messages.NOT_PENDING_STATE_RELATION,
-            messages.CANT_DELETE_UNINVOLVED_REQUEST,
+        (
+            f"{messages.NOT_PENDING_STATE_RELATION}<br>"
+            f"{messages.CANT_DELETE_UNINVOLVED_REQUEST}"
         ),
     )
     @mentorship_relation_ns.response(
         401,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     @mentorship_relation_ns.response(
-        404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        404, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
     )
     def delete(cls, request_id):
         """
@@ -391,11 +384,10 @@ class ListPastMentorshipRelations(Resource):
     )
     @mentorship_relation_ns.response(
         401,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
@@ -429,11 +421,10 @@ class ListCurrentMentorshipRelation(Resource):
     )
     @mentorship_relation_ns.response(
         401,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     def get(cls):
@@ -470,11 +461,10 @@ class ListPendingMentorshipRequests(Resource):
     @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
     def get(cls):
@@ -500,15 +490,15 @@ class CreateTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc("create_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
-    @mentorship_relation_ns.response(HTTPStatus.CREATED, '%s'%messages.TASK_WAS_CREATED_SUCCESSFULLY)
-    @mentorship_relation_ns.response(HTTPStatus.FORBIDDEN, '%s'%messages.UNACCEPTED_STATE_RELATION)
-    @mentorship_relation_ns.response(HTTPStatus.UNAUTHORIZED, '%s\n%s\n%s'%(
-        messages.TOKEN_HAS_EXPIRED,
-        messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING
+    @mentorship_relation_ns.response(HTTPStatus.CREATED, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}")
+    @mentorship_relation_ns.response(HTTPStatus.FORBIDDEN, f"{messages.UNACCEPTED_STATE_RELATION}")
+    @mentorship_relation_ns.response(HTTPStatus.UNAUTHORIZED, (
+        f"{messages.TOKEN_HAS_EXPIRED}<br>"
+        f"{messages.TOKEN_IS_INVALID}<br>"
+        f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         )
     )
-    @mentorship_relation_ns.response(403, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
+    @mentorship_relation_ns.response(403, f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}")
     def post(cls, request_id):
         """
         Create a task for a mentorship relation.
@@ -554,21 +544,19 @@ class DeleteTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc("delete_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(HTTPStatus.OK, "%s" % messages.TASK_WAS_DELETED_SUCCESSFULLY)
+    @mentorship_relation_ns.response(HTTPStatus.OK, f"{messages.TASK_WAS_DELETED_SUCCESSFULLY}")
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
-            messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}"
         ),
     )
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND,
-        "%s\n%s"
-        % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
+        (f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br> {messages.TASK_DOES_NOT_EXIST}"),
     )
     def delete(cls, request_id, task_id):
         """
@@ -608,16 +596,15 @@ class ListTasks(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
-            messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}"
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}"
     )
     def get(cls, request_id):
         """
@@ -655,23 +642,21 @@ class UpdateTask(Resource):
     @mentorship_relation_ns.doc("update_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, "%s" % messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
+        HTTPStatus.OK, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}"
     )
-    @mentorship_relation_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED)
+    @mentorship_relation_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.TASK_WAS_ALREADY_ACHIEVED}")
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
-        "%s\n%s\n%s\n%s"
-        % (
-            messages.TOKEN_HAS_EXPIRED,
-            messages.TOKEN_IS_INVALID,
-            messages.AUTHORISATION_TOKEN_IS_MISSING,
-            messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+        (
+            f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
+            f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}"
         ),
     )
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND,
-        "%s\n%s"
-        % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
+        (f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br> {messages.TASK_DOES_NOT_EXIST}"),
     )
     def put(cls, request_id, task_id):
         """
