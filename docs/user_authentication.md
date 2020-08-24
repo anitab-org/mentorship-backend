@@ -25,7 +25,7 @@ To enable the social sign-in functionality, a separate social sign-in table has 
 The callback APIs work as follows:
 1. The email of the user is used to find an existing user in the database.
 2. If a user is not found for the email, a new user is created using the data. If a user with the unique `id_token` already exists on the system, an error message is returned. Else, tokens are generated and returned, successfully signing in the user.
-3. If a user is found, the social sign in details are verified for the user id and the exact provider (apple/google). If social sign in record is not found, an error is returned. Else, tokens are generated an returned, succesfully signing in the user.
+3. If a user is found, the social sign-in details are verified for the user id and the exact provider (apple/google). If a social sign-in record is not found, an error is returned. Else, tokens are generated an returned, successfully signing in the user.
 
 Official Developer Documentation:
 [Sign In with Apple](https://developer.apple.com/sign-in-with-apple/get-started/)
