@@ -340,7 +340,7 @@ class DeleteMentorshipRelation(Resource):
         200, "%s" % messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        400,
+        403,
         "%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,
