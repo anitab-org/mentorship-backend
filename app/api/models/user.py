@@ -152,13 +152,11 @@ login_request_body_model = Model(
     },
 )
 
-# TODO: Remove 'expiry' after the android app refactoring.
 login_response_body_model = Model(
     "Login response data model",
     {
-        "access_token": fields.String(required=True, description="User's access token"),
-        "expiry": fields.Float(
-            required=True, description="Access token expiry UNIX timestamp"
+        "access_token": fields.String(
+            required=True, description="User's access token"
         ),
         "access_expiry": fields.Float(
             required=True, description="Access token expiry UNIX timestamp"
