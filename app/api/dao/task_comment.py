@@ -154,7 +154,7 @@ class TaskCommentDAO:
         task_comment.modify_comment(comment)
         task_comment.save_to_db()
 
-        return messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY, HTTPStatus.CREATED
+        return messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
