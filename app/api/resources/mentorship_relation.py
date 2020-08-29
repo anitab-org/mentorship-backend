@@ -39,7 +39,7 @@ class SendRequest(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
+        "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
         % (
             messages.MATCH_EITHER_MENTOR_OR_MENTEE,
             messages.MENTOR_ID_SAME_AS_MENTEE_ID,
@@ -50,6 +50,7 @@ class SendRequest(Resource):
             messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED,
             messages.MENTOR_ALREADY_IN_A_RELATION,
             messages.MENTEE_ALREADY_IN_A_RELATION,
+            messages.MENTOR_ID_FIELD_IS_MISSING,
         ),
     )
     @mentorship_relation_ns.response(
@@ -339,7 +340,7 @@ class DeleteMentorshipRelation(Resource):
         200, "%s" % messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        400,
+        403,
         "%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,

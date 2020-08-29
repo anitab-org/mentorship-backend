@@ -127,7 +127,7 @@ Understand more about our technical decisions made along with this project devel
 
 ## Contributing
 
-Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
+Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](./docs/code_of_conduct.md) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
 
 Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
 
