@@ -113,7 +113,10 @@ This document contains some examples of test cases for each feature implemented 
 | A User1 sends a request to a non existing User2 (user_id does not match any user in database)                                                                            | Fail    |
 | A User1 sends a request to a User2 which is not involved in a mentorship relation and has the email verified. But the User1 is involved in a current mentorship relation | Fail    |
 | A User1 sends a request to itself User1                                                                                                                                  | Fail    |
-| A User1 sends a request to a User2, which does not have its email verified                                                                                               | Fail    |
+| A User1 sends a request to a User2, which does not have its email verified                           
+                                                                    | Fail    |
+
+
 
 ### Delete Relation
 
@@ -156,6 +159,16 @@ This document contains some examples of test cases for each feature implemented 
 | User2 (received the request) cancels a mentorship relation that it is currently involved with User1 (the relation is in an ACCEPTED state)  | Success |
 | User1 cancel a mentorship relation which the User1 is not involved with | Fail |
 
+### Create Task
+**Service:** POST /mentorship_relation/{relation_id}/task
+
+|  Test Case                                                                                | Outcome |
+| ----------------------------------------------------------------------------------------- |-------- |
+| Create a task for a relation, in the accepted state, between logged user and another user | Success |
+| Creating a task without a description (either empty or not in the request body at all)    | Fail    |
+| Create a task when a logged user is not involved in the relation                          | Fail    |
+| Create a task if relation state is different than accepted                                | Fail    |
+
 ### Update task
 
 **Service:** PUT /mentorship_relation/{request_id}/task/{task_id}/complete
@@ -173,7 +186,16 @@ This document contains some examples of test cases for each feature implemented 
 | Logged in user tries to complete a task from an non existing request (The request  exists in a different relationship) | Fail |
 | Logged in user tries to complete a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
 
+### Delete task
 
+**Service:** DELETE /mentorship_relation/{request_id}/task/{task_id}
+| Test Case       | Outcome |
+| ------------- | ------------- |
+| Logged in user delete a task from an existing request in the ACCEPTED state| Success |
+| Logged in user tries to delete a task whose id does not exist from an existing request in the ACCEPTED state (the task does not exist) | Fail |
+| Logged in user tries to delete a task from a non-existing request (Mentorship relation does not exist) in the ACCEPTED state | Fail |
+| Logged in user tries to delete a task from a request which the user is not a mentor nor a mentee | Fail |
+| Non-Logged in user tries to delete a task from an existing request in the ACCEPTED state  | Fail |
 ## Admins
 
 Only admin users have access to this.
@@ -189,6 +211,7 @@ Only admin users have access to this.
 | A User which is not an Admin assigns admin role to itself | Fail |
 | An Admin User assigns admin role to a non-existent User | Fail |
 
+
 ### Revoke an admin role
 
 **Service:** POST /admin/remove
@@ -203,14 +226,4 @@ Only admin users have access to this.
 | Revoking an admin user, when the current user is not an admin | Fail |
 
 
-## Tasks
 
-### Create
-**Service:** POST /mentorship_relation/{relation_id}/task
-
-|  Test Case                                                                                | Outcome |
-| ----------------------------------------------------------------------------------------- |-------- |
-| Create a task for a relation, in the accepted state, between logged user and another user | Success |
-| Creating a task without a description (either empty or not in the request body at all)    | Fail    |
-| Create a task when a logged user is not involved in the relation                          | Fail    |
-| Create a task if relation state is different than accepted                                | Fail    |
