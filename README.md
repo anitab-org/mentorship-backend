@@ -9,6 +9,24 @@
 [Mentorship System](https://github.com/anitab-org/mentorship-backend) is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
 
+## Features
+
+
+
+
+
+- A member can view a list of other members and search for a member on the Members Page. Also the member   can choose someone to send mentorship request.
+- Members can send mentorship requests to other members as a Mentor or Mentee.
+- Members can accept, reject mentorship requests and cancel an ongoing mentorship relation.
+- Members can make themselves available to mentor or to be mentored.
+
+
+- A member can create, update, or delete tasks in their current mentorship relation.
+
+
+
+
+
 This API is being used by 3 frontend projects currently being developed:
 - android: [anitab-org/mentorship-android](https://github.com/anitab-org/mentorship-android)
 - iOS: [anitab-org/mentorship-ios](https://github.com/anitab-org/mentorship-ios)
