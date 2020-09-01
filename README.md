@@ -19,7 +19,7 @@ This API is being used by 3 frontend projects currently being developed:
 - [Setup and run](#setup-and-run)
     - [Run app](#run-app)
     - [Run with Docker](#run-with-docker)
-    - [Run tests](run-tests)
+    - [Run tests](#run-tests)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Branches](#branches)
