@@ -51,7 +51,7 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
         with self.client:
             response = self.client.delete(
-                "/mentorship_relation/%s" % request_id,
+                f"/mentorship_relation/{request_id}",
                 headers=get_test_request_header(self.first_user.id),
             )
 
@@ -76,7 +76,7 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
         with self.client:
             response = self.client.delete(
-                "/mentorship_relation/%s" % request_id,
+                f"/mentorship_relation/{request_id}",
                 headers=get_test_request_header(self.second_user.id),
             )
 

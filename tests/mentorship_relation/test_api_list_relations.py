@@ -171,7 +171,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     def test_list_filter_mentorship_relations_empty(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "",
+                f"/mentorship_relations?relation_state={""}",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = [
@@ -199,7 +199,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     def test_list_filter_mentorship_relations_accepted(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "accepted",
+                f"/mentorship_relations?relation_state={"accepted"}",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = [
@@ -216,7 +216,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     def test_list_filter_mentorship_relations_pending(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "pending",
+                f"/mentorship_relations?relation_state={"pending"}",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = [
@@ -236,7 +236,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     def test_list_filter_mentorship_relations_invalid(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "invalid_param",
+                f"/mentorship_relations?relation_state={"invalid_param"}",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = []
