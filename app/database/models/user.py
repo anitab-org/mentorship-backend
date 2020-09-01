@@ -1,5 +1,3 @@
-from typing import Optional
-
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 from app.database.sqlalchemy_extension import db
