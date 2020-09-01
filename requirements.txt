@@ -6,7 +6,7 @@ asn1crypto==0.24.0
 attrs==19.3.0
 awsebcli==3.14.1
 bcrypt==3.1.7
-black==19.3b0
+black==20.8b1
 blessed==1.15.0
 blinker==1.4
 botocore==1.10.48
