@@ -113,6 +113,7 @@ You can learn more about this project throguh the documentation in the [docs](./
 - **Language:** Python 3.6
 - **Framework:** [Flask](http://flask.pocoo.org/)
 - **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
+- **Versions:** Flask 1.0.2, Flask-RESTX 0.2.0, Flask-SQLAlchemy 2.3.2, Flask-JWT-Extended 3.10.0, Flask-Mail 0.9.1
 
 Here are some links to documentation for this project:
 
