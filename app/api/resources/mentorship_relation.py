@@ -179,7 +179,7 @@ class GetAllMyMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/accept")
+@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/accept")
 class AcceptMentorshipRelation(Resource):
     @classmethod
     @jwt_required
@@ -210,7 +210,7 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, request_id):
+    def put(cls, relation_id):
         """
         Accept a mentorship relation.
 
@@ -226,15 +226,15 @@ class AcceptMentorshipRelation(Resource):
         # if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.accept_request(user_id=user_id, request_id=request_id)
+        response = DAO.accept_request(user_id=user_id, relation_id=relation_id)
 
         if response[1] == HTTPStatus.OK:
-            send_email_mentorship_relation_accepted(request_id)
+            send_email_mentorship_relation_accepted(relation_id)
 
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/reject")
+@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/reject")
 class RejectMentorshipRelation(Resource):
     @classmethod
     @jwt_required
@@ -264,7 +264,7 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, request_id):
+    def put(cls, relation_id):
         """
         Reject a mentorship relation.
 
@@ -279,12 +279,12 @@ class RejectMentorshipRelation(Resource):
         # TODO check if user id is well parsed, if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.reject_request(user_id=user_id, request_id=request_id)
+        response = DAO.reject_request(user_id=user_id, relation_id=relation_id)
 
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/cancel")
+@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/cancel")
 class CancelMentorshipRelation(Resource):
     @classmethod
     @jwt_required
@@ -310,7 +310,7 @@ class CancelMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, request_id):
+    def put(cls, relation_id):
         """
         Cancel a mentorship relation.
 
@@ -325,12 +325,12 @@ class CancelMentorshipRelation(Resource):
         # TODO check if user id is well parsed, if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.cancel_relation(user_id=user_id, relation_id=request_id)
+        response = DAO.cancel_relation(user_id=user_id, relation_id=relation_id)
 
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:request_id>")
+@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>")
 class DeleteMentorshipRelation(Resource):
     @classmethod
     @jwt_required
@@ -359,7 +359,7 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def delete(cls, request_id):
+    def delete(cls, relation_id):
         """
         Delete a mentorship request.
 
@@ -374,7 +374,7 @@ class DeleteMentorshipRelation(Resource):
         # TODO check if user id is well parsed, if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.delete_request(user_id=user_id, request_id=request_id)
+        response = DAO.delete_request(user_id=user_id, relation_id=relation_id)
 
         return response
 
@@ -495,7 +495,7 @@ class ListPendingMentorshipRequests(Resource):
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/task")
+@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/task")
 class CreateTask(Resource):
     @classmethod
     @jwt_required
@@ -510,7 +510,7 @@ class CreateTask(Resource):
         )
     )
     @mentorship_relation_ns.response(403, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
-    def post(cls, request_id):
+    def post(cls, relation_id):
         """
         Create a task for a mentorship relation.
 
@@ -535,7 +535,7 @@ class CreateTask(Resource):
             return is_valid, HTTPStatus.BAD_REQUEST
 
         response = TaskDAO.create_task(
-            user_id=user_id, mentorship_relation_id=request_id, data=request_body
+            user_id=user_id, mentorship_relation_id=relation_id, data=request_body
         )
 
         return response
@@ -549,7 +549,7 @@ class CreateTask(Resource):
         return {}
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/task/<int:task_id>")
+@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/task/<int:task_id>")
 class DeleteTask(Resource):
     @classmethod
     @jwt_required
@@ -571,7 +571,7 @@ class DeleteTask(Resource):
         "%s\n%s"
         % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
     )
-    def delete(cls, request_id, task_id):
+    def delete(cls, relation_id, task_id):
         """
         Delete a task.
 
@@ -590,13 +590,13 @@ class DeleteTask(Resource):
         user_id = get_jwt_identity()
 
         response = TaskDAO.delete_task(
-            user_id=user_id, mentorship_relation_id=request_id, task_id=task_id
+            user_id=user_id, mentorship_relation_id=relation_id, task_id=task_id
         )
 
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/tasks")
+@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/tasks")
 class ListTasks(Resource):
     @classmethod
     @jwt_required
@@ -620,7 +620,7 @@ class ListTasks(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_DOES_NOT_EXIST
     )
-    def get(cls, request_id):
+    def get(cls, relation_id):
         """
         List all tasks from a mentorship relation.
 
@@ -638,7 +638,7 @@ class ListTasks(Resource):
         user_id = get_jwt_identity()
 
         response = TaskDAO.list_tasks(
-            user_id=user_id, mentorship_relation_id=request_id
+            user_id=user_id, mentorship_relation_id=relation_id
         )
 
         if isinstance(response, tuple):
@@ -648,7 +648,7 @@ class ListTasks(Resource):
 
 
 @mentorship_relation_ns.route(
-    "mentorship_relation/<int:request_id>/task/<int:task_id>/complete"
+    "mentorship_relation/<int:relation_id>/task/<int:task_id>/complete"
 )
 class UpdateTask(Resource):
     @classmethod
@@ -674,7 +674,7 @@ class UpdateTask(Resource):
         "%s\n%s"
         % (messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, messages.TASK_DOES_NOT_EXIST),
     )
-    def put(cls, request_id, task_id):
+    def put(cls, relation_id, task_id):
         """
         Update a task to mark it as complate
 
@@ -693,7 +693,7 @@ class UpdateTask(Resource):
         user_id = get_jwt_identity()
 
         response = TaskDAO.complete_task(
-            user_id=user_id, mentorship_relation_id=request_id, task_id=task_id
+            user_id=user_id, mentorship_relation_id=relation_id, task_id=task_id
         )
 
         return response
