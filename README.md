@@ -108,7 +108,7 @@ python -m unittest discover tests
 
 ## Documentation
 
-You can learn more about this project throguh the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
+You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
 - **Language:** Python 3.6
 - **Framework:** [Flask](http://flask.pocoo.org/)
