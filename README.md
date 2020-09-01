@@ -17,7 +17,8 @@ This API is being used by 3 frontend projects currently being developed:
 **Table of Contents**
 
 - [Setup and run](#setup-and-run)
-    - [Run app](#run-app)
+    - [Run app in Windows](#run-app-in-Windows)
+    - [Run app in Linux](#run-app-in-Linux)
     - [Run with Docker](#run-with-docker)
     - [Run tests](run-tests)
 - [Documentation](#documentation)
@@ -33,7 +34,7 @@ To setup the project locally read these wiki pages and follow the instructions:
  - [Fork, Clone and Remote](https://github.com/anitab-org/mentorship-backend/wiki/Fork%2C-Clone-%26-Remote)
  - [Export Environment Variables](docs/environment-variables.md)
 
-### Run app
+### Run app in Windows
 
 The project runs on Python 3.
 
@@ -41,10 +42,8 @@ The project runs on Python 3.
 `virtualenv venv --python=python3`
 
 2. Activate the virtual environment:
-`source ./venv/bin/activate`
-
-`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines. For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
-
+`source /venv/Scripts/activate` for Git Bash Users, 
+`venv\Scripts\activate` for Windows Command Line Users
 
 3. Install all the dependencies in `requirements.txt` file:
 `pip install -r requirements.txt`
@@ -82,6 +81,62 @@ python run.py
 7. When you are done using the app, deactivate the virtual environment:
 ```
 deactivate
+```
+
+### Run app in Linux
+
+The project runs on Python 3.
+
+1. Create a virtual enviorntment:
+`$ virtualenv venv`
+
+2. Activate the virtual environment:
+`$ source venv/bin/activate`
+
+3. Install all the dependencies in `requirements.txt` file:
+`pip3 install -r requirements.txt`
+
+4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt .env.template in the .env file:
+
+```
+export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
+export SECRET_KEY=<your-secret-key>
+export SECURITY_PASSWORD_SALT=<your-security-password-salt>
+export MAIL_DEFAULT_SENDER=<mail-default-sender>
+export MAIL_SERVER=<mail-server>
+export APP_MAIL_USERNAME=<app-mail-username>
+export APP_MAIL_PASSWORD=<app-mail-password>
+export MOCK_EMAIL = <True-or-False>
+```
+
+If you're testing any environment other than "local", then you have to also set these other variables in the .env file.
+```
+export DB_TYPE=<database_type>
+export DB_USERNAME=<database_username>
+export DB_PASSWORD=<database_password>
+export DB_ENDPOINT=<database_endpoint>
+export DB_NAME=<database_name>
+```
+
+Use: `$ printenv` to print the environment variables and check all configurations.
+
+5. Run the app:
+```
+$ export FLASK_APP=run.py
+$ flask run
+```
+
+6. Navigate to http://localhost:5000 or the current server in which you are running(will be shown when app is running) in your browser.
+
+7. When you are done using the app, deactivate the virtual environment:
+```
+$ deactivate
+```
+
+or use:
+
+```
+$ source deactivate
 ```
 
 ### Run with docker
