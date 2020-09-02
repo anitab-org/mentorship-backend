@@ -173,6 +173,21 @@ This document contains some examples of test cases for each feature implemented 
 | Logged in user tries to complete a task from an non existing request (The request  exists in a different relationship) | Fail |
 | Logged in user tries to complete a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
 
+### List All Tasks
+**Service:** PUT /mentorship_relation/{request_id}/task/{task_id}/complete
+
+| Test Case      | Outcome |
+| -------------- | -----------|
+| Logged in user can List of all Tasks from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Success |     
+| Logged in user tries to List the task which has not been ACCEPTED, that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to List the task which has already been completed, from an existing request in the ACCEPTED state,that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to List the task which has been REJECTED, from an existing request in the ACCEPTED state,that involves the user (as a mentor or as a mentee) | Fail |
+| Not logged in user (invalid token) tries to List a task, from an existing request in the ACCEPTED state | Fail |
+| Logged in user tries to List a task, with an invalid request (not an integer) | Fail |
+| Logged in user tries to List a task which is invalid (not an integer), from an existing request in the ACCEPTED state   | Fail |
+| Logged in user tries to List a task from an non existing request for this relationship (The request doesn't exist in any other relationship) | Fail |
+| Logged in user tries to List a task from an non existing request (The request  exists in a different relationship) | Fail |
+| Logged in user tries to List a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
 
 ## Admins
 
