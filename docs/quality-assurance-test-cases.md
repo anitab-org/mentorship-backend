@@ -113,10 +113,7 @@ This document contains some examples of test cases for each feature implemented 
 | A User1 sends a request to a non existing User2 (user_id does not match any user in database)                                                                            | Fail    |
 | A User1 sends a request to a User2 which is not involved in a mentorship relation and has the email verified. But the User1 is involved in a current mentorship relation | Fail    |
 | A User1 sends a request to itself User1                                                                                                                                  | Fail    |
-| A User1 sends a request to a User2, which does not have its email verified                           
-                                                                    | Fail    |
-
-
+| A User1 sends a request to a User2, which does not have its email verified                                                                                               | Fail    |
 
 ### Delete Relation
 
@@ -210,7 +207,6 @@ Only admin users have access to this.
 | A User which is not an Admin assigns admin role to any user (does not matter if the user being assigned is admin or not)  | Fail |
 | A User which is not an Admin assigns admin role to itself | Fail |
 | An Admin User assigns admin role to a non-existent User | Fail |
-
 
 ### Revoke an admin role
 
