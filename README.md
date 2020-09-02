@@ -122,6 +122,8 @@ Here are some links to documentation for this project:
 - [Troubleshoot guide](/docs/troubleshoots.md) contains common isssues other contributors may run into in their setup.
 - [Quality Assurance test cases](/docs/quality-assurance-test-cases.md) has test cases for each endpoint we have which you can use to learn about how each feature should work.
 - [CI/CD Process](/docs/ci_cd_process.md) which explains the processes and tools involved in deploying new code.
+- [Code Organisation](/docs/code_organization.md) which explains the code organisation and architecture within the repository.
+- [User Authentication](/docs/user_authentication.md) which is JSON Web Token (JWT) based and tells about the user authentication in the application.
 
 Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
 
