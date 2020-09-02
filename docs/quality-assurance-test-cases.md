@@ -156,6 +156,8 @@ This document contains some examples of test cases for each feature implemented 
 | User2 (received the request) cancels a mentorship relation that it is currently involved with User1 (the relation is in an ACCEPTED state)  | Success |
 | User1 cancel a mentorship relation which the User1 is not involved with | Fail |
 
+## Task
+
 ### Create Task
 **Service:** POST /mentorship_relation/{relation_id}/task
 
@@ -166,7 +168,7 @@ This document contains some examples of test cases for each feature implemented 
 | Create a task when a logged user is not involved in the relation                          | Fail    |
 | Create a task if relation state is different than accepted                                | Fail    |
 
-### Update task
+### Update Task
 
 **Service:** PUT /mentorship_relation/{request_id}/task/{task_id}/complete
 
@@ -183,7 +185,7 @@ This document contains some examples of test cases for each feature implemented 
 | Logged in user tries to complete a task from an non existing request (The request  exists in a different relationship) | Fail |
 | Logged in user tries to complete a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
 
-### Delete task
+### Delete Task
 
 **Service:** DELETE /mentorship_relation/{request_id}/task/{task_id}
 | Test Case       | Outcome |
