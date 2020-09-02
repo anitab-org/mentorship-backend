@@ -236,7 +236,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     def test_list_filter_mentorship_relations_invalid(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=invalid_param",
+                f"/mentorship_relations?relation_state={'invalid_param'}",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = []
