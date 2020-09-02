@@ -8,7 +8,8 @@ api = Api(
     + "through 1:1 relations during a certain period of time. \n \n"
     + "The main repository of the Backend System can be found here: https://github.com/anitab-org/mentorship-backend \n \n"
     + "The Android client for the Mentorship System can be found here: https://github.com/anitab-org/mentorship-android \n \n"
-    + "For more information about the project here's a link to our wiki guide: https://github.com/anitab-org/mentorship-backend/wiki"
+    + "For more information about the project here's a link to our wiki guide: https://github.com/anitab-org/mentorship-backend/wiki \n \n"
+    + "The link to the Quality Assurance test cases found <a href=https://github.com/anitab-org/mentorship-backend/blob/develop/docs/quality-assurance-test-cases.md>here</a>."
     # doc='/docs/'
 )
 api.namespaces.clear()
