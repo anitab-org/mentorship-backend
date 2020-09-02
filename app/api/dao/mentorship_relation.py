@@ -218,8 +218,8 @@ class MentorshipRelationDAO:
                     return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
 
         # All was checked
-        request.state = MentorshipRelationState.ACCEPTED
-        request.save_to_db()
+        relation.state = MentorshipRelationState.ACCEPTED
+        relation.save_to_db()
 
         return messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, HTTPStatus.OK
 
@@ -256,8 +256,8 @@ class MentorshipRelationDAO:
             return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.FORBIDDEN
 
         # All was checked
-        request.state = MentorshipRelationState.REJECTED
-        request.save_to_db()
+        relation.state = MentorshipRelationState.REJECTED
+        relation.save_to_db()
 
         return messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY, HTTPStatus.OK
 
@@ -290,8 +290,8 @@ class MentorshipRelationDAO:
             return messages.CANT_CANCEL_UNINVOLVED_REQUEST, HTTPStatus.BAD_REQUEST
 
         # All was checked
-        request.state = MentorshipRelationState.CANCELLED
-        request.save_to_db()
+        relation.state = MentorshipRelationState.CANCELLED
+        relation.save_to_db()
 
         return messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, HTTPStatus.OK
 
@@ -326,7 +326,7 @@ class MentorshipRelationDAO:
             return messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN
 
         # All was checked
-        request.delete_from_db()
+        relation.delete_from_db()
 
         return messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
 
