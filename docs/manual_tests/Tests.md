@@ -168,3 +168,92 @@
   
   account creation failed
   
+  <br>
+  
+  
+   <h2>TEST-5</h2>
+  <h3>_Test5 Description_  </h3>
+ 
+ 
+ *entering password with defying length*
+ 
+   name: "fifth test"  
+   
+   username: "test-5"
+   
+   password: "123"
+   
+   email: "test_5@gmail.com"
+   
+   terms_and_conditions_checked: true
+   
+   need_mentoring: true
+   
+   
+   available_to_mentor: true
+   
+   
+  <h3>_Screenshots_</h3>  
+  
+  
+  ![Data entered](https://github.com/SHITIZ-AGGARWAL/mentorship-backend/blob/test/docs/manual_tests/screen%20shots/test5/Screenshot%202020-09-03%20at%2011.32.34%20AM.png?raw=true)
+  
+  
+  ![Data entered](https://github.com/SHITIZ-AGGARWAL/mentorship-backend/blob/test/docs/manual_tests/screen%20shots/test5/Screenshot%202020-09-03%20at%2011.32.45%20AM.png?raw=true)
+  <br>
+  <h3>_Expected Result_: </h3> 
+  
+  message: the password field has to be longer than 7 characters and shorter than 65 characters
+  
+  account creation failed
+  <h3>_Actual Result_:   </h3> 
+  
+  message: the username field has to be longer than 7 characters and shorter than 65 characters
+  
+  account creation failed
+  
+  <br>
+  
+<h2>TEST-6</h2>
+  <h3>_Test6 Description_  </h3>
+ 
+ 
+ *entering wrong email address*
+ 
+   name: "sixth test"  
+   
+   username: "test-6"
+   
+   password: "123"
+   
+   email: "test_6"
+   
+   terms_and_conditions_checked: true
+   
+   need_mentoring: true
+   
+   
+   available_to_mentor: true
+   
+   
+  <h3>_Screenshots_</h3>  
+  
+  
+  ![Data entered](https://github.com/SHITIZ-AGGARWAL/mentorship-backend/blob/test/docs/manual_tests/screen%20shots/test6/Screenshot%202020-09-03%20at%2011.34.41%20AM.png?raw=true)
+  
+  
+  ![Data entered](https://github.com/SHITIZ-AGGARWAL/mentorship-backend/blob/test/docs/manual_tests/screen%20shots/test6/Screenshot%202020-09-03%20at%2011.34.52%20AM.png?raw=true)
+  <br>
+  <h3>_Expected Result_: </h3> 
+  
+  message: your email is invalid
+  
+  account creation failed
+  <h3>_Actual Result_:   </h3> 
+  
+  message: your email is invalid
+  
+  account creation failed
+  
+
+
