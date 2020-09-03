@@ -62,7 +62,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(403, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api_with_relation_not_existing(self):
@@ -96,7 +96,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.TASK_COMMENT_DOES_NOT_EXIST
         actual_response = self.client.delete(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comment/0",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comment/0",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",

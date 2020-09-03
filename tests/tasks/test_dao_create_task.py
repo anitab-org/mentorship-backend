@@ -40,11 +40,24 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task_with_mentorship_relation_non_accepted_state(self):
 
-        expected_response = messages.UNACCEPTED_STATE_RELATION, 400
+        expected_response = messages.UNACCEPTED_STATE_RELATION, 403
         self.mentorship_relation_w_second_user.state = MentorshipRelationState.CANCELLED
 
         actual_response = TaskDAO.create_task(
             user_id=self.first_user.id,
+            mentorship_relation_id=self.mentorship_relation_w_second_user.id,
+            data=dict(description=self.test_description, is_done=self.test_is_done),
+        )
+
+        self.assertEqual(expected_response, actual_response)
+
+    def test_create_task_with_user_not_involved_in_mentorship(self):
+    
+        expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 403
+        self.mentorship_relation_w_second_user.state = MentorshipRelationState.ACCEPTED
+
+        actual_response = TaskDAO.create_task(
+            user_id=self.fourth_user.id,
             mentorship_relation_id=self.mentorship_relation_w_second_user.id,
             data=dict(description=self.test_description, is_done=self.test_is_done),
         )
