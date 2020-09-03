@@ -10,8 +10,6 @@
 | [master](https://github.com/anitab-org/mentorship-backend/tree/master) | [![Build Status](https://travis-ci.com/anitab-org/mentorship-backend.svg?branch=master)](https://travis-ci.com/github/anitab-org/mentorship-backend) | 
 | [develop](https://github.com/anitab-org/mentorship-backend/tree/develop) | [![Build Status](https://travis-ci.com/anitab-org/mentorship-backend.svg?branch=develop)](https://travis-ci.com/github/anitab-org/mentorship-backend) | 
 
-
-
 Mentorship System is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
 
