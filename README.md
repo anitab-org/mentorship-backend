@@ -6,7 +6,7 @@
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 
 
-[Mentorship System](https://github.com/anitab-org/mentorship-backend) is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
+Mentorship System is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
 
 This API is being used by 3 frontend projects currently being developed:
@@ -108,7 +108,7 @@ python -m unittest discover tests
 
 ## Documentation
 
-You can learn more about this project throguh the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
+You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
 - **Language:** Python 3.6
 - **Framework:** [Flask](http://flask.pocoo.org/)
@@ -122,6 +122,8 @@ Here are some links to documentation for this project:
 - [Troubleshoot guide](/docs/troubleshoots.md) contains common isssues other contributors may run into in their setup.
 - [Quality Assurance test cases](/docs/quality-assurance-test-cases.md) has test cases for each endpoint we have which you can use to learn about how each feature should work.
 - [CI/CD Process](/docs/ci_cd_process.md) which explains the processes and tools involved in deploying new code.
+- [Code Organisation](/docs/code_organization.md) which explains the code organisation and architecture within the repository.
+- [User Authentication](/docs/user_authentication.md) which is JSON Web Token (JWT) based and tells about the user authentication in the application.
 
 Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
 
