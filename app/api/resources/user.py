@@ -37,7 +37,7 @@ DAO = UserDAO()  # User data access object
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users (default: 1)", "per_page": "specify number of users per page (default: 10)"})
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
