@@ -224,7 +224,7 @@
    
    username: "test-6"
    
-   password: "123"
+   password: "12345678"
    
    email: "test_6"
    
