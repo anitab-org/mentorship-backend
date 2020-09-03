@@ -174,21 +174,28 @@ This document contains some examples of test cases for each feature implemented 
 | Logged in user tries to complete a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
 
 ### List All Tasks
-**Service:** PUT /mentorship_relation/{request_id}/task/{task_id}/complete
+**Service:** PUT /mentorship_relation/{request_id}/task/{task_id}
 
-| Test Case      | Outcome |
-| -------------- | -----------|
-| Logged in user can List of all Tasks from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Success |     
-| Logged in user tries to List the task which has not been ACCEPTED, that involves the user (as a mentor or as a mentee) | Fail |
-| Logged in user tries to List the task which has already been completed, from an existing request in the ACCEPTED state,that involves the user (as a mentor or as a mentee) | Fail |
-| Logged in user tries to List the task which has been REJECTED, from an existing request in the ACCEPTED state,that involves the user (as a mentor or as a mentee) | Fail |
-| Not logged in user (invalid token) tries to List a task, from an existing request in the ACCEPTED state | Fail |
-| Logged in user tries to List a task, with an invalid request (not an integer) | Fail |
-| Logged in user tries to List a task which is invalid (not an integer), from an existing request in the ACCEPTED state   | Fail |
-| Logged in user tries to List a task from an non existing request for this relationship (The request doesn't exist in any other relationship) | Fail |
-| Logged in user tries to List a task from an non existing request (The request  exists in a different relationship) | Fail |
-| Logged in user tries to List a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
+| Test Case  | Outcome |
+| ---------- | -----------|
+| Logged in user requests list all task,or out of all task, those which involves the user (as a mentor or as a mentee) | Success |
+| Logged in user requests list all task,or out of all task, those which involves the user (neither as a mentor nor as a mentee) | Fail |
+| Logged in user requests to list all task whose id does not exist, which involves the user (as a mentor or as a mentee) | Fail |     
+| Logged in user requests list all task,or out of all task, those which doesn't involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user requests to list all task which is invalid (not an integer), which involves the user(as a mentor or as a mentee) | Fail |
+| Not logged in user (invalid token) tries to List all task| Fail |
 
+### Tasks
+
+#### Create
+**Service:** POST /mentorship_relation/{relation_id}/task
+
+|  Test Case                                                                                | Outcome |
+| ----------------------------------------------------------------------------------------- |-------- |
+| Create a task for a relation, in the accepted state, between logged user and another user | Success |
+| Creating a task without a description (either empty or not in the request body at all)    | Fail    |
+| Create a task when a logged user is not involved in the relation                          | Fail    |
+| Create a task if relation state is different than accepted                                | Fail    |
 ## Admins
 
 Only admin users have access to this.
