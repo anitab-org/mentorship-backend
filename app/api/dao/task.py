@@ -142,7 +142,7 @@ class TaskDAO:
             return messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task.get("is_done"):
-            return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.FORBIDDEN
+            return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.CONFLICT
         else:
             relation.tasks_list.update_task(
                 task_id=task_id, is_done=True, completed_at=datetime.now().timestamp()
