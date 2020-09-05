@@ -88,15 +88,15 @@ deactivate
 The project runs on Python 3.
 
 1. Create a virtual enviorntment:
-`$ virtualenv venv`
+`virtualenv venv`
 
 2. Activate the virtual environment:
-`$ source venv/bin/activate`
+`source venv/bin/activate`
 
 3. Install all the dependencies in `requirements.txt` file:
 `pip3 install -r requirements.txt`
 
-4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt .env.template in the .env file:
+4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
 
 ```
 export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
@@ -118,25 +118,25 @@ export DB_ENDPOINT=<database_endpoint>
 export DB_NAME=<database_name>
 ```
 
-Use: `$ printenv` to print the environment variables and check all configurations.
+Use: `printenv` to print the environment variables and check all configurations.
 
-5. Run the app:
+5. Run the app with `python run.py` or:
 ```
-$ export FLASK_APP=run.py
-$ flask run
+ export FLASK_APP=run.py
+ flask run
 ```
 
 6. Navigate to http://localhost:5000 or the current server in which you are running(will be shown when app is running) in your browser.
 
 7. When you are done using the app, deactivate the virtual environment:
 ```
-$ deactivate
+deactivate
 ```
 
 or use:
 
 ```
-$ source deactivate
+source deactivate
 ```
 
 ### Run with docker
