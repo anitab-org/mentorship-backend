@@ -60,7 +60,7 @@ class TestHappyPath1(BaseTestCase):
         db.session.add(self.mentee)
         db.session.commit()
 
-        self.task_description = "A nice task description"
+        self.test_description = "A nice task description"
 
     def test_happy_path_1(self):
 
@@ -117,9 +117,19 @@ class TestHappyPath1(BaseTestCase):
 
         self.assertEqual(200, mentee_current_relation.status_code)
         self.assertEqual(200, mentor_current_relation.status_code)
+        self.assertFalse(json.loads(mentor_current_relation.data)['sent_by_me'])
+        self.assertTrue(json.loads(mentee_current_relation.data)['sent_by_me'])
         self.assertEqual(
-            json.loads(mentor_current_relation.data),
-            json.loads(mentee_current_relation.data),
+            json.loads(mentor_current_relation.data)['mentor'],
+            json.loads(mentee_current_relation.data)['mentor'],
+        )
+        self.assertEqual(
+            json.loads(mentor_current_relation.data)['mentee'],
+            json.loads(mentee_current_relation.data)['mentee'],
+        )
+        self.assertEqual(
+            json.loads(mentor_current_relation.data)['id'],
+            json.loads(mentee_current_relation.data)['id'],
         )
 
         current_relation = json.loads(mentee_current_relation.data)
