@@ -260,10 +260,11 @@ class UserRegister(Resource):
     )
     @users_ns.response(
         HTTPStatus.CONFLICT,
-        "%s\n%s"
+        "%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
-            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS
+            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+            messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
