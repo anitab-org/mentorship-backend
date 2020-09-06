@@ -173,7 +173,7 @@ class MyUserProfile(Resource):
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
-    ),    
+    ),
 )
 @users_ns.route("user/change_password")
 class ChangeUserPassword(Resource):
@@ -254,7 +254,6 @@ class UserRegister(Resource):
     )
     @users_ns.response(
         HTTPStatus.CONFLICT,
-
         (
             f"{messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS}\n"
             f"{messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS}"
