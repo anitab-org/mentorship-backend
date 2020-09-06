@@ -26,7 +26,6 @@ DAO = UserDAO()  # User data access object
 @users_ns.route("users")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-
     (
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
@@ -75,7 +74,6 @@ class OtherUser(Resource):
     @users_ns.response(HTTPStatus.OK, "Success.", public_user_api_model)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
-
         (
             f"{messages.TOKEN_HAS_EXPIRED}\n"
             f"{messages.TOKEN_IS_INVALID}\n"
@@ -100,7 +98,6 @@ class OtherUser(Resource):
 @users_ns.route("user")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-
     (
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
@@ -172,7 +169,6 @@ class MyUserProfile(Resource):
 @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.USER_ENTERED_INCORRECT_PASSWORD}" )
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-
     (
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
@@ -205,7 +201,6 @@ class ChangeUserPassword(Resource):
 
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-
     (
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
@@ -251,7 +246,6 @@ class UserRegister(Resource):
     @users_ns.response(HTTPStatus.CREATED, f"{messages.USER_WAS_CREATED_SUCCESSFULLY}")
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-
         (
             f"{messages.USERNAME_FIELD_IS_EMPTY}\n"
             f"{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}\n"
@@ -296,7 +290,6 @@ class UserRegister(Resource):
 @users_ns.route("user/confirm_email/<string:token>")
 @users_ns.response(
     HTTPStatus.CREATED,
-
     (
         f"{messages.USER_SUCCESSFULLY_CREATED}\n"
         f"{messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS}"
@@ -360,8 +353,7 @@ class RefreshUser(Resource):
     @users_ns.doc("refresh")
     @users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
     @users_ns.response(
-        HTTPStatus.UNAUTHORIZED,
-    
+        HTTPStatus.UNAUTHORIZED,  
         (
             f"{messages.TOKEN_HAS_EXPIRED}\n"
             f"{messages.TOKEN_IS_INVALID}\n"
@@ -462,7 +454,6 @@ class LoginUser(Resource):
 @users_ns.response(HTTPStatus.OK, "Successful response", home_response_body_model)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
-
     (
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
