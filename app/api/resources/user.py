@@ -82,7 +82,7 @@ class OtherUser(Resource):
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
-    @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}"  )
+    @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
     def get(cls, user_id):
         """
         Returns a user.
@@ -107,7 +107,7 @@ class OtherUser(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
     ),
 )
-@users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}" )
+@users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
 class MyUserProfile(Resource):
     @classmethod
     @jwt_required
@@ -128,7 +128,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(HTTPStatus.OK, f"{messages.USER_SUCCESSFULLY_UPDATED}" )
+    @users_ns.response(HTTPStatus.OK, f"{messages.USER_SUCCESSFULLY_UPDATED}")
     @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
     def put(cls):
         """
@@ -155,7 +155,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("delete_user")
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.response(HTTPStatus.OK, f"{messages.USER_SUCCESSFULLY_DELETED}" )
+    @users_ns.response(HTTPStatus.OK, f"{messages.USER_SUCCESSFULLY_DELETED}")
     def delete(cls):
         """
         Deletes user.
@@ -248,7 +248,7 @@ class VerifiedUser(Resource):
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(HTTPStatus.CREATED, f"{messages.USER_WAS_CREATED_SUCCESSFULLY}" )
+    @users_ns.response(HTTPStatus.CREATED, f"{messages.USER_WAS_CREATED_SUCCESSFULLY}")
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
 
@@ -302,7 +302,7 @@ class UserRegister(Resource):
         f"{messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS}"
     ),
 )
-@users_ns.response(HTTPStatus.CONFLICT, f"{messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID}" )
+@users_ns.response(HTTPStatus.CONFLICT, f"{messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID}")
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
@@ -319,9 +319,9 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route("user/resend_email")
-@users_ns.response(HTTPStatus.OK, f"{messages.EMAIL_VERIFICATION_MESSAGE}" )
+@users_ns.response(HTTPStatus.OK, f"{messages.EMAIL_VERIFICATION_MESSAGE}")
 @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
-@users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}" )
+@users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}")
 @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
 class UserResendEmailConfirmation(Resource):
     @classmethod
@@ -402,8 +402,8 @@ class LoginUser(Resource):
             f"{messages.PASSWORD_FIELD_IS_MISSING}"
         ),
     )
-    @users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN}" )
-    @users_ns.response(HTTPStatus.UNAUTHORIZED, f"{messages.WRONG_USERNAME_OR_PASSWORD}"  )
+    @users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN}")
+    @users_ns.response(HTTPStatus.UNAUTHORIZED, f"{messages.WRONG_USERNAME_OR_PASSWORD}")
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -469,7 +469,7 @@ class LoginUser(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
     ),
 )
-@users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_NOT_FOUND}" )
+@users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_NOT_FOUND}")
 class UserHomeStatistics(Resource):
     @classmethod
     @jwt_required
