@@ -164,7 +164,6 @@ class UserDAO:
 
         """
 
-        print('location', location)
         users_list = UserModel.query.filter(
             UserModel.id != user_id,
             not is_verified or UserModel.is_email_verified,

@@ -139,7 +139,6 @@ class TestListUsersApi(BaseTestCase):
     def test_list_users_api_with_location_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.third_user, public_user_api_model)]
-        print(f"/users?location={self.third_user.location}")
         actual_response = self.client.get(
             f"/users?location={self.third_user.location}",
             follow_redirects=True,
