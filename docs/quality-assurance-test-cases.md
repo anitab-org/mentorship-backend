@@ -214,3 +214,14 @@ Only admin users have access to this.
 | Creating a task without a description (either empty or not in the request body at all)    | Fail    |
 | Create a task when a logged user is not involved in the relation                          | Fail    |
 | Create a task if relation state is different than accepted                                | Fail    |
+
+### Confirmation of users email
+
+**Service:** GET /user/confirm_email/{token}
+
+| Test Case                                                                                      | Outcome |
+|------------------------------------------------------------------------------------------------|---------|
+| Verification token entered is one sent on users registered email entered within 24 hrs         | Success |
+| verification token of already confirmed users account entered                                  | Success |
+| verification token of un-confirmed users account entered after 24 hrs of email being sent      | Fail    |
+| Incorrect verification token entered in request body                                           | Fail    |                                                    
