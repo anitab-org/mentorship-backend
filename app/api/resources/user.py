@@ -322,7 +322,7 @@ class UserEmailConfirmation(Resource):
 @users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
 @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
 @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
-@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_NOT_REGISTERED)
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)

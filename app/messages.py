@@ -21,6 +21,7 @@ MENTORSHIP_RELATION_DOES_NOT_EXIST = {
     "message": "Mentorship relation does not" " exist."
 }
 USER_NOT_FOUND = {"message": "User not found."}
+USER_NOT_REGISTERED = {"message": "Please register as a user first to get a verification email."}
 MENTOR_DOES_NOT_EXIST = {"message": "Mentor user does not exist."}
 MENTEE_DOES_NOT_EXIST = {"message": "Mentee user does not exist."}
 TASK_DOES_NOT_EXIST = {"message": "Task does not exist."}
