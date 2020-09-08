@@ -222,6 +222,6 @@ Only admin users have access to this.
 | Test Case                                                                                      | Outcome |
 |------------------------------------------------------------------------------------------------|---------|
 | Verification token entered is one sent on users registered email entered within 24 hrs         | Success |
-| verification token of already confirmed users account entered                                  | Success |
-| verification token of un-confirmed users account entered after 24 hrs of email being sent      | Fail    |
+| Verification token of already confirmed users account entered                                  | Success |
+| Verification token of un-confirmed users account entered after 24 hrs of email being sent      | Fail    |
 | Incorrect verification token entered in request body                                           | Fail    |                                                    
