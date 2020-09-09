@@ -317,13 +317,13 @@ class MentorshipRelationDAO:
         if request is None:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
-        # verify if request is in pending state
-        if request.state != MentorshipRelationState.PENDING:
-            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN
-
         # verify if user created the mentorship request
         if request.action_user_id != user_id:
             return messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN
+
+        # verify if request is in pending state
+        if request.state != MentorshipRelationState.PENDING:
+            return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         # All was checked
         request.delete_from_db()
