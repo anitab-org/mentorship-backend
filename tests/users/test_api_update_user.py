@@ -46,7 +46,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(200, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_update_username_not_taken(self):
