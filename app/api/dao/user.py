@@ -216,12 +216,10 @@ class UserDAO:
         username = data.get("username", None)
         if username:
             user_with_same_username = UserModel.find_by_username(username)
-
-            # username should be unique
-            if user_with_same_username:
-                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
-
-            user.username = username
+            
+        #if username is different only then it will update username in db else username remains same and other details gets updated
+            if not user_with_same_username:
+                user.username = username
 
         if "name" in data and data["name"]:
             user.name = data["name"]
