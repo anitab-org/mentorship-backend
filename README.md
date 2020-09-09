@@ -36,7 +36,7 @@ To setup the project locally read these wiki pages and follow the instructions:
 
 ### Run app in Windows
 
-The project runs on Python 3.
+The project runs on Python 3.x
 
 1. Create a virtual environment:
 `virtualenv venv --python=python3`
@@ -85,7 +85,7 @@ deactivate
 
 ### Run app in Linux
 
-The project runs on Python 3.
+The project runs on Python 3.x
 
 1. Create a virtual enviorntment:
 `virtualenv venv`
@@ -165,7 +165,7 @@ python -m unittest discover tests
 
 You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
-- **Language:** Python 3 
+- **Language:** Python 3.x 
 - **Framework:** [Flask](http://flask.pocoo.org/)
 - **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
 
