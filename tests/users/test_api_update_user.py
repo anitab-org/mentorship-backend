@@ -37,7 +37,7 @@ class TestUpdateUserApi(BaseTestCase):
         db.session.commit()
 
         auth_header = get_test_request_header(self.first_user.id)
-        expected_response = messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS
+        expected_response = messages.USER_SUCCESSFULLY_UPDATED
         actual_response = self.client.put(
             "/user",
             follow_redirects=True,
