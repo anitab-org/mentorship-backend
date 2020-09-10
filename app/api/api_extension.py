@@ -9,9 +9,7 @@ api = Api(
     + "The main repository of the Backend System can be found here: https://github.com/anitab-org/mentorship-backend \n \n"
     + "The Android client for the Mentorship System can be found here: https://github.com/anitab-org/mentorship-android \n \n"
     + "For more information about the project here's a link to our wiki guide: https://github.com/anitab-org/mentorship-backend/wiki \n \n"
-    + "<b>Quality Assurance Tables:</b>  Quality Assurance Tables are table containing Test Case and its Outcome as <i>Sucess</i> or <i>Fail</i>, the intention is to tell the contributors about test cases for each feature implemented on the backend. \n \n"
-    + "The link to the Quality Assurance Test cases found <a href=https://github.com/anitab-org/mentorship-backend/blob/develop/docs/quality-assurance-test-cases.md>here</a>."
-
+    + "This <a href=https://github.com/anitab-org/mentorship-backend/blob/develop/docs/quality-assurance-test-cases.md>Quality Assurance Test cases</a> document contains examples of test scenarios evaluate if the API is working as it should."
     # doc='/docs/'
 )
 api.namespaces.clear()
