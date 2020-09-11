@@ -187,17 +187,16 @@ This document contains some examples of test cases for each feature implemented 
 | Create a task when a logged user is not involved in the relation                          | Fail    |
 | Create a task if relation state is different than accepted                                | Fail    |
 
-### List All Tasks
+#### List All Tasks
 
 **Service:** PUT /mentorship_relation/{request_id}/task/{task_id}
 
-| Test Case      | Outcome |
-| -------------- | -----------|
+| Test Case        | Outcome |
+| -------------- | ----------- |
 | Logged in user requests list all task,or out of all task,for a mentorship relation those which involves the user (as a mentor or as a mentee) | Success |
 | Logged in user requests list all task,or out of all task, for a mentorship relation those which involves the user (neither as a mentor nor as a mentee) | Fail |
 | Logged in user requests to list all task for a invalid mentorship relation , which involves the user (as a mentor or as a mentee) | Fail |     
 | Not logged in user requests to List all task for any valid/invalid mentorship relation | Fail |
-
 
 
 ## Admins
