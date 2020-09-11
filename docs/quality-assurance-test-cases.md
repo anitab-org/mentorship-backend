@@ -189,7 +189,7 @@ This document contains some examples of test cases for each feature implemented 
 
 #### List All Tasks
 
-**Service:** GET /mentorship_relation/{request_id}/tasks
+**Service:** GET /mentorship_relation/{request_id}/task
 
 | Test Case        | Outcome |
 | -------------- | ----------- |
