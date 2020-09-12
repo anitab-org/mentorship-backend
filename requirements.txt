@@ -69,5 +69,5 @@ typed-ast==1.4.1
 tzlocal==1.5.1
 urllib3==1.22
 wcwidth==0.1.7
-websocket-client==0.48.0
+websocket-client==0.57.0
 Werkzeug==0.16.1
