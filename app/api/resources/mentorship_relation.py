@@ -658,9 +658,7 @@ class UpdateTask(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.OK, "%s" % messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
     )
-    @mentorship_relation_ns.response(
-        HTTPStatus.CONFLICT, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED
-    )
+    @mentorship_relation_ns.response(HTTPStatus.CONFLICT, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED)
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s\n%s"
