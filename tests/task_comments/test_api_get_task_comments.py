@@ -66,9 +66,16 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
     def test_task_comment_listing_api(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = marshal(
-            TaskCommentDAO.get_all_task_comments_by_task_id(1, 1, 2),
+            TaskCommentDAO.get_all_task_comments_by_task_id(self.admin_user.id, self.task_id, self.relation_id),
             task_comments_model,
         )
+
+        # all tasks are added by admin_user in relation #this.relation_id
+        for task in expected_response:
+            task['user'] = {"id": self.admin_user.id,
+                            "name": self.admin_user.name}
+            task['sent_by_me'] = True 
+
         actual_response = self.client.get(
             f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comments",
             follow_redirects=True,

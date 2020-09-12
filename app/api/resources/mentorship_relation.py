@@ -507,7 +507,7 @@ class CreateTask(Resource):
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
         messages.AUTHORISATION_TOKEN_IS_MISSING
-        )
+    )
     )
     @mentorship_relation_ns.response(403, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
     def post(cls, request_id):
@@ -836,12 +836,17 @@ class TaskComments(Resource):
         """
         Lists the task comments.
         """
+        user_id = get_jwt_identity()
 
         response = TaskCommentDAO.get_all_task_comments_by_task_id(
-            get_jwt_identity(), task_id, relation_id
+            user_id, task_id, relation_id
         )
 
         if isinstance(response, tuple):
             return response
-        else:
-            return marshal(response, task_comments_model), HTTPStatus.OK
+
+        for task in response:
+            task['user'] = userDAO.get_user(task['user_id'])
+            task['sent_by_me'] = user_id == task['user_id']
+            
+        return marshal(response, task_comments_model), HTTPStatus.OK

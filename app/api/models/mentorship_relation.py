@@ -18,6 +18,7 @@ def add_models_to_namespace(api_namespace):
     ] = mentorship_request_response_body_for_user_dashboard_body
     api_namespace.models[user_dashboard_user_details.name] = user_dashboard_user_details
     api_namespace.models[task_comment_model.name] = task_comment_model
+    api_namespace.models[user_detail.name] = user_detail
     api_namespace.models[task_comments_model.name] = task_comments_model
 
 
@@ -164,11 +165,20 @@ task_comment_model = Model(
     {"comment": fields.String(required=True, description="Task comment.")},
 )
 
+user_detail = Model(
+    "User detail model.",
+    {
+        "id": fields.Integer(required=True, description="User's id."),
+        "name": fields.String(required=True, description="User's name.")
+    },
+)
 task_comments_model = Model(
     "Task comments model.",
     {
         "id": fields.Integer(required=True, description="Task comment's id."),
-        "user_id": fields.Integer(required=True, description="User's id."),
+        "sent_by_me": fields.Boolean(
+            required=True, description="Comment is done by current user indication"),
+        "user": fields.Nested(user_detail),
         "task_id": fields.Integer(required=True, description="Task's id."),
         "relation_id": fields.Integer(required=True, description="Relation's id."),
         "creation_date": fields.Float(
