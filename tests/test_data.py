@@ -47,6 +47,7 @@ user3 = {
     "username": "user3",
     "password": "user3_pwd",
     "terms_and_conditions_checked": True,
+    "skills":"xyz"
 }
 
 user4 = {

@@ -42,6 +42,7 @@ class TestListUsersApi(BaseTestCase):
             terms_and_conditions_checked=user3["terms_and_conditions_checked"],
         )
 
+        self.second_user.skills = user3["skills"]
         self.verified_user.is_email_verified = True
         self.verified_user.need_mentoring = True
 
@@ -129,6 +130,18 @@ class TestListUsersApi(BaseTestCase):
         expected_response = [marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get(
             f"/users?search=s_t-r%24a%2Fn'ge",
+            follow_redirects=True,
+            headers=auth_header,
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_skills_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.second_user, public_user_api_model)]
+        actual_response = self.client.get(
+            f"/users?skills={self.second_user.skills}",
             follow_redirects=True,
             headers=auth_header,
         )

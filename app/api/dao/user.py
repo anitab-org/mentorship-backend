@@ -148,13 +148,14 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified = None):
+    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified=None, skills = None):
         """ Retrieves a list of verified users with the specified ID.
 
         Arguments:
             user_id: The ID of the user to be listed.
             search_query: The search query for name of the users to be found.
             is_verified: Status of the user's verification; None when provided as an argument.
+            skills: The skills of the user to be listed; None when not provided as an argument.
             page: The page of users to be returned
             per_page: The number of users to return per page
 
@@ -166,6 +167,8 @@ class UserDAO:
         users_list = UserModel.query.filter(
             UserModel.id != user_id,
             not is_verified or UserModel.is_email_verified,
+            not skills or (UserModel.skills and func.lower(
+                UserModel.skills).contains(skills.lower())),
             func.lower(UserModel.name).contains(search_query.lower())
         ).order_by(UserModel.id).paginate(page=page,
                                           per_page=per_page,
