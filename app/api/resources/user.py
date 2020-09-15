@@ -165,8 +165,8 @@ class MyUserProfile(Resource):
         return DAO.delete_user(user_id)
 
 
-@users_ns.response(HTTPStatus.CREATED, f"{messages.PASSWORD_SUCCESSFULLY_UPDATED}" )
-@users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.USER_ENTERED_INCORRECT_PASSWORD}" )
+@users_ns.response(HTTPStatus.CREATED, f"{messages.PASSWORD_SUCCESSFULLY_UPDATED}")
+@users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.USER_ENTERED_INCORRECT_PASSWORD}")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     (
