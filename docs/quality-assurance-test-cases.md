@@ -191,12 +191,12 @@ This document contains some examples of test cases for each feature implemented 
 
 **Service:** GET /mentorship_relation/{request_id}/task
 
-| Test Case        | Outcome |
-| -------------- | ----------- |
-| Logged in user requests list all task,or out of all task,for a mentorship relation those which involves the user (as a mentor or as a mentee) | Success |
+| Test Case                                                                                                                                               | Outcome |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| Logged in user requests list all task,or out of all task,for a mentorship relation those which involves the user (as a mentor or as a mentee)           | Success |
 | Logged in user requests list all task,or out of all task, for a mentorship relation those which involves the user (neither as a mentor nor as a mentee) | Fail |
-| Logged in user requests to list all task for a invalid mentorship relation , which involves the user (as a mentor or as a mentee) | Fail |     
-| Not logged in user requests to List all task for any valid/invalid mentorship relation | Fail |
+| Logged in user requests to list all task for a invalid mentorship relation , which involves the user (as a mentor or as a mentee)                       | Fail |     
+| Not logged in user requests to List all task for any valid/invalid mentorship relation                                                                  | Fail |
 
 
 ## Admins
