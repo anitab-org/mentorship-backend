@@ -188,13 +188,14 @@ This document contains some examples of test cases for each feature implemented 
 ### Delete Task
 
 **Service:** DELETE /mentorship_relation/{request_id}/task/{task_id}
-| Test Case       | Outcome |
-| ------------- | ------------- |
-| Logged in user delete a task from an existing request in the ACCEPTED state| Success |
-| Logged in user tries to delete a task whose id does not exist from an existing request in the ACCEPTED state (the task does not exist) | Fail |
-| Logged in user tries to delete a task from a non-existing request (Mentorship relation does not exist) in the ACCEPTED state | Fail |
-| Logged in user tries to delete a task from a request which the user is not a mentor nor a mentee | Fail |
-| Non-Logged in user tries to delete a task from an existing request in the ACCEPTED state  | Fail |
+| Test Case                                                                                                                              | Outcome |
+| -------------------------------------------------------------------------------------------------------------------------------------- |-------- |
+| Logged in user delete a task from an existing request in the ACCEPTED state                                                            | Success |
+| Logged in user tries to delete a task whose id does not exist from an existing request in the ACCEPTED state (the task does not exist) | Fail    |
+| Logged in user tries to delete a task from a non-existing request (Mentorship relation does not exist) in the ACCEPTED state           | Fail    |
+| Logged in user tries to delete a task from a request which the user is not a mentor nor a mentee                                       | Fail    |
+| Non-Logged in user tries to delete a task from an existing request in the ACCEPTED state                                               | Fail    |
+
 ## Admins
 
 Only admin users have access to this.
