@@ -44,7 +44,7 @@ class TestListUsersApi(BaseTestCase):
 
         self.verified_user.is_email_verified = True
         self.verified_user.need_mentoring = True
-
+        self.verified_user.available_to_mentor = True
         # all three users are not in a current relationship
         # verified_user needs mentoring -> is_available = True
         self.verified_user.is_available = True
@@ -131,6 +131,95 @@ class TestListUsersApi(BaseTestCase):
             f"/users?search=s_t-r%24a%2Fn'ge",
             follow_redirects=True,
             headers=auth_header,
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_need_mentoring_query_true_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users?need_mentoring=True", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_need_mentoring_query_false_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [
+            marshal(self.verified_user, public_user_api_model),
+            marshal(self.other_user, public_user_api_model),
+            marshal(self.second_user, public_user_api_model)
+        ]
+        actual_response = self.client.get(
+            "/users?need_mentoring=False", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_available_to_mentor_query_true_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users?available_to_mentor=True", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_available_to_mentor_query_false_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [
+            marshal(self.verified_user, public_user_api_model),
+            marshal(self.other_user, public_user_api_model),
+            marshal(self.second_user, public_user_api_model)
+        ]
+        actual_response = self.client.get(
+            "/users?available_to_mentor=False", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))    
+
+
+    def test_list_users_api_verified_users_with_need_mentoring_query_true_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users/verified?need_mentoring=True", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_verified_users_with_need_mentoring_query_false_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users/verified?need_mentoring=False", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_verified_users_with_available_to_mentor_query_true_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users/verified?available_to_mentor=True", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_verified_users_with_available_to_mentor_query_false_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users/verified?available_to_mentor=False", follow_redirects=True, headers=auth_header
         )
 
         self.assertEqual(200, actual_response.status_code)

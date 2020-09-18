@@ -37,7 +37,7 @@ DAO = UserDAO()  # User data access object
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page", "need_mentoring": "Flag for needing mentoring", "available_to_mentor": "Flag_for_availablity_to_mentor"})
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -58,11 +58,22 @@ class UserList(Resource):
         available_to_mentor. The current user's details are not returned.
         """
 
-        page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
-        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+        need_mentoring = request.args.get("need_mentoring")
+        available_to_mentor = request.args.get("available_to_mentor")
+        if need_mentoring and need_mentoring.lower() == "true":
+            need_mentoring = True
+        else:
+            need_mentoring = False
 
+        if available_to_mentor and available_to_mentor.lower() == "true":
+            available_to_mentor = True
+        else : 
+            available_to_mentor = False  
+
+        page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
+        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)  
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page)
+        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, need_mentoring,available_to_mentor)
 
 
 @users_ns.route("users/<int:user_id>")
@@ -216,7 +227,7 @@ class ChangeUserPassword(Resource):
 class VerifiedUser(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("get_verified_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+    @users_ns.doc("get_verified_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page", "need_mentoring": "Flag for needing mentoring", "available_to_mentor": "Flag_for_availablity_to_mentor"})
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -237,11 +248,23 @@ class VerifiedUser(Resource):
         available_to_mentor. The current user's details are not returned.
         """
 
+        need_mentoring = request.args.get("need_mentoring")
+        available_to_mentor = request.args.get("available_to_mentor")
+
+        if need_mentoring and need_mentoring.lower() == "true":
+            need_mentoring = True
+        else:
+            need_mentoring = False
+
+        if available_to_mentor and available_to_mentor.lower() == "true":
+            available_to_mentor = True
+        else : 
+            available_to_mentor = False 
+
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
         per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
-
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, is_verified=True)
+        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, need_mentoring,available_to_mentor, is_verified=True)
 
 
 @users_ns.route("register")
