@@ -18,6 +18,10 @@ click==6.7
 colorama==0.3.9
 coverage==4.5.1
 cryptography==2.8
+docker==3.4.0
+docker-compose==1.21.2
+docker-pycreds==0.3.0
+dockerpty==0.4.1
 docopt==0.6.2
 docutils==0.14
 entrypoints==0.3
@@ -66,4 +70,4 @@ tzlocal==1.5.1
 urllib3==1.22
 wcwidth==0.1.7
 websocket-client==0.48.0
-Werkzeug==0.16.1
+Werkzeug==0.15.3
