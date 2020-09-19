@@ -319,10 +319,10 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route("user/resend_email")
-@users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
-@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.EMAIL_INPUT_BY_USER_IS_INVALID)
-@users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
-@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.OK, f"{messages.EMAIL_VERIFICATION_MESSAGE}")
+@users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.EMAIL_INPUT_BY_USER_IS_INVALID}")
+@users_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}")
+@users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
