@@ -179,6 +179,16 @@ class TestListUsersApi(BaseTestCase):
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
+    def test_list_users_api_with_is_verified_query_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users?is_verified=true", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
     def test_list_users_api_resource_verified_users(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]

@@ -37,7 +37,7 @@ DAO = UserDAO()  # User data access object
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page", "is_verified":"Status of the user's verification. To get verified users set it to 'true', in other cases all users will be listed"})
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -60,9 +60,10 @@ class UserList(Resource):
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
         per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+        is_verified = request.args.get("is_verified") == 'true'
 
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page)
+        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, is_verified = is_verified)
 
 
 @users_ns.route("users/<int:user_id>")
