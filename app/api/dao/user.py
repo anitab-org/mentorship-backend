@@ -99,6 +99,7 @@ class UserDAO:
         return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
     @staticmethod
+    @email_verification_required
     def get_user(user_id: int):
         """ Retrieves a user's profile information using a specified ID.
 
@@ -112,7 +113,9 @@ class UserDAO:
 
         """
 
-        return UserModel.find_by_id(user_id)
+        user_details = UserModel.find_by_id(user_id)
+        if user_details:
+            return marshal(user_details, public_user_api_model), HTTPStatus.OK
 
     @staticmethod
     def get_user_by_email(email: str):
