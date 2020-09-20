@@ -17,7 +17,6 @@ from app.api.models.mentorship_relation import (
     list_tasks_response_body,
     mentorship_request_response_body_for_user_dashboard_body,
 )
-from app.api.models.user import *
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.utils.validation_utils import is_email_valid
 
