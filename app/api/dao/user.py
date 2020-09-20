@@ -114,9 +114,7 @@ class UserDAO:
 
         """
 
-        user_details = UserModel.find_by_id(user_id)
-        if user_details:
-            return marshal(user_details, public_user_api_model), HTTPStatus.OK
+        return UserModel.find_by_id(user_id)
 
     @staticmethod
     def get_user_by_email(email: str):

@@ -90,7 +90,11 @@ class OtherUser(Resource):
         A user with valid access token can view the details of another user. The endpoint
         takes "user_id" of such user has input.
         """
-        return DAO.get_user(user_id)
+        user_details = DAO.get_user(user_id)
+        if isinstance(user_details, tuple):
+            return user_details
+        else:
+            return marshal(user_details, public_user_api_model), HTTPStatus.OK
 
 @users_ns.route("user")
 @users_ns.response(
