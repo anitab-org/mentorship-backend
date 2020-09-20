@@ -53,7 +53,7 @@ class TestnGetOtherUserApi(BaseTestCase):
     def test_user_invalid_user_id_for_other_user(self):
         auth_header = get_test_request_header(self.admin_user.id)
         actual_response = self.client.get(
-            "/users/abc", follow_redirects=True, headers=auth_header
+            "/users/1234", follow_redirects=True, headers=auth_header
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertEqual(json.loads(actual_response.data),messages.USER_DOES_NOT_EXIST)
