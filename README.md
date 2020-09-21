@@ -20,7 +20,7 @@ This API is being used by 3 frontend projects currently being developed:
     - [Run app in Windows](#run-app-in-Windows)
     - [Run app in Linux](#run-app-in-Linux)
     - [Run with Docker](#run-with-docker)
-    - [Run tests](run-tests)
+    - [Run tests](#run-tests)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Branches](#branches)
