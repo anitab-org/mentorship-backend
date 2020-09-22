@@ -158,7 +158,7 @@ class UserDAO:
             page: The page of users to be returned
             per_page: The number of users to return per page
             need_mentoring: Flag to only pull users who need mentoring.
-	        available_to_mentor: Flag to only pull users who are available to mentor.
+	      available_to_mentor: Flag to only pull users who are available to mentor.
 
         Returns:
             A list of users matching conditions and the HTTP response code.
