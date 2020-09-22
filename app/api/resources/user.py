@@ -129,7 +129,14 @@ class MyUserProfile(Resource):
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
-    @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input. %s" % messages.USERNAME_FIELD_IS_EMPTY)
+    @users_ns.response(
+        HTTPStatus.BAD_REQUEST,
+    "%s\n%s"
+    % (
+         "Invalid input.",
+         messages.USERNAME_FIELD_IS_EMPTY
+    ),
+)
     def put(cls):
         """
         Updates user profile
