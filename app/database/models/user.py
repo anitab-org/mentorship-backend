@@ -31,7 +31,7 @@ class UserModel(db.Model):
     password_hash = db.Column(db.String(100))
 
     # registration
-    registration_date = db.Column(db.Float)
+    registration_date = db.Column(db.DateTime)
     terms_and_conditions_checked = db.Column(db.Boolean)
 
     # admin
