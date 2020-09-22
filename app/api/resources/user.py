@@ -264,7 +264,7 @@ class VerifiedUser(Resource):
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
         per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, need_mentoring,available_to_mentor, is_verified=True)
+        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, need_mentoring, available_to_mentor, is_verified=True)
 
 
 @users_ns.route("register")
