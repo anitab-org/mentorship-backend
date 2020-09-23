@@ -188,13 +188,13 @@ class MentorshipRelationDAO:
         if request.action_user_id == user_id:
             return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, HTTPStatus.FORBIDDEN
 
-        # verify if I'm involved in this relation
+        # verify if I'm involved in this request
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, HTTPStatus.FORBIDDEN
 
         my_requests = user.mentee_relations + user.mentor_relations
 
-        # verify if I'm on a current relation
+        # verify if I'm on a current request
         for my_request in my_requests:
             if my_request.state == MentorshipRelationState.ACCEPTED:
                 return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, HTTPStatus.FORBIDDEN
@@ -251,7 +251,7 @@ class MentorshipRelationDAO:
         if request.action_user_id == user_id:
             return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, HTTPStatus.FORBIDDEN
 
-        # verify if I'm involved in this relation
+        # verify if I'm involved in this request
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.FORBIDDEN
 
