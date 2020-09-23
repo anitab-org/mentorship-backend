@@ -77,7 +77,7 @@ full_user_api_model = Model(
             required=True, description="User Terms and Conditions check state"
         ),
         "is_admin": fields.Boolean(required=True, description="User admin status"),
-        "registration_date": fields.Float(
+        "registration_date": fields.DateTime(
             required=True, description="User registration date"
         ),
         "is_email_verified": fields.Boolean(
