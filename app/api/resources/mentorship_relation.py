@@ -179,7 +179,7 @@ class GetAllMyMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/accept")
+@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/accept")
 class AcceptMentorshipRelation(Resource):
     @classmethod
     @jwt_required
@@ -210,7 +210,7 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, relation_id):
+    def put(cls, request_id):
         """
         Accept a mentorship relation.
 
@@ -226,15 +226,15 @@ class AcceptMentorshipRelation(Resource):
         # if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.accept_request(user_id=user_id, relation_id=relation_id)
+        response = DAO.accept_request(user_id=user_id, request_id=request_id)
 
         if response[1] == HTTPStatus.OK:
-            send_email_mentorship_relation_accepted(relation_id)
+            send_email_mentorship_relation_accepted(request_id)
 
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>/reject")
+@mentorship_relation_ns.route("mentorship_relation/<int:request_id>/reject")
 class RejectMentorshipRelation(Resource):
     @classmethod
     @jwt_required
@@ -264,7 +264,7 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def put(cls, relation_id):
+    def put(cls, request_id):
         """
         Reject a mentorship relation.
 
@@ -279,7 +279,7 @@ class RejectMentorshipRelation(Resource):
         # TODO check if user id is well parsed, if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.reject_request(user_id=user_id, relation_id=relation_id)
+        response = DAO.reject_request(user_id=user_id, request_id=request_id)
 
         return response
 
@@ -330,7 +330,7 @@ class CancelMentorshipRelation(Resource):
         return response
 
 
-@mentorship_relation_ns.route("mentorship_relation/<int:relation_id>")
+@mentorship_relation_ns.route("mentorship_relation/<int:request_id>")
 class DeleteMentorshipRelation(Resource):
     @classmethod
     @jwt_required
@@ -359,7 +359,7 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.response(
         404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
-    def delete(cls, relation_id):
+    def delete(cls, request_id):
         """
         Delete a mentorship request.
 
@@ -374,7 +374,7 @@ class DeleteMentorshipRelation(Resource):
         # TODO check if user id is well parsed, if it is an integer
 
         user_id = get_jwt_identity()
-        response = DAO.delete_request(user_id=user_id, relation_id=relation_id)
+        response = DAO.delete_request(user_id=user_id, request_id=request_id)
 
         return response
 

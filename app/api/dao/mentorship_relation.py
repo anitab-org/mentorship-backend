@@ -162,7 +162,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def accept_request(user_id: int, relation_id: int):
+    def accept_request(user_id: int, request_id: int):
         """Allows a mentorship request.
 
         Args:
@@ -174,58 +174,58 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        relation = MentorshipRelationModel.find_by_id(relation_id)
+        request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if relation is None:
+        if request is None:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         # verify if request is in pending state
-        if relation.state != MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         # verify if I'm the receiver of the request
-        if relation.action_user_id == user_id:
+        if request.action_user_id == user_id:
             return messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, HTTPStatus.FORBIDDEN
 
         # verify if I'm involved in this relation
-        if not (relation.mentee_id == user_id or relation.mentor_id == user_id):
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return messages.CANT_ACCEPT_UNINVOLVED_MENTOR_RELATION, HTTPStatus.FORBIDDEN
 
-        my_relations = user.mentee_relations + user.mentor_relations
+        my_requests = user.mentee_relations + user.mentor_relations
 
         # verify if I'm on a current relation
-        for my_relation in my_relations:
-            if my_relation.state == MentorshipRelationState.ACCEPTED:
+        for my_request in my_requests:
+            if my_request.state == MentorshipRelationState.ACCEPTED:
                 return messages.USER_IS_INVOLVED_IN_A_MENTORSHIP_RELATION, HTTPStatus.FORBIDDEN
 
-        mentee = relation.mentee
-        mentor = relation.mentor
+        mentee = request.mentee
+        mentor = request.mentor
 
         # If I am mentor : Check if the mentee isn't in any other relation already
         if user_id == mentor.id:
-            mentee_relations = mentee.mentee_relations + mentee.mentor_relations
+            mentee_requests = mentee.mentee_relations + mentee.mentor_relations
 
-            for mentee_relation in mentee_relations:
-                if mentee_relation.state == MentorshipRelationState.ACCEPTED:
+            for mentee_request in mentee_requests:
+                if mentee_request.state == MentorshipRelationState.ACCEPTED:
                     return messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
         # If I am mentee : Check if the mentor isn't in any other relation already
         else:
-            mentor_relations = mentor.mentee_relations + mentor.mentor_relations
+            mentor_requests = mentor.mentee_relations + mentor.mentor_relations
 
-            for mentor_relation in mentor_relations:
-                if mentor_relation.state == MentorshipRelationState.ACCEPTED:
+            for mentor_request in mentor_requests:
+                if mentor_request.state == MentorshipRelationState.ACCEPTED:
                     return messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST
 
         # All was checked
-        relation.state = MentorshipRelationState.ACCEPTED
-        relation.save_to_db()
+        request.state = MentorshipRelationState.ACCEPTED
+        request.save_to_db()
 
         return messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
-    def reject_request(user_id: int, relation_id: int):
+    def reject_request(user_id: int, request_id: int):
         """Rejects a mentorship request.
 
         Args:
@@ -237,27 +237,27 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        relation = MentorshipRelationModel.find_by_id(relation_id)
+        request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if relation is None:
+        if request is None:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         # verify if request is in pending state
-        if relation.state != MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         # verify if I'm the receiver of the request
-        if relation.action_user_id == user_id:
+        if request.action_user_id == user_id:
             return messages.USER_CANT_REJECT_REQUEST_SENT_BY_USER, HTTPStatus.FORBIDDEN
 
         # verify if I'm involved in this relation
-        if not (relation.mentee_id == user_id or relation.mentor_id == user_id):
+        if not (request.mentee_id == user_id or request.mentor_id == user_id):
             return messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST, HTTPStatus.FORBIDDEN
 
         # All was checked
-        relation.state = MentorshipRelationState.REJECTED
-        relation.save_to_db()
+        request.state = MentorshipRelationState.REJECTED
+        request.save_to_db()
 
         return messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY, HTTPStatus.OK
 
@@ -297,7 +297,7 @@ class MentorshipRelationDAO:
 
     @staticmethod
     @email_verification_required
-    def delete_request(user_id: int, relation_id: int):
+    def delete_request(user_id: int, request_id: int):
         """Deletes a mentorship request.
 
         Deletes a mentorship request if the current user was the one who created it and the request is in the pending state.
@@ -311,22 +311,22 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        relation = MentorshipRelationModel.find_by_id(relation_id)
+        request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
-        if relation is None:
+        if request is None:
             return messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         # verify if request is in pending state
-        if relation.state != MentorshipRelationState.PENDING:
+        if request.state != MentorshipRelationState.PENDING:
             return messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         # verify if user created the mentorship request
-        if relation.action_user_id != user_id:
+        if request.action_user_id != user_id:
             return messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN
 
         # All was checked
-        relation.delete_from_db()
+        request.delete_from_db()
 
         return messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
 
