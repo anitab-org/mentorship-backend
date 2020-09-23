@@ -316,7 +316,7 @@ class CancelMentorshipRelation(Resource):
 
         Input:
         1. Header: valid access token
-        2. Path: ID of request which is to be cancelled (request_id)
+        2. Path: ID of request which is to be cancelled (relation_id)
 
         Returns:
         Success or failure message.
@@ -516,7 +516,7 @@ class CreateTask(Resource):
 
         Input:
         1. Header: valid access token
-        2. Path: ID of request for which task is being created (request_id)
+        2. Path: ID of request for which task is being created (relation_id)
         3. Body: JSON object containing description of task.
 
         Returns:
@@ -578,7 +578,7 @@ class DeleteTask(Resource):
         Input:
         1. Header: valid access token
         2. Path: ID of the task to be deleted (task_id) and it ID of the associated
-        mentorship relation (request_id).
+        mentorship relation (relation_id).
         3. Body: JSON object containing description of task.
 
         Returns:
@@ -627,7 +627,7 @@ class ListTasks(Resource):
         Input:
         1. Header: valid access token
         2. Path: ID of the mentorship relation for which tasks are to be
-        displayed(request_id). The user must be involved in this relation.
+        displayed(relation_id). The user must be involved in this relation.
 
         Returns:
         JSON array containing task details as objects is displayed on success.
@@ -681,7 +681,7 @@ class UpdateTask(Resource):
         Input:
         1. Header: valid access token
         2. Path: ID of task (task_id) and ID of the associated mentorship
-        relation (request_id). The user must be involved in this relation.
+        relation (relation_id). The user must be involved in this relation.
         3. Body:
 
         Returns:
