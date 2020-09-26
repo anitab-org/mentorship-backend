@@ -316,7 +316,7 @@ class CancelMentorshipRelation(Resource):
 
         Input:
         1. Header: valid access token
-        2. Path: ID of request which is to be cancelled (relation_id)
+        2. Path: ID of relation which is to be cancelled (relation_id)
 
         Returns:
         Success or failure message.
@@ -516,7 +516,7 @@ class CreateTask(Resource):
 
         Input:
         1. Header: valid access token
-        2. Path: ID of request for which task is being created (relation_id)
+        2. Path: ID of relation for which task is being created (relation_id)
         3. Body: JSON object containing description of task.
 
         Returns:
