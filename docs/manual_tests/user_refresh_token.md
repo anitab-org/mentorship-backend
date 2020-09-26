@@ -1,21 +1,38 @@
 ## Manual testing for POST /user/refresh API
 
-#### Dummy data used :
-**username** : testrefresh, 
-**password** : testrefresh@1234
+#### Dummy data used:
+* **username**: refresh_test, 
+* **password**: refresh_test@1234
 
-* _Refresh token in Authorization field is the refresh token returned on login response_
+* _Refresh using the expired token_
 
     Refresh token returned on login response:
     
     _Screenshot_: 
-    ![refreshToken](https://user-images.githubusercontent.com/50259869/94183019-6bdbd880-febf-11ea-8a8b-9d40c314cb4d.PNG)
+    ![loginOnce](https://user-images.githubusercontent.com/50259869/94347905-e0e11680-0055-11eb-8569-0249b45e52e6.PNG)
+
+    Entering the expired login response refresh token in the Authorization field:
+    
+    _Screenshot_: 
+    ![enterExpired](https://user-images.githubusercontent.com/50259869/94347906-e179ad00-0055-11eb-9b37-1496638434a2.PNG)
+    ![enterExpiredCurl](https://user-images.githubusercontent.com/50259869/94347907-e2124380-0055-11eb-982b-52e9f087540c.PNG)
+
+    _Expected Result_: FAIL
+
+    _Actual Result_: FAIL
+
+* _Refresh using new refresh token returned on login response_
+
+    Login again to get a new refresh token:
+    
+    _Screenshot_: 
+    ![loginAgain](https://user-images.githubusercontent.com/50259869/94347910-e2aada00-0055-11eb-982f-3919042cbac4.PNG)
 
     Entering the login response refresh token in the Authorization field:
     
     _Screenshot_: 
-    ![](https://user-images.githubusercontent.com/50259869/94183020-6c746f00-febf-11ea-9e07-ba1c9436f965.PNG)
-    ![](https://user-images.githubusercontent.com/50259869/94183022-6d0d0580-febf-11ea-8d5a-0eb67782a08c.PNG)
+    ![correctToken](https://user-images.githubusercontent.com/50259869/94347911-e3437080-0055-11eb-9b52-1e2b014ed8b5.PNG)
+    ![correctTokenCurl](https://user-images.githubusercontent.com/50259869/94347912-e3437080-0055-11eb-9912-452d4a637942.PNG)
 
     _Expected Result_: SUCCESS
 
@@ -26,8 +43,8 @@
     Filling refresh token in Authorization field without Bearer:
 
     _Screenshot:_
-    ![](https://user-images.githubusercontent.com/50259869/94183024-6d0d0580-febf-11ea-8300-148cb647239d.PNG)
-    ![](https://user-images.githubusercontent.com/50259869/94183026-6da59c00-febf-11ea-826a-584cd1659e16.PNG)
+    ![withoutBearer](https://user-images.githubusercontent.com/50259869/94347915-e4749d80-0055-11eb-97e3-6328a54fc399.PNG)
+    ![withoutBearerCurl](https://user-images.githubusercontent.com/50259869/94347916-e4749d80-0055-11eb-8d40-94ed540ed33e.PNG)
 
     _Expected Result_: FAIL
 
@@ -38,8 +55,20 @@
     Filling Authorization field with Bearer only and without refresh token:
 
     _Screenshot:_
-    ![](https://user-images.githubusercontent.com/50259869/94183029-6da59c00-febf-11ea-95eb-1560dab180b0.PNG)
-    ![](https://user-images.githubusercontent.com/50259869/94183030-6e3e3280-febf-11ea-8a25-f5bc6d464e3c.PNG)
+    ![bearerOnly](https://user-images.githubusercontent.com/50259869/94347913-e3dc0700-0055-11eb-8ad9-3993edb31ea8.PNG)
+    ![bearerOnlyCurl](https://user-images.githubusercontent.com/50259869/94347914-e3dc0700-0055-11eb-86cf-03789fff41a6.PNG)
+
+    _Expected Result_: FAIL
+
+    _Actual Result_: FAIL
+
+* _Single whitespace in Authorization field_
+
+    Filling Authorization field with only a single whitespace:
+
+    _Screenshot:_
+    ![whitespaceOnly](https://user-images.githubusercontent.com/50259869/94347917-e50d3400-0055-11eb-98ad-a1dada8d5ba7.PNG)
+    ![whitespaceOnlyCurl](https://user-images.githubusercontent.com/50259869/94347918-e5a5ca80-0055-11eb-93ec-6ce64c3e4f38.PNG)
 
     _Expected Result_: FAIL
 
