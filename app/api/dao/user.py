@@ -148,7 +148,7 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified=None, skills = None):
+    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified=None, skills=None):
         """ Retrieves a list of verified users with the specified ID.
 
         Arguments:
