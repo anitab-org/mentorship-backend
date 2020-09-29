@@ -1399,6 +1399,798 @@ var data = {
           "version": "1.0",
           "description": "API documentation for the backend of Mentorship System. \n \nMentorship System is an application that matches women in tech to mentor each other, on career development, through 1:1 relations during a certain period of time. \n \nThe main repository of the Backend System can be found here: https://github.com/anitab-org/mentorship-backend \n \nThe Android client for the Mentorship System can be found here: https://github.com/anitab-org/mentorship-android \n \nFor more information about the project here's a link to our wiki guide: https://github.com/anitab-org/mentorship-backend/wiki \n \nThis <a href=https://github.com/anitab-org/mentorship-backend/blob/develop/docs/quality-assurance-test-cases.md>Quality Assurance Test cases</a> document contains examples of test scenarios to evaluate if the API is working as it should."
            },
+           "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Operations related to users"
+        },
+        {
+            "name": "Admins",
+            "description": "Operations related to Admin users"
+        },
+        {
+            "name": "Mentorship Relation",
+            "description": "Operations related to mentorship relations between users"
+        }
+    ],
+    "definitions": {
+        "User list model": {
+            "required": [
+                "bio",
+                "location",
+                "name",
+                "occupation",
+                "organization",
+                "skills",
+                "slack_username",
+                "username"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "The unique identifier of a user"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "slack_username": {
+                    "type": "string",
+                    "description": "User Slack username"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "User bio"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "User location"
+                },
+                "occupation": {
+                    "type": "string",
+                    "description": "User occupation"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "User organization"
+                },
+                "skills": {
+                    "type": "string",
+                    "description": "User skills"
+                }
+            },
+            "type": "object"
+        },
+        "Update User request data model": {
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "User bio"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "User location"
+                },
+                "occupation": {
+                    "type": "string",
+                    "description": "User occupation"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "User organization"
+                },
+                "slack_username": {
+                    "type": "string",
+                    "description": "User slack username"
+                },
+                "social_media_links": {
+                    "type": "string",
+                    "description": "User social media links"
+                },
+                "skills": {
+                    "type": "string",
+                    "description": "User skills"
+                },
+                "interests": {
+                    "type": "string",
+                    "description": "User interests"
+                },
+                "resume_url": {
+                    "type": "string",
+                    "description": "User resume url"
+                },
+                "photo_url": {
+                    "type": "string",
+                    "description": "User photo url"
+                },
+                "need_mentoring": {
+                    "type": "boolean",
+                    "description": "User need mentoring indication"
+                },
+                "available_to_mentor": {
+                    "type": "boolean",
+                    "description": "User availability to mentor indication"
+                }
+            },
+            "type": "object"
+        },
+        "User Complete model used in listing": {
+            "required": [
+                "email",
+                "is_admin",
+                "is_email_verified",
+                "name",
+                "password_hash",
+                "registration_date",
+                "terms_and_conditions_checked",
+                "username"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "The unique identifier of a user"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User email"
+                },
+                "password_hash": {
+                    "type": "string",
+                    "description": "User password hash"
+                },
+                "terms_and_conditions_checked": {
+                    "type": "boolean",
+                    "description": "User Terms and Conditions check state"
+                },
+                "is_admin": {
+                    "type": "boolean",
+                    "description": "User admin status"
+                },
+                "registration_date": {
+                    "type": "number",
+                    "description": "User registration date"
+                },
+                "is_email_verified": {
+                    "type": "boolean",
+                    "description": "User email verification status"
+                },
+                "email_verification_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "User email verification date"
+                },
+                "bio": {
+                    "type": "string",
+                    "description": "User bio"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "User location"
+                },
+                "occupation": {
+                    "type": "string",
+                    "description": "User occupation"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "User organization"
+                },
+                "slack_username": {
+                    "type": "string",
+                    "description": "User slack username"
+                },
+                "social_media_links": {
+                    "type": "string",
+                    "description": "User social media links"
+                },
+                "skills": {
+                    "type": "string",
+                    "description": "User skills"
+                },
+                "interests": {
+                    "type": "string",
+                    "description": "User interests"
+                },
+                "resume_url": {
+                    "type": "string",
+                    "description": "User resume url"
+                },
+                "photo_url": {
+                    "type": "string",
+                    "description": "User photo url"
+                },
+                "need_mentoring": {
+                    "type": "boolean",
+                    "description": "User need mentoring indication"
+                },
+                "available_to_mentor": {
+                    "type": "boolean",
+                    "description": "User availability to mentor indication"
+                },
+                "current_mentorship_role": {
+                    "type": "integer",
+                    "description": "User current role"
+                },
+                "membership_status": {
+                    "type": "integer",
+                    "description": "User membershipstatus"
+                }
+            },
+            "type": "object"
+        },
+        "Change password request data model": {
+            "required": [
+                "current_password",
+                "new_password"
+            ],
+            "properties": {
+                "current_password": {
+                    "type": "string",
+                    "description": "User's current password"
+                },
+                "new_password": {
+                    "type": "string",
+                    "description": "User's new password"
+                }
+            },
+            "type": "object"
+        },
+        "User registration model": {
+            "required": [
+                "email",
+                "name",
+                "password",
+                "terms_and_conditions_checked",
+                "username"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                },
+                "username": {
+                    "type": "string",
+                    "description": "User username"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "User password"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User email"
+                },
+                "terms_and_conditions_checked": {
+                    "type": "boolean",
+                    "description": "User check Terms and Conditions value"
+                },
+                "need_mentoring": {
+                    "type": "boolean",
+                    "description": "User need mentoring indication"
+                },
+                "available_to_mentor": {
+                    "type": "boolean",
+                    "description": "User availability to mentor indication"
+                }
+            },
+            "type": "object"
+        },
+        "Resend email request data model": {
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "User's email"
+                }
+            },
+            "type": "object"
+        },
+        "Refresh response data model": {
+            "required": [
+                "access_expiry",
+                "access_token"
+            ],
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "User's access token"
+                },
+                "access_expiry": {
+                    "type": "number",
+                    "description": "Access token expiry UNIX timestamp"
+                }
+            },
+            "type": "object"
+        },
+        "Login request data model": {
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "User's username"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "User's password"
+                }
+            },
+            "type": "object"
+        },
+        "Login response data model": {
+            "required": [
+                "access_expiry",
+                "access_token",
+                "refresh_expiry",
+                "refresh_token"
+            ],
+            "properties": {
+                "access_token": {
+                    "type": "string",
+                    "description": "User's access token"
+                },
+                "access_expiry": {
+                    "type": "number",
+                    "description": "Access token expiry UNIX timestamp"
+                },
+                "refresh_token": {
+                    "type": "string",
+                    "description": "User's refresh token"
+                },
+                "refresh_expiry": {
+                    "type": "number",
+                    "description": "Refresh token expiry UNIX timestamp"
+                }
+            },
+            "type": "object"
+        },
+        "Get statistics on the app usage of the current user": {
+            "required": [
+                "accepted_requests",
+                "cancelled_relations",
+                "completed_relations",
+                "name",
+                "pending_requests",
+                "rejected_requests"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "The name of the user"
+                },
+                "pending_requests": {
+                    "type": "integer",
+                    "description": "Number of pending requests"
+                },
+                "accepted_requests": {
+                    "type": "integer",
+                    "description": "Number of accepted requests"
+                },
+                "completed_relations": {
+                    "type": "integer",
+                    "description": "Number of completed relations"
+                },
+                "cancelled_relations": {
+                    "type": "integer",
+                    "description": "Number of cancelled relations"
+                },
+                "rejected_requests": {
+                    "type": "integer",
+                    "description": "Number of rejected relations"
+                },
+                "achievements": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List tasks response model"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "List tasks response model": {
+            "required": [
+                "created_at",
+                "description",
+                "id",
+                "is_done"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Task ID"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Mentorship relation task description"
+                },
+                "is_done": {
+                    "type": "boolean",
+                    "description": "Mentorship relation task is done indication"
+                },
+                "created_at": {
+                    "type": "number",
+                    "description": "Task creation date in UNIX timestamp format"
+                },
+                "completed_at": {
+                    "type": "number",
+                    "description": "Task completion date in UNIX timestamp format"
+                }
+            },
+            "type": "object"
+        },
+        "Get user dashboard": {
+            "properties": {
+                "as_mentor": {
+                    "$ref": "#/definitions/Get received and sent relations"
+                },
+                "as_mentee": {
+                    "$ref": "#/definitions/Get received and sent relations"
+                },
+                "tasks_todo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List tasks response model"
+                    }
+                },
+                "tasks_done": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List tasks response model"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "Get received and sent relations": {
+            "properties": {
+                "sent": {
+                    "$ref": "#/definitions/relations by state"
+                },
+                "received": {
+                    "$ref": "#/definitions/relations by state"
+                }
+            },
+            "type": "object"
+        },
+        "relations by state": {
+            "properties": {
+                "accepted": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List mentorship relation request model for user dashboard"
+                    }
+                },
+                "rejected": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List mentorship relation request model for user dashboard"
+                    }
+                },
+                "completed": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List mentorship relation request model for user dashboard"
+                    }
+                },
+                "cancelled": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List mentorship relation request model for user dashboard"
+                    }
+                },
+                "pending": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/List mentorship relation request model for user dashboard"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "List mentorship relation request model for user dashboard": {
+            "required": [
+                "accept_date",
+                "action_user_id",
+                "creation_date",
+                "end_date",
+                "id",
+                "notes",
+                "start_date",
+                "state"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Mentorship relation ID"
+                },
+                "action_user_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation requester user ID"
+                },
+                "mentor": {
+                    "$ref": "#/definitions/user details for dashboard"
+                },
+                "mentee": {
+                    "$ref": "#/definitions/user details for dashboard"
+                },
+                "creation_date": {
+                    "type": "number",
+                    "description": "Mentorship relation creation date in UNIX timestamp format"
+                },
+                "accept_date": {
+                    "type": "number",
+                    "description": "Mentorship relation acceptance date in UNIX timestamp format"
+                },
+                "start_date": {
+                    "type": "number",
+                    "description": "Mentorship relation start date in UNIX timestamp format"
+                },
+                "end_date": {
+                    "type": "number",
+                    "description": "Mentorship relation end date in UNIX timestamp format"
+                },
+                "state": {
+                    "type": "integer",
+                    "description": "Mentorship relation state"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Mentorship relation notes"
+                }
+            },
+            "type": "object"
+        },
+        "user details for dashboard": {
+            "required": [
+                "id",
+                "photo_url",
+                "user_name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "user ID"
+                },
+                "user_name": {
+                    "type": "string",
+                    "description": "Mentorship relation user name"
+                },
+                "photo_url": {
+                    "type": "string",
+                    "description": "Mentorship relation user profile picture URL"
+                }
+            },
+            "type": "object"
+        },
+        "Assign User model": {
+            "required": [
+                "user_id"
+            ],
+            "properties": {
+                "user_id": {
+                    "type": "integer",
+                    "description": "The unique identifier of a user"
+                }
+            },
+            "type": "object"
+        },
+        "Send mentorship relation request model": {
+            "required": [
+                "end_date",
+                "mentee_id",
+                "mentor_id",
+                "notes"
+            ],
+            "properties": {
+                "mentor_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation mentor ID"
+                },
+                "mentee_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation mentee ID"
+                },
+                "end_date": {
+                    "type": "number",
+                    "description": "Mentorship relation end date in UNIX timestamp format"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Mentorship relation notes"
+                }
+            },
+            "type": "object"
+        },
+        "List mentorship relation request model": {
+            "required": [
+                "accept_date",
+                "action_user_id",
+                "creation_date",
+                "end_date",
+                "id",
+                "notes",
+                "sent_by_me",
+                "start_date",
+                "state"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Mentorship relation ID"
+                },
+                "action_user_id": {
+                    "type": "integer",
+                    "description": "Mentorship relation requester user ID"
+                },
+                "sent_by_me": {
+                    "type": "boolean",
+                    "description": "Mentorship relation sent by current user indication"
+                },
+                "mentor": {
+                    "$ref": "#/definitions/User"
+                },
+                "mentee": {
+                    "$ref": "#/definitions/User"
+                },
+                "creation_date": {
+                    "type": "number",
+                    "description": "Mentorship relation creation date in UNIX timestamp format"
+                },
+                "accept_date": {
+                    "type": "number",
+                    "description": "Mentorship relation acceptance date in UNIX timestamp format"
+                },
+                "start_date": {
+                    "type": "number",
+                    "description": "Mentorship relation start date in UNIX timestamp format"
+                },
+                "end_date": {
+                    "type": "number",
+                    "description": "Mentorship relation end date in UNIX timestamp format"
+                },
+                "state": {
+                    "type": "integer",
+                    "description": "Mentorship relation state"
+                },
+                "notes": {
+                    "type": "string",
+                    "description": "Mentorship relation notes"
+                }
+            },
+            "type": "object"
+        },
+        "User": {
+            "required": [
+                "id",
+                "name"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "User ID"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "User name"
+                }
+            },
+            "type": "object"
+        },
+        "Create task request model": {
+            "required": [
+                "description"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Mentorship relation task description"
+                }
+            },
+            "type": "object"
+        },
+        "Task comment model.": {
+            "required": [
+                "comment"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string",
+                    "description": "Task comment."
+                }
+            },
+            "type": "object"
+        },
+        "Task comments model.": {
+            "required": [
+                "comment",
+                "creation_date",
+                "id",
+                "relation_id",
+                "task_id",
+                "user_id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Task comment's id."
+                },
+                "user_id": {
+                    "type": "integer",
+                    "description": "User's id."
+                },
+                "task_id": {
+                    "type": "integer",
+                    "description": "Task's id."
+                },
+                "relation_id": {
+                    "type": "integer",
+                    "description": "Relation's id."
+                },
+                "creation_date": {
+                    "type": "number",
+                    "description": "Creation date of the task comment."
+                },
+                "modification_date": {
+                    "type": "number",
+                    "description": "Modification date of the task comment."
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "Task comment."
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        },
+        "NoAuthorizationError": {},
+        "CSRFError": {},
+        "ExpiredSignatureError": {},
+        "InvalidHeaderError": {},
+        "InvalidTokenError": {},
+        "JWTDecodeError": {},
+        "WrongTokenError": {},
+        "RevokedTokenError": {},
+        "FreshTokenRequired": {},
+        "UserLoadError": {},
+        "UserClaimsVerificationError": {}
+    }
            
 }
 document.getElementById("container").appendChild(
