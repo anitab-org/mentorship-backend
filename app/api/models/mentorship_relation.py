@@ -100,9 +100,6 @@ list_tasks_response_body = Model(
         "description": fields.String(
             required=True, description="Mentorship relation task description"
         ),
-        "is_done": fields.Boolean(
-            required=True, description="Mentorship relation task is done indication"
-        ),
         "created_at": fields.Float(
             required=True, description="Task creation date in UNIX timestamp format"
         ),
