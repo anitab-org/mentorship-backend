@@ -7,14 +7,14 @@ from app.database.sqlalchemy_extension import db
 class TaskCommentModel(db.Model):
     """Defines attributes for the task comment.
 
-        Attributes:
-            task_id: An integer for storing the task's id.
-            user_id: An integer for storing the user's id.
-            relation_id: An integer for storing the relation's id.
-            creation_date: A float indicating comment's creation date.
-            modification_date: A float indicating the modification date.
-            comment: A string indicating the comment.
-        """
+    Attributes:
+        task_id: An integer for storing the task's id.
+        user_id: An integer for storing the user's id.
+        relation_id: An integer for storing the relation's id.
+        creation_date: A float indicating comment's creation date.
+        modification_date: A float indicating the modification date.
+        comment: A string indicating the comment.
+    """
 
     # Specifying database table used for TaskCommentModel
     __tablename__ = "tasks_comments"

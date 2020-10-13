@@ -7,7 +7,7 @@ This document contains some examples of test cases for each feature implemented 
 
 **Notes:**
 - Outcome _Fail_ means the test case as no effect in the database, so no changes are done in the data. An error message should be returned;
-- Outcome _Success_ means e that the test case was successful and had an effect in the database, so this changes/effect should be visible on the database. E.g.: If a user is registered successfully, you should be able to login, and be seen using the GET /users API;
+- Outcome _Success_ means that the test case was successful and had an effect in the database, so this change/effect should be visible on the database. E.g.: If a user is registered successfully, you should be able to login, and be seen using the GET /users API;
 - When testing something make sure only one aspect of the test is failing the requirements;
 - “Logged in” means that a valid access token is being sent in the Authorization header;
 - Nonrestricted API will have a marker -> (not restricted);
@@ -88,6 +88,18 @@ This document contains some examples of test cases for each feature implemented 
 | Email in request body does not belong to a registered User                  | Fail    |
 | Email in request body is from a Verified User                               | Fail    |
 
+### Refresh token
+
+**Service:** POST /user/refresh
+
+| Test Case                                                        					  | Outcome |
+|------------------------------------------------------------------------------------ |---------|
+|Refresh token in Authorization field is the refresh token returned on login response | Success |
+|Refresh token in Authorization field is not valid or without Bearer                  | Fail    |
+|Refresh token in the Authorization field is expired               					  | Fail    |
+|No Refresh token is given in the Authorization field after Bearer    			      | Fail    |
+
+
 ## Mentorship Relation
 
 ### Send request
@@ -144,6 +156,24 @@ This document contains some examples of test cases for each feature implemented 
 | User2 (received the request) cancels a mentorship relation that it is currently involved with User1 (the relation is in an ACCEPTED state)  | Success |
 | User1 cancel a mentorship relation which the User1 is not involved with | Fail |
 
+### Update task
+
+**Service:** PUT /mentorship_relation/{request_id}/task/{task_id}/complete
+
+| Test Case       | Outcome |
+| ------------- | ------------- |
+| Logged in user completes task from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Success |
+| Logged in user tries to complete a task whose id does not exist, from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task which has already been completed, from an existing request in the ACCEPTED state, that involves the user (as a mentor or as a mentee) | Fail |
+| Logged in user tries to complete a task, from an existing request in the ACCEPTED state, that does not involve the user (neither as a mentor nor as a mentee) | Fail |
+| Not logged in user (invalid token) tries to complete a task, from an existing request in the ACCEPTED state | Fail |
+| Logged in user tries to complete a task, with an invalid request (not an integer) | Fail |
+| Logged in user tries to complete a task which is invalid (not an integer), from an existing request in the ACCEPTED state   | Fail |
+| Logged in user tries to complete a task from an non existing request for this relationship (The request doesn't exist in any other relationship) | Fail |
+| Logged in user tries to complete a task from an non existing request (The request  exists in a different relationship) | Fail |
+| Logged in user tries to complete a task from a request which is not in the ACCEPTED state (as a mentor or as a mentee) | Fail |
+
+
 ## Admins
 
 Only admin users have access to this.
@@ -172,3 +202,26 @@ Only admin users have access to this.
 | Revoke self the admin role when self is not the only admin | Success |
 | Revoking an admin user, when the current user is not an admin | Fail |
 
+
+## Tasks
+
+### Create
+**Service:** POST /mentorship_relation/{relation_id}/task
+
+|  Test Case                                                                                | Outcome |
+| ----------------------------------------------------------------------------------------- |-------- |
+| Create a task for a relation, in the accepted state, between logged user and another user | Success |
+| Creating a task without a description (either empty or not in the request body at all)    | Fail    |
+| Create a task when a logged user is not involved in the relation                          | Fail    |
+| Create a task if relation state is different than accepted                                | Fail    |
+
+### Confirmation of users email
+
+**Service:** GET /user/confirm_email/{token}
+
+| Test Case                                                                                      | Outcome |
+|------------------------------------------------------------------------------------------------|---------|
+| Verification token entered is one sent on users registered email entered within 24 hrs         | Success |
+| Verification token of already confirmed users account entered                                  | Success |
+| Verification token of un-confirmed users account entered after 24 hrs of email being sent      | Fail    |
+| Incorrect verification token entered in request body                                           | Fail    |                                                    

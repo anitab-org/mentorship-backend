@@ -81,7 +81,7 @@ class TestCreateTaskApi(TasksBaseTestCase):
             data=json.dumps(dict(description=self.test_description)),
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(201, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         new_task = self.tasks_list_1.find_task_by_id(3)

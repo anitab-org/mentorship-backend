@@ -48,7 +48,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.second_user.id),
             )
 
@@ -86,10 +86,10 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )  # new
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.second_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(403, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.ACCEPTED, mentorship_relation_current.state
             )  # current
@@ -109,10 +109,10 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.first_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(403, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -131,10 +131,10 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         with self.client:
             # admin_user acts as uninvolved 3rd user
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.admin_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(403, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -151,7 +151,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept"
             )
             self.assertEqual(401, response.status_code)
             self.assertEqual(
@@ -173,7 +173,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 self.second_user.id, token_expiration_delta=timedelta(seconds=-10)
             )
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=auth_header,
             )
             self.assertEqual(401, response.status_code)
