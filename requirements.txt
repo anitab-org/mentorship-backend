@@ -2,7 +2,7 @@ alembic==1.4.2
 aniso8601==3.0.0
 appdirs==1.4.3
 APScheduler==3.5.1
-asn1crypto==0.24.0
+asn1crypto==1.4.0
 attrs==19.3.0
 awsebcli==3.14.1
 bcrypt==3.1.7
