@@ -72,7 +72,6 @@ full_user_api_model = Model(
         "name": fields.String(required=True, description="User name"),
         "username": fields.String(required=True, description="User username"),
         "email": fields.String(required=True, description="User email"),
-
         "terms_and_conditions_checked": fields.Boolean(
             required=True, description="User Terms and Conditions check state"
         ),
