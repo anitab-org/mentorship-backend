@@ -48,7 +48,7 @@ python-dateutil==2.7.3
 python-dotenv==0.8.2
 python-editor==1.0.4
 pytz==2018.4
-PyYAML==3.13
+PyYAML==5.1
 regex==2020.2.20
 semantic-version==2.5.0
 six==1.11.0
