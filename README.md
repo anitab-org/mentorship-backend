@@ -39,14 +39,24 @@ To setup the project locally read these wiki pages and follow the instructions:
 The project runs on Python 3.
 
 1. Create a virtual environment:
-`virtualenv venv --python=python3`
+```
+virtualenv venv --python=python3
+```
 
 2. Activate the virtual environment:
-`source /venv/Scripts/activate` for Git Bash Users, 
-`venv\Scripts\activate` for Windows Command Line Users
+For Git Bash Users:
+```
+source /venv/Scripts/activate
+```
+For Windows Command Line Users:
+```
+venv\Scripts\activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or make sure you exported the following [environment variables](docs/environment-variables.md):
@@ -88,13 +98,19 @@ deactivate
 The project runs on Python 3.
 
 1. Create a virtual enviorntment:
-`virtualenv venv`
+```
+virtualenv venv
+```
 
 2. Activate the virtual environment:
-`source venv/bin/activate`
+```
+source venv/bin/activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip3 install -r requirements.txt`
+```
+pip3 install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
 
