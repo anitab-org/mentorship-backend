@@ -14,7 +14,7 @@ certifi==2018.4.16
 chardet==3.0.4
 click==6.7
 coverage==4.5.1
-cryptography==2.8
+cryptography==3.2
 dockerpty==0.4.1
 docopt==0.6.2
 docutils==0.14
