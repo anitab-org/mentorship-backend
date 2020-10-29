@@ -250,11 +250,11 @@ class UserDAO:
             else:
                 user.organization = None
 
-        if "slack_username" in data:
-            if data["slack_username"]:
-                user.slack_username = data["slack_username"]
+        if "zulip_username" in data:
+            if data["zulip_username"]:
+                user.zulip_username = data["zulip_username"]
             else:
-                user.slack_username = None
+                user.zulip_username = None
 
         if "social_media_links" in data:
             if data["social_media_links"]:

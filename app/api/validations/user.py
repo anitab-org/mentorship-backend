@@ -20,7 +20,7 @@ BIO_MAX_LENGTH = 450
 LOCATION_MAX_LENGTH = 60
 OCCUPATION_MAX_LENGTH = 60
 ORGANIZATION_MAX_LENGTH = 60
-SLACK_USERNAME_MAX_LENGTH = 60
+ZULIP_USERNAME_MAX_LENGTH = 60
 SKILLS_MAX_LENGTH = 450
 INTERESTS_MAX_LENGTH = 150
 SOCIALS_MAX_LENGTH = 400
@@ -170,13 +170,13 @@ def validate_update_profile_request_data(data):
         if not is_valid[0]:
             return is_valid[1]
 
-    slack_username = data.get("slack_username", None)
-    if slack_username:
+    zulip_username = data.get("zulip_username", None)
+    if zulip_username:
         is_valid = validate_length(
-            len(get_stripped_string(slack_username)),
+            len(get_stripped_string(zulip_username)),
             0,
-            SLACK_USERNAME_MAX_LENGTH,
-            "slack_username",
+            ZULIP_USERNAME_MAX_LENGTH,
+            "zulip_username",
         )
         if not is_valid[0]:
             return is_valid[1]

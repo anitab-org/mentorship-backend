@@ -26,8 +26,8 @@ public_admin_user_api_model = Model(
         ),
         "username": fields.String(required=True, description="User username"),
         "name": fields.String(required=True, description="User name"),
-        "slack_username": fields.String(
-            required=True, description="User Slack username"
+        "zulip_username": fields.String(
+            required=True, description="User zulip username"
         ),
         "bio": fields.String(required=True, description="User bio"),
         "location": fields.String(required=True, description="User location"),

@@ -47,7 +47,7 @@ class UserModel(db.Model):
     location = db.Column(db.String(80))
     occupation = db.Column(db.String(80))
     organization = db.Column(db.String(80))
-    slack_username = db.Column(db.String(80))
+    zulip_username = db.Column(db.String(80))
     social_media_links = db.Column(db.String(500))
     skills = db.Column(db.String(500))
     interests = db.Column(db.String(200))
@@ -98,7 +98,7 @@ class UserModel(db.Model):
             "location": self.location,
             "occupation": self.occupation,
             "organization": self.organization,
-            "slack_username": self.slack_username,
+            "zulip_username": self.zulip_username,
             "social_media_links": self.social_media_links,
             "skills": self.skills,
             "interests": self.interests,

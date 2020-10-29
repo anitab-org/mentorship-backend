@@ -41,8 +41,8 @@ public_user_api_model = Model(
         ),
         "username": fields.String(required=True, description="User username"),
         "name": fields.String(required=True, description="User name"),
-        "slack_username": fields.String(
-            required=True, description="User Slack username"
+        "zulip_username": fields.String(
+            required=True, description="User zulip username"
         ),
         "bio": fields.String(required=True, description="User bio"),
         "location": fields.String(required=True, description="User location"),
@@ -89,8 +89,8 @@ full_user_api_model = Model(
         "location": fields.String(required=False, description="User location"),
         "occupation": fields.String(required=False, description="User occupation"),
         "organization": fields.String(required=False, description="User organization"),
-        "slack_username": fields.String(
-            required=False, description="User slack username"
+        "zulip_username": fields.String(
+            required=False, description="User zulip username"
         ),
         "social_media_links": fields.String(
             required=False, description="User social media links"
@@ -188,8 +188,8 @@ update_user_request_body_model = Model(
         "location": fields.String(required=False, description="User location"),
         "occupation": fields.String(required=False, description="User occupation"),
         "organization": fields.String(required=False, description="User organization"),
-        "slack_username": fields.String(
-            required=False, description="User slack username"
+        "zulip_username": fields.String(
+            required=False, description="User zulip username"
         ),
         "social_media_links": fields.String(
             required=False, description="User social media links"
