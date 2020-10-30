@@ -148,7 +148,7 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified = None):
+    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, need_mentoring : bool = False, available_to_mentor: bool = False, is_verified = None):
         """ Retrieves a list of verified users with the specified ID.
 
         Arguments:
@@ -157,16 +157,19 @@ class UserDAO:
             is_verified: Status of the user's verification; None when provided as an argument.
             page: The page of users to be returned
             per_page: The number of users to return per page
+            need_mentoring: Flag to only pull users who need mentoring.
+	      available_to_mentor: Flag to only pull users who are available to mentor.
 
         Returns:
             A list of users matching conditions and the HTTP response code.
 
-        """
-
+        """       
         users_list = UserModel.query.filter(
             UserModel.id != user_id,
             not is_verified or UserModel.is_email_verified,
-            func.lower(UserModel.name).contains(search_query.lower())
+            func.lower(UserModel.name).contains(search_query.lower()),
+            not need_mentoring or (need_mentoring and UserModel.need_mentoring),
+            not available_to_mentor or (available_to_mentor and UserModel.available_to_mentor)
         ).order_by(UserModel.id).paginate(page=page,
                                           per_page=per_page,
                                           error_out=False,
@@ -180,7 +183,7 @@ class UserDAO:
         for user in list_of_users:
             relation = MentorshipRelationDAO.list_current_mentorship_relation(
                 user["id"]
-            )
+            )   
             if isinstance(relation, MentorshipRelationModel):
                 user["is_available"] = False
             else:
