@@ -45,7 +45,7 @@ class UserList(Resource):
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
-    @users_ns.marshal_list_with(public_user_api_model)
+    @users_ns.marshal_list_with(public_user_api_model, code=HTTPStatus.OK, description="Success")
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """
@@ -113,7 +113,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.marshal_with(full_user_api_model)  # , skip_none=True
+    @users_ns.marshal_with(full_user_api_model, code=HTTPStatus.OK, description="Success")  # , skip_none=True
     def get(cls):
         """
         Returns details of current user.
@@ -224,7 +224,7 @@ class VerifiedUser(Resource):
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
-    @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
+    @users_ns.marshal_list_with(public_user_api_model, code=HTTPStatus.OK, description="Success")  # , skip_none=True
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """
