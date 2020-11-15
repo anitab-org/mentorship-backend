@@ -56,9 +56,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_1.id,
-            },
+            json={"user_id": self.admin_user_1.id},
             follow_redirects=True,
             headers=auth_header,
         )
@@ -72,9 +70,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_2.id,
-            },
+            json={"user_id": self.admin_user_2.id},
             follow_redirects=True,
             headers=auth_header,
         )
@@ -87,9 +83,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": 1,
-            },
+            json={"user_id": 1},
             follow_redirects=True,
             headers=auth_header,
         )
@@ -102,9 +96,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_CANNOT_REVOKE_ADMIN_STATUS
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_1.id,
-            },
+            json={"user_id": self.admin_user_1.id},
             follow_redirects=True,
             headers=auth_header,
         )
@@ -117,9 +109,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_2.id,
-            },
+            json={"user_id": self.admin_user_2.id},
             follow_redirects=True,
             headers=auth_header,
         )
