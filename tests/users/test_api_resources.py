@@ -3,9 +3,8 @@ from unittest.mock import patch
 
 from flask import json
 
-from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
-
+from tests.base_test_case import BaseTestCase
 
 # Testing User API resources
 #

@@ -1,14 +1,15 @@
 import datetime
 import unittest
+
 from werkzeug.security import check_password_hash
 
 from app import messages
-from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
+from app.api.email_utils import generate_confirmation_token
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
-from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user2

@@ -1,8 +1,8 @@
 import unittest
+from http import HTTPStatus
 
 from flask import json
 from flask_restx import marshal
-from http import HTTPStatus
 
 from app.api.models.user import public_user_api_model
 from app.database.models.user import UserModel
@@ -13,7 +13,6 @@ from tests.test_utils import get_test_request_header
 
 
 class TestnGetOtherUserApi(BaseTestCase):
-
     def setUp(self):
         super(TestnGetOtherUserApi, self).setUp()
 
@@ -44,7 +43,9 @@ class TestnGetOtherUserApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = marshal(self.verified_user, public_user_api_model)
         actual_response = self.client.get(
-            f"/users/{self.verified_user.id}", follow_redirects=True, headers=auth_header
+            f"/users/{self.verified_user.id}",
+            follow_redirects=True,
+            headers=auth_header,
         )
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
@@ -55,6 +56,7 @@ class TestnGetOtherUserApi(BaseTestCase):
             "/users/abc", follow_redirects=True, headers=auth_header
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -5,17 +5,16 @@ from flask import json
 from flask_restx import marshal
 
 from app import messages
+from app.api.models.mentorship_relation import mentorship_request_response_body
 from app.api.models.user import public_user_api_model
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2, user3
-from app.api.models.mentorship_relation import mentorship_request_response_body
+from tests.test_utils import get_test_request_header
 
 
 class TestHappyPath1(BaseTestCase):

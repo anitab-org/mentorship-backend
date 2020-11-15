@@ -2,21 +2,19 @@ import datetime
 import json
 import unittest
 
-from app.api.validations.user import PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH
+from app.api.validations.user import PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.messages import (
-    PASSWORD_SUCCESSFULLY_UPDATED,
-    USER_INPUTS_SPACE_IN_PASSWORD,
     AUTHORISATION_TOKEN_IS_MISSING,
+    PASSWORD_SUCCESSFULLY_UPDATED,
     TOKEN_HAS_EXPIRED,
+    USER_INPUTS_SPACE_IN_PASSWORD,
 )
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.base_test_case import BaseTestCase
-
 from tests.test_data import user1
 from tests.test_utils import get_test_request_header
-
 
 # Testing /PUT/ Change User's Password
 

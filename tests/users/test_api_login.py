@@ -1,13 +1,12 @@
 import unittest
+from http import HTTPStatus
 
 from flask import json
 
 from app import messages
+from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
-
-from app.database.models.user import UserModel
-from http import HTTPStatus
 
 # Testing User API resources
 #
@@ -16,7 +15,6 @@ from http import HTTPStatus
 #     - invalid token
 #     - expired token
 from tests.test_data import user1, user2
-
 
 
 class TestUserLoginApi(BaseTestCase):
@@ -65,9 +63,7 @@ class TestUserLoginApi(BaseTestCase):
             self.assertIsNone(response.json.get("refresh_expiry"))
 
             self.assertEqual(1, len(response.json))
-            self.assertEqual(
-                messages.WRONG_USERNAME_OR_PASSWORD, response.json
-            )
+            self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
 
             self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
 

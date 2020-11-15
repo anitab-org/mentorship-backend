@@ -4,11 +4,11 @@ from string import ascii_lowercase
 
 from app import messages
 from app.api.validations.user import (
-    validate_update_profile_request_data,
     OCCUPATION_MAX_LENGTH,
     ORGANIZATION_MAX_LENGTH,
     USERNAME_MAX_LENGTH,
     USERNAME_MIN_LENGTH,
+    validate_update_profile_request_data,
 )
 from app.utils.validation_utils import get_length_validation_error_message
 

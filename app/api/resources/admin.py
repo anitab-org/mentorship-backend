@@ -1,11 +1,13 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
+
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
 from app import messages
+from app.api.dao.admin import AdminDAO
 from app.api.dao.user import UserDAO
 from app.api.models.admin import *
-from app.api.dao.admin import AdminDAO
 from app.api.resources.common import auth_header_parser
 
 admin_ns = Namespace("Admins", description="Operations related to Admin users")
@@ -17,7 +19,7 @@ add_models_to_namespace(admin_ns)
 @admin_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.USER_IS_ALREADY_AN_ADMIN}")
 @admin_ns.response(
     HTTPStatus.UNAUTHORIZED,
-    f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}"
+    f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}",
 )
 @admin_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_ASSIGN_NOT_ADMIN}")
 @admin_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
@@ -49,8 +51,7 @@ class AssignNewUserAdmin(Resource):
 @admin_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.USER_IS_NOT_AN_ADMIN}")
 @admin_ns.response(
     HTTPStatus.UNAUTHORIZED,
-    f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}"
-
+    f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}",
 )
 @admin_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_REVOKE_NOT_ADMIN}")
 @admin_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")

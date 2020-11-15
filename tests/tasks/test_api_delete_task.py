@@ -1,4 +1,5 @@
 import unittest
+
 from flask import json
 
 from app import messages

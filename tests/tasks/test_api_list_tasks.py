@@ -1,4 +1,5 @@
 import unittest
+
 from flask import json
 from flask_restx import marshal
 

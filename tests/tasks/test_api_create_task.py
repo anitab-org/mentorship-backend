@@ -1,10 +1,11 @@
 import unittest
+from datetime import timedelta
+
 from flask import json
 
 from app import messages
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
-from datetime import timedelta
 
 
 class TestCreateTaskApi(TasksBaseTestCase):

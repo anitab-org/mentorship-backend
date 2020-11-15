@@ -1,5 +1,6 @@
-from typing import Dict
 from http import HTTPStatus
+from typing import Dict
+
 from app import messages
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required

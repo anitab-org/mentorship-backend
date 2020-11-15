@@ -6,8 +6,8 @@ from flask_restx import marshal
 
 from app import messages
 from app.api.models.user import full_user_api_model
-from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 from tests.test_utils import get_test_request_header

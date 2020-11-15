@@ -4,14 +4,14 @@ from string import ascii_lowercase
 
 from app import messages
 from app.api.validations.user import (
-    validate_user_registration_request_data,
-    NAME_MIN_LENGTH,
     NAME_MAX_LENGTH,
-    USERNAME_MIN_LENGTH,
-    USERNAME_MAX_LENGTH,
+    NAME_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    USERNAME_MIN_LENGTH,
     validate_new_password,
+    validate_user_registration_request_data,
 )
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.test_data import user1

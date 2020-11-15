@@ -1,21 +1,22 @@
 from datetime import datetime
 from http import HTTPStatus
+
 from flask import request
 from flask_jwt_extended import (
-    jwt_required,
-    jwt_refresh_token_required,
     create_access_token,
     create_refresh_token,
     get_jwt_identity,
+    jwt_refresh_token_required,
+    jwt_required,
 )
-from flask_restx import Resource, marshal, Namespace
+from flask_restx import Namespace, Resource, marshal
 
 from app import messages
-from app.api.validations.user import *
+from app.api.dao.user import UserDAO
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
-from app.api.dao.user import UserDAO
 from app.api.resources.common import auth_header_parser
+from app.api.validations.user import *
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -30,14 +31,21 @@ DAO = UserDAO()  # User data access object
     % (
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING
+        messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
 # TODO: @users_ns.response(404, 'User does not exist.')
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users (default: 1)", "per_page": "specify number of users per page (default: 10)"})
+    @users_ns.doc(
+        "list_users",
+        params={
+            "search": "Search query",
+            "page": "specify page of users (default: 1)",
+            "per_page": "specify number of users per page (default: 10)",
+        },
+    )
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -59,7 +67,9 @@ class UserList(Resource):
         """
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
-        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+        per_page = request.args.get(
+            "per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int
+        )
 
         user_id = get_jwt_identity()
         return DAO.list_users(user_id, request.args.get("search", ""), page, per_page)
@@ -129,7 +139,9 @@ class MyUserProfile(Resource):
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
-    @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.NAME_INPUT_BY_USER_IS_INVALID)
+    @users_ns.response(
+        HTTPStatus.BAD_REQUEST, "%s" % messages.NAME_INPUT_BY_USER_IS_INVALID
+    )
     def put(cls):
         """
         Updates user profile
@@ -169,7 +181,9 @@ class MyUserProfile(Resource):
 
 
 @users_ns.response(HTTPStatus.CREATED, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
-@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
+@users_ns.response(
+    HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD
+)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -216,7 +230,14 @@ class ChangeUserPassword(Resource):
 class VerifiedUser(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("get_verified_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+    @users_ns.doc(
+        "get_verified_users",
+        params={
+            "search": "Search query",
+            "page": "specify page of users",
+            "per_page": "specify number of users per page",
+        },
+    )
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -238,24 +259,30 @@ class VerifiedUser(Resource):
         """
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
-        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+        per_page = request.args.get(
+            "per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int
+        )
 
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, is_verified=True)
+        return DAO.list_users(
+            user_id, request.args.get("search", ""), page, per_page, is_verified=True
+        )
 
 
 @users_ns.route("register")
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(
+        HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY
+    )
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
         "%s\n%s\n%s"
         % (
             messages.USERNAME_FIELD_IS_EMPTY,
             messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
-            messages.EMAIL_INPUT_BY_USER_IS_INVALID
+            messages.EMAIL_INPUT_BY_USER_IS_INVALID,
         ),
     )
     @users_ns.response(
@@ -264,7 +291,7 @@ class UserRegister(Resource):
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED
+            messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED,
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
@@ -285,7 +312,6 @@ class UserRegister(Resource):
         if is_valid != {}:
             return is_valid, HTTPStatus.CONFLICT
 
-
         result = DAO.create_user(data)
 
         if result[1] is HTTPStatus.CREATED:
@@ -303,7 +329,9 @@ class UserRegister(Resource):
         messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS,
     ),
 )
-@users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
+@users_ns.response(
+    HTTPStatus.CONFLICT, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID
+)
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
@@ -323,7 +351,9 @@ class UserEmailConfirmation(Resource):
 @users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
 @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
 @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
-@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM)
+@users_ns.response(
+    HTTPStatus.NOT_FOUND, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM
+)
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
@@ -401,8 +431,12 @@ class LoginUser(Resource):
         "%s\n%s"
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
-    @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
-    @users_ns.response(HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
+    @users_ns.response(
+        HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN
+    )
+    @users_ns.response(
+        HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD
+    )
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -430,7 +464,10 @@ class LoginUser(Resource):
             return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.UNAUTHORIZED
 
         if not user.is_email_verified:
-            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
+            return (
+                messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN,
+                HTTPStatus.FORBIDDEN,
+            )
 
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
