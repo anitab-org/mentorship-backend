@@ -37,7 +37,7 @@ DAO = UserDAO()  # User data access object
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page", "location":"location of the user"})
+    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users (default: 1)", "per_page": "specify number of users per page (default: 10)", "location":"location of the user"})
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -130,7 +130,7 @@ class MyUserProfile(Resource):
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
-    @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
+    @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.NAME_INPUT_BY_USER_IS_INVALID)
     def put(cls):
         """
         Updates user profile
@@ -262,10 +262,11 @@ class UserRegister(Resource):
     )
     @users_ns.response(
         HTTPStatus.CONFLICT,
-        "%s\n%s"
+        "%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
-            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS
+            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+            messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
@@ -324,7 +325,7 @@ class UserEmailConfirmation(Resource):
 @users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
 @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
 @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
-@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM)
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)

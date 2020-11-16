@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/anitab-org/mentorship-backend/workflows/Run%20tests/badge.svg)
 [![codecov](https://codecov.io/gh/anitab-org/mentorship-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/anitab-org/mentorship-backend)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system)
-[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
 
 
 Mentorship System is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
@@ -20,7 +20,7 @@ This API is being used by 3 frontend projects currently being developed:
     - [Run app in Windows](#run-app-in-Windows)
     - [Run app in Linux](#run-app-in-Linux)
     - [Run with Docker](#run-with-docker)
-    - [Run tests](run-tests)
+    - [Run tests](#run-tests)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Branches](#branches)
@@ -39,14 +39,24 @@ To setup the project locally read these wiki pages and follow the instructions:
 The project runs on Python 3.
 
 1. Create a virtual environment:
-`virtualenv venv --python=python3`
+```
+virtualenv venv --python=python3
+```
 
 2. Activate the virtual environment:
-`source /venv/Scripts/activate` for Git Bash Users, 
-`venv\Scripts\activate` for Windows Command Line Users
+For Git Bash Users:
+```
+source /venv/Scripts/activate
+```
+For Windows Command Line Users:
+```
+venv\Scripts\activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or make sure you exported the following [environment variables](docs/environment-variables.md):
@@ -88,13 +98,19 @@ deactivate
 The project runs on Python 3.
 
 1. Create a virtual enviorntment:
-`virtualenv venv`
+```
+virtualenv venv
+```
 
 2. Activate the virtual environment:
-`source venv/bin/activate`
+```
+source venv/bin/activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip3 install -r requirements.txt`
+```
+pip3 install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
 
