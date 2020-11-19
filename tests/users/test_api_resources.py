@@ -46,8 +46,7 @@ class TestUserRegistrationApi(BaseTestCase):
             user = UserModel.query.filter_by(email=user1["email"]).first()
             if user is None:
                 self.fail(
-                    "POST /register failed to register Testing User! with error code = %d"
-                    % response.status_code
+                    f"POST /register failed to register Testing User! with error code = {response.status_code}"
                 )
             else:
                 self.assertEqual(user1["name"], user.name)
