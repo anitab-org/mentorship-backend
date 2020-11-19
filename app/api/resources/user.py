@@ -312,7 +312,7 @@ class UserEmailConfirmation(Resource):
 
         This endpoint is called when a new user clicks the verification link
         sent on the users' email. It takes the verification token through URL
-        as input parameter.The verification token is valid for 24 hours. A success or
+        as input parameter.The verification token is valid for 30 days. A success or
         failure response is returned by the API.
         """
 
@@ -331,7 +331,7 @@ class UserResendEmailConfirmation(Resource):
         """Sends the user a new verification email.
 
         This endpoint is called when a user wants the verification email to be
-        resent. The verification token is valid for 24 hours. A success or
+        resent. The verification token is valid for 30 days. A success or
         failure response is returned by the API.
         """
 
