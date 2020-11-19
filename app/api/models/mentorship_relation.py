@@ -113,7 +113,7 @@ list_tasks_response_body = Model(
 )
 
 user_dashboard_user_details = Model(
-    "user details for dashboard",
+    "User details for dashboard",
     {
         "id": fields.Integer(required=True, description="user ID"),
         "user_name": fields.String(
@@ -160,12 +160,12 @@ mentorship_request_response_body_for_user_dashboard_body = Model(
 )
 
 task_comment_model = Model(
-    "Task comment model.",
+    "Task comment model",
     {"comment": fields.String(required=True, description="Task comment.")},
 )
 
 task_comments_model = Model(
-    "Task comments model.",
+    "Task comments model",
     {
         "id": fields.Integer(required=True, description="Task comment's id."),
         "user_id": fields.Integer(required=True, description="User's id."),

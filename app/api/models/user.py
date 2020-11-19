@@ -238,7 +238,7 @@ home_response_body_model = Model(
 )
 
 dashboard_relations_by_state_model = Model(
-    "relations by state",
+    "Relations by state",
     {
         "accepted": fields.List(
             fields.Nested(mentorship_request_response_body_for_user_dashboard_body)
