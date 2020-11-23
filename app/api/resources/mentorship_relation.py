@@ -154,7 +154,7 @@ class GetAllMyMentorshipRelation(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body, code=HTTPStatus.OK, description="Success")
     def get(cls):
         """
         Lists all mentorship relations of current user.
@@ -338,10 +338,10 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("delete_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200, "%s" % messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY
+        HTTPStatus.OK, "%s" % messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        403,
+        HTTPStatus.FORBIDDEN,
         "%s\n%s"
         % (
             messages.NOT_PENDING_STATE_RELATION,
@@ -349,7 +349,7 @@ class DeleteMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -358,7 +358,7 @@ class DeleteMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        404, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
     )
     def delete(cls, request_id):
         """
@@ -387,12 +387,12 @@ class ListPastMentorshipRelations(Resource):
     @mentorship_relation_ns.doc("get_past_mentorship_relations")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200,
+        HTTPStatus.OK,
         "Returned past mentorship relations with success.",
         model=mentorship_request_response_body,
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -400,7 +400,7 @@ class ListPastMentorshipRelations(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body, code=HTTPStatus.OK, description="Success")
     def get(cls):
         """
         Lists past mentorship relations of the current user.
@@ -425,12 +425,12 @@ class ListCurrentMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("get_current_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        200,
+        HTTPStatus.OK,
         "Returned current mentorship relation with success.",
         model=mentorship_request_response_body,
     )
     @mentorship_relation_ns.response(
-        401,
+        HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
             messages.TOKEN_HAS_EXPIRED,
@@ -469,7 +469,7 @@ class ListPendingMentorshipRequests(Resource):
         "Returned pending mentorship relation with success.",
         model=mentorship_request_response_body,
     )
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body)
+    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body, code=HTTPStatus.OK, description="Success")
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
@@ -510,7 +510,7 @@ class CreateTask(Resource):
         messages.AUTHORISATION_TOKEN_IS_MISSING
         )
     )
-    @mentorship_relation_ns.response(403, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
+    @mentorship_relation_ns.response(HTTPStatus.FORBIDDEN, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
     def post(cls, request_id):
         """
         Create a task for a mentorship relation.
