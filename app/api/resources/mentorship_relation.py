@@ -64,7 +64,8 @@ class SendRequest(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, "%s\n%s" % (messages.MENTOR_DOES_NOT_EXIST, messages.MENTEE_DOES_NOT_EXIST)
+        HTTPStatus.NOT_FOUND,
+        "%s\n%s" % (messages.MENTOR_DOES_NOT_EXIST, messages.MENTEE_DOES_NOT_EXIST),
     )
     def post(cls):
         """
@@ -154,7 +155,9 @@ class GetAllMyMentorshipRelation(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body, code=HTTPStatus.OK, description="Success")
+    @mentorship_relation_ns.marshal_list_with(
+        mentorship_request_response_body, code=HTTPStatus.OK, description="Success"
+    )
     def get(cls):
         """
         Lists all mentorship relations of current user.
@@ -400,7 +403,9 @@ class ListPastMentorshipRelations(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body, code=HTTPStatus.OK, description="Success")
+    @mentorship_relation_ns.marshal_list_with(
+        mentorship_request_response_body, code=HTTPStatus.OK, description="Success"
+    )
     def get(cls):
         """
         Lists past mentorship relations of the current user.
@@ -469,7 +474,9 @@ class ListPendingMentorshipRequests(Resource):
         "Returned pending mentorship relation with success.",
         model=mentorship_request_response_body,
     )
-    @mentorship_relation_ns.marshal_list_with(mentorship_request_response_body, code=HTTPStatus.OK, description="Success")
+    @mentorship_relation_ns.marshal_list_with(
+        mentorship_request_response_body, code=HTTPStatus.OK, description="Success"
+    )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
@@ -502,15 +509,24 @@ class CreateTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc("create_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser, create_task_request_body)
-    @mentorship_relation_ns.response(HTTPStatus.CREATED, '%s'%messages.TASK_WAS_CREATED_SUCCESSFULLY)
-    @mentorship_relation_ns.response(HTTPStatus.FORBIDDEN, '%s'%messages.UNACCEPTED_STATE_RELATION)
-    @mentorship_relation_ns.response(HTTPStatus.UNAUTHORIZED, '%s\n%s\n%s'%(
-        messages.TOKEN_HAS_EXPIRED,
-        messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING
-        )
+    @mentorship_relation_ns.response(
+        HTTPStatus.CREATED, "%s" % messages.TASK_WAS_CREATED_SUCCESSFULLY
     )
-    @mentorship_relation_ns.response(HTTPStatus.FORBIDDEN, '%s'%messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION)
+    @mentorship_relation_ns.response(
+        HTTPStatus.FORBIDDEN, "%s" % messages.UNACCEPTED_STATE_RELATION
+    )
+    @mentorship_relation_ns.response(
+        HTTPStatus.UNAUTHORIZED,
+        "%s\n%s\n%s"
+        % (
+            messages.TOKEN_HAS_EXPIRED,
+            messages.TOKEN_IS_INVALID,
+            messages.AUTHORISATION_TOKEN_IS_MISSING,
+        ),
+    )
+    @mentorship_relation_ns.response(
+        HTTPStatus.FORBIDDEN, "%s" % messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
+    )
     def post(cls, request_id):
         """
         Create a task for a mentorship relation.
@@ -556,7 +572,9 @@ class DeleteTask(Resource):
     @jwt_required
     @mentorship_relation_ns.doc("delete_task_in_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
-    @mentorship_relation_ns.response(HTTPStatus.OK, "%s" % messages.TASK_WAS_DELETED_SUCCESSFULLY)
+    @mentorship_relation_ns.response(
+        HTTPStatus.OK, "%s" % messages.TASK_WAS_DELETED_SUCCESSFULLY
+    )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s\n%s"
@@ -659,7 +677,9 @@ class UpdateTask(Resource):
     @mentorship_relation_ns.response(
         HTTPStatus.OK, "%s" % messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
     )
-    @mentorship_relation_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED)
+    @mentorship_relation_ns.response(
+        HTTPStatus.BAD_REQUEST, "%s" % messages.TASK_WAS_ALREADY_ACHIEVED
+    )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s\n%s"
@@ -709,7 +729,7 @@ class CreateTaskComment(Resource):
     @mentorship_relation_ns.expect(auth_header_parser, task_comment_model)
     @mentorship_relation_ns.doc(
         responses={
-            HTTPStatus.CREATED:f"{messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY}",
+            HTTPStatus.CREATED: f"{messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY}",
             HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
             f"{messages.COMMENT_NOT_IN_STRING_FORMAT}<br>"
             f"{ {'message': get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}}<br>"
@@ -819,7 +839,9 @@ class TaskComments(Resource):
     @jwt_required
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, f"{ messages.LIST_TASK_COMMENTS_WITH_SUCCESS}", task_comments_model
+        HTTPStatus.OK,
+        f"{ messages.LIST_TASK_COMMENTS_WITH_SUCCESS}",
+        task_comments_model,
     )
     @mentorship_relation_ns.doc(
         responses={

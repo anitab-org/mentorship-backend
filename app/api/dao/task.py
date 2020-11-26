@@ -40,7 +40,10 @@ class TaskDAO:
             return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         if (relation.mentor_id != user_id) and (relation.mentee_id != user_id):
-            return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, HTTPStatus.FORBIDDEN
+            return (
+                messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+                HTTPStatus.FORBIDDEN,
+            )
 
         now_timestamp = datetime.now().timestamp()
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
@@ -71,7 +74,10 @@ class TaskDAO:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
-            return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, HTTPStatus.UNAUTHORIZED
+            return (
+                messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+                HTTPStatus.UNAUTHORIZED,
+            )
 
         all_tasks = relation.tasks_list.tasks
 
@@ -105,7 +111,10 @@ class TaskDAO:
             return messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
-            return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, HTTPStatus.UNAUTHORIZED
+            return (
+                messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+                HTTPStatus.UNAUTHORIZED,
+            )
 
         relation.tasks_list.delete_task(task_id)
 
@@ -135,7 +144,10 @@ class TaskDAO:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
-            return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, HTTPStatus.UNAUTHORIZED
+            return (
+                messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+                HTTPStatus.UNAUTHORIZED,
+            )
 
         task = relation.tasks_list.find_task_by_id(task_id)
         if task is None:
@@ -149,4 +161,3 @@ class TaskDAO:
             )
 
         return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, HTTPStatus.OK
-
