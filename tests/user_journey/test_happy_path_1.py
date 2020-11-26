@@ -20,7 +20,7 @@ from app.api.models.mentorship_relation import mentorship_request_response_body
 
 class TestHappyPath1(BaseTestCase):
     """
-    Scenario: User A (mentor) and User B (mentee) sending 
+    Scenario: User A (mentor) and User B (mentee) sending
     a mentorship request until the mentee completes a task
 
     - User B (mentee) sends a request to User A (mentor)
@@ -117,19 +117,19 @@ class TestHappyPath1(BaseTestCase):
 
         self.assertEqual(200, mentee_current_relation.status_code)
         self.assertEqual(200, mentor_current_relation.status_code)
-        self.assertFalse(json.loads(mentor_current_relation.data)['sent_by_me'])
-        self.assertTrue(json.loads(mentee_current_relation.data)['sent_by_me'])
+        self.assertFalse(json.loads(mentor_current_relation.data)["sent_by_me"])
+        self.assertTrue(json.loads(mentee_current_relation.data)["sent_by_me"])
         self.assertEqual(
-            json.loads(mentor_current_relation.data)['mentor'],
-            json.loads(mentee_current_relation.data)['mentor'],
+            json.loads(mentor_current_relation.data)["mentor"],
+            json.loads(mentee_current_relation.data)["mentor"],
         )
         self.assertEqual(
-            json.loads(mentor_current_relation.data)['mentee'],
-            json.loads(mentee_current_relation.data)['mentee'],
+            json.loads(mentor_current_relation.data)["mentee"],
+            json.loads(mentee_current_relation.data)["mentee"],
         )
         self.assertEqual(
-            json.loads(mentor_current_relation.data)['id'],
-            json.loads(mentee_current_relation.data)['id'],
+            json.loads(mentor_current_relation.data)["id"],
+            json.loads(mentee_current_relation.data)["id"],
         )
 
         current_relation = json.loads(mentee_current_relation.data)
