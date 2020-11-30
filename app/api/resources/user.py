@@ -96,6 +96,7 @@ class OtherUser(Resource):
         else:
             return marshal(requested_user, public_user_api_model), HTTPStatus.OK
 
+
 @users_ns.route("user")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
