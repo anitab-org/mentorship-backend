@@ -154,9 +154,7 @@ login_request_body_model = Model(
 login_response_body_model = Model(
     "Login response data model",
     {
-        "access_token": fields.String(
-            required=True, description="User's access token"
-        ),
+        "access_token": fields.String(required=True, description="User's access token"),
         "access_expiry": fields.Float(
             required=True, description="Access token expiry UNIX timestamp"
         ),
@@ -238,7 +236,7 @@ home_response_body_model = Model(
 )
 
 dashboard_relations_by_state_model = Model(
-    "relations by state",
+    "Relations by state",
     {
         "accepted": fields.List(
             fields.Nested(mentorship_request_response_body_for_user_dashboard_body)
