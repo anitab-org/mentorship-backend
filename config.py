@@ -5,16 +5,16 @@ from datetime import timedelta
 def get_mock_email_config() -> bool:
     MOCK_EMAIL = os.getenv("MOCK_EMAIL")
 
-    #if MOCK_EMAIL env variable is set
-    if  MOCK_EMAIL: 
+    # if MOCK_EMAIL env variable is set
+    if MOCK_EMAIL:
         # MOCK_EMAIL is case insensitive
         MOCK_EMAIL = MOCK_EMAIL.lower()
-        
-        if MOCK_EMAIL=="true":
+
+        if MOCK_EMAIL == "true":
             return True
-        elif MOCK_EMAIL=="false":
+        elif MOCK_EMAIL == "false":
             return False
-        else: 
+        else:
             # if MOCK_EMAIL env variable is set a wrong value
             raise ValueError(
                 "MOCK_EMAIL environment variable is optional if set, it has to be valued as either 'True' or 'False'"
@@ -115,6 +115,7 @@ class StagingConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = BaseConfig.build_db_uri()
     MOCK_EMAIL = False
+
 
 class LocalConfig(BaseConfig):
     """Local configuration."""

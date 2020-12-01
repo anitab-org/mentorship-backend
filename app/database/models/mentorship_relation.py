@@ -8,7 +8,7 @@ from app.utils.enum_utils import MentorshipRelationState
 
 class MentorshipRelationModel(db.Model):
     """Data Model representation of a mentorship relation.
-    
+
     Attributes:
         id: integer primary key that defines the mentorships.
         mentor_id: integer indicates the id of the mentor.
@@ -99,13 +99,12 @@ class MentorshipRelationModel(db.Model):
     # def __repr__(self):
     #     return f"Mentorship Relation with id = {self.id}, Mentor has id = {self.mentor_id} and Mentee has id = {self.mentee_id}"
 
-
     @classmethod
-    def find_by_id(cls, _id) -> 'MentorshipRelationModel':
+    def find_by_id(cls, _id) -> "MentorshipRelationModel":
 
         """Returns the mentorship that has the passed id.
-           Args:
-                _id: The id of a mentorship.
+        Args:
+             _id: The id of a mentorship.
         """
         return cls.query.filter_by(id=_id).first()
 

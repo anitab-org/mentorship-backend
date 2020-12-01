@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/anitab-org/mentorship-backend/workflows/Run%20tests/badge.svg)
 [![codecov](https://codecov.io/gh/anitab-org/mentorship-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/anitab-org/mentorship-backend)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system)
-[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
 
 
 Mentorship System is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
@@ -17,9 +17,10 @@ This API is being used by 3 frontend projects currently being developed:
 **Table of Contents**
 
 - [Setup and run](#setup-and-run)
-    - [Run app](#run-app)
+    - [Run app in Windows](#run-app-in-Windows)
+    - [Run app in Linux](#run-app-in-Linux)
     - [Run with Docker](#run-with-docker)
-    - [Run tests](run-tests)
+    - [Run tests](#run-tests)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Branches](#branches)
@@ -33,21 +34,29 @@ To setup the project locally read these wiki pages and follow the instructions:
  - [Fork, Clone and Remote](https://github.com/anitab-org/mentorship-backend/wiki/Fork%2C-Clone-%26-Remote)
  - [Export Environment Variables](docs/environment-variables.md)
 
-### Run app
+### Run app in Windows
 
 The project runs on Python 3.
 
 1. Create a virtual environment:
-`virtualenv venv --python=python3`
+```
+virtualenv venv --python=python3
+```
 
 2. Activate the virtual environment:
-`source ./venv/bin/activate`
-
-`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines. For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
-
+For Git Bash Users:
+```
+source /venv/Scripts/activate
+```
+For Windows Command Line Users:
+```
+venv\Scripts\activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or make sure you exported the following [environment variables](docs/environment-variables.md):
@@ -84,6 +93,68 @@ python run.py
 deactivate
 ```
 
+### Run app in Linux
+
+The project runs on Python 3.
+
+1. Create a virtual enviorntment:
+```
+virtualenv venv
+```
+
+2. Activate the virtual environment:
+```
+source venv/bin/activate
+```
+
+3. Install all the dependencies in `requirements.txt` file:
+```
+pip3 install -r requirements.txt
+```
+
+4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
+
+```
+export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
+export SECRET_KEY=<your-secret-key>
+export SECURITY_PASSWORD_SALT=<your-security-password-salt>
+export MAIL_DEFAULT_SENDER=<mail-default-sender>
+export MAIL_SERVER=<mail-server>
+export APP_MAIL_USERNAME=<app-mail-username>
+export APP_MAIL_PASSWORD=<app-mail-password>
+export MOCK_EMAIL = <True-or-False>
+```
+
+If you're testing any environment other than "local", then you have to also set these other variables in the .env file.
+```
+export DB_TYPE=<database_type>
+export DB_USERNAME=<database_username>
+export DB_PASSWORD=<database_password>
+export DB_ENDPOINT=<database_endpoint>
+export DB_NAME=<database_name>
+```
+
+Use: `printenv` to print the environment variables and check all configurations.
+
+5. Run the app with `python run.py` or:
+```
+ export FLASK_APP=run.py
+ flask run
+```
+
+6. Navigate to http://localhost:5000 or the current server in which you are running(will be shown when app is running) in your browser.
+
+7. When you are done using the app, deactivate the virtual environment:
+```
+deactivate
+```
+
+or use:
+
+```
+source deactivate
+```
+
 ### Run with docker
 
 1. Make sure you exported the following [environment variables](docs/environment-variables.md) to `.env` file
@@ -106,11 +177,26 @@ To run the unitests run the following command in the terminal (while the virtual
 python -m unittest discover tests
 ```
 
+### Auto-formatting with black
+
+We use [_Black_](https://github.com/psf/black) to format code automatically so that we don't have to worry about clean and
+readable code. To install _Black_:
+
+```
+pip install black
+```
+
+To run black:
+
+```
+black .
+```
+
 ## Documentation
 
 You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
-- **Language:** Python 3.6
+- **Language:** Python 3
 - **Framework:** [Flask](http://flask.pocoo.org/)
 - **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
 

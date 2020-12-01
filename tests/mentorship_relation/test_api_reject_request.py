@@ -45,7 +45,7 @@ class TestRejectMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/reject" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/reject",
                 headers=get_test_request_header(self.second_user.id),
             )
 
