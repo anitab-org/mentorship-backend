@@ -40,7 +40,6 @@ class TestRemoveAdminUsersApi(BaseTestCase):
             ],
         )
 
-
         # creating 3 admin users(first admin user created by basetestcase setup) and 1 normal user
         self.admin_user_1.is_email_verified = True
         self.admin_user_2.is_email_verified = True
@@ -61,7 +60,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
                 "user_id": self.admin_user_1.id,
             },
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -77,7 +76,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
                 "user_id": self.admin_user_2.id,
             },
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -92,12 +91,11 @@ class TestRemoveAdminUsersApi(BaseTestCase):
                 "user_id": 1,
             },
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
-
 
         # remove self
         auth_header = get_test_request_header(self.admin_user_1.id)
@@ -108,7 +106,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
                 "user_id": self.admin_user_1.id,
             },
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(403, actual_response.status_code)
@@ -123,7 +121,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
                 "user_id": self.admin_user_2.id,
             },
             follow_redirects=True,
-            headers=auth_header
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
