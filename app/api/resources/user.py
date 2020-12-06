@@ -140,7 +140,6 @@ class MyUserProfile(Resource):
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(HTTPStatus.OK, f"{messages.USER_SUCCESSFULLY_UPDATED}")
     @users_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.NAME_INPUT_BY_USER_IS_INVALID}")
-
     def put(cls):
         """
         Updates user profile
@@ -177,7 +176,6 @@ class MyUserProfile(Resource):
         """
         user_id = get_jwt_identity()
         return DAO.delete_user(user_id)
-
 
 
 @users_ns.response(HTTPStatus.CREATED, f"{messages.PASSWORD_SUCCESSFULLY_UPDATED}")
