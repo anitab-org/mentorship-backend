@@ -4,8 +4,8 @@ from subprocess import check_call
 
 
 def start():
-  check_call(["python", "run.py"])
+    check_call(["python", "run.py"])
 
 
 def test():
-  check_call(["python", "-m", "unittest", "discover", "tests"])
+    check_call(["python", "-m", "unittest", "discover", "tests"])
