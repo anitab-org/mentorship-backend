@@ -185,7 +185,8 @@ class MyUserProfile(Resource):
 
 @users_ns.response(HTTPStatus.CREATED, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
 @users_ns.response(
-    HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD
+    HTTPStatus.BAD_REQUEST,
+    f"{messages.USER_ENTERED_INCORRECT_PASSWORD}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}",
 )
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
@@ -283,12 +284,7 @@ class UserRegister(Resource):
     )
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s"
-        % (
-            messages.USERNAME_FIELD_IS_EMPTY,
-            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
-            messages.EMAIL_INPUT_BY_USER_IS_INVALID,
-        ),
+        f"{messages.USERNAME_FIELD_IS_EMPTY}\n{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}\n{messages.EMAIL_INPUT_BY_USER_IS_INVALID}",
     )
     @users_ns.response(
         HTTPStatus.CONFLICT,

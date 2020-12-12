@@ -296,6 +296,20 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
 
         self.assertEqual(expected_result, actual_result)
 
+    def test_password_to_one_with_empty_spaces(self):
+        password = "password with spaces"
+        request_body = dict(
+            name=user1["name"],
+            username=user1["username"],
+            password=password,
+            email=user1["email"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
+        )
+        expected_result = messages.USER_INPUTS_SPACE_IN_PASSWORD
+        actual_result = validate_user_registration_request_data(request_body)
+
+        self.assertEqual(expected_result, actual_result)
+
 
 if __name__ == "__main__":
     unittest.main()
