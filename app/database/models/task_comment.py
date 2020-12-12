@@ -61,32 +61,32 @@ class TaskCommentModel(db.Model):
     @classmethod
     def find_by_id(cls, _id):
         """Returns the task comment that has the passed id.
-           Args:
-                _id: The id of the task comment.
+        Args:
+             _id: The id of the task comment.
         """
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def find_all_by_task_id(cls, task_id, relation_id):
         """Returns all task comments that has the passed task id.
-           Args:
-                task_id: The id of the task.
-                relation_id: The id of the relation.
+        Args:
+             task_id: The id of the task.
+             relation_id: The id of the relation.
         """
         return cls.query.filter_by(task_id=task_id, relation_id=relation_id).all()
 
     @classmethod
     def find_all_by_user_id(cls, user_id):
         """Returns all task comments that has the passed user id.
-           Args:
-                user_id: The id of the user.
+        Args:
+             user_id: The id of the user.
         """
         return cls.query.filter_by(user_id=user_id).all()
 
     def modify_comment(self, comment):
         """Changes the comment and the modification date.
-           Args:
-                comment: New comment.
+        Args:
+             comment: New comment.
         """
         self.comment = comment
         self.modification_date = datetime.now().timestamp()

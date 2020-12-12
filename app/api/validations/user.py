@@ -52,6 +52,9 @@ def validate_user_registration_request_data(data):
     ):
         return messages.NAME_USERNAME_AND_PASSWORD_NOT_IN_STRING_FORMAT
 
+    if " " in password:
+        return messages.USER_INPUTS_SPACE_IN_PASSWORD
+
     is_valid = validate_length(
         len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, "name"
     )
