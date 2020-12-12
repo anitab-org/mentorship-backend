@@ -35,13 +35,7 @@ To setup the project locally read these wiki pages and follow the instructions:
 
 ### Run app locally
 
-The project runs on Python 3.9. We use [Poetry](https://python-poetry.org/) to manage dependencies. It's powerful yet simple to use.
-Here are a few basic commands you'll use the most:
-- `poetry install` - installs the dependencies from `pyproject.toml` package
-- `poetry add <package>` - adds the `<package>` to `pyproject.toml` and installs it
-- `poetry remove <package>`- removes the `<package>` from `pyproject.toml` and uninstalls it
-- `poetry shell` - spawns a shell within the virtual environment. Equivalent of `virtualenv activate`, for those familiar with [`virtualenv`](https://pypi.org/project/virtualenv/)
-- `deactivate` - deactivates the virtual environemnt. Counterpart for `poetry shell`. Use this when you finish work.
+The project runs on Python 3.9. We use [Poetry](https://python-poetry.org/) to manage dependencies.
 
 1. [Install Poetry](https://python-poetry.org/docs/#installation):
 
@@ -114,7 +108,7 @@ poetry run test
 
 You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
-- **Language:** Python 3.9
+- **Language:** Python 3
 - **Framework:** [Flask](http://flask.pocoo.org/)
 - **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
 
@@ -130,6 +124,15 @@ Here are some links to documentation for this project:
 - [User Authentication](/docs/user_authentication.md) which is JSON Web Token (JWT) based and tells about the user authentication in the application.
 
 Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
+
+### Poetry commands
+As said earlier, we use Poetry. It's simple yet powerful, but we know that many people use other package management tools.
+To get you up to speed with Poetry, below we listed a few basic commands you'll use the most:
+- `poetry install` - installs the dependencies from `pyproject.toml` package
+- `poetry add <package>` - adds the `<package>` to `pyproject.toml` and installs it
+- `poetry remove <package>`- removes the `<package>` from `pyproject.toml` and uninstalls it
+- `poetry shell` - spawns a shell within the virtual environment. Equivalent of `virtualenv activate`, for those familiar with [`virtualenv`](https://pypi.org/project/virtualenv/)
+- `deactivate` - deactivates the virtual environemnt. Counterpart for `poetry shell`. Use this when you finish work.
 
 ## Contributing
 
