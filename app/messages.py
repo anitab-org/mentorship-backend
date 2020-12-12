@@ -104,7 +104,7 @@ TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE = {
 
 # Update
 NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {
-    "message": "No data for updating" "profile was sent."
+    "message": "No data for updating profile was sent."
 }
 
 # Relation constraints
