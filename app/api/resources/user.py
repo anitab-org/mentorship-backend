@@ -33,20 +33,21 @@ DAO = UserDAO()  # User data access object
         messages.AUTHORISATION_TOKEN_IS_MISSING
     ),
 )
-# TODO: @users_ns.response(404, 'User does not exist.')
-class UserList(Resource):
-    @classmethod
-    @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
-    @users_ns.doc(
+@users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+@users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
-    @users_ns.marshal_list_with(public_user_api_model)
-    @users_ns.expect(auth_header_parser)
+@users_ns.marshal_list_with(public_user_api_model)
+@users_ns.expect(auth_header_parser)
+# TODO: @users_ns.response(404, 'User does not exist.')
+class UserList(Resource):
+    @classmethod
+    @jwt_required
+   
     def get(cls):
         """
         Returns list of all the users whose names contain the given query.
@@ -67,13 +68,8 @@ class UserList(Resource):
 
 @users_ns.route("users/<int:user_id>")
 @users_ns.param("user_id", "The user identifier")
-class OtherUser(Resource):
-    @classmethod
-    @jwt_required
-    @users_ns.doc("get_user")
-    @users_ns.expect(auth_header_parser)
-    @users_ns.response(HTTPStatus.OK, "Success.", public_user_api_model)
-    @users_ns.response(
+@users_ns.response(HTTPStatus.OK, "Success.", public_user_api_model)
+@users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
@@ -82,7 +78,13 @@ class OtherUser(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.doc("get_user")
+@users_ns.expect(auth_header_parser)
+class OtherUser(Resource):
+    @classmethod
+    @jwt_required
+    
     def get(cls, user_id):
         """
         Returns a user.
@@ -108,12 +110,15 @@ class OtherUser(Resource):
     ),
 )
 @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
+@users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
+@users_ns.doc("get_user")
+@users_ns.expect(auth_header_parser, validate=True)
+@users_ns.marshal_with(full_user_api_model)  # , skip_none=True
 class MyUserProfile(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("get_user")
-    @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.marshal_with(full_user_api_model)  # , skip_none=True
+   
     def get(cls):
         """
         Returns details of current user.
@@ -128,8 +133,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
-    @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
+  
     def put(cls):
         """
         Updates user profile
@@ -168,6 +172,7 @@ class MyUserProfile(Resource):
         return DAO.delete_user(user_id)
 
 
+@users_ns.route("user/change_password")
 @users_ns.response(HTTPStatus.CREATED, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
 @users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
 @users_ns.response(
@@ -179,14 +184,15 @@ class MyUserProfile(Resource):
         messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
-@users_ns.route("user/change_password")
+@users_ns.doc("update_user_password")
+@users_ns.expect(
+        auth_header_parser, change_password_request_data_model, validate=True
+    )
+
 class ChangeUserPassword(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("update_user_password")
-    @users_ns.expect(
-        auth_header_parser, change_password_request_data_model, validate=True
-    )
+
     def put(cls):
         """
         Updates the user's password
@@ -203,6 +209,7 @@ class ChangeUserPassword(Resource):
         return DAO.change_password(user_id, data)
 
 
+@users_ns.route("users/verified")
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -212,20 +219,21 @@ class ChangeUserPassword(Resource):
         messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
-@users_ns.route("users/verified")
-class VerifiedUser(Resource):
-    @classmethod
-    @jwt_required
-    @users_ns.doc("get_verified_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
-    @users_ns.doc(
+@users_ns.doc("get_verified_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+@users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
-    @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
-    @users_ns.expect(auth_header_parser)
+@users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
+@users_ns.expect(auth_header_parser)
+
+class VerifiedUser(Resource):
+    @classmethod
+    @jwt_required
+
     def get(cls):
         """
         Returns all verified users whose names contain the given query.
@@ -245,11 +253,8 @@ class VerifiedUser(Resource):
 
 
 @users_ns.route("register")
-class UserRegister(Resource):
-    @classmethod
-    @users_ns.doc("create_user")
-    @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
-    @users_ns.response(
+@users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+@users_ns.response(
         HTTPStatus.BAD_REQUEST,
         "%s\n%s\n%s"
         % (
@@ -258,7 +263,7 @@ class UserRegister(Resource):
             messages.EMAIL_INPUT_BY_USER_IS_INVALID
         ),
     )
-    @users_ns.response(
+@users_ns.response(
         HTTPStatus.CONFLICT,
         "%s\n%s"
         % (
@@ -266,7 +271,12 @@ class UserRegister(Resource):
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS
         ),
     )
-    @users_ns.expect(register_user_api_model, validate=True)
+@users_ns.doc("create_user")
+@users_ns.expect(register_user_api_model, validate=True)
+
+class UserRegister(Resource):
+    @classmethod
+
     def post(cls):
         """
         Creates a new user.
@@ -294,6 +304,7 @@ class UserRegister(Resource):
 
 
 @users_ns.route("user/confirm_email/<string:token>")
+@users_ns.param("token", "Token sent to the user's email")
 @users_ns.response(
     HTTPStatus.CREATED,
     "%s\n%s"
@@ -303,7 +314,6 @@ class UserRegister(Resource):
     ),
 )
 @users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
-@users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
     def get(cls, token):
@@ -323,9 +333,10 @@ class UserEmailConfirmation(Resource):
 @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
 @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
 @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.expect(resend_email_request_body_model)
 class UserResendEmailConfirmation(Resource):
     @classmethod
-    @users_ns.expect(resend_email_request_body_model)
+    
     def post(cls):
         """Sends the user a new verification email.
 
@@ -354,12 +365,8 @@ class UserResendEmailConfirmation(Resource):
 
 
 @users_ns.route("refresh")
-class RefreshUser(Resource):
-    @classmethod
-    @jwt_refresh_token_required
-    @users_ns.doc("refresh")
-    @users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
-    @users_ns.response(
+@users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
+@users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         "%s\n%s\n%s"
         % (
@@ -368,7 +375,13 @@ class RefreshUser(Resource):
             messages.AUTHORISATION_TOKEN_IS_MISSING,
         ),
     )
-    @users_ns.expect(auth_header_parser)
+@users_ns.doc("refresh")
+@users_ns.expect(auth_header_parser)
+    
+class RefreshUser(Resource):
+    @classmethod
+    @jwt_refresh_token_required
+    
     def post(cls):
         """Refresh user's access
 
@@ -391,18 +404,20 @@ class RefreshUser(Resource):
 
 
 @users_ns.route("login")
-class LoginUser(Resource):
-    @classmethod
-    @users_ns.doc("login")
-    @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
-    @users_ns.response(
+@users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
+@users_ns.response(
         HTTPStatus.BAD_REQUEST,
         "%s\n%s"
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
-    @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
-    @users_ns.response(HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
-    @users_ns.expect(login_request_body_model)
+@users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
+@users_ns.response(HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
+@users_ns.doc("login")
+@users_ns.expect(login_request_body_model)
+
+class LoginUser(Resource):
+    @classmethod
+
     def post(cls):
         """
         Login user
@@ -455,8 +470,6 @@ class LoginUser(Resource):
 
 
 @users_ns.route("home")
-@users_ns.doc("home")
-@users_ns.expect(auth_header_parser, validate=True)
 @users_ns.response(HTTPStatus.OK, "Successful response", home_response_body_model)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
@@ -468,10 +481,14 @@ class LoginUser(Resource):
     ),
 )
 @users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_NOT_FOUND)
+@users_ns.doc("home")
+@users_ns.expect(auth_header_parser, validate=True)
+@users_ns.expect(auth_header_parser)
+
 class UserHomeStatistics(Resource):
     @classmethod
     @jwt_required
-    @users_ns.expect(auth_header_parser)
+
     def get(cls):
         """Get Statistics regarding the current user
 
@@ -488,13 +505,15 @@ class UserHomeStatistics(Resource):
 
 
 @users_ns.route("dashboard")
-@users_ns.expect(auth_header_parser, validate=True)
 @users_ns.response(HTTPStatus.OK, "Successful response", dashboard_response_body_model)
 @users_ns.response(HTTPStatus.NOT_FOUND, "User not found")
+@users_ns.expect(auth_header_parser, validate=True)
+@users_ns.expect(auth_header_parser)
+
 class UserDashboard(Resource):
     @classmethod
     @jwt_required
-    @users_ns.expect(auth_header_parser)
+
     def get(cls):
         """Get current User's dashboard
 

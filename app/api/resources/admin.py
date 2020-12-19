@@ -54,12 +54,13 @@ class AssignNewUserAdmin(Resource):
 )
 @admin_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_REVOKE_NOT_ADMIN}")
 @admin_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
+@admin_ns.expect(
+        auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
+    )
 class RevokeUserAdmin(Resource):
     @classmethod
     @jwt_required
-    @admin_ns.expect(
-        auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
-    )
+   
     def post(cls):
         """
         Revoke admin status from another User Admin.
@@ -78,20 +79,21 @@ class RevokeUserAdmin(Resource):
 
 
 @admin_ns.route("admins")
-class ListAdmins(Resource):
-    @classmethod
-    @jwt_required
-    @admin_ns.doc("get_list_of_admins")
-    @admin_ns.response(HTTPStatus.OK, "Success.", public_admin_user_api_model)
-    @admin_ns.doc(
+@admin_ns.response(HTTPStatus.OK, "Success.", public_admin_user_api_model)
+@admin_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_IS_NOT_AN_ADMIN}")
+@admin_ns.doc("get_list_of_admins")
+@admin_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
-    @admin_ns.response(HTTPStatus.FORBIDDEN, f"{messages.USER_IS_NOT_AN_ADMIN}")
-    @admin_ns.expect(auth_header_parser)
+@admin_ns.expect(auth_header_parser)
+class ListAdmins(Resource):
+    @classmethod
+    @jwt_required
+   
     def get(cls):
         """
         Returns all admin users.
