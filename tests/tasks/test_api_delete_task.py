@@ -10,8 +10,8 @@ class TestDeleteTaskApi(TasksBaseTestCase):
     def test_delete_task_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.delete(
-            "/mentorship_relation/%s/task/%s"
-            % (self.mentorship_relation_w_second_user.id, 2),
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            f"/task/{2}",
             follow_redirects=True,
         )
 
@@ -22,8 +22,8 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
         auth_header = get_test_request_header(self.admin_user.id)
         actual_response = self.client.delete(
-            "/mentorship_relation/%s/task/%s"
-            % (self.mentorship_relation_w_second_user.id, 1),
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            f"/task/{1}",
             follow_redirects=True,
             headers=auth_header,
         )
@@ -35,8 +35,8 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
         auth_header = get_test_request_header(self.second_user.id)
         actual_response = self.client.delete(
-            "/mentorship_relation/%s/task/%s"
-            % (self.mentorship_relation_w_admin_user.id, 1),
+            f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}"
+            f"/task/{1}",
             follow_redirects=True,
             headers=auth_header,
         )
@@ -52,8 +52,8 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = messages.TASK_WAS_DELETED_SUCCESSFULLY
         actual_response = self.client.delete(
-            "/mentorship_relation/%s/task/%s"
-            % (self.mentorship_relation_w_second_user.id, 2),
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            f"/task/{2}",
             follow_redirects=True,
             headers=auth_header,
         )
@@ -68,8 +68,8 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = messages.TASK_DOES_NOT_EXIST
         actual_response = self.client.delete(
-            "/mentorship_relation/%s/task/%s"
-            % (self.mentorship_relation_w_second_user.id, 0),
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            f"/task/{0}",
             follow_redirects=True,
             headers=auth_header,
         )

@@ -30,14 +30,21 @@ DAO = UserDAO()  # User data access object
     % (
         messages.TOKEN_HAS_EXPIRED,
         messages.TOKEN_IS_INVALID,
-        messages.AUTHORISATION_TOKEN_IS_MISSING
+        messages.AUTHORISATION_TOKEN_IS_MISSING,
     ),
 )
 # TODO: @users_ns.response(404, 'User does not exist.')
 class UserList(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("list_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+    @users_ns.doc(
+        "list_users",
+        params={
+            "search": "Search query",
+            "page": "specify page of users (default: 1)",
+            "per_page": "specify number of users per page (default: 10)",
+        },
+    )
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -45,7 +52,9 @@ class UserList(Resource):
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
-    @users_ns.marshal_list_with(public_user_api_model)
+    @users_ns.marshal_list_with(
+        public_user_api_model, code=HTTPStatus.OK, description="Success"
+    )
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """
@@ -59,7 +68,9 @@ class UserList(Resource):
         """
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
-        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+        per_page = request.args.get(
+            "per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int
+        )
 
         user_id = get_jwt_identity()
         return DAO.list_users(user_id, request.args.get("search", ""), page, per_page)
@@ -113,7 +124,9 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.marshal_with(full_user_api_model)  # , skip_none=True
+    @users_ns.marshal_with(
+        full_user_api_model, code=HTTPStatus.OK, description="Success"
+    )  # , skip_none=True
     def get(cls):
         """
         Returns details of current user.
@@ -129,7 +142,10 @@ class MyUserProfile(Resource):
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
     @users_ns.response(HTTPStatus.OK, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
-    @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
+    @users_ns.response(
+        HTTPStatus.BAD_REQUEST,
+        f"{messages.NAME_INPUT_BY_USER_IS_INVALID}\n{messages.NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT}",
+    )
     def put(cls):
         """
         Updates user profile
@@ -169,7 +185,10 @@ class MyUserProfile(Resource):
 
 
 @users_ns.response(HTTPStatus.CREATED, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
-@users_ns.response(HTTPStatus.BAD_REQUEST, "%s" % messages.USER_ENTERED_INCORRECT_PASSWORD)
+@users_ns.response(
+    HTTPStatus.BAD_REQUEST,
+    f"{messages.USER_ENTERED_INCORRECT_PASSWORD}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}",
+)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     "%s\n%s\n%s"
@@ -216,7 +235,14 @@ class ChangeUserPassword(Resource):
 class VerifiedUser(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("get_verified_users", params={"search": "Search query", "page": "specify page of users", "per_page": "specify number of users per page"})
+    @users_ns.doc(
+        "get_verified_users",
+        params={
+            "search": "Search query",
+            "page": "specify page of users",
+            "per_page": "specify number of users per page",
+        },
+    )
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
@@ -224,7 +250,9 @@ class VerifiedUser(Resource):
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
-    @users_ns.marshal_list_with(public_user_api_model)  # , skip_none=True
+    @users_ns.marshal_list_with(
+        public_user_api_model, code=HTTPStatus.OK, description="Success"
+    )  # , skip_none=True
     @users_ns.expect(auth_header_parser)
     def get(cls):
         """
@@ -238,32 +266,34 @@ class VerifiedUser(Resource):
         """
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
-        per_page = request.args.get("per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int)
+        per_page = request.args.get(
+            "per_page", default=UserDAO.DEFAULT_USERS_PER_PAGE, type=int
+        )
 
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page, is_verified=True)
+        return DAO.list_users(
+            user_id, request.args.get("search", ""), page, per_page, is_verified=True
+        )
 
 
 @users_ns.route("register")
 class UserRegister(Resource):
     @classmethod
     @users_ns.doc("create_user")
-    @users_ns.response(HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY)
+    @users_ns.response(
+        HTTPStatus.CREATED, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY
+    )
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-        "%s\n%s\n%s"
-        % (
-            messages.USERNAME_FIELD_IS_EMPTY,
-            messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
-            messages.EMAIL_INPUT_BY_USER_IS_INVALID
-        ),
+        f"{messages.USERNAME_FIELD_IS_EMPTY}\n{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}\n{messages.EMAIL_INPUT_BY_USER_IS_INVALID}",
     )
     @users_ns.response(
         HTTPStatus.CONFLICT,
-        "%s\n%s"
+        "%s\n%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
-            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS
+            messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+            messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED,
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
@@ -284,7 +314,6 @@ class UserRegister(Resource):
         if is_valid != {}:
             return is_valid, HTTPStatus.CONFLICT
 
-
         result = DAO.create_user(data)
 
         if result[1] is HTTPStatus.CREATED:
@@ -302,7 +331,9 @@ class UserRegister(Resource):
         messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS,
     ),
 )
-@users_ns.response(HTTPStatus.CONFLICT, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID)
+@users_ns.response(
+    HTTPStatus.CONFLICT, "%s" % messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID
+)
 @users_ns.param("token", "Token sent to the user's email")
 class UserEmailConfirmation(Resource):
     @classmethod
@@ -311,7 +342,7 @@ class UserEmailConfirmation(Resource):
 
         This endpoint is called when a new user clicks the verification link
         sent on the users' email. It takes the verification token through URL
-        as input parameter.The verification token is valid for 24 hours. A success or
+        as input parameter.The verification token is valid for 30 days. A success or
         failure response is returned by the API.
         """
 
@@ -322,7 +353,9 @@ class UserEmailConfirmation(Resource):
 @users_ns.response(HTTPStatus.OK, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
 @users_ns.response(HTTPStatus.BAD_REQUEST, "Invalid input.")
 @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
-@users_ns.response(HTTPStatus.NOT_FOUND, "%s" % messages.USER_DOES_NOT_EXIST)
+@users_ns.response(
+    HTTPStatus.NOT_FOUND, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM
+)
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
@@ -330,7 +363,7 @@ class UserResendEmailConfirmation(Resource):
         """Sends the user a new verification email.
 
         This endpoint is called when a user wants the verification email to be
-        resent. The verification token is valid for 24 hours. A success or
+        resent. The verification token is valid for 30 days. A success or
         failure response is returned by the API.
         """
 
@@ -400,8 +433,12 @@ class LoginUser(Resource):
         "%s\n%s"
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
-    @users_ns.response(HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN)
-    @users_ns.response(HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD)
+    @users_ns.response(
+        HTTPStatus.FORBIDDEN, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN
+    )
+    @users_ns.response(
+        HTTPStatus.UNAUTHORIZED, "%s" % messages.WRONG_USERNAME_OR_PASSWORD
+    )
     @users_ns.expect(login_request_body_model)
     def post(cls):
         """
@@ -429,7 +466,10 @@ class LoginUser(Resource):
             return messages.WRONG_USERNAME_OR_PASSWORD, HTTPStatus.UNAUTHORIZED
 
         if not user.is_email_verified:
-            return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
+            return (
+                messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN,
+                HTTPStatus.FORBIDDEN,
+            )
 
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
