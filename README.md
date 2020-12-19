@@ -39,14 +39,24 @@ To setup the project locally read these wiki pages and follow the instructions:
 The project runs on Python 3.
 
 1. Create a virtual environment:
-`virtualenv venv --python=python3`
+```
+virtualenv venv --python=python3
+```
 
 2. Activate the virtual environment:
-`source /venv/Scripts/activate` for Git Bash Users, 
-`venv\Scripts\activate` for Windows Command Line Users
+For Git Bash Users:
+```
+source /venv/Scripts/activate
+```
+For Windows Command Line Users:
+```
+venv\Scripts\activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or make sure you exported the following [environment variables](docs/environment-variables.md):
@@ -88,13 +98,19 @@ deactivate
 The project runs on Python 3.
 
 1. Create a virtual enviorntment:
-`virtualenv venv`
+```
+virtualenv venv
+```
 
 2. Activate the virtual environment:
-`source venv/bin/activate`
+```
+source venv/bin/activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip3 install -r requirements.txt`
+```
+pip3 install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
 
@@ -161,11 +177,26 @@ To run the unitests run the following command in the terminal (while the virtual
 python -m unittest discover tests
 ```
 
+### Auto-formatting with black
+
+We use [_Black_](https://github.com/psf/black) to format code automatically so that we don't have to worry about clean and
+readable code. To install _Black_:
+
+```
+pip install black
+```
+
+To run black:
+
+```
+black .
+```
+
 ## Documentation
 
 You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
-- **Language:** Python 3 
+- **Language:** Python 3
 - **Framework:** [Flask](http://flask.pocoo.org/)
 - **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
 

@@ -35,7 +35,10 @@ def email_verification_required(user_function):
         # verify if user exists
         if user:
             if not user.is_email_verified:
-                return messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, HTTPStatus.FORBIDDEN
+                return (
+                    messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN,
+                    HTTPStatus.FORBIDDEN,
+                )
             return user_function(*args, **kwargs)
         else:
             return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
