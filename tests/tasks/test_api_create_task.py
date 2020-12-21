@@ -29,8 +29,7 @@ class TestCreateTaskApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = messages.DESCRIPTION_FIELD_IS_MISSING
         actual_response = self.client.post(
-            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
-            "/task",
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}/task",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",
@@ -48,8 +47,7 @@ class TestCreateTaskApi(TasksBaseTestCase):
         )
         expected_response = messages.TOKEN_HAS_EXPIRED
         actual_response = self.client.post(
-            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
-            "/task",
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}/task",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",
@@ -61,8 +59,7 @@ class TestCreateTaskApi(TasksBaseTestCase):
     def test_create_task_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.post(
-            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
-            "/task",
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}/task",
             follow_redirects=True,
         )
 
@@ -77,8 +74,7 @@ class TestCreateTaskApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = messages.TASK_WAS_CREATED_SUCCESSFULLY
         actual_response = self.client.post(
-            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
-            "/task",
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}/task",
             follow_redirects=True,
             headers=auth_header,
             content_type="application/json",

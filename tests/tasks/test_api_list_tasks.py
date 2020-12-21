@@ -39,8 +39,7 @@ class TestListTasksApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = marshal(self.tasks_list_2.tasks, list_tasks_response_body)
         actual_response = self.client.get(
-            f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}"
-            "/tasks",
+            f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}/tasks",
             follow_redirects=True,
             headers=auth_header,
         )
@@ -53,8 +52,7 @@ class TestListTasksApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.second_user.id)
         expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
         actual_response = self.client.get(
-            f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}"
-            "/tasks",
+            f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}/tasks",
             follow_redirects=True,
             headers=auth_header,
         )

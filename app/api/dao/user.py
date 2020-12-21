@@ -179,7 +179,8 @@ class UserDAO:
             UserModel.query.filter(
                 UserModel.id != user_id,
                 not is_verified or UserModel.is_email_verified,
-                func.lower(UserModel.name).contains(search_query.lower()),
+                func.lower(UserModel.name).contains(search_query.lower())
+                | func.lower(UserModel.username).contains(search_query.lower()),
             )
             .order_by(UserModel.id)
             .paginate(
