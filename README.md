@@ -141,8 +141,8 @@ Here are some links to documentation for this project:
 Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
 
 ### Poetry commands
-As said earlier, we use Poetry. It's simple yet powerful, but we know that many people use other package management tools.
-To get you up to speed with Poetry, below we listed a few basic commands you'll use the most:
+As said earlier, we use [Poetry](https://python-poetry.org/).
+To get you up to speed, here's a few basic commands you'll use the most:
 - `poetry install` - installs the dependencies from `pyproject.toml` package
 - `poetry add <package>` - adds the `<package>` to `pyproject.toml` and installs it
 - `poetry remove <package>`- removes the `<package>` from `pyproject.toml` and uninstalls it
