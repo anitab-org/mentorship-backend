@@ -16,6 +16,7 @@ This API is being used by 3 frontend projects currently being developed:
 
 **Table of Contents**
 
+- [Features](#Features)
 - [Setup and run](#setup-and-run)
     - [Run app in Windows](#run-app-in-Windows)
     - [Run app in Linux](#run-app-in-Linux)
@@ -27,6 +28,25 @@ This API is being used by 3 frontend projects currently being developed:
 - [Contact](#contact)
 - [License](#license)
 
+## Features
+
+- Once the App is installed user can view an onboarding screen which introduces the app and give user an idea of how it works.
+- A member gets an option to be a Mentor, Mentee or Both.
+- A member can build/customise the app profile with username, bio, skills, interests, location, occupation, etc. anytime.
+- A member can read and know more about Mentorship System including the terms and conditions, privacy and policy and code of conduct.
+- A member can directly access the AnitaB-org Github repo, Zulip chat and website from this App.
+- A member can refresh the every page.
+- A member can view a list of other members and search for a member on the Members Page.
+- A member can search for particular members there in Mentorship System.
+- A member can sort other members on the basis of their name either (A-Z) OR (Z-A), registration date, age.
+- A member can filter other members by the label need mentoring or available to mentor, interest, location and skills that given while creating profile.
+- A member can either send mentorship requests to other members as a Mentor or Mentee according to their interests or reject mentorship requests from other members.
+- A member can track the number of Pending Resquests, Accepted Requests, Rejected Requests, and Completed Requests and view Recent Achievements on the Home Page.
+- A member can view the details of pending, past, all the mentorship requests in the Requests Page.
+- A member can create, update, or delete tasks in their current mentorship relation.
+- A member can send feedback about the Mentorship System such as reporting a bug, giving suggestions or other comments.
+- A member can delete their account.
+- A member can change their account password anytime.
 ## Setup and run
 
 To setup the project locally read these wiki pages and follow the instructions:
