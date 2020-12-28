@@ -2,6 +2,7 @@ import unittest
 from datetime import timedelta
 
 from flask import json
+from http import HTTPStatus
 
 from app import messages
 from app.database.sqlalchemy_extension import db
@@ -31,7 +32,10 @@ class TestUserRefreshApi(BaseTestCase):
 
     def test_user_refresh(self):
         with self.client:
-            refresh_header = get_test_request_header(user1["username"], refresh=True)
+            refresh_header = get_test_request_header(
+                {"id": self.first_user.id, "password": self.first_user.password_hash},
+                refresh=True,
+            )
             response = self.client.post(
                 "/refresh",
                 headers=refresh_header,
@@ -81,6 +85,22 @@ class TestUserRefreshApi(BaseTestCase):
         )
 
         self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_user_refresh_reset_password(self):
+        refresh_header = get_test_request_header(
+            {"id": self.first_user.id, "password": "new_password_hash"},
+            refresh=True,
+        )
+        expected_response = messages.TOKEN_IS_INVALID
+        actual_response = self.client.post(
+            "/refresh",
+            follow_redirects=True,
+            headers=refresh_header,
+            content_type="application/json",
+        )
+
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 

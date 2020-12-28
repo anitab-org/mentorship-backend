@@ -408,8 +408,13 @@ class RefreshUser(Resource):
         The return value is an access token and the expiry timestamp.
         The token is valid for 1 week.
         """
-        user_id = get_jwt_identity()
-        access_token = create_access_token(identity=user_id)
+        req_user = get_jwt_identity()
+        user = DAO.get_user(req_user["id"])
+
+        if user.password_hash != req_user["password"]:
+            return messages.TOKEN_IS_INVALID, HTTPStatus.UNAUTHORIZED
+
+        access_token = create_access_token(identity=req_user["id"])
 
         from run import application
 
@@ -472,7 +477,9 @@ class LoginUser(Resource):
             )
 
         access_token = create_access_token(identity=user.id)
-        refresh_token = create_refresh_token(identity=user.id)
+        refresh_token = create_refresh_token(
+            identity={"id": user.id, "password": user.password_hash}
+        )
 
         from run import application
 
