@@ -11,14 +11,14 @@ jwt._set_error_handler_callbacks(api)
 
 @jwt.expired_token_loader
 def my_expired_token_callback():
-    return messages.TOKEN_HAS_EXPIRED, HTTPStatus.UNAUTHORIZED
+    return messages.TOKEN_HAS_EXPIRED, HTTPStatus.UNAUTHORIZED.value
 
 
 @jwt.invalid_token_loader
 def my_invalid_token_callback(error_message):
-    return messages.TOKEN_IS_INVALID, HTTPStatus.UNAUTHORIZED
+    return messages.TOKEN_IS_INVALID, HTTPStatus.UNAUTHORIZED.value
 
 
 @jwt.unauthorized_loader
 def my_unauthorized_request_callback(error_message):
-    return messages.AUTHORISATION_TOKEN_IS_MISSING, HTTPStatus.UNAUTHORIZED
+    return messages.AUTHORISATION_TOKEN_IS_MISSING, HTTPStatus.UNAUTHORIZED.value
