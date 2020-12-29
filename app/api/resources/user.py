@@ -64,7 +64,7 @@ class UserList(Resource):
         doesn't take any other input. A JSON array having an object for each user is
         returned. The array contains id, username, name, slack_username, bio,
         location, occupation, organization, interests, skills, need_mentoring,
-        available_to_mentor. The current user's details are not returned.
+        available_to_mentor, registration_date. The current user's details are not returned.
         """
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
