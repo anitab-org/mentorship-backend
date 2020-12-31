@@ -184,7 +184,9 @@ class MyUserProfile(Resource):
         return DAO.delete_user(user_id)
 
 
-@users_ns.response(HTTPStatus.CREATED.value, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED)
+@users_ns.response(
+    HTTPStatus.CREATED.value, "%s" % messages.PASSWORD_SUCCESSFULLY_UPDATED
+)
 @users_ns.response(
     HTTPStatus.BAD_REQUEST.value,
     f"{messages.USER_ENTERED_INCORRECT_PASSWORD}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}",
@@ -352,7 +354,9 @@ class UserEmailConfirmation(Resource):
 @users_ns.route("user/resend_email")
 @users_ns.response(HTTPStatus.OK.value, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
 @users_ns.response(HTTPStatus.BAD_REQUEST.value, "Invalid input.")
-@users_ns.response(HTTPStatus.FORBIDDEN.value, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT)
+@users_ns.response(
+    HTTPStatus.FORBIDDEN.value, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT
+)
 @users_ns.response(
     HTTPStatus.NOT_FOUND.value, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM
 )
@@ -391,7 +395,9 @@ class RefreshUser(Resource):
     @classmethod
     @jwt_refresh_token_required
     @users_ns.doc("refresh")
-    @users_ns.response(HTTPStatus.OK.value, "Successful refresh", refresh_response_body_model)
+    @users_ns.response(
+        HTTPStatus.OK.value, "Successful refresh", refresh_response_body_model
+    )
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
         "%s\n%s\n%s"
@@ -427,14 +433,17 @@ class RefreshUser(Resource):
 class LoginUser(Resource):
     @classmethod
     @users_ns.doc("login")
-    @users_ns.response(HTTPStatus.OK.value, "Successful login", login_response_body_model)
+    @users_ns.response(
+        HTTPStatus.OK.value, "Successful login", login_response_body_model
+    )
     @users_ns.response(
         HTTPStatus.BAD_REQUEST.value,
         "%s\n%s"
         % (messages.USERNAME_FIELD_IS_MISSING, messages.PASSWORD_FIELD_IS_MISSING),
     )
     @users_ns.response(
-        HTTPStatus.FORBIDDEN.value, "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN
+        HTTPStatus.FORBIDDEN.value,
+        "%s" % messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN,
     )
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED.value, "%s" % messages.WRONG_USERNAME_OR_PASSWORD
@@ -529,7 +538,9 @@ class UserHomeStatistics(Resource):
 
 @users_ns.route("dashboard")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK.value, "Successful response", dashboard_response_body_model)
+@users_ns.response(
+    HTTPStatus.OK.value, "Successful response", dashboard_response_body_model
+)
 @users_ns.response(HTTPStatus.NOT_FOUND.value, "User not found")
 class UserDashboard(Resource):
     @classmethod
