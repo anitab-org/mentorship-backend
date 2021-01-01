@@ -47,7 +47,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/cancel" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/cancel",
                 headers=get_test_request_header(self.first_user.id),
             )
 
@@ -66,7 +66,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/cancel" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/cancel",
                 headers=get_test_request_header(self.second_user.id),
             )
 
@@ -88,7 +88,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
         with self.client:
             expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
             response = self.client.put(
-                "/mentorship_relation/%s/cancel" % self.mentorship_relation.id
+                f"/mentorship_relation/{self.mentorship_relation.id}/cancel"
             )
 
             self.assertEqual(401, response.status_code)
@@ -103,7 +103,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
         with self.client:
             expected_response = messages.TOKEN_HAS_EXPIRED
             response = self.client.put(
-                "/mentorship_relation/%s/cancel" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/cancel",
                 headers=get_test_request_header(
                     self.second_user.id, token_expiration_delta=timedelta(minutes=-7)
                 ),
@@ -121,7 +121,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
         with self.client:
             expected_response = messages.CANT_CANCEL_UNINVOLVED_REQUEST
             response = self.client.put(
-                "/mentorship_relation/%s/cancel" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/cancel",
                 headers=get_test_request_header(self.admin_user.id),
             )
 

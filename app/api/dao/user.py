@@ -52,11 +52,17 @@ class UserDAO:
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
-            return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
+            return (
+                messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                HTTPStatus.CONFLICT,
+            )
         else:
             existing_user = UserModel.find_by_email(data["email"])
             if existing_user:
-                return messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS, HTTPStatus.CONFLICT
+                return (
+                    messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
+                    HTTPStatus.CONFLICT,
+                )
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
@@ -72,7 +78,7 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def delete_user(user_id: int):
-        """ Deletes a user.
+        """Deletes a user.
 
         Deletes the specified user and removes them from the directory, with checks to make sure that the user exists and is not the only administrator.
 
@@ -101,7 +107,7 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def get_user(user_id: int):
-        """ Retrieves a user's profile information using a specified ID.
+        """Retrieves a user's profile information using a specified ID.
 
         Provides the user profile of the user whose ID matches the one specified.
 
@@ -117,7 +123,7 @@ class UserDAO:
 
     @staticmethod
     def get_user_by_email(email: str):
-        """ Retrieves a user's profile information using a specified email.
+        """Retrieves a user's profile information using a specified email.
 
         Provides the user profile of the user whose email matches the one specified.
 
@@ -133,7 +139,7 @@ class UserDAO:
 
     @staticmethod
     def get_user_by_username(username: str):
-        """ Retrieves a user's profile information using a specified username.
+        """Retrieves a user's profile information using a specified username.
 
         Provides the user profile of the user whose username matches the one specified.
 
@@ -148,8 +154,14 @@ class UserDAO:
         return UserModel.find_by_username(username)
 
     @staticmethod
-    def list_users(user_id: int, search_query: str = "", page: int = DEFAULT_PAGE, per_page: int = DEFAULT_USERS_PER_PAGE, is_verified = None):
-        """ Retrieves a list of verified users with the specified ID.
+    def list_users(
+        user_id: int,
+        search_query: str = "",
+        page: int = DEFAULT_PAGE,
+        per_page: int = DEFAULT_USERS_PER_PAGE,
+        is_verified=None,
+    ):
+        """Retrieves a list of verified users with the specified ID.
 
         Arguments:
             user_id: The ID of the user to be listed.
@@ -163,19 +175,24 @@ class UserDAO:
 
         """
 
-        users_list = UserModel.query.filter(
-            UserModel.id != user_id,
-            not is_verified or UserModel.is_email_verified,
-            func.lower(UserModel.name).contains(search_query.lower())
-        ).order_by(UserModel.id).paginate(page=page,
-                                          per_page=per_page,
-                                          error_out=False,
-                                          max_per_page=UserDAO.MAX_USERS_PER_PAGE).items
+        users_list = (
+            UserModel.query.filter(
+                UserModel.id != user_id,
+                not is_verified or UserModel.is_email_verified,
+                func.lower(UserModel.name).contains(search_query.lower())
+                | func.lower(UserModel.username).contains(search_query.lower()),
+            )
+            .order_by(UserModel.id)
+            .paginate(
+                page=page,
+                per_page=per_page,
+                error_out=False,
+                max_per_page=UserDAO.MAX_USERS_PER_PAGE,
+            )
+            .items
+        )
 
-        list_of_users = [
-            user.json()
-            for user in users_list
-        ]
+        list_of_users = [user.json() for user in users_list]
 
         for user in list_of_users:
             relation = MentorshipRelationDAO.list_current_mentorship_relation(
@@ -196,7 +213,7 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def update_user_profile(user_id: int, data: Dict[str, str]):
-        """ Updates the profile of a specified user with new data.
+        """Updates the profile of a specified user with new data.
 
         Replaces old data items with new ones in the provided data list, with a check for overlap between users in username and a check that a user with the specified ID exists
 
@@ -219,7 +236,10 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
-                return messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS, HTTPStatus.BAD_REQUEST
+                return (
+                    messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                    HTTPStatus.BAD_REQUEST,
+                )
 
             user.username = username
 
@@ -299,7 +319,7 @@ class UserDAO:
     @staticmethod
     @email_verification_required
     def change_password(user_id: int, data: Dict[str, str]):
-        """ Changes the user's password.
+        """Changes the user's password.
 
         Finds the user with the given ID, checks their current password, and then updates to the new one.
 
@@ -325,7 +345,7 @@ class UserDAO:
 
     @staticmethod
     def confirm_registration(token: str):
-        """ Determines whether a user's email registration has been confirmed.
+        """Determines whether a user's email registration has been confirmed.
 
         Determines whether a user's email registration was invalid, previously confirmed, or just confirmed.
 
@@ -353,7 +373,7 @@ class UserDAO:
 
     @staticmethod
     def authenticate(username_or_email: str, password: str):
-        """ User login process.
+        """User login process.
 
         The user can login with two options:
         -> username + password
@@ -646,7 +666,10 @@ class UserDAO:
             user_id=user_id
         )
 
-        if current_relation != (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK):
+        if current_relation != (
+            messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
+            HTTPStatus.OK,
+        ):
             response["tasks_todo"] = marshal(
                 [
                     task

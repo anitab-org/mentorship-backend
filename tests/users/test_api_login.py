@@ -18,7 +18,6 @@ from http import HTTPStatus
 from tests.test_data import user1, user2
 
 
-
 class TestUserLoginApi(BaseTestCase):
 
     # Setup consists of adding 2 users into the database
@@ -65,9 +64,7 @@ class TestUserLoginApi(BaseTestCase):
             self.assertIsNone(response.json.get("refresh_expiry"))
 
             self.assertEqual(1, len(response.json))
-            self.assertEqual(
-                messages.WRONG_USERNAME_OR_PASSWORD, response.json
-            )
+            self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
 
             self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
 
