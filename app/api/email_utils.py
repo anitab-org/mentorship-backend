@@ -43,7 +43,7 @@ def confirm_token(token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD)
     return email
 
 
-def mock_send_email(recipient,subject,template):
+def mock_send_email(recipient, subject, template):
     """Mocks the email sending behaviour by printing it as terminal output."""
 
     print("Mock Email Service")
@@ -57,7 +57,7 @@ def send_email(recipient, subject, template):
     from run import application
 
     if application.config["MOCK_EMAIL"]:
-        mock_send_email(recipient,subject,template)
+        mock_send_email(recipient, subject, template)
     else:
         msg = Message(
             subject,

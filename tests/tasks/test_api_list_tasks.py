@@ -12,7 +12,8 @@ class TestListTasksApi(TasksBaseTestCase):
     def test_list_tasks_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get(
-            "/mentorship_relation/%s/tasks" % self.mentorship_relation_w_second_user.id,
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            "/tasks",
             follow_redirects=True,
         )
 
@@ -24,7 +25,8 @@ class TestListTasksApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = marshal(self.tasks_list_1.tasks, list_tasks_response_body)
         actual_response = self.client.get(
-            "/mentorship_relation/%s/tasks" % self.mentorship_relation_w_second_user.id,
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            "/tasks",
             follow_redirects=True,
             headers=auth_header,
         )
@@ -37,7 +39,7 @@ class TestListTasksApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = marshal(self.tasks_list_2.tasks, list_tasks_response_body)
         actual_response = self.client.get(
-            "/mentorship_relation/%s/tasks" % self.mentorship_relation_w_admin_user.id,
+            f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}/tasks",
             follow_redirects=True,
             headers=auth_header,
         )
@@ -50,7 +52,7 @@ class TestListTasksApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.second_user.id)
         expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
         actual_response = self.client.get(
-            "/mentorship_relation/%s/tasks" % self.mentorship_relation_w_admin_user.id,
+            f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}/tasks",
             follow_redirects=True,
             headers=auth_header,
         )
@@ -63,8 +65,8 @@ class TestListTasksApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.second_user.id)
         expected_response = []
         actual_response = self.client.get(
-            "/mentorship_relation/%s/tasks"
-            % self.mentorship_relation_without_first_user.id,
+            "/mentorship_relation/"
+            f"{self.mentorship_relation_without_first_user.id}/tasks",
             follow_redirects=True,
             headers=auth_header,
         )
