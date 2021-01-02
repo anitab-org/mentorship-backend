@@ -35,7 +35,8 @@ class SendRequest(Resource):
     @mentorship_relation_ns.doc("send_request")
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(
-        HTTPStatus.CREATED.value, "%s" % messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
+        HTTPStatus.CREATED.value,
+        "%s" % messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY,
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST.value,
@@ -157,7 +158,9 @@ class GetAllMyMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.marshal_list_with(
-        mentorship_request_response_body, code=HTTPStatus.OK.value, description="Success"
+        mentorship_request_response_body,
+        code=HTTPStatus.OK.value,
+        description="Success",
     )
     def get(cls):
         """
@@ -191,7 +194,8 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("accept_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK.value, "%s" % messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY
+        HTTPStatus.OK.value,
+        "%s" % messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY,
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN.value,
@@ -213,7 +217,8 @@ class AcceptMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND.value,
+        "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
     )
     def put(cls, request_id):
         """
@@ -246,7 +251,8 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("reject_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK.value, "%s" % messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY
+        HTTPStatus.OK.value,
+        "%s" % messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY,
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN.value,
@@ -267,7 +273,8 @@ class RejectMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND.value,
+        "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
     )
     def put(cls, request_id):
         """
@@ -296,7 +303,8 @@ class CancelMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("cancel_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK.value, "%s" % messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY
+        HTTPStatus.OK.value,
+        "%s" % messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY,
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST.value,
@@ -313,7 +321,8 @@ class CancelMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND.value,
+        "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
     )
     def put(cls, request_id):
         """
@@ -342,7 +351,8 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("delete_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK.value, "%s" % messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY
+        HTTPStatus.OK.value,
+        "%s" % messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY,
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN.value,
@@ -362,7 +372,8 @@ class DeleteMentorshipRelation(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST
+        HTTPStatus.NOT_FOUND.value,
+        "%s" % messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST,
     )
     def delete(cls, request_id):
         """
@@ -405,7 +416,9 @@ class ListPastMentorshipRelations(Resource):
         ),
     )
     @mentorship_relation_ns.marshal_list_with(
-        mentorship_request_response_body, code=HTTPStatus.OK.value, description="Success"
+        mentorship_request_response_body,
+        code=HTTPStatus.OK.value,
+        description="Success",
     )
     def get(cls):
         """
@@ -459,7 +472,10 @@ class ListCurrentMentorshipRelation(Resource):
         response = DAO.list_current_mentorship_relation(user_id)
 
         if isinstance(response, MentorshipRelationModel):
-            return marshal(response, mentorship_request_response_body), HTTPStatus.OK.value
+            return (
+                marshal(response, mentorship_request_response_body),
+                HTTPStatus.OK.value,
+            )
 
         return response
 
@@ -476,7 +492,9 @@ class ListPendingMentorshipRequests(Resource):
         model=mentorship_request_response_body,
     )
     @mentorship_relation_ns.marshal_list_with(
-        mentorship_request_response_body, code=HTTPStatus.OK.value, description="Success"
+        mentorship_request_response_body,
+        code=HTTPStatus.OK.value,
+        description="Success",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
@@ -514,7 +532,7 @@ class CreateTask(Resource):
         HTTPStatus.CREATED.value, "%s" % messages.TASK_WAS_CREATED_SUCCESSFULLY
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.FORBIDDEN.value,"%s" % messages.UNACCEPTED_STATE_RELATION
+        HTTPStatus.FORBIDDEN.value, "%s" % messages.UNACCEPTED_STATE_RELATION
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
@@ -526,7 +544,8 @@ class CreateTask(Resource):
         ),
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.FORBIDDEN.value, "%s" % messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
+        HTTPStatus.FORBIDDEN.value,
+        "%s" % messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
     )
     def post(cls, request_id):
         """
