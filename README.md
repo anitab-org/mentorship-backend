@@ -30,23 +30,11 @@ This API is being used by 3 frontend projects currently being developed:
 
 ## Features
 
-- Once the App is installed user can view an onboarding screen which introduces the app and give user an idea of how it works.
-- A member gets an option to be a Mentor, Mentee or Both.
-- A member can build/customise the app profile with username, bio, skills, interests, location, occupation, etc. anytime.
-- A member can read and know more about Mentorship System including the terms and conditions, privacy and policy and code of conduct.
-- A member can directly access the AnitaB-org Github repo, Zulip chat and website from this App.
-- A member can refresh the every page.
-- A member can view a list of other members and search for a member on the Members Page.
-- A member can search for particular members there in Mentorship System.
-- A member can sort other members on the basis of their name either (A-Z) OR (Z-A), registration date, age.
-- A member can filter other members by the label need mentoring or available to mentor, interest, location and skills that given while creating profile.
-- A member can either send mentorship requests to other members as a Mentor or Mentee according to their interests or reject mentorship requests from other members.
-- A member can track the number of Pending Resquests, Accepted Requests, Rejected Requests, and Completed Requests and view Recent Achievements on the Home Page.
-- A member can view the details of pending, past, all the mentorship requests in the Requests Page.
-- A member can create, update, or delete tasks in their current mentorship relation.
-- A member can send feedback about the Mentorship System such as reporting a bug, giving suggestions or other comments.
-- A member can delete their account.
-- A member can change their account password anytime.
+- Mentorship System is an application that matches women in tech to mentor each other, in career developmemnt, through 1:1 relations during a certain period of time.
+- The Backend API is documented and publicly available through Swagger UI
+- Mentorship Backend consist of operations related to Users, Admins and Mentorship Relation.
+- The operations mainly include GET, POST, DELETE and PUT in the Users, Admins, Mentorship Relation.
+- The Mentorship Backend consist of various Models such as User list model, Update, Change password, Login etc.
 ## Setup and run
 
 To setup the project locally read these wiki pages and follow the instructions:
