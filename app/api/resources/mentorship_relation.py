@@ -93,7 +93,7 @@ class SendRequest(Resource):
         is_valid = SendRequest.is_valid_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.BAD_REQUEST.value
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         response = DAO.create_mentorship_relation(user_sender_id, data)
 
@@ -474,7 +474,7 @@ class ListCurrentMentorshipRelation(Resource):
         if isinstance(response, MentorshipRelationModel):
             return (
                 marshal(response, mentorship_request_response_body),
-                HTTPStatus.OK.value,
+                HTTPStatus.OK,
             )
 
         return response
@@ -569,7 +569,7 @@ class CreateTask(Resource):
         is_valid = CreateTask.is_valid_data(request_body)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.BAD_REQUEST.value
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         response = TaskDAO.create_task(
             user_id=user_id, mentorship_relation_id=request_id, data=request_body
@@ -683,7 +683,7 @@ class ListTasks(Resource):
         if isinstance(response, tuple):
             return response
 
-        return marshal(response, list_tasks_response_body), HTTPStatus.OK.value
+        return marshal(response, list_tasks_response_body), HTTPStatus.OK
 
 
 @mentorship_relation_ns.route(
@@ -772,7 +772,7 @@ class CreateTaskComment(Resource):
 
         is_valid = validate_task_comment_request_data(data)
         if is_valid != {}:
-            return is_valid, HTTPStatus.BAD_REQUEST.value
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         comment = data["comment"]
         return TaskCommentDAO.create_task_comment(
@@ -887,4 +887,4 @@ class TaskComments(Resource):
         if isinstance(response, tuple):
             return response
         else:
-            return marshal(response, task_comments_model), HTTPStatus.OK.value
+            return marshal(response, task_comments_model), HTTPStatus.OK
