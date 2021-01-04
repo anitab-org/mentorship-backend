@@ -15,7 +15,10 @@ add_models_to_namespace(admin_ns)
 @admin_ns.route("admin/new")
 @admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_IS_NOW_AN_ADMIN}")
 @admin_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.USER_IS_ALREADY_AN_ADMIN}")
-@admin_ns.response(HTTPStatus.UNAUTHORIZED.value,f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}")
+@admin_ns.response(
+    HTTPStatus.UNAUTHORIZED.value,
+    f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}",
+)
 @admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_ASSIGN_NOT_ADMIN}")
 @admin_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}")
 class AssignNewUserAdmin(Resource):
@@ -44,13 +47,18 @@ class AssignNewUserAdmin(Resource):
 @admin_ns.route("admin/remove")
 @admin_ns.response(HTTPStatus.OK.value, f"{messages.USER_ADMIN_STATUS_WAS_REVOKED}")
 @admin_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.USER_IS_NOT_AN_ADMIN}")
-@admin_ns.response(HTTPStatus.UNAUTHORIZED.value,f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}")
+@admin_ns.response(
+    HTTPStatus.UNAUTHORIZED.value,
+    f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}",
+)
 @admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_REVOKE_NOT_ADMIN}")
 @admin_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}")
 class RevokeUserAdmin(Resource):
     @classmethod
     @jwt_required
-    @admin_ns.expect(auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True)
+    @admin_ns.expect(
+        auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
+    )
     def post(cls):
         """
         Revoke admin status from another User Admin.
