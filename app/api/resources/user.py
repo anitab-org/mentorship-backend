@@ -285,15 +285,14 @@ class UserRegister(Resource):
     )
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
-        f"{messages.USERNAME_FIELD_IS_EMPTY}\n{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}\n{messages.EMAIL_INPUT_BY_USER_IS_INVALID}",
+        f"{messages.USERNAME_HAS_INVALID_LENGTH}\n{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}\n{messages.EMAIL_INPUT_BY_USER_IS_INVALID}\n{messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED}",
     )
     @users_ns.response(
         HTTPStatus.CONFLICT,
-        "%s\n%s\n%s"
+        "%s\n%s"
         % (
             messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
             messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-            messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED,
         ),
     )
     @users_ns.expect(register_user_api_model, validate=True)
@@ -312,7 +311,7 @@ class UserRegister(Resource):
         is_valid = validate_user_registration_request_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.CONFLICT
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         result = DAO.create_user(data)
 
