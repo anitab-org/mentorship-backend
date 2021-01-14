@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -48,7 +49,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(
             user_id=self.first_user.id, state=self.mentorship_relation.state.name
         )
-        expected_response = [self.mentorship_relation], 200
+        expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)
 
@@ -62,7 +63,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(
             user_id=self.first_user.id, state=self.mentorship_relation.state.name
         )
-        expected_response = [self.mentorship_relation], 200
+        expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)
 
@@ -76,7 +77,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(
             user_id=self.first_user.id, state=self.mentorship_relation.state.name
         )
-        expected_response = [self.mentorship_relation], 200
+        expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)
 
@@ -90,7 +91,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(
             user_id=self.first_user.id, state=self.mentorship_relation.state.name
         )
-        expected_response = [self.mentorship_relation], 200
+        expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)
 
@@ -104,7 +105,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(
             user_id=self.first_user.id, state=self.mentorship_relation.state.name
         )
-        expected_response = [self.mentorship_relation], 200
+        expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)
 
@@ -112,7 +113,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         DAO = MentorshipRelationDAO()
 
         result = DAO.list_mentorship_relations(user_id=self.first_user.id, state=None)
-        expected_response = [self.mentorship_relation], 200
+        expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)
 
@@ -122,7 +123,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.list_mentorship_relations(
             user_id=self.first_user.id, state="anything"
         )
-        expected_response = [], 400
+        expected_response = [], HTTPStatus.BAD_REQUEST
 
         self.assertEqual(expected_response, result)
 
@@ -134,7 +135,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.list_mentorship_relations(user_id=self.first_user.id)
-        expected_response = [self.mentorship_relation], 200
+        expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)
         self.assertIsNotNone(result)

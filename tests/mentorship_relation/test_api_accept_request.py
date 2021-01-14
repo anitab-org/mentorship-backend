@@ -2,6 +2,7 @@ import json
 import unittest
 from unittest.mock import patch
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.database.models.tasks_list import TasksListModel
@@ -52,7 +53,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.second_user.id),
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.ACCEPTED, self.mentorship_relation.state
             )
@@ -89,7 +90,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.second_user.id),
             )
-            self.assertEqual(403, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.ACCEPTED, mentorship_relation_current.state
             )  # current
@@ -112,7 +113,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.first_user.id),
             )
-            self.assertEqual(403, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -134,7 +135,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.admin_user.id),
             )
-            self.assertEqual(403, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -153,7 +154,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
             response = self.client.put(
                 f"/mentorship_relation/{self.mentorship_relation.id}/accept"
             )
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -176,7 +177,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=auth_header,
             )
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )

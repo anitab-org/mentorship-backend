@@ -1,6 +1,7 @@
 import json
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.database.models.tasks_list import TasksListModel
@@ -49,7 +50,7 @@ class TestRejectMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.second_user.id),
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.REJECTED, self.mentorship_relation.state
             )

@@ -1,6 +1,7 @@
 import json
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from flask_restx import marshal
 
@@ -87,7 +88,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 marshal(self.past_mentorship_relation, mentorship_request_response_body)
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_pending_mentorship_relations(self):
@@ -103,7 +104,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 )
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_current_mentorship_relation(self):
@@ -117,7 +118,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 mentorship_request_response_body,
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_all_mentorship_relations(self):
@@ -133,7 +134,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 )
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_current_mentorship_relation_sent_by_current_user(self):
@@ -147,7 +148,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 mentorship_request_response_body,
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
             self.assertFalse(self.future_accepted_mentorship_relation.sent_by_me)
 
@@ -162,7 +163,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 mentorship_request_response_body,
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
             self.assertTrue(self.future_accepted_mentorship_relation.sent_by_me)
 
@@ -192,7 +193,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 ),
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     # When relation_state = 'accepted'.
@@ -209,7 +210,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 )
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     # When relation_state = 'pending'.
@@ -229,7 +230,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 ),
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     # When relation_state = 'invalid_param'.
@@ -241,7 +242,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
             )
             expected_response = []
 
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
 
