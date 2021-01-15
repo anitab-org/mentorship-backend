@@ -1,6 +1,7 @@
 import unittest
 from flask import json
 from flask_restx import marshal
+from http import HTTPStatus
 
 from app import messages
 from app.api.models.mentorship_relation import list_tasks_response_body
@@ -17,7 +18,7 @@ class TestListTasksApi(TasksBaseTestCase):
             follow_redirects=True,
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_first_mentorship_relation(self):
@@ -31,7 +32,7 @@ class TestListTasksApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_second_mentorship_relation(self):
@@ -44,7 +45,7 @@ class TestListTasksApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_w_user_not_belonging_to_mentorship_relation(self):
@@ -57,7 +58,7 @@ class TestListTasksApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_mentorship_relation_without_tasks(self):
@@ -71,7 +72,7 @@ class TestListTasksApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 

@@ -1,5 +1,6 @@
 import unittest
 from flask import json
+from http import HTTPStatus
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -16,7 +17,7 @@ class TestCompleteTaskApi(TasksBaseTestCase):
             follow_redirects=True,
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_complete_task_api(self):
@@ -38,7 +39,7 @@ class TestCompleteTaskApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         relation = MentorshipRelationModel.find_by_id(
