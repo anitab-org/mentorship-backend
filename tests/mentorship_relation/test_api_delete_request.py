@@ -55,7 +55,6 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 f"/mentorship_relation/{request_id}",
                 headers=get_test_request_header(self.first_user.id),
             )
-
         self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertDictEqual(
             messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY,
@@ -80,7 +79,6 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 f"/mentorship_relation/{request_id}",
                 headers=get_test_request_header(self.second_user.id),
             )
-
         self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
         self.assertDictEqual(
             messages.CANT_DELETE_UNINVOLVED_REQUEST, json.loads(response.data)

@@ -73,7 +73,8 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         result = MentorshipRelationDAO.delete_request(self.first_user.id, 123)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result
+            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND),
+            result,
         )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(
@@ -98,7 +99,9 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
             self.second_user.id, self.mentorship_relation.id
         )
 
-        self.assertEqual((messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN), result)
+        self.assertEqual(
+            (messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN), result
+        )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(
                 id=self.mentorship_relation.id
@@ -114,7 +117,8 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
 
         result = MentorshipRelationDAO.delete_request(self.first_user.id, relation_id)
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK), result
+            (messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK),
+            result,
         )
 
         self.assertIsNone(
@@ -127,7 +131,9 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
             self.admin_user.id, self.mentorship_relation.id
         )
 
-        self.assertEqual((messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN), result)
+        self.assertEqual(
+            (messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN), result
+        )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(
                 id=self.mentorship_relation.id
@@ -144,7 +150,9 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         result = MentorshipRelationDAO.delete_request(
             self.first_user.id, self.mentorship_relation.id
         )
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(id=relation_id).first()
         )
@@ -156,7 +164,9 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         result = MentorshipRelationDAO.delete_request(
             self.first_user.id, self.mentorship_relation.id
         )
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(id=relation_id).first()
         )
@@ -168,7 +178,9 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         result = MentorshipRelationDAO.delete_request(
             self.first_user.id, self.mentorship_relation.id
         )
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(id=relation_id).first()
         )
@@ -180,7 +192,9 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         result = MentorshipRelationDAO.delete_request(
             self.first_user.id, self.mentorship_relation.id
         )
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(id=relation_id).first()
         )
