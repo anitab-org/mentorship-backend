@@ -141,7 +141,8 @@ class TestListUsersApi(BaseTestCase):
         expected_response = [
             marshal(self.verified_user, public_user_api_model),
             marshal(self.other_user, public_user_api_model),
-            marshal(self.second_user, public_user_api_model)]
+            marshal(self.second_user, public_user_api_model),
+        ]
         actual_response = self.client.get(
             "/users?page=1", follow_redirects=True, headers=auth_header
         )
@@ -199,7 +200,9 @@ class TestListUsersApi(BaseTestCase):
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
-    def test_list_users_api_with_a_page_query_out_of_range_resource_verified_users(self):
+    def test_list_users_api_with_a_page_query_out_of_range_resource_verified_users(
+        self,
+    ):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = []
         actual_response = self.client.get(
@@ -209,21 +212,29 @@ class TestListUsersApi(BaseTestCase):
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
-    def test_list_users_api_with_a_page_and_per_page_query_resource_verified_users(self):
+    def test_list_users_api_with_a_page_and_per_page_query_resource_verified_users(
+        self,
+    ):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.verified_user, public_user_api_model)]
         actual_response = self.client.get(
-            "/users/verified?page=1&per_page=1", follow_redirects=True, headers=auth_header
+            "/users/verified?page=1&per_page=1",
+            follow_redirects=True,
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
-    def test_list_users_api_with_a_page_and_empty_per_page_query_resource_verified_users(self):
+    def test_list_users_api_with_a_page_and_empty_per_page_query_resource_verified_users(
+        self,
+    ):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = []
         actual_response = self.client.get(
-            "/users/verified?page=1&per_page=0", follow_redirects=True, headers=auth_header
+            "/users/verified?page=1&per_page=0",
+            follow_redirects=True,
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
@@ -244,6 +255,18 @@ class TestListUsersApi(BaseTestCase):
         ]
         actual_response = self.client.get(
             "/users", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_search_query_with_username_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            f"/users?search={self.verified_user.username}",
+            follow_redirects=True,
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
