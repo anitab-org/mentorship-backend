@@ -66,7 +66,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.assign_new_user(2, data)
 
         self.assertEqual(
-            (messages.USER_ASSIGN_NOT_ADMIN, HTTPStatus.FORBIDDEN), dao_result
+            (messages.USER_ASSIGN_NOT_ADMIN, HTTPStatus.FORBIDDEN.value), dao_result
         )
 
     """
@@ -82,7 +82,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.assign_new_user(1, data)
 
         self.assertEqual(
-            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), dao_result
+            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND.value), dao_result
         )
 
     """
@@ -114,7 +114,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.assign_new_user(1, data)
 
         self.assertEqual(
-            (messages.USER_IS_ALREADY_AN_ADMIN, HTTPStatus.BAD_REQUEST), dao_result
+            (messages.USER_IS_ALREADY_AN_ADMIN, HTTPStatus.BAD_REQUEST.value), dao_result
         )
 
     """
@@ -143,7 +143,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.assign_new_user(2, data)
 
         self.assertEqual(
-            (messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, HTTPStatus.FORBIDDEN),
+            (messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, HTTPStatus.FORBIDDEN.value),
             dao_result,
         )
 
@@ -200,7 +200,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.revoke_admin_user(2, data)
 
         self.assertEqual(
-            (messages.USER_REVOKE_NOT_ADMIN, HTTPStatus.FORBIDDEN), dao_result
+            (messages.USER_REVOKE_NOT_ADMIN, HTTPStatus.FORBIDDEN.value), dao_result
         )
 
     """
@@ -216,7 +216,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.revoke_admin_user(1, data)
 
         self.assertEqual(
-            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), dao_result
+            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND.value), dao_result
         )
 
     """
@@ -243,7 +243,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.revoke_admin_user(1, data)
 
         self.assertEqual(
-            (messages.USER_IS_NOT_AN_ADMIN, HTTPStatus.BAD_REQUEST), dao_result
+            (messages.USER_IS_NOT_AN_ADMIN, HTTPStatus.BAD_REQUEST.value), dao_result
         )
 
     """
@@ -258,7 +258,7 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.revoke_admin_user(1, data)
 
         self.assertEqual(
-            (messages.USER_CANNOT_REVOKE_ADMIN_STATUS, HTTPStatus.FORBIDDEN), dao_result
+            (messages.USER_CANNOT_REVOKE_ADMIN_STATUS, HTTPStatus.FORBIDDEN.value), dao_result
         )
 
 
