@@ -114,7 +114,8 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.assign_new_user(1, data)
 
         self.assertEqual(
-            (messages.USER_IS_ALREADY_AN_ADMIN, HTTPStatus.BAD_REQUEST.value), dao_result
+            (messages.USER_IS_ALREADY_AN_ADMIN, HTTPStatus.BAD_REQUEST.value),
+            dao_result,
         )
 
     """
@@ -143,7 +144,10 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.assign_new_user(2, data)
 
         self.assertEqual(
-            (messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER, HTTPStatus.FORBIDDEN.value),
+            (
+                messages.USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER,
+                HTTPStatus.FORBIDDEN.value,
+            ),
             dao_result,
         )
 
@@ -258,7 +262,8 @@ class TestAdminDao(BaseTestCase):
         dao_result = dao.revoke_admin_user(1, data)
 
         self.assertEqual(
-            (messages.USER_CANNOT_REVOKE_ADMIN_STATUS, HTTPStatus.FORBIDDEN.value), dao_result
+            (messages.USER_CANNOT_REVOKE_ADMIN_STATUS, HTTPStatus.FORBIDDEN.value),
+            dao_result,
         )
 
 
