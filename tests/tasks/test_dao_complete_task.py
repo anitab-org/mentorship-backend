@@ -20,7 +20,7 @@ class TestCompleteTasksDao(TasksBaseTestCase):
     def test_achieve_achieved_task(self):
         self.assertTrue(self.tasks_list_1.find_task_by_id(2).get("is_done"))
 
-        expected_response = messages.TASK_WAS_ALREADY_ACHIEVED, 409
+        expected_response = messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.CONFLICT.value
         actual_response = TaskDAO.complete_task(
             self.first_user.id, self.mentorship_relation_w_second_user.id, 2
         )
