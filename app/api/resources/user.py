@@ -15,7 +15,7 @@ from app.api.validations.user import *
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
 from app.api.dao.user import UserDAO
-from app.api.resources.common import auth_header_parser
+from app.api.resources.common import auth_header_parser, refresh_auth_header_parser
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -46,13 +46,13 @@ class UserList(Resource):
     )
     @users_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
     @users_ns.marshal_list_with(
-        public_user_api_model, code=HTTPStatus.OK, description="Success"
+        public_user_api_model, code=HTTPStatus.OK.value, description="Success"
     )
     @users_ns.expect(auth_header_parser)
     def get(cls):
@@ -63,7 +63,7 @@ class UserList(Resource):
         doesn't take any other input. A JSON array having an object for each user is
         returned. The array contains id, username, name, slack_username, bio,
         location, occupation, organization, interests, skills, need_mentoring,
-        available_to_mentor. The current user's details are not returned.
+        available_to_mentor, registration_date. The current user's details are not returned.
         """
 
         page = request.args.get("page", default=UserDAO.DEFAULT_PAGE, type=int)
@@ -82,7 +82,7 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(HTTPStatus.OK, "Success.", public_user_api_model)
+    @users_ns.response(HTTPStatus.OK.value, "Success.", public_user_api_model)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         (
@@ -92,6 +92,7 @@ class OtherUser(Resource):
         ),
     )
     @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
+    
     def get(cls, user_id):
         """
         Returns a user.
@@ -116,13 +117,14 @@ class OtherUser(Resource):
     ),
 )
 @users_ns.response(HTTPStatus.NOT_FOUND, f"{messages.USER_DOES_NOT_EXIST}")
+
 class MyUserProfile(Resource):
     @classmethod
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser, validate=True)
     @users_ns.marshal_with(
-        full_user_api_model, code=HTTPStatus.OK, description="Success"
+        full_user_api_model, code=HTTPStatus.OK.value, description="Success"
     )  # , skip_none=True
     def get(cls):
         """
@@ -238,13 +240,13 @@ class VerifiedUser(Resource):
     )
     @users_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
             f"{messages.TOKEN_IS_INVALID['message']}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
         }
     )
     @users_ns.marshal_list_with(
-        public_user_api_model, code=HTTPStatus.OK, description="Success"
+        public_user_api_model, code=HTTPStatus.OK.value, description="Success"
     )  # , skip_none=True
     @users_ns.expect(auth_header_parser)
     def get(cls):
@@ -306,7 +308,7 @@ class UserRegister(Resource):
         is_valid = validate_user_registration_request_data(data)
 
         if is_valid != {}:
-            return is_valid, HTTPStatus.CONFLICT
+            return is_valid, HTTPStatus.BAD_REQUEST
 
         result = DAO.create_user(data)
 
@@ -382,7 +384,6 @@ class RefreshUser(Resource):
     @classmethod
     @jwt_refresh_token_required
     @users_ns.doc("refresh")
-    @users_ns.response(HTTPStatus.OK, "Successful refresh", refresh_response_body_model)
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED,
         (
@@ -391,7 +392,7 @@ class RefreshUser(Resource):
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         ),
     )
-    @users_ns.expect(auth_header_parser)
+    @users_ns.expect(refresh_auth_header_parser)
     def post(cls):
         """Refresh user's access
 
@@ -417,7 +418,6 @@ class RefreshUser(Resource):
 class LoginUser(Resource):
     @classmethod
     @users_ns.doc("login")
-    @users_ns.response(HTTPStatus.OK, "Successful login", login_response_body_model)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST,
         (
@@ -489,7 +489,7 @@ class LoginUser(Resource):
 @users_ns.route("home")
 @users_ns.doc("home")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK, "Successful response", home_response_body_model)
+@users_ns.response(HTTPStatus.OK.value, "Successful response", home_response_body_model)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED,
     (
@@ -520,8 +520,10 @@ class UserHomeStatistics(Resource):
 
 @users_ns.route("dashboard")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK, "Successful response", dashboard_response_body_model)
-@users_ns.response(HTTPStatus.NOT_FOUND, "User not found")
+@users_ns.response(
+    HTTPStatus.OK.value, "Successful response", dashboard_response_body_model
+)
+@users_ns.response(HTTPStatus.NOT_FOUND.value, "User not found")
 class UserDashboard(Resource):
     @classmethod
     @jwt_required
