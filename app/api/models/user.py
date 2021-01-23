@@ -60,9 +60,6 @@ public_user_api_model = Model(
             required=True,
             description="User availability to mentor or to be mentored indication",
         ),
-        "registration_date": fields.Float(
-            required=True, description="User registration date"
-        ),
     },
 )
 

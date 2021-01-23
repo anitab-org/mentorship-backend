@@ -11,7 +11,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL=<True-or-False>
+export MOCK_EMAIL = <True-or-False>
 ```
 
 ## Environment Variables Description
