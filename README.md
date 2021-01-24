@@ -46,7 +46,7 @@ virtualenv venv --python=python3
 2. Activate the virtual environment:
 For Git Bash Users:
 ```
-source /venv/Scripts/activate
+source ./venv/Scripts/activate
 ```
 For Windows Command Line Users:
 ```
