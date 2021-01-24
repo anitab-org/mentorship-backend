@@ -40,7 +40,7 @@ class SendRequest(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST.value,
-       "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
+        "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s"
         % (
             messages.MATCH_EITHER_MENTOR_OR_MENTEE,
             messages.MENTOR_ID_SAME_AS_MENTEE_ID,
