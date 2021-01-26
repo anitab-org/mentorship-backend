@@ -85,7 +85,7 @@ class SendRequest(Resource):
         response = DAO.create_mentorship_relation(user_sender_id, data)
 
         # if the mentorship relation creation failed dont send email and return
-        if response[1] != HTTPStatus.CREATED:
+        if response[1] != HTTPStatus.CREATED.value:
             return response
 
         if user_sender_id == data["mentee_id"]:
@@ -131,7 +131,7 @@ class GetAllMyMentorshipRelation(Resource):
         _in="query",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.OK,
+        HTTPStatus.OK.value,
         "Return all user's mentorship relations, filtered by the relation state, was successfully.",
         model=mentorship_request_response_body,
     )
@@ -142,7 +142,9 @@ class GetAllMyMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}\n",
     )
     @mentorship_relation_ns.marshal_list_with(
-        mentorship_request_response_body, code=HTTPStatus.OK, description="Success"
+        mentorship_request_response_body,
+        code=HTTPStatus.OK.value,
+        description="Success",
     )
     def get(cls):
         """
@@ -212,7 +214,7 @@ class AcceptMentorshipRelation(Resource):
         user_id = get_jwt_identity()
         response = DAO.accept_request(user_id=user_id, request_id=request_id)
 
-        if response[1] == HTTPStatus.OK:
+        if response[1] == HTTPStatus.OK.value:
             send_email_mentorship_relation_accepted(request_id)
 
         return response
@@ -355,7 +357,7 @@ class ListPastMentorshipRelations(Resource):
     @mentorship_relation_ns.doc("get_past_mentorship_relations")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK,
+        HTTPStatus.OK.value,
         "Returned past mentorship relations with success.",
         model=mentorship_request_response_body,
     )
@@ -366,7 +368,9 @@ class ListPastMentorshipRelations(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.marshal_list_with(
-        mentorship_request_response_body, code=HTTPStatus.OK, description="Success"
+        mentorship_request_response_body,
+        code=HTTPStatus.OK.value,
+        description="Success",
     )
     def get(cls):
         """
@@ -392,7 +396,7 @@ class ListCurrentMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("get_current_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK,
+        HTTPStatus.OK.value,
         "Returned current mentorship relation with success.",
         model=mentorship_request_response_body,
     )
@@ -417,7 +421,10 @@ class ListCurrentMentorshipRelation(Resource):
         response = DAO.list_current_mentorship_relation(user_id)
 
         if isinstance(response, MentorshipRelationModel):
-            return marshal(response, mentorship_request_response_body), HTTPStatus.OK
+            return (
+                marshal(response, mentorship_request_response_body),
+                HTTPStatus.OK,
+            )
 
         return response
 
@@ -429,12 +436,14 @@ class ListPendingMentorshipRequests(Resource):
     @mentorship_relation_ns.doc("get_pending_mentorship_relations")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK,
+        HTTPStatus.OK.value,
         "Returned pending mentorship relation with success.",
         model=mentorship_request_response_body,
     )
     @mentorship_relation_ns.marshal_list_with(
-        mentorship_request_response_body, code=HTTPStatus.OK, description="Success"
+        mentorship_request_response_body,
+        code=HTTPStatus.OK.value,
+        description="Success",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.UNAUTHORIZED,
