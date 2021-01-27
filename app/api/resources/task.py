@@ -11,7 +11,7 @@ from app.api.models.task import *
 
 task_ns = Namespace(
     "Task",
-    description="Operations related to tasks for the mentee",
+    description="Operations related to tasks for the mentee/mentor",
 )
 add_models_to_namespace(task_ns)
 
