@@ -17,7 +17,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver
     def setUp(self):
-        super(TestMentorshipRelationDeleteDAO, self).setUp()
+        super().setUp()
 
         self.first_user = UserModel(
             name=user1["name"],

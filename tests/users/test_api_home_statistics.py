@@ -13,7 +13,7 @@ from tests.test_utils import get_test_request_header
 
 class TestHomeStatisticsApi(BaseTestCase):
     def setUp(self):
-        super(TestHomeStatisticsApi, self).setUp()
+        super().setUp()
 
         self.user1 = UserModel("User1", "user1", "__test__", "test@email.com", True)
         self.user2 = UserModel("User2", "user2", "__test__", "test2@email.com", True)

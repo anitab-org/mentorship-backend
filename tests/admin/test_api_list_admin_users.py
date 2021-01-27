@@ -18,7 +18,7 @@ from tests.test_data import user1, test_admin_user, test_admin_user_2, test_admi
 
 class TestListAdminUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestListAdminUsersApi, self).setUp()
+        super().setUp()
 
         self.admin_user_2 = UserModel(
             name=test_admin_user_2["name"],
