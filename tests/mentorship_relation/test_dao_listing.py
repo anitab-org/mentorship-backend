@@ -16,7 +16,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
     # Setup consists of adding 2 users into the database
     def setUp(self):
-        super(TestMentorshipRelationListingDAO, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
         self.now_datetime = datetime.now()

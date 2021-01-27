@@ -18,7 +18,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver
     def setUp(self):
-        super(TestMentorshipRelationListingDAO, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
         self.now_datetime = datetime.now()

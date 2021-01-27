@@ -14,7 +14,7 @@ from tests.test_utils import get_test_request_header
 
 class TestSendRequestApi(MentorshipRelationBaseTestCase):
     def setUp(self):
-        super(TestSendRequestApi, self).setUp()
+        super().setUp()
 
     def test_created_error_code_for_send_request(self):
         auth_header = get_test_request_header(self.first_user.id)
