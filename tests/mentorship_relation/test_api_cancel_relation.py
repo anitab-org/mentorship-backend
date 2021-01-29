@@ -1,6 +1,7 @@
 import json
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.database.models.tasks_list import TasksListModel
@@ -51,7 +52,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.first_user.id),
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.CANCELLED, self.mentorship_relation.state
             )
@@ -70,7 +71,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.second_user.id),
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.CANCELLED, self.mentorship_relation.state
             )
@@ -91,7 +92,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 f"/mentorship_relation/{self.mentorship_relation.id}/cancel"
             )
 
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertDictEqual(expected_response, json.loads(response.data))
 
     # Valid user tries to cancel valid task with authentication token expired (FAIL)
@@ -109,7 +110,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 ),
             )
 
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertDictEqual(expected_response, json.loads(response.data))
 
     # User1 cancel a mentorship relation which the User1 is not involved with (FAIL)
@@ -125,7 +126,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.admin_user.id),
             )
 
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
             self.assertDictEqual(expected_response, json.loads(response.data))
 
 
