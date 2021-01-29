@@ -49,7 +49,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
             content_type="application/json",
             data=json.dumps(test_payload),
         )
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_fail_send_request_bad_mentor_id(self):
@@ -67,7 +67,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
             content_type="application/json",
             data=json.dumps(test_payload),
         )
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     # In case if a user tries to send request on behalf of some other user
@@ -86,7 +86,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
             content_type="application/json",
             data=json.dumps(test_payload),
         )
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
