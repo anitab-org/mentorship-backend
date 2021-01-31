@@ -71,7 +71,7 @@ class TestListAdminUsersApi(BaseTestCase):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/admins")
 
-        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     """
@@ -88,7 +88,7 @@ class TestListAdminUsersApi(BaseTestCase):
             "/admins", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     """
@@ -103,7 +103,7 @@ class TestListAdminUsersApi(BaseTestCase):
         )
 
         # import pdb; pdb.set_trace()
-        self.assertEqual(HTTPStatus.FORBIDDEN.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 
