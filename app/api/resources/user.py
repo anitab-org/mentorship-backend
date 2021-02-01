@@ -144,7 +144,13 @@ class MyUserProfile(Resource):
     @users_ns.response(HTTPStatus.OK.value, "%s" % messages.USER_SUCCESSFULLY_UPDATED)
     @users_ns.response(
         HTTPStatus.BAD_REQUEST.value,
-        f"{messages.NAME_INPUT_BY_USER_IS_INVALID}\n{messages.NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT}",
+        f"{messages.NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT}\n"
+        f"{messages.NEW_USERNAME_INPUT_BY_USER_IS_INVALID}\n"
+        f"{messages.NAME_INPUT_BY_USER_IS_INVALID}\n"
+        f"{messages.FIELD_NEED_MENTORING_IS_NOT_VALID}\n"
+        f"{messages.FIELD_AVAILABLE_TO_MENTOR_IS_INVALID}\n"
+        f"{messages.USER_DOES_NOT_EXIST}\n"
+        f"{messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS}",
     )
     def put(cls):
         """
@@ -286,8 +292,20 @@ class UserRegister(Resource):
         HTTPStatus.CREATED.value, "%s" % messages.USER_WAS_CREATED_SUCCESSFULLY
     )
     @users_ns.response(
-        HTTPStatus.BAD_REQUEST,
-        f"{messages.USERNAME_HAS_INVALID_LENGTH}\n{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}\n{messages.USER_INPUTS_SPACE_IN_PASSWORD}\n{messages.EMAIL_INPUT_BY_USER_IS_INVALID}\n{messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED}",
+        HTTPStatus.BAD_REQUEST.value,
+        f"{messages.NAME_FIELD_IS_MISSING}\n"
+        f"{messages.USERNAME_FIELD_IS_MISSING}\n"
+        f"{messages.PASSWORD_FIELD_IS_MISSING}\n"
+        f"{messages.EMAIL_FIELD_IS_MISSING}\n"
+        f"{messages.TERMS_AND_CONDITIONS_FIELD_IS_MISSING}\n"
+        f"{messages.NAME_USERNAME_AND_PASSWORD_NOT_IN_STRING_FORMAT}\n"
+        f"{messages.TERMS_AND_CONDITIONS_ARE_NOT_CHECKED}\n"
+        f"{messages.NAME_INPUT_BY_USER_IS_INVALID}\n"
+        f"{messages.EMAIL_INPUT_BY_USER_IS_INVALID}\n"
+        f"{messages.USERNAME_INPUT_BY_USER_IS_INVALID}\n"
+        f"{messages.USER_INPUTS_SPACE_IN_PASSWORD}\n"
+        f"{messages.USERNAME_HAS_INVALID_LENGTH}\n"
+        f"{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}",
     )
     @users_ns.response(
         HTTPStatus.CONFLICT,
