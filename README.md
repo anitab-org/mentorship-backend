@@ -46,7 +46,7 @@ virtualenv venv --python=python3
 2. Activate the virtual environment:
 For Git Bash Users:
 ```
-source /venv/Scripts/activate
+source ./venv/Scripts/activate
 ```
 For Windows Command Line Users:
 ```
@@ -69,7 +69,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL = <True-or-False>
+export MOCK_EMAIL=<True-or-False>
 ```
 
 If you're testing any environment other than "local", then you have to also set these other variables:
@@ -122,7 +122,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL = <True-or-False>
+export MOCK_EMAIL=<True-or-False>
 ```
 
 If you're testing any environment other than "local", then you have to also set these other variables in the .env file.
@@ -215,7 +215,7 @@ Understand more about our technical decisions made along with this project devel
 
 ## Contributing
 
-Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](./docs/code_of_conduct.md) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
+Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](./docs/code_of_conduct.md) and [Reporting Guidelines](./docs/reporting_guidelines.md)
 
 Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
 

@@ -14,11 +14,12 @@ from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_utils import get_test_request_header
 from tests.test_data import test_admin_user_2, test_admin_user_3
+from http import HTTPStatus
 
 
 class TestRemoveAdminUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestRemoveAdminUsersApi, self).setUp()
+        super().setUp()
 
         self.admin_user_1 = UserModel(
             name=test_admin_user_2["name"],
@@ -56,14 +57,12 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_1.id,
-            },
+            json={"user_id": self.admin_user_1.id},
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_remove_self_admin_status_when_only_admin_api_resource_auth_admin(self):
@@ -72,14 +71,12 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_2.id,
-            },
+            json={"user_id": self.admin_user_2.id},
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
         # remove the admin that is always added for tests (id = 1)
@@ -87,14 +84,12 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": 1,
-            },
+            json={"user_id": 1},
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
         # remove self
@@ -102,14 +97,12 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_CANNOT_REVOKE_ADMIN_STATUS
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_1.id,
-            },
+            json={"user_id": self.admin_user_1.id},
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(403, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_remove_admin_status_api_resource_auth_admin(self):
@@ -117,14 +110,12 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
             "/admin/remove",
-            json={
-                "user_id": self.admin_user_2.id,
-            },
+            json={"user_id": self.admin_user_2.id},
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 

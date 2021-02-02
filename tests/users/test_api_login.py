@@ -24,7 +24,7 @@ class TestUserLoginApi(BaseTestCase):
     # User 1 does not have email verified
     # User 2 has email verified
     def setUp(self):
-        super(TestUserLoginApi, self).setUp()
+        super().setUp()
 
         self.first_user = UserModel(
             name=user1["name"],

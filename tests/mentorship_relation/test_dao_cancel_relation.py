@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -18,7 +19,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver
     def setUp(self):
-        super(TestMentorshipRelationListingDAO, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
         self.now_datetime = datetime.now()
@@ -46,7 +47,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.cancel_relation(self.first_user.id, 123)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404), result
+            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND),
+            result,
         )
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
@@ -57,7 +59,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.cancel_relation(123, self.mentorship_relation.id)
 
-        self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), result)
+        self.assertEqual((messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result)
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
         )
@@ -71,7 +73,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200), result
+            (messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, HTTPStatus.OK),
+            result,
         )
         self.assertEqual(
             MentorshipRelationState.CANCELLED, self.mentorship_relation.state
@@ -86,7 +89,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         result = DAO.cancel_relation(self.first_user.id, self.mentorship_relation.id)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, 200), result
+            (messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY, HTTPStatus.OK),
+            result,
         )
         self.assertEqual(
             MentorshipRelationState.CANCELLED, self.mentorship_relation.state
@@ -100,25 +104,33 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.UNACCEPTED_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+        )
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.UNACCEPTED_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+        )
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.UNACCEPTED_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+        )
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.UNACCEPTED_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+        )

@@ -14,7 +14,7 @@ from tests.test_utils import get_test_request_header
 
 class TestnGetOtherUserApi(BaseTestCase):
     def setUp(self):
-        super(TestnGetOtherUserApi, self).setUp()
+        super().setUp()
 
         self.verified_user = UserModel(
             name=user1["name"] + "    Example",

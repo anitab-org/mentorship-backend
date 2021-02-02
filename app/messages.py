@@ -17,7 +17,7 @@ FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
 }
 PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH = {
-    "message": f"The password field has to be longer than {PASSWORD_MIN_LENGTH} characters and shorter than {PASSWORD_MAX_LENGTH} characters."
+    "message": f"The password field has to be longer than {PASSWORD_MIN_LENGTH - 1} characters and shorter than {PASSWORD_MAX_LENGTH + 1} characters."
 }
 
 # Not found
@@ -54,8 +54,8 @@ NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
 AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!"}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
-USERNAME_FIELD_IS_EMPTY = {
-    "message": f"The username field has to be longer than {USERNAME_MIN_LENGTH} characters and shorter than {USERNAME_MAX_LENGTH} characters."
+USERNAME_HAS_INVALID_LENGTH = {
+    "message": f"The username field has to be longer than {USERNAME_MIN_LENGTH - 1} characters and shorter than {USERNAME_MAX_LENGTH + 1} characters."
 }
 
 # Admin
@@ -104,7 +104,7 @@ TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE = {
 
 # Update
 NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {
-    "message": "No data for updating" "profile was sent."
+    "message": "No data for updating profile was sent."
 }
 
 # Relation constraints

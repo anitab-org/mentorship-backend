@@ -14,11 +14,12 @@ from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_utils import get_test_request_header
 from tests.test_data import user1, test_admin_user, test_admin_user_2, test_admin_user_3
+from http import HTTPStatus
 
 
 class TestListAdminUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestListAdminUsersApi, self).setUp()
+        super().setUp()
 
         self.admin_user_2 = UserModel(
             name=test_admin_user_2["name"],
@@ -70,7 +71,7 @@ class TestListAdminUsersApi(BaseTestCase):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/admins")
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     """
@@ -87,7 +88,7 @@ class TestListAdminUsersApi(BaseTestCase):
             "/admins", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     """
@@ -102,7 +103,7 @@ class TestListAdminUsersApi(BaseTestCase):
         )
 
         # import pdb; pdb.set_trace()
-        self.assertEqual(403, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 

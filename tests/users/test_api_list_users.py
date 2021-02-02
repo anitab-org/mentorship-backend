@@ -18,7 +18,7 @@ from tests.test_data import user1, user2, user3
 
 class TestListUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestListUsersApi, self).setUp()
+        super().setUp()
 
         self.verified_user = UserModel(
             name=user1["name"] + "    Example",
@@ -255,6 +255,18 @@ class TestListUsersApi(BaseTestCase):
         ]
         actual_response = self.client.get(
             "/users", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_search_query_with_username_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            f"/users?search={self.verified_user.username}",
+            follow_redirects=True,
+            headers=auth_header,
         )
 
         self.assertEqual(200, actual_response.status_code)
