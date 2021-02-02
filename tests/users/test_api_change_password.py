@@ -103,7 +103,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=self.auth_header,
             )
-            self.assertEqual(HTTPStatus.BAD_REQUEST.value, response.status_code)
+            self.assertEqual(HTTPStatus.BAD_REQUEST , response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_with_authentication_token_expired(self):
