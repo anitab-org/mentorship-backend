@@ -29,7 +29,7 @@ class TestHomeStatisticsApi(BaseTestCase):
     def test_relations_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/home", follow_redirects=True)
-        self.assertEqual(HTTPStatus.UNAUTHORIZED , actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_relations_invalid_id(self):
@@ -39,7 +39,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(HTTPStatus.NOT_FOUND , actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
     def test_pending_requests_auth(self):
@@ -75,7 +75,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(HTTPStatus.OK , actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_accepted_requests_auth(self):
@@ -111,7 +111,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(HTTPStatus.OK , actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_rejected_requests(self):
