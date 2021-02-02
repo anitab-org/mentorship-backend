@@ -47,7 +47,7 @@ class TestnGetOtherUserApi(BaseTestCase):
             follow_redirects=True,
             headers=auth_header,
         )
-        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_invalid_user_id_for_other_user(self):
@@ -55,7 +55,7 @@ class TestnGetOtherUserApi(BaseTestCase):
         actual_response = self.client.get(
             "/users/abc", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
 
 
 if __name__ == "__main__":

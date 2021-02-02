@@ -52,7 +52,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=self.auth_header,
             )
-            self.assertEqual(HTTPStatus.CREATED.value, response.status_code)
+            self.assertEqual(HTTPStatus.CREATED, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_with_authentication_token_missing(self):
@@ -67,7 +67,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 },
                 follow_redirects=True,
             )
-            self.assertEqual((HTTPStatus.UNAUTHORIZED.value, response.status_code))
+            self.assertEqual((HTTPStatus.UNAUTHORIZED, response.status_code))
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_to_empty_one(self):
@@ -87,7 +87,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=self.auth_header,
             )
-            self.assertEqual(HTTPStatus.BAD_REQUEST.value, response.status_code)
+            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_to_one_with_empty_spaces(self):
@@ -122,7 +122,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=auth_header,
             )
-            self.assertEqual(HTTPStatus.UNAUTHORIZED.value, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
 
