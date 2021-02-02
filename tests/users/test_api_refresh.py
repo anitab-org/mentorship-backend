@@ -1,6 +1,6 @@
 import unittest
 from datetime import timedelta
-
+from http import HTTPStatus
 from flask import json
 
 from app import messages
@@ -42,13 +42,13 @@ class TestUserRefreshApi(BaseTestCase):
             self.assertIsNotNone(response.json.get("access_token"))
             self.assertIsNotNone(response.json.get("access_expiry"))
             self.assertEqual(2, len(response.json))
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK.value, response.status_code)
 
     def test_user_refresh_without_header(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.post("/refresh", follow_redirects=True)
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_refresh_invalid_token(self):
@@ -63,7 +63,7 @@ class TestUserRefreshApi(BaseTestCase):
                 content_type="application/json",
             )
 
-            self.assertEqual(401, actual_response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
             self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_refresh_expired_token(self):
@@ -80,7 +80,7 @@ class TestUserRefreshApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 

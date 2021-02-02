@@ -1,6 +1,6 @@
 import unittest
 from datetime import timedelta
-
+from http import HTTPStatus
 from flask import json
 from flask_restx import marshal
 
@@ -38,14 +38,14 @@ class TestProtectedApi(BaseTestCase):
             "/user", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_without_header_api(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/user", follow_redirects=True)
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_incomplete_token_api(self):
@@ -56,7 +56,7 @@ class TestProtectedApi(BaseTestCase):
             "/user", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_with_token_expired_api(self):
@@ -68,7 +68,7 @@ class TestProtectedApi(BaseTestCase):
             "/user", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 

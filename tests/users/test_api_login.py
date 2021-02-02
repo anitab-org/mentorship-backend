@@ -66,7 +66,7 @@ class TestUserLoginApi(BaseTestCase):
             self.assertEqual(1, len(response.json))
             self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
 
-            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED.value, response.status_code)
 
     def test_user_login_non_verified_user(self):
         with self.client:
@@ -87,7 +87,7 @@ class TestUserLoginApi(BaseTestCase):
             self.assertEqual(
                 messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json
             )
-            self.assertEqual(403, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN.value, response.status_code)
 
     def test_user_login_verified_user(self):
         with self.client:
@@ -104,7 +104,7 @@ class TestUserLoginApi(BaseTestCase):
             self.assertIsNotNone(response.json.get("refresh_token"))
             self.assertIsNotNone(response.json.get("refresh_expiry"))
             self.assertEqual(4, len(response.json))
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK.value, response.status_code)
 
 
 if __name__ == "__main__":

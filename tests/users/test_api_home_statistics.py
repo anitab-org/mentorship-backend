@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from flask import json
-
+from http import HTTPStatus
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
@@ -29,7 +29,7 @@ class TestHomeStatisticsApi(BaseTestCase):
     def test_relations_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/home", follow_redirects=True)
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_relations_invalid_id(self):
@@ -39,7 +39,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
     def test_pending_requests_auth(self):
@@ -75,7 +75,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_accepted_requests_auth(self):
@@ -111,7 +111,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_rejected_requests(self):
@@ -147,7 +147,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_completed_relations(self):
@@ -183,7 +183,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_cancelled_relations(self):
@@ -218,7 +218,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_achievements(self):
@@ -281,5 +281,5 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
