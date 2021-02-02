@@ -151,7 +151,7 @@ class MyUserProfile(Resource):
         f"{messages.FIELD_AVAILABLE_TO_MENTOR_IS_INVALID}\n"
         f"{messages.USER_DOES_NOT_EXIST}\n"
         f"{messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS}\n"
-        f"{messages.USERNAME_FIELD_IS_EMPTY},
+        f"{messages.USERNAME_FIELD_IS_EMPTY}",
     )
     def put(cls):
         """
