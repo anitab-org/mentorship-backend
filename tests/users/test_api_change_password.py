@@ -67,7 +67,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 },
                 follow_redirects=True,
             )
-            self.assertEqual((HTTPStatus.UNAUTHORIZED, response.status_code))
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_to_empty_one(self):

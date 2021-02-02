@@ -195,7 +195,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(HTTPStatus.OK,actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
         self.assertEqual(test_need_mentoring, self.first_user.need_mentoring)
 
