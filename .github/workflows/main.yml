@@ -48,4 +48,4 @@ jobs:
         BASE_BRANCH: master # The branch the action should deploy from.
         BRANCH: master # The branch the action should deploy to.
         FOLDER: docs/_build/html # The folder the action should deploy. 
-        BUILD_SCRIPT: pip install .[all] && make docs-build && touch docs/_build/html/.nojekyll # The build script the action should run prior to deploying.  
+        BUILD_SCRIPT: pip install .[all] && make docs-build && touch docs/_build/html/.nojekyll #The build script the action should run prior to deploying.  
