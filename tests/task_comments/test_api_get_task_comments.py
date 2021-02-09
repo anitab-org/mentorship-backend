@@ -8,6 +8,7 @@ from app.api.dao.task_comment import TaskCommentDAO
 from app.api.models.mentorship_relation import task_comments_model
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
+from http import HTTPStatus
 
 
 class TestGetTaskCommentsApi(TasksBaseTestCase):
@@ -34,7 +35,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api_with_task_not_existing(self):
@@ -47,7 +48,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api_with_relation_not_existing(self):
@@ -60,7 +61,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api(self):
@@ -75,7 +76,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertEqual(json.loads(actual_response.data), expected_response)
 
     if __name__ == "__main__":

@@ -23,7 +23,7 @@ from tests.test_utils import get_test_request_header
 
 class TestUserChangePasswordApi(BaseTestCase):
     def setUp(self):
-        super(TestUserChangePasswordApi, self).setUp()
+        super().setUp()
         self.first_user = UserModel(
             password=user1["password"],
             name="User1",
