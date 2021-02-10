@@ -54,7 +54,8 @@ class SendRequest(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND,
-        f"{messages.MENTOR_DOES_NOT_EXIST}\n" f"{messages.MENTEE_DOES_NOT_EXIST}",
+        f"{messages.MENTOR_DOES_NOT_EXIST}\n"
+        f"{messages.MENTEE_DOES_NOT_EXIST}",
     )
     def post(cls):
         """
@@ -139,7 +140,7 @@ class GetAllMyMentorshipRelation(Resource):
         HTTPStatus.UNAUTHORIZED,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
-        f"{messages.AUTHORISATION_TOKEN_IS_MISSING}\n",
+        f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.marshal_list_with(
         mentorship_request_response_body,
