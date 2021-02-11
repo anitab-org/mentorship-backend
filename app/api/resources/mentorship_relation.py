@@ -54,8 +54,7 @@ class SendRequest(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND,
-        f"{messages.MENTOR_DOES_NOT_EXIST}\n"
-        f"{messages.MENTEE_DOES_NOT_EXIST}",
+        f"{messages.MENTOR_DOES_NOT_EXIST}\n" f"{messages.MENTEE_DOES_NOT_EXIST}",
     )
     def post(cls):
         """
