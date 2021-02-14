@@ -1,5 +1,6 @@
 import unittest
 from flask import json
+from http import HTTPStatus
 
 from app import messages
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
@@ -15,7 +16,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
             follow_redirects=True,
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_delete_task_api_w_user_not_belonging_to_mentorship_relation_1(self):
@@ -28,7 +29,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_delete_task_api_w_user_not_belonging_to_mentorship_relation_2(self):
@@ -41,7 +42,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_full_task_deletion_api(self):
@@ -58,7 +59,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         deleted_task = self.tasks_list_1.find_task_by_id(2)
@@ -74,7 +75,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
