@@ -1,6 +1,8 @@
 from flask import Flask
-from config import get_env_config
 from flask_migrate import Migrate
+
+from config import get_env_config
+from app.utils.jwt_utils import setup_jwt
 
 
 def create_app(config_filename: str) -> Flask:
@@ -36,6 +38,7 @@ def create_app(config_filename: str) -> Flask:
 
 
 application = create_app(get_env_config())
+setup_jwt(application)
 
 
 @application.before_first_request
