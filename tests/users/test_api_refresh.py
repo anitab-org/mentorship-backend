@@ -6,6 +6,7 @@ from flask import json
 from app import messages
 from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.api.dao.user import UserDAO
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 from tests.test_utils import get_test_request_header
@@ -31,14 +32,13 @@ class TestUserRefreshApi(BaseTestCase):
 
     def test_user_refresh(self):
         with self.client:
-            refresh_header = get_test_request_header(user1["username"], refresh=True)
+            refresh_header = get_test_request_header(UserDAO.get_user_by_username(user1["username"]).id, refresh=True)
             response = self.client.post(
                 "/refresh",
                 headers=refresh_header,
                 follow_redirects=True,
                 content_type="application/json",
             )
-
             self.assertIsNotNone(response.json.get("access_token"))
             self.assertIsNotNone(response.json.get("access_expiry"))
             self.assertEqual(2, len(response.json))
