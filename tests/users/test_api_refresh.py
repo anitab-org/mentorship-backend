@@ -32,7 +32,9 @@ class TestUserRefreshApi(BaseTestCase):
 
     def test_user_refresh(self):
         with self.client:
-            refresh_header = get_test_request_header(UserDAO.get_user_by_username(user1["username"]).id, refresh=True)
+            refresh_header = get_test_request_header(
+                UserDAO.get_user_by_username(user1["username"]).id, refresh=True
+            )
             response = self.client.post(
                 "/refresh",
                 headers=refresh_header,
