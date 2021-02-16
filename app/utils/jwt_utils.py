@@ -21,17 +21,17 @@ def setup_jwt(application):
 
     @jwt.encode_key_loader
     def custom_encode_key(identity):
-        secret = os.environ["SECRET_KEY"]
+        secret = str(os.getenv("SECRET_KEY"))
         if identity["token_type"] == "access":
             return secret
         password_hash = UserDAO.get_user(identity["userID"]).password_hash
-        return secret + password_hash
+        return str(secret) + str(password_hash)
 
     @jwt.decode_key_loader
-    def custom_dencode_key(jwt_payload):
-        secret = os.environ["SECRET_KEY"]
+    def custom_decode_key(jwt_payload, jwt_headers):
+        secret = str(os.getenv("SECRET_KEY"))
         if jwt_payload["type"] == "access":
             return secret
         else:
             password_hash = UserDAO.get_user(jwt_payload["identity"]).password_hash
-            return secret + password_hash
+            return str(secret) + str(password_hash)

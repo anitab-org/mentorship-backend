@@ -34,11 +34,12 @@ def create_app(config_filename: str) -> Flask:
 
     init_schedulers()
 
+    setup_jwt(app)
+
     return app
 
 
 application = create_app(get_env_config())
-setup_jwt(application)
 
 
 @application.before_first_request
