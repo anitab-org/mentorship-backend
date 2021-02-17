@@ -1,7 +1,7 @@
 import unittest
 from random import SystemRandom
 from string import ascii_lowercase
-
+from http import HTTPStatus
 from flask import json
 
 from app import messages
@@ -19,7 +19,7 @@ class TestUpdateUserApi(BaseTestCase):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.put("/user", follow_redirects=True)
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_update_username_already_taken(self):
@@ -46,7 +46,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_update_username_not_taken(self):
@@ -74,7 +74,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
         self.assertEqual(user1_new_username, self.first_user.username)
 
@@ -113,7 +113,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
         self.assertNotEqual(random_generated_username, self.first_user.username)
         self.assertEqual(user1["username"], self.first_user.username)
@@ -146,7 +146,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
         self.assertEqual(test_mentor_availability, self.first_user.available_to_mentor)
@@ -159,7 +159,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
         self.assertEqual(
@@ -195,7 +195,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
         self.assertEqual(test_need_mentoring, self.first_user.need_mentoring)
 
@@ -225,7 +225,7 @@ class TestUpdateUserApi(BaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
