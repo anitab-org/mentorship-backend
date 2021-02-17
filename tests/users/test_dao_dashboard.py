@@ -165,8 +165,12 @@ class TestUserDao(BaseTestCase):
                     "pending": [],
                 },
             },
-            "tasks_todo": [marshal(self.tasks_list_1.find_task_by_id(1),list_tasks_response_body)],
-            "tasks_done": [marshal(self.tasks_list_1.find_task_by_id(2),list_tasks_response_body)],
+            "tasks_todo": [
+                marshal(self.tasks_list_1.find_task_by_id(1), list_tasks_response_body)
+            ],
+            "tasks_done": [
+                marshal(self.tasks_list_1.find_task_by_id(2), list_tasks_response_body)
+            ],
         }
         actual_response = UserDAO.get_user_dashboard(self.first_user.id)
         self.assertEqual(actual_response, expected_response)
