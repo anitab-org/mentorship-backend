@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from flask import json
 from flask_restx import marshal
@@ -20,7 +21,7 @@ from app.api.models.mentorship_relation import mentorship_request_response_body
 
 class TestHappyPath1(BaseTestCase):
     """
-    Scenario: User A (mentor) and User B (mentee) sending 
+    Scenario: User A (mentor) and User B (mentee) sending
     a mentorship request until the mentee completes a task
 
     - User B (mentee) sends a request to User A (mentor)
@@ -83,7 +84,7 @@ class TestHappyPath1(BaseTestCase):
             data=json.dumps(request_body),
         )
 
-        self.assertEqual(201, send_request_response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, send_request_response.status_code)
 
         request_sent_response = self.client.get(
             "/mentorship_relations",
@@ -106,7 +107,7 @@ class TestHappyPath1(BaseTestCase):
             f"/mentorship_relation/{request_id}/accept", headers=mentor_auth_header
         )
 
-        self.assertEqual(200, accept_response.status_code)
+        self.assertEqual(HTTPStatus.OK, accept_response.status_code)
 
         mentee_current_relation = self.client.get(
             f"/mentorship_relations/current", headers=mentee_auth_header
@@ -115,21 +116,21 @@ class TestHappyPath1(BaseTestCase):
             f"/mentorship_relations/current", headers=mentor_auth_header
         )
 
-        self.assertEqual(200, mentee_current_relation.status_code)
-        self.assertEqual(200, mentor_current_relation.status_code)
-        self.assertFalse(json.loads(mentor_current_relation.data)['sent_by_me'])
-        self.assertTrue(json.loads(mentee_current_relation.data)['sent_by_me'])
+        self.assertEqual(HTTPStatus.OK, mentee_current_relation.status_code)
+        self.assertEqual(HTTPStatus.OK, mentor_current_relation.status_code)
+        self.assertFalse(json.loads(mentor_current_relation.data)["sent_by_me"])
+        self.assertTrue(json.loads(mentee_current_relation.data)["sent_by_me"])
         self.assertEqual(
-            json.loads(mentor_current_relation.data)['mentor'],
-            json.loads(mentee_current_relation.data)['mentor'],
+            json.loads(mentor_current_relation.data)["mentor"],
+            json.loads(mentee_current_relation.data)["mentor"],
         )
         self.assertEqual(
-            json.loads(mentor_current_relation.data)['mentee'],
-            json.loads(mentee_current_relation.data)['mentee'],
+            json.loads(mentor_current_relation.data)["mentee"],
+            json.loads(mentee_current_relation.data)["mentee"],
         )
         self.assertEqual(
-            json.loads(mentor_current_relation.data)['id'],
-            json.loads(mentee_current_relation.data)['id'],
+            json.loads(mentor_current_relation.data)["id"],
+            json.loads(mentee_current_relation.data)["id"],
         )
 
         current_relation = json.loads(mentee_current_relation.data)
@@ -150,13 +151,13 @@ class TestHappyPath1(BaseTestCase):
             data=task_request_body,
         )
 
-        self.assertEqual(201, task_creation_response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, task_creation_response.status_code)
 
         tasks_response = self.client.get(
             f"/mentorship_relation/{request_id}/tasks", headers=mentor_auth_header
         )
 
-        self.assertEqual(200, tasks_response.status_code)
+        self.assertEqual(HTTPStatus.OK, tasks_response.status_code)
 
         tasks = json.loads(tasks_response.data)
         new_task = tasks[0]
@@ -176,13 +177,13 @@ class TestHappyPath1(BaseTestCase):
             headers=mentee_auth_header,
         )
 
-        self.assertEqual(200, complete_task_response.status_code)
+        self.assertEqual(HTTPStatus.OK, complete_task_response.status_code)
 
         tasks_response = self.client.get(
             f"/mentorship_relation/{request_id}/tasks", headers=mentor_auth_header
         )
 
-        self.assertEqual(200, tasks_response.status_code)
+        self.assertEqual(HTTPStatus.OK, tasks_response.status_code)
 
         tasks = json.loads(tasks_response.data)
         updated_task = tasks[0]

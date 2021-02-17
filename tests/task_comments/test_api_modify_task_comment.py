@@ -8,6 +8,7 @@ from app.database.sqlalchemy_extension import db
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
+from http import HTTPStatus
 
 
 class TestModifyTaskCommentApi(TasksBaseTestCase):
@@ -39,7 +40,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(example="example")),
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_comment_too_long(self):
@@ -58,7 +59,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="a" * 500)),
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_comment_not_string(self):
@@ -73,7 +74,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment=5)),
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_not_created_by_user(self):
@@ -88,7 +89,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(400, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_relation_not_existing(self):
@@ -102,7 +103,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_task_not_existing(self):
@@ -117,7 +118,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_comment_not_existing(self):
@@ -131,7 +132,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_wrong_task_id(self):
@@ -146,7 +147,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_full_task_comment_modification_api(self):
@@ -161,7 +162,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="Modified comment.")),
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         modified_comment = TaskCommentDAO.get_task_comment(1, 1)[0]

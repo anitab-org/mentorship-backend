@@ -1,8 +1,8 @@
 from flask_restx import fields, Model
 from app.api.models.mentorship_relation import (
-    list_tasks_response_body,
     mentorship_request_response_body_for_user_dashboard_body,
 )
+from app.api.models.task import list_tasks_response_body
 
 
 def add_models_to_namespace(api_namespace):
@@ -60,6 +60,9 @@ public_user_api_model = Model(
             required=True,
             description="User availability to mentor or to be mentored indication",
         ),
+        "registration_date": fields.Float(
+            required=True, description="User registration date"
+        ),
     },
 )
 
@@ -72,7 +75,6 @@ full_user_api_model = Model(
         "name": fields.String(required=True, description="User name"),
         "username": fields.String(required=True, description="User username"),
         "email": fields.String(required=True, description="User email"),
-        "password_hash": fields.String(required=True, description="User password hash"),
         "terms_and_conditions_checked": fields.Boolean(
             required=True, description="User Terms and Conditions check state"
         ),
@@ -155,9 +157,7 @@ login_request_body_model = Model(
 login_response_body_model = Model(
     "Login response data model",
     {
-        "access_token": fields.String(
-            required=True, description="User's access token"
-        ),
+        "access_token": fields.String(required=True, description="User's access token"),
         "access_expiry": fields.Float(
             required=True, description="Access token expiry UNIX timestamp"
         ),
@@ -239,7 +239,7 @@ home_response_body_model = Model(
 )
 
 dashboard_relations_by_state_model = Model(
-    "relations by state",
+    "Relations by state",
     {
         "accepted": fields.List(
             fields.Nested(mentorship_request_response_body_for_user_dashboard_body)

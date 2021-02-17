@@ -5,13 +5,17 @@ from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 from http import HTTPStatus
 
+
 def validate_data_for_task_comment(user_id, task_id, relation_id):
     relation = MentorshipRelationModel.find_by_id(relation_id)
     if relation is None:
         return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
     if user_id != relation.mentor_id and user_id != relation.mentee_id:
-        return messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, HTTPStatus.UNAUTHORIZED
+        return (
+            messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+            HTTPStatus.UNAUTHORIZED,
+        )
 
     if relation.state != MentorshipRelationState.ACCEPTED:
         return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
@@ -146,10 +150,13 @@ class TaskCommentDAO:
             return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task_comment.user_id != user_id:
-            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU, HTTPStatus.BAD_REQUEST
+            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU, HTTPStatus.FORBIDDEN
 
         if task_comment.task_id != task_id:
-            return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         task_comment.modify_comment(comment)
         task_comment.save_to_db()
@@ -185,10 +192,16 @@ class TaskCommentDAO:
             return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task_comment.user_id != user_id:
-            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE, HTTPStatus.FORBIDDEN
+            return (
+                messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE,
+                HTTPStatus.FORBIDDEN,
+            )
 
         if task_comment.task_id != task_id:
-            return messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         if task_comment:
             task_comment.delete_from_db()

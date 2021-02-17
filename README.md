@@ -39,14 +39,24 @@ To setup the project locally read these wiki pages and follow the instructions:
 The project runs on Python 3.
 
 1. Create a virtual environment:
-`virtualenv venv --python=python3`
+```
+virtualenv venv --python=python3
+```
 
 2. Activate the virtual environment:
-`source /venv/Scripts/activate` for Git Bash Users, 
-`venv\Scripts\activate` for Windows Command Line Users
+For Git Bash Users:
+```
+source ./venv/Scripts/activate
+```
+For Windows Command Line Users:
+```
+venv\Scripts\activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
 or make sure you exported the following [environment variables](docs/environment-variables.md):
@@ -59,7 +69,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL = <True-or-False>
+export MOCK_EMAIL=<True-or-False>
 ```
 
 If you're testing any environment other than "local", then you have to also set these other variables:
@@ -88,13 +98,19 @@ deactivate
 The project runs on Python 3.
 
 1. Create a virtual enviorntment:
-`virtualenv venv`
+```
+virtualenv venv
+```
 
 2. Activate the virtual environment:
-`source venv/bin/activate`
+```
+source venv/bin/activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip3 install -r requirements.txt`
+```
+pip3 install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
 
@@ -106,7 +122,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL = <True-or-False>
+export MOCK_EMAIL=<True-or-False>
 ```
 
 If you're testing any environment other than "local", then you have to also set these other variables in the .env file.
@@ -161,11 +177,26 @@ To run the unitests run the following command in the terminal (while the virtual
 python -m unittest discover tests
 ```
 
+### Auto-formatting with black
+
+We use [_Black_](https://github.com/psf/black) to format code automatically so that we don't have to worry about clean and
+readable code. To install _Black_:
+
+```
+pip install black
+```
+
+To run black:
+
+```
+black .
+```
+
 ## Documentation
 
 You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
-- **Language:** Python 3 
+- **Language:** Python 3
 - **Framework:** [Flask](http://flask.pocoo.org/)
 - **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
 
@@ -184,7 +215,7 @@ Understand more about our technical decisions made along with this project devel
 
 ## Contributing
 
-Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](./docs/code_of_conduct.md) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
+Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](./docs/code_of_conduct.md) and [Reporting Guidelines](./docs/reporting_guidelines.md)
 
 Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
 
