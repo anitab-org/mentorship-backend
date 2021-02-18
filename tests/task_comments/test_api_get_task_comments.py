@@ -15,6 +15,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
     def setUp(self):
         super().setUp()
         self.relation_id = self.mentorship_relation_w_admin_user.id
+        self.relation_id_one = self.mentorship_relation_without_first_user.id
         self.task_id = 1
 
         TaskCommentDAO().create_task_comment(
@@ -62,6 +63,19 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
+    def test_task_comment_listing_api_with_unaccepted_relation(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = messages.UNACCEPTED_STATE_RELATION
+        actual_response = self.client.get(
+            f"mentorship_relation/{self.relation_id_one}/task/{self.task_id}/comments",
+            follow_redirects=True,
+            headers=auth_header,
+            content_type="application/json",
+        )
+
+        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api(self):
