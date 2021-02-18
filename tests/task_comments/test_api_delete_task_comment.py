@@ -79,7 +79,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
 
         self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
-    
+
     def test_task_comment_deletion_api_with_unaccepted_relation(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = messages.UNACCEPTED_STATE_RELATION
