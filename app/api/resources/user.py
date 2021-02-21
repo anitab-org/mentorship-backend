@@ -102,8 +102,8 @@ class OtherUser(Resource):
         takes "user_id" of such user has input.
         """
         requested_user = DAO.get_user(user_id)
-        if requested_user is None:
-            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        if isinstance(requested_user, tuple):
+            return requested_user
         else:
             return marshal(requested_user, public_user_api_model), HTTPStatus.OK
 
