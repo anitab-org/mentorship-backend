@@ -100,7 +100,8 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         )
 
         self.assertEqual(
-            (messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN), result
+            (messages.CANT_DELETE_REQUEST_YOU_DIDNT_CREATE, HTTPStatus.FORBIDDEN),
+            result,
         )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(
@@ -125,19 +126,85 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
             MentorshipRelationModel.query.filter_by(id=relation_id).first()
         )
 
-    def test_dao_user_not_involved_tries_to_delete_mentorship_request(self):
+    def test_dao_user_not_creator_tries_to_delete_mentorship_request(self):
 
         result = MentorshipRelationDAO.delete_request(
             self.admin_user.id, self.mentorship_relation.id
         )
 
         self.assertEqual(
-            (messages.CANT_DELETE_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN), result
+            (messages.CANT_DELETE_REQUEST_YOU_DIDNT_CREATE, HTTPStatus.FORBIDDEN),
+            result,
         )
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(
                 id=self.mentorship_relation.id
             ).first()
+        )
+
+    def test_dao_delete_mentorship_request_user_not_creator_and_request_not_in_pending_state(
+        self,
+    ):
+        relation_id = self.mentorship_relation.id
+
+        self.mentorship_relation.state = MentorshipRelationState.ACCEPTED
+        db.session.add(self.mentorship_relation)
+        db.session.commit()
+
+        result = MentorshipRelationDAO.delete_request(
+            self.second_user.id, self.mentorship_relation.id
+        )
+        self.assertEqual(
+            (messages.CANT_DELETE_REQUEST_YOU_DIDNT_CREATE, HTTPStatus.FORBIDDEN),
+            result,
+        )
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first()
+        )
+
+        self.mentorship_relation.state = MentorshipRelationState.COMPLETED
+        db.session.add(self.mentorship_relation)
+        db.session.commit()
+
+        result = MentorshipRelationDAO.delete_request(
+            self.second_user.id, self.mentorship_relation.id
+        )
+        self.assertEqual(
+            (messages.CANT_DELETE_REQUEST_YOU_DIDNT_CREATE, HTTPStatus.FORBIDDEN),
+            result,
+        )
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first()
+        )
+
+        self.mentorship_relation.state = MentorshipRelationState.CANCELLED
+        db.session.add(self.mentorship_relation)
+        db.session.commit()
+
+        result = MentorshipRelationDAO.delete_request(
+            self.second_user.id, self.mentorship_relation.id
+        )
+        self.assertEqual(
+            (messages.CANT_DELETE_REQUEST_YOU_DIDNT_CREATE, HTTPStatus.FORBIDDEN),
+            result,
+        )
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first()
+        )
+
+        self.mentorship_relation.state = MentorshipRelationState.REJECTED
+        db.session.add(self.mentorship_relation)
+        db.session.commit()
+
+        result = MentorshipRelationDAO.delete_request(
+            self.second_user.id, self.mentorship_relation.id
+        )
+        self.assertEqual(
+            (messages.CANT_DELETE_REQUEST_YOU_DIDNT_CREATE, HTTPStatus.FORBIDDEN),
+            result,
+        )
+        self.assertIsNotNone(
+            MentorshipRelationModel.query.filter_by(id=relation_id).first()
         )
 
     def test_dao_mentorship_delete_request_not_in_pending_state(self):
