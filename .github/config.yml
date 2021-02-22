@@ -36,8 +36,8 @@ newPRWelcomeComment: |
 
 # Comment to be posted to on pull requests merged by a first time user
 firstPRMergeComment: |
-  Wohoo!🎊 Congrats on merging your first contribution to Moja-Global!✨
-  Your code is officially a part of Moja-Global now!! Time for a celebration 🙌🎉⚡️
+  Woohoo!🎊 Congrats on merging your first contribution to [mentorship-backend](https://github.com/anitab-org/mentorship-backend)!✨
+  Your code is officially a part of AnitaB.org Open Source now!! Time for a celebration 🙌🎉⚡️
   Feel free to explore more on this project.🤗
   Join us on [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/). 🤝 
   We have different streams for each active repository for discussions. 👩🏽‍💻🧑🏼‍💻
