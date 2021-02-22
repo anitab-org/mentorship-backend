@@ -7,7 +7,7 @@ newIssueWelcomeComment: |
   Hello there!👋 Welcome to the project!💖
 
   Thank you and congrats 🎉 for opening your very first issue in this project.
-  AnitaB.org is an inclusive community, committed to creating a safe and positive environment.🌸 Please adhere to our [Code Of Conduct](https://github.com/anitab-org/mentorship-backend/blob/develop/.github/code_of_conduct.md).🙌🏻
+  AnitaB.org is an inclusive community, committed to creating a safe and positive environment.🌸 Please adhere to our [Code Of Conduct](https://github.com/anitab-org/mentorship-backend/blob/develop/docs/code_of_conduct.md).🙌🏻
 
   You may submit a PR on the same if you like!
   Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](../docs/coding_standards.md) while sending PRs.
