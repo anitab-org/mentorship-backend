@@ -14,11 +14,12 @@ from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_utils import get_test_request_header
 from tests.test_data import test_admin_user_2, test_admin_user_3
+from http import HTTPStatus
 
 
 class TestRemoveAdminUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestRemoveAdminUsersApi, self).setUp()
+        super().setUp()
 
         self.admin_user_1 = UserModel(
             name=test_admin_user_2["name"],
@@ -61,7 +62,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_remove_self_admin_status_when_only_admin_api_resource_auth_admin(self):
@@ -75,7 +76,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
         # remove the admin that is always added for tests (id = 1)
@@ -88,7 +89,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
         # remove self
@@ -101,7 +102,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(403, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_remove_admin_status_api_resource_auth_admin(self):
@@ -114,7 +115,7 @@ class TestRemoveAdminUsersApi(BaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 

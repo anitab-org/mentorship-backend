@@ -1,8 +1,8 @@
 from flask_restx import fields, Model
 from app.api.models.mentorship_relation import (
-    list_tasks_response_body,
     mentorship_request_response_body_for_user_dashboard_body,
 )
+from app.api.models.task import list_tasks_response_body
 
 
 def add_models_to_namespace(api_namespace):

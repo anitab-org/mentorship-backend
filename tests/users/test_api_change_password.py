@@ -1,7 +1,7 @@
 import datetime
 import json
 import unittest
-
+from http import HTTPStatus
 from app.api.validations.user import PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
@@ -23,7 +23,7 @@ from tests.test_utils import get_test_request_header
 
 class TestUserChangePasswordApi(BaseTestCase):
     def setUp(self):
-        super(TestUserChangePasswordApi, self).setUp()
+        super().setUp()
         self.first_user = UserModel(
             password=user1["password"],
             name="User1",
@@ -52,7 +52,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=self.auth_header,
             )
-            self.assertEqual(201, response.status_code)
+            self.assertEqual(HTTPStatus.CREATED, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_with_authentication_token_missing(self):
@@ -67,7 +67,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 },
                 follow_redirects=True,
             )
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_to_empty_one(self):
@@ -87,7 +87,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=self.auth_header,
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_to_one_with_empty_spaces(self):
@@ -103,7 +103,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=self.auth_header,
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_change_password_with_authentication_token_expired(self):
@@ -122,7 +122,7 @@ class TestUserChangePasswordApi(BaseTestCase):
                 follow_redirects=True,
                 headers=auth_header,
             )
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
 

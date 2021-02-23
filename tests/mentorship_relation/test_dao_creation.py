@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -14,7 +15,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
     # Setup consists of adding 2 users into the database
     def setUp(self):
-        super(TestMentorshipRelationCreationDAO, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
 
@@ -186,7 +187,9 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
-        self.assertEqual((messages.MENTEE_ALREADY_IN_A_RELATION, 400), result)
+        self.assertEqual(
+            (messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST), result
+        )
 
         query_mentorship_relations = MentorshipRelationModel.query.all()
 
@@ -221,7 +224,9 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.second_user.id, data)
 
-        self.assertEqual((messages.MENTOR_ALREADY_IN_A_RELATION, 400), result)
+        self.assertEqual(
+            (messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST), result
+        )
 
         query_mentorship_relations = MentorshipRelationModel.query.all()
 
@@ -242,7 +247,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         result = dao.create_mentorship_relation(self.first_user.id, data)
 
         self.assertEqual(messages.INVALID_END_DATE, result[0])
-        self.assertEqual(400, result[1])
+        self.assertEqual(HTTPStatus.BAD_REQUEST, result[1])
 
 
 if __name__ == "__main__":
