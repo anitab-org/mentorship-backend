@@ -35,7 +35,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(HTTPStatus.UNAUTHORIZED.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api_with_task_not_existing(self):
@@ -48,7 +48,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api_with_relation_not_existing(self):
@@ -61,7 +61,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api(self):
@@ -76,7 +76,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(HTTPStatus.OK.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(json.loads(actual_response.data), expected_response)
 
     if __name__ == "__main__":
