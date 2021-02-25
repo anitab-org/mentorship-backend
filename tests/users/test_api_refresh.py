@@ -41,7 +41,7 @@ class TestUserRefreshApi(BaseTestCase):
 
             self.assertIsNotNone(response.json.get("access_token"))
             #self.assertIsNotNone(response.json.get("access_expiry"))
-            self.assertEqual(2, len(response.json))
+            self.assertEqual(1, len(response.json))
             self.assertEqual(HTTPStatus.OK, response.status_code)
 
     def test_user_refresh_without_header(self):
