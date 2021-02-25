@@ -158,14 +158,8 @@ login_response_body_model = Model(
     "Login response data model",
     {
         "access_token": fields.String(required=True, description="User's access token"),
-        "access_expiry": fields.Float(
-            required=True, description="Access token expiry UNIX timestamp"
-        ),
         "refresh_token": fields.String(
             required=True, description="User's refresh token"
-        ),
-        "refresh_expiry": fields.Float(
-            required=True, description="Refresh token expiry UNIX timestamp"
         ),
     },
 )
@@ -174,9 +168,6 @@ refresh_response_body_model = Model(
     "Refresh response data model",
     {
         "access_token": fields.String(required=True, description="User's access token"),
-        "access_expiry": fields.Float(
-            required=True, description="Access token expiry UNIX timestamp"
-        ),
     },
 )
 
