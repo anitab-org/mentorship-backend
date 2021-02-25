@@ -428,20 +428,14 @@ class RefreshUser(Resource):
     def post(cls):
         """Refresh user's access
 
-        The return value is an access token and the expiry timestamp.
+        The return value is an access token.
         The token is valid for 1 week.
         """
         user_id = get_jwt_identity()
         access_token = create_access_token(identity=user_id)
 
-        from run import application
-
-        access_expiry = datetime.utcnow() + application.config.get(
-            "JWT_ACCESS_TOKEN_EXPIRES"
-        )
-
         return (
-            {"access_token": access_token, "access_expiry": access_expiry.timestamp()},
+            {"access_token": access_token},
             HTTPStatus.OK,
         )
 
@@ -472,7 +466,7 @@ class LoginUser(Resource):
 
         The user can login with (username or email) + password.
         Username field can be either the User's username or the email.
-        The return value is an access token and the expiry timestamp.
+        The return value is an access token.
         The token is valid for 1 week.
         """
         # if not request.is_json:
@@ -500,21 +494,10 @@ class LoginUser(Resource):
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
 
-        from run import application
-
-        access_expiry = datetime.utcnow() + application.config.get(
-            "JWT_ACCESS_TOKEN_EXPIRES"
-        )
-        refresh_expiry = datetime.utcnow() + application.config.get(
-            "JWT_REFRESH_TOKEN_EXPIRES"
-        )
-
         return (
             {
                 "access_token": access_token,
-                "access_expiry": access_expiry.timestamp(),
                 "refresh_token": refresh_token,
-                "refresh_expiry": refresh_expiry.timestamp(),
             },
             HTTPStatus.OK,
         )
