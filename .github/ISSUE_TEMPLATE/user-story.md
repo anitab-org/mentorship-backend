@@ -1,6 +1,9 @@
 ---
 name: User story
 about: Provide a user story to help the app's development.
+title: ''
+labels: ''
+assignees: ''
 
 ---
 

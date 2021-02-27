@@ -1,6 +1,10 @@
 ---
 name: Quality Assurance task
 about: Provide a group of test cases for the some parts of the project.
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 ## Description
@@ -21,4 +25,3 @@ You can check the following document for test cases:
 
 ## Estimation
 [INSERT NUMBER HERE] hours
-
