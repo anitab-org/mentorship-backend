@@ -2,7 +2,7 @@
 name: User story
 about: Provide a user story to help the app's development.
 title: ''
-labels: ''
+labels: help wanted, invalid, question
 assignees: ''
 
 ---

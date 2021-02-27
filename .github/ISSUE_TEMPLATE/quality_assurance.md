@@ -2,7 +2,7 @@
 name: Quality Assurance task
 about: Provide a group of test cases for the some parts of the project.
 title: ''
-labels: ''
+labels: enhancement, good first issue, question
 assignees: ''
 
 ---
