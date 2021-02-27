@@ -59,9 +59,7 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
 
             self.assertEqual(1, len(response.json))
             self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
@@ -80,9 +78,7 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
             self.assertEqual(1, len(response.json))
             self.assertEqual(
                 messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json
@@ -100,10 +96,8 @@ class TestUserLoginApi(BaseTestCase):
                 content_type="application/json",
             )
             self.assertIsNotNone(response.json.get("access_token"))
-            self.assertIsNotNone(response.json.get("access_expiry"))
             self.assertIsNotNone(response.json.get("refresh_token"))
-            self.assertIsNotNone(response.json.get("refresh_expiry"))
-            self.assertEqual(4, len(response.json))
+            self.assertEqual(2, len(response.json))
             self.assertEqual(HTTPStatus.OK, response.status_code)
 
 
