@@ -1,0 +1,6 @@
+[run]
+omit = 
+    # omit everything in the tests directory
+    tests/*
+    # omit the virtual environment, don't forget to change the name of your venv in place of venv1
+    venv1/*
