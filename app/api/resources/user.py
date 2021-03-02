@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from http import HTTPStatus
 from flask import request
 from flask_jwt_extended import (
@@ -432,7 +432,7 @@ class RefreshUser(Resource):
         The token is valid for 1 week.
         """
         user_id = get_jwt_identity()
-        access_token = create_access_token(identity=user_id)
+        access_token = create_access_token(identity=user_id, expires_delta=timedelta(minutes=10))
 
         return (
             {"access_token": access_token},
@@ -491,7 +491,7 @@ class LoginUser(Resource):
                 HTTPStatus.FORBIDDEN,
             )
 
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=10))
         refresh_token = create_refresh_token(identity=user.id)
 
         return (
