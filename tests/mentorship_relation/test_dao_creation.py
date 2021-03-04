@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
 
+
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -243,6 +244,40 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         self.assertEqual(messages.INVALID_END_DATE, result[0])
         self.assertEqual(400, result[1])
+
+    def test_dao_create_mentorship_relation_with_mentor_id_same_as_mentee_id(self):
+        dao = MentorshipRelationDAO()
+        data = dict(
+            mentor_id=1234,
+            mentee_id=1234,
+            end_date=self.end_date_example.timestamp(),
+            notes=self.notes_example,
+            tasks_list=TasksListModel(),
+        )
+        result = dao.create_mentorship_relation(1234, data)
+
+        self.assertEqual((messages.MENTOR_ID_SAME_AS_MENTEE_ID,400), result)
+
+        query_mentorship_relation = MentorshipRelationModel.query.first()
+
+        self.assertIsNone(query_mentorship_relation)
+    # def test_dao_create_mentorship_relation_with_end_time_before_present(self):
+        
+    #     dao = MentorshipRelationDAO()
+    #     data = dict(
+    #         mentor_id=self.first_user.id,
+    #         mentee_id=self.second_user.id,
+    #         now_datetime = datetime.now(),
+    #         end_date = datetime.fromtimestamp(data["end_date"]),
+    #         notes=self.notes_example,
+    #         tasks_list=TasksListModel(),
+    #     )
+    #     result = dao.create_mentorship_relation(self.first_user.id, data)
+    #     self.assertEqual(messages.END_TIME_BEFORE_PRESENT, result[0])
+    #     self.assertEqual(400, result[1])
+    
+
+       
 
 
 if __name__ == "__main__":
