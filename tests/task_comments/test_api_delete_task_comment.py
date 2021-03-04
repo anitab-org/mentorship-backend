@@ -6,6 +6,7 @@ from app.api.dao.task_comment import TaskCommentDAO
 from app.database.sqlalchemy_extension import db
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
+from http import HTTPStatus
 
 
 class TestDeleteTaskCommentApi(TasksBaseTestCase):
@@ -34,7 +35,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api_user_not_involved(self):
@@ -48,7 +49,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api_not_created_by_user(self):
@@ -62,7 +63,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(403, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api_with_relation_not_existing(self):
@@ -75,7 +76,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api_with_task_not_existing(self):
@@ -89,7 +90,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api_with_comment_not_existing(self):
@@ -102,7 +103,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_wrong_task_id(self):
@@ -116,7 +117,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api(self):
@@ -130,12 +131,12 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         modified_comment = TaskCommentDAO.get_task_comment(1, 1)
         self.assertEqual(modified_comment[0], messages.TASK_COMMENT_DOES_NOT_EXIST)
-        self.assertEqual(modified_comment[1], 404)
+        self.assertEqual(modified_comment[1], HTTPStatus.NOT_FOUND)
 
     if __name__ == "__main__":
         unittest.main()

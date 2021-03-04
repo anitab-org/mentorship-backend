@@ -1,8 +1,8 @@
 from flask_restx import fields, Model
 from app.api.models.mentorship_relation import (
-    list_tasks_response_body,
     mentorship_request_response_body_for_user_dashboard_body,
 )
+from app.api.models.task import list_tasks_response_body
 
 
 def add_models_to_namespace(api_namespace):
@@ -158,14 +158,8 @@ login_response_body_model = Model(
     "Login response data model",
     {
         "access_token": fields.String(required=True, description="User's access token"),
-        "access_expiry": fields.Float(
-            required=True, description="Access token expiry UNIX timestamp"
-        ),
         "refresh_token": fields.String(
             required=True, description="User's refresh token"
-        ),
-        "refresh_expiry": fields.Float(
-            required=True, description="Refresh token expiry UNIX timestamp"
         ),
     },
 )
@@ -174,9 +168,6 @@ refresh_response_body_model = Model(
     "Refresh response data model",
     {
         "access_token": fields.String(required=True, description="User's access token"),
-        "access_expiry": fields.Float(
-            required=True, description="Access token expiry UNIX timestamp"
-        ),
     },
 )
 
