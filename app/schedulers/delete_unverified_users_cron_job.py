@@ -19,9 +19,8 @@ def delete_unverified_users_job():
         unverified_users = list(
             UserModel.query.filter_by(is_email_verified=False).all()
         )
-
-        for user in unverified_users:
-            threshold = config.BaseConfig.UNVERIFIED_USER_THRESHOLD
+        threshold = config.BaseConfig.UNVERIFIED_USER_THRESHOLD
+        for user in unverified_users: 
             delta = time.time() - user.registration_date
 
             if delta > threshold:
