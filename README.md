@@ -227,6 +227,8 @@ The repository has the following permanent branches:
 
  * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch. This is the branch that is used in the deployed version of the app on Heroku.
 
+ * **bit** This branch is for ms-backend version specific to BridgeInTech project. All the contributing PRs related to BIT-MS integration issue must be sent to this branch. 
+
 ## Contact
 
 You can reach the maintainers and our community on [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/). If you are interested in contributing to the mentorship system, we have a dedicated stream for this project [#mentorship-system](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system), where you can ask questions and interact with the community, join with us!
