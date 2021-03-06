@@ -5,7 +5,9 @@ from flask import json
 from app import messages
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
+
 from app.database.models.user import UserModel
+from http import HTTPStatus
 
 # Testing User API resources
 #
@@ -22,7 +24,7 @@ class TestUserLoginApi(BaseTestCase):
     # User 1 does not have email verified
     # User 2 has email verified
     def setUp(self):
-        super(TestUserLoginApi, self).setUp()
+        super().setUp()
 
         self.first_user = UserModel(
             name=user1["name"],
@@ -44,6 +46,26 @@ class TestUserLoginApi(BaseTestCase):
         db.session.add(self.second_user)
         db.session.commit()
 
+    def test_user_login_invalid_credentials(self):
+        with self.client:
+
+            response = self.client.post(
+                "/login",
+                data=json.dumps(
+                    dict(username="invaliduser", password="invalidpassowrd")
+                ),
+                follow_redirects=True,
+                content_type="application/json",
+            )
+
+            self.assertIsNone(response.json.get("access_token"))
+            self.assertIsNone(response.json.get("refresh_token"))
+
+            self.assertEqual(1, len(response.json))
+            self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
+
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
+
     def test_user_login_non_verified_user(self):
         with self.client:
             response = self.client.post(
@@ -56,14 +78,12 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
             self.assertEqual(1, len(response.json))
             self.assertEqual(
                 messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json
             )
-            self.assertEqual(403, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
 
     def test_user_login_verified_user(self):
         with self.client:
@@ -76,11 +96,9 @@ class TestUserLoginApi(BaseTestCase):
                 content_type="application/json",
             )
             self.assertIsNotNone(response.json.get("access_token"))
-            self.assertIsNotNone(response.json.get("access_expiry"))
             self.assertIsNotNone(response.json.get("refresh_token"))
-            self.assertIsNotNone(response.json.get("refresh_expiry"))
-            self.assertEqual(4, len(response.json))
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(2, len(response.json))
+            self.assertEqual(HTTPStatus.OK, response.status_code)
 
 
 if __name__ == "__main__":

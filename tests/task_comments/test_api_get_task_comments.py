@@ -1,13 +1,14 @@
 import json
 import unittest
 
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
 from app.api.models.mentorship_relation import task_comments_model
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
+from http import HTTPStatus
 
 
 class TestGetTaskCommentsApi(TasksBaseTestCase):
@@ -29,12 +30,12 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
     def test_task_comment_listing_api_without_auth_header(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comments/",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comments/",
             follow_redirects=True,
             content_type="application/json",
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api_with_task_not_existing(self):
@@ -47,7 +48,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api_with_relation_not_existing(self):
@@ -60,7 +61,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api(self):
@@ -70,12 +71,12 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             task_comments_model,
         )
         actual_response = self.client.get(
-            f"mentorship_relation/{self.relation_id}/task/{self.task_id}" f"/comments",
+            f"mentorship_relation/{self.relation_id}/task/{self.task_id}/comments",
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(json.loads(actual_response.data), expected_response)
 
     if __name__ == "__main__":

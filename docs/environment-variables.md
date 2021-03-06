@@ -11,7 +11,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL = <True-or-False>
+export MOCK_EMAIL=<True-or-False>
 ```
 
 ## Environment Variables Description
@@ -43,13 +43,13 @@ Email verification is when a user registers into the application and to be able 
 
 | Environment Variable | Description                                                                                                     | Example                |
 |----------------------|-----------------------------------------------------------------------------------------------------------------|------------------------|
-| MAIL_DEFAULT_SENDER  | Email used to send email verification emails. This is in string format.                                         | 'some_username@gmail.com' |
+| MAIL_DEFAULT_SENDER  |Email used to send email verification emails. This has to be a real email address that you've got access to. For example , johnclark@gmail.com . This is in string format.                                       | 'some_username@gmail.com' |
 | MAIL_SERVER          | SMTP server address/name used by the email account that sends the verification emails. This is in string format. | 'smtp.gmail.com'       |
-| APP_MAIL_USERNAME    | Username of the email account used to send verification emails. This is in string format.                       | 'some_username'        |
+| APP_MAIL_USERNAME    | Username of the email account used to send verification emails. It must be equal to part of the email address before the @ sign. For example, if your email address is johnclark@gmail.com, this will be johnclark. This is in string format.                      | 'some_username'        |
 | APP_MAIL_PASSWORD    | Password of the email account used to send verification emails. This is in string format.                       | 'some_password'        |
 
 _Note:_
-- In the examples we use Gmail account example, but you are not restricted to use a Gmail account to send the verification email. If you use other email providers make sure to research about the correct SMTP server name.
+- To properly set up dev environment, an email address is required. We recommend creating a temporary email (e.g. Gmail.com, Mail.com, etc) .  If you use other email providers make sure to research about the correct SMTP server name.
 - The `'` character may be optional for environment variables without space on them.
 
 
@@ -69,14 +69,35 @@ export KEY=VALUE
 ```
 export FLASK_ENVIRONMENT_CONFIG=dev
 ```
-
 Windows user should use **set** instead of **export** for setting these environment variables. <br/>
 Another way to do this in flask applications is by having a file called `.env` which will have all of the environment variables. When a flask application runs, it will load these variables from the file.
 
 - Content of `.env` file:
-
 ```
+
 FLASK_ENVIRONMENT_CONFIG=dev
 SECRET_KEY='some_random_key'
 (...)
 ```
+
+# Database Environment Variables
+
+To run the backend in other than `local` mode i.e `prod` or `dev` you need to export database environment variables.
+These are the required database environment variables.
+```
+export DB_TYPE=<database_type>
+export DB_USERNAME=<database_username>
+export DB_PASSWORD=<database_password>
+export DB_ENDPOINT=<database_endpoint>
+export DB_NAME=<database_name>
+```
+ ## Database environment variables description
+
+
+| Environment Variable | Description                                                                 | Example           |
+|----------------------|-----------------------------------------------------------------------------|-------------------|
+| DB_TYPE | Type of database you want to use | postgres, mysql |
+| DB_USERNAME          | Username of the user through which you will be doing operations in database | admin123 | 
+| DB_PASSWORD | Database password of the `DB_USERNAME` user | mypwd123 |
+| DB_ENDPOINT | Path to database or connection string connecting to database | /path/to/database.db, remote-database-url:5432 |
+| DB_NAME | Name of the database to which you want to connect | mentorship |

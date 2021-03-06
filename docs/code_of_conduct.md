@@ -2,11 +2,11 @@
 
 ## 1. Purpose
 
-A primary goal of Systers is to be inclusive to the largest number of contributors, with the most varied and diverse backgrounds possible. As such, we are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, ability, ethnicity, socioeconomic status, and religion (or lack thereof).
+A primary goal of AnitaB.org Open Source is to be inclusive to the largest number of contributors, with the most varied and diverse backgrounds possible. As such, we are committed to providing a friendly, safe and welcoming environment for all, regardless of gender, sexual orientation, ability, ethnicity, socioeconomic status, and religion (or lack thereof).
 
 This code of conduct outlines our expectations for all those who participate in our community, as well as the consequences for unacceptable behavior.
 
-We invite all those who participate in Systers to help us create safe and positive experiences for everyone.
+We invite all those who participate in open source contributions to help us create safe and positive experiences for everyone.
 
 ## 2. Open Source Citizenship
 
@@ -49,18 +49,16 @@ Unacceptable behavior from any community member, including sponsors and those wi
 
 Anyone asked to stop unacceptable behavior is expected to comply immediately.
 
-If a community member engages in unacceptable behavior, the community organizers may take any action they deem appropriate, up to and including a temporary ban or permanent expulsion from the community without warning (and without refund in the case of a paid event).
+If a community member engages in unacceptable behavior, the community admins may take any action they deem appropriate, up to and including a temporary ban or permanent expulsion from the community without warning (and without refund in the case of a paid event).
 
 ## 6. Reporting Guidelines
-If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible by emailing systers.keeper@gmail.com. Please read [Reporting Guidelines](reporting_guidelines.md) for details.
+If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community admin as soon as possible by emailing opensource@anitab.org. Please read [Reporting Guidelines](./docs/reporting_guidelines.md) for details.
 
-
-
-Additionally, community organizers are available to help community members engage with local law enforcement or to otherwise help those experiencing unacceptable behavior feel safe. In the context of in-person events, organizers will also provide escorts as desired by the person experiencing distress.
+Additionally, community admins are available to help community members engage with local law enforcement or to otherwise help those experiencing unacceptable behavior feel safe. In the context of in-person events, community admins (or event managers) will also provide escorts as desired by the person experiencing distress.
 
 ## 7. Addressing Grievances
 
-Only permanent resolutions (such as bans) may be appealed. To appeal a decision of the working group, contact the Systers' Open Source Board at os-board@anitab.org with your appeal and the board will review the case.
+Only permanent resolutions (such as bans) may be appealed. To appeal a decision of the working group, contact AnitaB.org staff at opensource@anitab.org with your appeal and we will review the case.
 
 
 ## 8. Scope
@@ -71,12 +69,12 @@ This code of conduct and its related procedures also applies to unacceptable beh
 
 ## 9. Contact info
 
-systers.keeper@gmail.com
+[opensource@anitab.org](mailto:opensource@anitab.org)
 
 ## 10. License and attribution
 
-This Code of Conduct is distributed under a [Creative Commons Attribution-ShareAlike license](http://creativecommons.org/licenses/by-sa/3.0/).
+This Code of Conduct is distributed under a [Creative Commons Attribution-ShareAlike license](https://creativecommons.org/licenses/by-sa/3.0/).
 
-Portions of text derived from the [Django Code of Conduct](https://www.djangoproject.com/conduct/) and the [Geek Feminism Anti-Harassment Policy](http://geekfeminism.wikia.com/wiki/Conference_anti-harassment/Policy).
+Portions of text derived from the [Django Code of Conduct](https://www.djangoproject.com/conduct/) and the [Geek Feminism Anti-Harassment Policy](https://geekfeminism.wikia.org/wiki/Conference_anti-harassment/Policy).
 
-Retrieved on November 22, 2016 from [http://citizencodeofconduct.org/](http://citizencodeofconduct.org/)
+Retrieved on November 22, 2016 from http://citizencodeofconduct.org/

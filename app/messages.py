@@ -1,3 +1,10 @@
+from app.api.validations.user import (
+    PASSWORD_MAX_LENGTH,
+    PASSWORD_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    USERNAME_MIN_LENGTH,
+)
+
 # Invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
@@ -9,7 +16,11 @@ FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is" " not 
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
 }
+
 RELATION_STATE_FILTER_IS_INVALID = {"message": "Relation state filer is not valid."}
+PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH = {
+    "message": f"The password field has to be longer than {PASSWORD_MIN_LENGTH - 1} characters and shorter than {PASSWORD_MAX_LENGTH + 1} characters."
+}
 
 # Not found
 MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST = {
@@ -45,6 +56,9 @@ NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
 AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!"}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
+USERNAME_HAS_INVALID_LENGTH = {
+    "message": f"The username field has to be longer than {USERNAME_MIN_LENGTH - 1} characters and shorter than {USERNAME_MAX_LENGTH + 1} characters."
+}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}
@@ -92,7 +106,7 @@ TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE = {
 
 # Update
 NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {
-    "message": "No data for updating" "profile was sent."
+    "message": "No data for updating profile was sent."
 }
 
 # Relation constraints
@@ -144,7 +158,7 @@ USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS = {
     "message": "A user with that " "email already exists."
 }
 USER_IS_NOT_REGISTERED_IN_THE_SYSTEM = {
-    "message": "You are not registered in" "the system."
+    "message": "You are not registered in the system."
 }
 NAME_LENGTH_GREATER_THAN_MAX_LIMIT = {
     "message": "The {field_name} field has"

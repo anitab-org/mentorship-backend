@@ -65,7 +65,9 @@ class AdminDAO:
         """
         admin_user_id = data["user_id"]
 
-        if user_id == admin_user_id:
+        admin_count = UserModel.query.filter(UserModel.is_admin == True).count()
+
+        if user_id == admin_user_id and admin_count == 1:
             return messages.USER_CANNOT_REVOKE_ADMIN_STATUS, HTTPStatus.FORBIDDEN
 
         new_admin_user = UserModel.find_by_id(admin_user_id)
@@ -92,11 +94,11 @@ class AdminDAO:
 
     @staticmethod
     def list_admins(user_id):
-        """ Retrieves a list of admin users for the user with specified ID.
-        
+        """Retrieves a list of admin users for the user with specified ID.
+
         Arguments:
             user_id: The ID of the user querying the fellow admins.
-        
+
         Returns:
             A list of admin users matching conditions and the HTTP response code.
         """

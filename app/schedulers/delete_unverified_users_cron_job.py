@@ -5,11 +5,11 @@ import config
 
 def delete_unverified_users_job():
     """
-       This function iterates of all the users and
-       checks if the email is verified. If email is not verified
-       then we are checking whether the specified threshold has passed
-       since registration. If yes, user is deleted from the database.
-       """
+    This function iterates of all the users and
+    checks if the email is verified. If email is not verified
+    then we are checking whether the specified threshold has passed
+    since registration. If yes, user is deleted from the database.
+    """
 
     from run import application
 
@@ -17,7 +17,7 @@ def delete_unverified_users_job():
         from app.database.models.user import UserModel
 
         unverified_users = list(
-            filter(lambda user: not user.is_email_verified, UserModel.query.all())
+            UserModel.query.filter_by(is_email_verified=False).all()
         )
 
         for user in unverified_users:

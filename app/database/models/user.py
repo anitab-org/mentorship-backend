@@ -1,5 +1,3 @@
-from typing import Optional
-
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 from app.database.sqlalchemy_extension import db
@@ -112,20 +110,20 @@ class UserModel(db.Model):
 
     def __repr__(self):
         """Returns the user's name and username. """
-        return "User name %s. Username is %s ." % (self.name, self.username)
+        return f"User name {self.name} . Username is {self.username} ."
 
     @classmethod
-    def find_by_username(cls, username: str) -> 'UserModel':
+    def find_by_username(cls, username: str) -> "UserModel":
         """Returns the user that has the username we searched for. """
         return cls.query.filter_by(username=username).first()
 
     @classmethod
-    def find_by_email(cls, email: str) -> 'UserModel':
+    def find_by_email(cls, email: str) -> "UserModel":
         """Returns the user that has the email we searched for. """
         return cls.query.filter_by(email=email).first()
 
     @classmethod
-    def find_by_id(cls, _id: int) -> 'UserModel':
+    def find_by_id(cls, _id: int) -> "UserModel":
         """Returns the user that has the id we searched for. """
         return cls.query.filter_by(id=_id).first()
 
