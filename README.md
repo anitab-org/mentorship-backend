@@ -227,7 +227,7 @@ The repository has the following permanent branches:
 
  * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch. This is the branch that is used in the deployed version of the app on Heroku.
 
- * **bit** This branch is for MS-backend version specific to [BridgeInTech](https://github.com/anitab-org/mentorship-backend/tree/bit) project. All the contributing PRs related to BIT-MS integration issue must be sent to this branch.
+ * **bit** This branch is for MS-backend version specific to [BridgeInTech](https://github.com/anitab-org/bridge-in-tech-backend) project. All the contributing PRs related to BIT-MS integration issue must be sent to this branch.
 
 
 ## Contact
