@@ -227,7 +227,8 @@ The repository has the following permanent branches:
 
  * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch. This is the branch that is used in the deployed version of the app on Heroku.
 
- * **bit** This branch is for MS-backend version specific to [BridgeInTech](https://github.com/anitab-org/bridge-in-tech-backend) project. All the contributing PRs related to BIT-MS integration issue must be sent to this branch.
+ * **bit** This branch is for MS-backend version specific to [BridgeInTech](https://github.com/anitab-org/bridge-in-tech-backend) project. All the contributing PRs related to BIT-MS integration issue must be sent to this branch.<br>
+**IMPORTANT!!** If this is your first time setting up the BridgeInTech project, please <b>DO NOT RUN</b> the MS backend server from this branch <b>BEFORE</b> you run the BIT backend server. Failing to do this will mess up the postgres db schemas used in BIT project. More instruction on setting up the BridgeInTech project can be found [here](https://github.com/anitab-org/bridge-in-tech-backend/blob/develop/.github/ENV_SETUP_INSTRUCTION.md).
 
 
 ## Contact
