@@ -139,7 +139,7 @@ class GetAllMyMentorshipRelation(Resource):
         HTTPStatus.UNAUTHORIZED,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
-        f"{messages.AUTHORISATION_TOKEN_IS_MISSING}\n",
+        f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.marshal_list_with(
         mentorship_request_response_body,
