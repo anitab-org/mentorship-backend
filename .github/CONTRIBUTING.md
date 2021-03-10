@@ -9,7 +9,7 @@
 * When submitting a PR with changes to user interface (e.g.: new screen, or an email template), please add screenshots to the PR description.
 * When you are finished with your work, please squash your commits otherwise we will squash them on your PR (this can help us maintain a clear commit history). 
 * When writing in-code documentation as Docstrings, please follow [this guide](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings).
-* When creating an issue to report a bug in the project, please follow our [bug_report.md](ISSUE_TEMPLATE/bug_report.md) template.
+* When creating an issue to report a bug in the project, please follow our [bug_report.md](https://github.com/anitab-org/.github/blob/main/.github/ISSUE_TEMPLATE/bug_report.md) template.
 
 ## General Guidelines
 
