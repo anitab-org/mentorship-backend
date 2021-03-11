@@ -113,3 +113,7 @@ venv.bak/
 
 # aws-eb
 .elasticbeanstalk/
+
+# docusaurus
+docs/.docusaurus
+docs/node_modules

@@ -10,4 +10,4 @@ title: Tech Stack
 - **Hosting Service:** Heroku
 - **Database:** Relational Database
 
-Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](Technical-Decisions).
+Understand more about our technical decisions made along with this project development in [Technical Decisions page](Technical-Decisions).

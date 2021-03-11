@@ -8,7 +8,7 @@ User Authentication is [JSON Web Token (JWT)](https://jwt.io) based. To implemen
 
 In short, when a user logs in, the user will receive an authentication token (e.g.: `access_token`) which contains part of the user's identity and other token related fields, as the expiration date.
 
-You can get an access token once you are registered into the backend. Here's a quick tutorial on [how to login using Swagger UI](https://github.com/systers/mentorship-backend/wiki/Log-in-using-Swagger-UI) provided by the deployed server.
+You can get an access token once you are registered into the backend. Here's a quick tutorial on [how to login using Swagger UI](Log-in-using-Swagger-UI) provided by the deployed server.
 
 The user can then use this `access_token` when using a protected/restricted API, such as, `GET /user` API. To access this the client has to send the `access_token` in the header of the HTTP request, following this format: "Autorization: Bearer `access_token`".
 

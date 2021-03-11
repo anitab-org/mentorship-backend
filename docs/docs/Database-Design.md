@@ -6,7 +6,7 @@ This page aims to explain Database design of the app and some implementation dec
 
 ## Main data models
 
-Learn more about the core concepts - User, Mentorship Relation and Tasks - in [Main Base Concepts Wiki page](Main-Base-Concepts).
+Learn more about the core concepts - User, Mentorship Relation and Tasks - in [Main Base Concepts Page](Main-Base-Concepts).
 
 ## Why Tasks is currently wrapped in TaskList JSON Object
 

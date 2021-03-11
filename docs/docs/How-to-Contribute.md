@@ -20,24 +20,24 @@ There are many ways you can contribute to this project.
 
 You can help on the development. You can check the contribution guidelines for this, `CONTRIBUTING.md` file inside `.github` folder.
 
-Before starting to contribute make sure to check our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide).
+Before starting to contribute make sure to check our [Commit Message Style Guide](Commit-Message-Style-Guide).
 
 You can check existing issues that are available and not assigned to anyone. You can filter also issues with labels such as [Category: Coding](https://github.com/anitab-org/mentorship-backend/issues?q=is%3Aissue+is%3Aopen+label%3A%22Category%3A+Coding%22) which are available [Status: Available](https://github.com/anitab-org/mentorship-backend/issues?q=is%3Aissue+is%3Aopen+label%3A%22Status%3A+Available%22).
 
 You can find a bugs while testing and submit an issue to solve them.
 
-You can find more about [Tech Stack here](https://github.com/anitab-org/mentorship-backend/wiki/Tech-Stack).
+You can find more about [Tech Stack here](Tech-Stack).
 
 ## Quality Assurance
 
-You can test the backend for bugs. We have a set of [Quality Assurance Test Cases](https://github.com/anitab-org/mentorship-backend/wiki/Quality-Assurance) to help you with test the backend to lookup these bugs.
+You can test the backend for bugs. We have a set of [Quality Assurance Test Cases](Quality-Assurance) to help you with test the backend to lookup these bugs.
 
 **If you find any bug you can report** by creating an issue, using the **Bug report template**. Here's a nice [example of a Bug Report issue](https://github.com/anitab-org/mentorship-backend/issues/83). 
 These types of reports are very important because we can detect bugs in the backend and then create issues that fix these bugs. Also if you're not comfortable with the code you can just report a bugs you find, without having to suggest a solution on it, and thats a valuable contribution to the project.
 
 **Tools** you can use to do this:
 - Create disposable emails with https://temp-mail.org/ to create accounts and verify them, throught this temporary emails; 
-- **Swagger UI** provided in root of the deployed server. You can check the deployed server link in the the README.md file of the project. You can learn more about [how to use Swagger here](https://github.com/anitab-org/mentorship-backend/wiki/Using-Swagger-UI).
+- **Swagger UI** provided in root of the deployed server. You can check the deployed server link in the the README.md file of the project. You can learn more about [how to use Swagger here](Using-Backend-Swagger-UI).
 - [Postman](https://www.getpostman.com/) to make your HTTP requests to the backend without being limited by Swagger API. E.g.: With this you can see the results of not sending an autorization token, which with the Swagger UI you're not allowed to do it.
 
 ## Documentation
@@ -48,8 +48,8 @@ You may check issues labeled with [Category: Documentation/Training](https://git
 This documentation can be related with code, quality assurance test cases, the application features, anything related with this project. Here're some examples of documentation:
 - [Backend Documentation](https://docs.google.com/document/d/1qDTJK-ItAaek5ZBSLd4i8ShxLDcU5D2b4ZdIBTNxEJM/edit?usp=sharing)
 - [App Documentation](https://docs.google.com/document/d/1RhYMjyd1yhAWarO7spRWOYm-KNgFsO9rNgO6ssnEC-o/edit?usp=sharing)
-- [Quality Assurance Documentation](https://github.com/anitab-org/mentorship-backend/wiki/Quality-Assurance)
-- [This wiki!](https://github.com/anitab-org/mentorship-backend/wiki)
+- [Quality Assurance Documentation](Quality-Assurance)
+- [This Docs](/)
 - Coding the documentation of the deployed server [Swagger UI](http://systers-mentorship-dev.eu-central-1.elasticbeanstalk.com/)
 
 ## Outreach/Training/Research

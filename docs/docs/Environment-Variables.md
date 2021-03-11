@@ -1,6 +1,6 @@
 ---
 id: Environment-Variables
-title: Environment Variables
+title: Export Environment Variables
 ---
 **Please consider the [environment-variables.md](https://github.com/anitab-org/mentorship-backend/blob/develop/docs/environment-variables.md) document as the more updated version**
 

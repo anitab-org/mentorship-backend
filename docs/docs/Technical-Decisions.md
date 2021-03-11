@@ -53,7 +53,7 @@ The GSoC student did not have experience with backend and the mentors had experi
 
 Flask-RESTPlus is the core of this backend. The REST API is built using this flask extension. The main advantage is that it supports Swagger Documentation. With this tool, we can develop the API while using annotations that help to generate the Swagger UI.
 
-You can know more about how to use Swagger in [this Wiki page](Using-Backend-Swagger-UI).
+You can know more about how to use Swagger in [this page](Using-Backend-Swagger-UI).
 
 ## May 2018 - Why use Flask-JWT-Extended instead of just Flask-JWT?
 

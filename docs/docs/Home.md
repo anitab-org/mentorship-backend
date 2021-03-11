@@ -1,8 +1,9 @@
 ---
 id: home
 title: Home
+slug: /
 ---
-Welcome to Mentorship System Backend Wiki!
+Welcome to Mentorship System Backend Docs!
 
 ## About
 
@@ -20,7 +21,7 @@ Systers is an international community for all women involved in the technical as
 
 We engage our community by contributing to open source, collaborating with the global community, and learning/enhancing our coding skills. We are committed to providing a safe, positive online community for our many volunteers that offer their skills, time, and commitment to our projects.
 
-In order to engage with the community, you can sign up on ~[Systers Open Source Slack](http://systers.io/slack-systers-opensource/)~ [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/).
+In order to engage with the community, you can sign up on ~ [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/).
 
 ## Code of Conduct
 
