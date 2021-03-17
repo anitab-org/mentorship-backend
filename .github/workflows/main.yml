@@ -18,15 +18,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set up Python 3.6
       uses: actions/setup-python@v2
-      with:
-        python-version: 3.6
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+     
     - name: Run tests
       run: |
-        python -m unittest discover tests -v
+        make docker_test
     - name: Generate coverage report
       run: |
         pip install pytest
