@@ -45,7 +45,11 @@ class UserList(Resource):
             "per_page": "specify number of users per page (default: 10)",
         },
     )
-    @users_ns.response(HTTPStatus.OK.value, f"{messages.GENERAL_SUCCESS_MESSAGE}", public_user_api_model)
+    @users_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_user_api_model,
+    )
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
@@ -84,7 +88,11 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(HTTPStatus.OK.value, f"{messages.GENERAL_SUCCESS_MESSAGE}", public_user_api_model)
+    @users_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_user_api_model,
+    )
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
         "%s\n%s\n%s"
@@ -252,7 +260,11 @@ class VerifiedUser(Resource):
             "per_page": "specify number of users per page",
         },
     )
-    @users_ns.response(HTTPStatus.OK.value, f"{messages.GENERAL_SUCCESS_MESSAGE}", public_user_api_model)
+    @users_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_user_api_model,
+    )
     @users_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
@@ -373,8 +385,12 @@ class UserEmailConfirmation(Resource):
 @users_ns.route("user/resend_email")
 @users_ns.response(HTTPStatus.OK.value, f"{messages.EMAIL_VERIFICATION_MESSAGE}")
 @users_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.INVALID_INPUT}")
-@users_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}")
-@users_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM}")
+@users_ns.response(
+    HTTPStatus.FORBIDDEN.value, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}"
+)
+@users_ns.response(
+    HTTPStatus.NOT_FOUND.value, f"{messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM}"
+)
 class UserResendEmailConfirmation(Resource):
     @classmethod
     @users_ns.expect(resend_email_request_body_model)
@@ -410,7 +426,11 @@ class RefreshUser(Resource):
     @classmethod
     @jwt_refresh_token_required
     @users_ns.doc("refresh")
-    @users_ns.response(HTTPStatus.OK.value, f"{messages.SUCCESSFUL_REFRESH}", refresh_response_body_model)
+    @users_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.SUCCESSFUL_REFRESH}",
+        refresh_response_body_model,
+    )
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
         "%s\n%s\n%s"
@@ -440,7 +460,9 @@ class RefreshUser(Resource):
 class LoginUser(Resource):
     @classmethod
     @users_ns.doc("login")
-    @users_ns.response(HTTPStatus.OK.value, f"{messages.SUCCESSFUL_LOGIN}", login_response_body_model)
+    @users_ns.response(
+        HTTPStatus.OK.value, f"{messages.SUCCESSFUL_LOGIN}", login_response_body_model
+    )
     @users_ns.response(
         HTTPStatus.BAD_REQUEST.value,
         "%s\n%s"
@@ -500,7 +522,9 @@ class LoginUser(Resource):
 @users_ns.route("home")
 @users_ns.doc("home")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK.value, f"{messages.SUCCESSFUL_RESPONSE}", home_response_body_model)
+@users_ns.response(
+    HTTPStatus.OK.value, f"{messages.SUCCESSFUL_RESPONSE}", home_response_body_model
+)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED.value,
     "%s\n%s\n%s"
@@ -532,7 +556,11 @@ class UserHomeStatistics(Resource):
 
 @users_ns.route("dashboard")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK.value, f"{messages.GENERAL_SUCCESS_MESSAGE}", dashboard_response_body_model)
+@users_ns.response(
+    HTTPStatus.OK.value,
+    f"{messages.GENERAL_SUCCESS_MESSAGE}",
+    dashboard_response_body_model,
+)
 @users_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_NOT_FOUND}")
 class UserDashboard(Resource):
     @classmethod

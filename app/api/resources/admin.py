@@ -81,7 +81,11 @@ class ListAdmins(Resource):
     @classmethod
     @jwt_required
     @admin_ns.doc("get_list_of_admins")
-    @admin_ns.response(HTTPStatus.OK.value, f"{messages.GENERAL_SUCCESS_MESSAGE}", public_admin_user_api_model)
+    @admin_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_admin_user_api_model,
+    )
     @admin_ns.doc(
         responses={
             HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"

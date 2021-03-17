@@ -281,21 +281,13 @@ TASK_COMMENT_WAS_DELETED_SUCCESSFULLY = {
 LIST_TASK_COMMENTS_WITH_SUCCESS = {
     "message": "List task comments from a mentorship relation with success."
 }
-GENERAL_SUCCESS_MESSAGE = {
-    "message": "Success."
-}
+GENERAL_SUCCESS_MESSAGE = {"message": "Success."}
 
-SUCCESSFUL_REFRESH = {
-    "message": "Successful refresh."
-}
+SUCCESSFUL_REFRESH = {"message": "Successful refresh."}
 
-SUCCESSFUL_RESPONSE = {
-    "message": "Successful response."
-}
+SUCCESSFUL_RESPONSE = {"message": "Successful response."}
 
-SUCCESSFUL_LOGIN = {
-    "message": "Successful login"
-}
+SUCCESSFUL_LOGIN = {"message": "Successful login"}
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed."}
 USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email."}
