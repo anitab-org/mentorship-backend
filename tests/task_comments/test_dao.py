@@ -3,6 +3,7 @@ import unittest
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
+from http import HTTPStatus
 
 
 class TestTaskCommentDao(TasksBaseTestCase):
@@ -66,7 +67,10 @@ class TestTaskCommentDao(TasksBaseTestCase):
 
         TaskCommentDAO.delete_comment(user_id=1, _id=1, task_id=1, relation_id=2)
 
-        expected_response = messages.TASK_COMMENT_DOES_NOT_EXIST, 404
+        expected_response = (
+            messages.TASK_COMMENT_DOES_NOT_EXIST,
+            HTTPStatus.NOT_FOUND.value,
+        )
         actual_response = TaskCommentDAO.get_task_comment(1, 1)
 
         # Verify that task comment was deleted

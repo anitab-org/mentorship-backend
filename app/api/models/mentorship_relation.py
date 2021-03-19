@@ -1,6 +1,8 @@
 from flask_restx import fields, Model
 
 from app.utils.enum_utils import MentorshipRelationState
+from .task import create_task_request_body, list_tasks_response_body
+from .task_comment import task_comment_model, task_comments_model
 
 
 def add_models_to_namespace(api_namespace):
@@ -84,36 +86,9 @@ mentorship_request_response_body = Model(
     },
 )
 
-create_task_request_body = Model(
-    "Create task request model",
-    {
-        "description": fields.String(
-            required=True, description="Mentorship relation task description"
-        )
-    },
-)
-
-list_tasks_response_body = Model(
-    "List tasks response model",
-    {
-        "id": fields.Integer(required=True, description="Task ID"),
-        "description": fields.String(
-            required=True, description="Mentorship relation task description"
-        ),
-        "is_done": fields.Boolean(
-            required=True, description="Mentorship relation task is done indication"
-        ),
-        "created_at": fields.Float(
-            required=True, description="Task creation date in UNIX timestamp format"
-        ),
-        "completed_at": fields.Float(
-            required=False, description="Task completion date in UNIX timestamp format"
-        ),
-    },
-)
 
 user_dashboard_user_details = Model(
-    "user details for dashboard",
+    "User details for dashboard",
     {
         "id": fields.Integer(required=True, description="user ID"),
         "user_name": fields.String(
@@ -156,27 +131,5 @@ mentorship_request_response_body_for_user_dashboard_body = Model(
             description="Mentorship relation state",
         ),
         "notes": fields.String(required=True, description="Mentorship relation notes"),
-    },
-)
-
-task_comment_model = Model(
-    "Task comment model.",
-    {"comment": fields.String(required=True, description="Task comment.")},
-)
-
-task_comments_model = Model(
-    "Task comments model.",
-    {
-        "id": fields.Integer(required=True, description="Task comment's id."),
-        "user_id": fields.Integer(required=True, description="User's id."),
-        "task_id": fields.Integer(required=True, description="Task's id."),
-        "relation_id": fields.Integer(required=True, description="Relation's id."),
-        "creation_date": fields.Float(
-            required=True, description="Creation date of the task comment."
-        ),
-        "modification_date": fields.Float(
-            required=False, description="Modification date of the task comment."
-        ),
-        "comment": fields.String(required=True, description="Task comment."),
     },
 )

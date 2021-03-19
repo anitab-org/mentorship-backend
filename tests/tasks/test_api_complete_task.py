@@ -1,5 +1,6 @@
 import unittest
 from flask import json
+from http import HTTPStatus
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
@@ -11,12 +12,12 @@ class TestCompleteTaskApi(TasksBaseTestCase):
     def test_complete_task_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.put(
-            "/mentorship_relation/%s/task/%s/complete"
-            % (self.mentorship_relation_w_second_user.id, 2),
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            f"/task/{2}/complete",
             follow_redirects=True,
         )
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_complete_task_api(self):
@@ -32,13 +33,13 @@ class TestCompleteTaskApi(TasksBaseTestCase):
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = messages.TASK_WAS_ACHIEVED_SUCCESSFULLY
         actual_response = self.client.put(
-            "/mentorship_relation/%s/task/%s/complete"
-            % (self.mentorship_relation_w_second_user.id, 1),
+            f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
+            f"/task/{1}/complete",
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         relation = MentorshipRelationModel.find_by_id(

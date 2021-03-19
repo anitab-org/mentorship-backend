@@ -4,6 +4,7 @@ from flask import json
 from flask_restx import marshal
 from http import HTTPStatus
 
+from app import messages
 from app.api.models.user import public_user_api_model
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
@@ -13,9 +14,8 @@ from tests.test_utils import get_test_request_header
 
 
 class TestnGetOtherUserApi(BaseTestCase):
-
     def setUp(self):
-        super(TestnGetOtherUserApi, self).setUp()
+        super().setUp()
 
         self.verified_user = UserModel(
             name=user1["name"] + "    Example",
@@ -44,7 +44,9 @@ class TestnGetOtherUserApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = marshal(self.verified_user, public_user_api_model)
         actual_response = self.client.get(
-            f"/users/{self.verified_user.id}", follow_redirects=True, headers=auth_header
+            f"/users/{self.verified_user.id}",
+            follow_redirects=True,
+            headers=auth_header,
         )
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
@@ -52,9 +54,11 @@ class TestnGetOtherUserApi(BaseTestCase):
     def test_user_invalid_user_id_for_other_user(self):
         auth_header = get_test_request_header(self.admin_user.id)
         actual_response = self.client.get(
-            "/users/abc", follow_redirects=True, headers=auth_header
+            "/users/1234", follow_redirects=True, headers=auth_header
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
+        self.assertEqual(json.loads(actual_response.data), messages.USER_DOES_NOT_EXIST)
+
 
 if __name__ == "__main__":
     unittest.main()

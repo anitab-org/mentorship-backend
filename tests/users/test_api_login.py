@@ -18,14 +18,13 @@ from http import HTTPStatus
 from tests.test_data import user1, user2
 
 
-
 class TestUserLoginApi(BaseTestCase):
 
     # Setup consists of adding 2 users into the database
     # User 1 does not have email verified
     # User 2 has email verified
     def setUp(self):
-        super(TestUserLoginApi, self).setUp()
+        super().setUp()
 
         self.first_user = UserModel(
             name=user1["name"],
@@ -60,14 +59,10 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
 
             self.assertEqual(1, len(response.json))
-            self.assertEqual(
-                messages.WRONG_USERNAME_OR_PASSWORD, response.json
-            )
+            self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
 
             self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
 
@@ -83,14 +78,12 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
             self.assertEqual(1, len(response.json))
             self.assertEqual(
                 messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json
             )
-            self.assertEqual(403, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
 
     def test_user_login_verified_user(self):
         with self.client:
@@ -103,11 +96,9 @@ class TestUserLoginApi(BaseTestCase):
                 content_type="application/json",
             )
             self.assertIsNotNone(response.json.get("access_token"))
-            self.assertIsNotNone(response.json.get("access_expiry"))
             self.assertIsNotNone(response.json.get("refresh_token"))
-            self.assertIsNotNone(response.json.get("refresh_expiry"))
-            self.assertEqual(4, len(response.json))
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(2, len(response.json))
+            self.assertEqual(HTTPStatus.OK, response.status_code)
 
 
 if __name__ == "__main__":

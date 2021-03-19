@@ -14,7 +14,7 @@
     Entering the expired login response refresh token in the Authorization field:
     
     _Screenshot_: 
-    ![enterExpired](https://user-images.githubusercontent.com/50259869/94347906-e179ad00-0055-11eb-9b37-1496638434a2.PNG)
+    ![enterExpired](https://user-images.githubusercontent.com/56799401/102400371-d5273f80-4007-11eb-870e-b56b78a52eab.png)
     ![enterExpiredCurl](https://user-images.githubusercontent.com/50259869/94347907-e2124380-0055-11eb-982b-52e9f087540c.PNG)
 
     _Expected Result_: FAIL
@@ -31,7 +31,7 @@
     Entering the login response refresh token in the Authorization field:
     
     _Screenshot_: 
-    ![correctToken](https://user-images.githubusercontent.com/50259869/94347911-e3437080-0055-11eb-9b52-1e2b014ed8b5.PNG)
+    ![correctToken](https://user-images.githubusercontent.com/56799401/102400371-d5273f80-4007-11eb-870e-b56b78a52eab.png)
     ![correctTokenCurl](https://user-images.githubusercontent.com/50259869/94347912-e3437080-0055-11eb-9912-452d4a637942.PNG)
 
     _Expected Result_: SUCCESS
@@ -43,7 +43,7 @@
     Filling refresh token in Authorization field without Bearer:
 
     _Screenshot:_
-    ![withoutBearer](https://user-images.githubusercontent.com/50259869/94347915-e4749d80-0055-11eb-97e3-6328a54fc399.PNG)
+    ![withoutBearer](https://user-images.githubusercontent.com/56799401/102400755-60a0d080-4008-11eb-87bb-713fc76f717c.png)
     ![withoutBearerCurl](https://user-images.githubusercontent.com/50259869/94347916-e4749d80-0055-11eb-8d40-94ed540ed33e.PNG)
 
     _Expected Result_: FAIL
@@ -55,7 +55,7 @@
     Filling Authorization field with Bearer only and without refresh token:
 
     _Screenshot:_
-    ![bearerOnly](https://user-images.githubusercontent.com/50259869/94347913-e3dc0700-0055-11eb-8ad9-3993edb31ea8.PNG)
+    ![bearerOnly](https://user-images.githubusercontent.com/56799401/102400921-8c23bb00-4008-11eb-85c8-607e65649254.png)
     ![bearerOnlyCurl](https://user-images.githubusercontent.com/50259869/94347914-e3dc0700-0055-11eb-86cf-03789fff41a6.PNG)
 
     _Expected Result_: FAIL
@@ -67,7 +67,7 @@
     Filling Authorization field with only a single whitespace:
 
     _Screenshot:_
-    ![whitespaceOnly](https://user-images.githubusercontent.com/50259869/94347917-e50d3400-0055-11eb-98ad-a1dada8d5ba7.PNG)
+    ![whitespaceOnly](https://user-images.githubusercontent.com/56799401/102401049-b8d7d280-4008-11eb-9f57-b5e56059300e.png)
     ![whitespaceOnlyCurl](https://user-images.githubusercontent.com/50259869/94347918-e5a5ca80-0055-11eb-93ec-6ce64c3e4f38.PNG)
 
     _Expected Result_: FAIL

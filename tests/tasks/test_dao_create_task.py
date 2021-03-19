@@ -1,4 +1,5 @@
 import unittest
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.task import TaskDAO
@@ -9,7 +10,10 @@ from tests.tasks.tasks_base_setup import TasksBaseTestCase
 class TestListTasksDao(TasksBaseTestCase):
     def test_create_task(self):
 
-        expected_response = messages.TASK_WAS_CREATED_SUCCESSFULLY, 201
+        expected_response = (
+            messages.TASK_WAS_CREATED_SUCCESSFULLY,
+            HTTPStatus.CREATED,
+        )
 
         non_existent_task = self.tasks_list_1.find_task_by_id(3)
         self.assertIsNone(non_existent_task)
@@ -28,7 +32,10 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task_with_non_existing_mentorship_relation(self):
 
-        expected_response = messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, 404
+        expected_response = (
+            messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+            HTTPStatus.NOT_FOUND,
+        )
 
         actual_response = TaskDAO.create_task(
             user_id=self.first_user.id,
@@ -40,7 +47,10 @@ class TestListTasksDao(TasksBaseTestCase):
 
     def test_create_task_with_mentorship_relation_non_accepted_state(self):
 
-        expected_response = messages.UNACCEPTED_STATE_RELATION, 403
+        expected_response = (
+            messages.UNACCEPTED_STATE_RELATION,
+            HTTPStatus.FORBIDDEN,
+        )
         self.mentorship_relation_w_second_user.state = MentorshipRelationState.CANCELLED
 
         actual_response = TaskDAO.create_task(
@@ -52,8 +62,11 @@ class TestListTasksDao(TasksBaseTestCase):
         self.assertEqual(expected_response, actual_response)
 
     def test_create_task_with_user_not_involved_in_mentorship(self):
-    
-        expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION, 403
+
+        expected_response = (
+            messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
+            HTTPStatus.FORBIDDEN,
+        )
         self.mentorship_relation_w_second_user.state = MentorshipRelationState.ACCEPTED
 
         actual_response = TaskDAO.create_task(
