@@ -45,7 +45,7 @@ class TaskDAO:
                 HTTPStatus.FORBIDDEN,
             )
 
-        now_timestamp = datetime.now().timestamp()
+        now_timestamp = datetime.utcnow().timestamp()
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
         relation.tasks_list.save_to_db()
 
@@ -157,7 +157,9 @@ class TaskDAO:
             return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.FORBIDDEN
         else:
             relation.tasks_list.update_task(
-                task_id=task_id, is_done=True, completed_at=datetime.now().timestamp()
+                task_id=task_id,
+                is_done=True,
+                completed_at=datetime.utcnow().timestamp(),
             )
 
         return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, HTTPStatus.OK

@@ -54,7 +54,7 @@ class MentorshipRelationDAO:
         except ValueError:
             return messages.INVALID_END_DATE, HTTPStatus.BAD_REQUEST
 
-        now_datetime = datetime.now()
+        now_datetime = datetime.utcnow()
         if end_date_datetime < now_datetime:
             return messages.END_TIME_BEFORE_PRESENT, HTTPStatus.BAD_REQUEST
 
@@ -110,7 +110,7 @@ class MentorshipRelationDAO:
             action_user_id=action_user_id,
             mentor_user=mentor_user,
             mentee_user=mentee_user,
-            creation_date=datetime.now().timestamp(),
+            creation_date=datetime.utcnow().timestamp(),
             end_date=end_date_timestamp,
             state=MentorshipRelationState.PENDING,
             notes=notes,
@@ -361,7 +361,7 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        now_timestamp = datetime.now().timestamp()
+        now_timestamp = datetime.utcnow().timestamp()
         past_relations = list(
             filter(
                 lambda relation: relation.end_date < now_timestamp,
@@ -409,7 +409,7 @@ class MentorshipRelationDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        now_timestamp = datetime.now().timestamp()
+        now_timestamp = datetime.utcnow().timestamp()
         pending_requests = []
         all_relations = user.mentor_relations + user.mentee_relations
 
