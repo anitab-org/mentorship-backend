@@ -74,7 +74,7 @@ class TestHappyPath1(BaseTestCase):
         request_body = {
             "mentor_id": self.mentor.id,
             "mentee_id": self.mentee.id,
-            "end_date": int((datetime.now() + timedelta(days=40)).timestamp()),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         send_request_response = self.client.post(

@@ -20,7 +20,7 @@ def complete_overdue_mentorship_relations_job():
             MentorshipRelationModel.query.all(),
         )
 
-        current_date_timestamp = datetime.now().timestamp()
+        current_date_timestamp = datetime.utcnow().timestamp()
 
         for relation in all_relations:
             relation.state = MentorshipRelationState.COMPLETED

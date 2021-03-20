@@ -22,7 +22,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": self.first_user.id,
             "mentee_id": self.second_user.id,
-            "end_date": int((datetime.now() + timedelta(days=40)).timestamp()),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
@@ -40,7 +40,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": self.first_user.id,
             "mentee_id": 1234,
-            "end_date": int((datetime.now() + timedelta(days=40)).timestamp()),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
@@ -58,7 +58,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": 1234,
             "mentee_id": self.first_user.id,
-            "end_date": int((datetime.now() + timedelta(days=40)).timestamp()),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
@@ -77,7 +77,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": self.second_user.id,
             "mentee_id": 4321,
-            "end_date": int((datetime.now() + timedelta(days=40)).timestamp()),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
