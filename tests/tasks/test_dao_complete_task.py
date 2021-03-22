@@ -23,7 +23,7 @@ class TestCompleteTasksDao(TasksBaseTestCase):
 
         expected_response = (
             messages.TASK_WAS_ALREADY_ACHIEVED,
-            HTTPStatus.FORBIDDEN,
+            HTTPStatus.CONFLICT,
         )
         actual_response = TaskDAO.complete_task(
             self.first_user.id, self.mentorship_relation_w_second_user.id, 2
