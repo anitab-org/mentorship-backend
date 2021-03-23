@@ -1,11 +1,11 @@
 module.exports = {
   title: "Mentorship-Backend",
   tagline: "Documentation for Mentorship Backend",
-  url: "https://mentorship-backend.surge.sh/",
-  baseUrl: "/",
+  url: "https://anitab-org.github.io",
+  baseUrl: "/mentorship-backend/",
   onBrokenLinks: "throw",
   favicon: "img/favicon.png",
-  organizationName: "AnitaB-org",
+  organizationName: "anitab-org",
   projectName: "mentorship-backend",
   themeConfig: {
     announcementBar: {
