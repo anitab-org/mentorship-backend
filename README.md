@@ -194,6 +194,8 @@ black .
 
 ## Documentation
 
+Documentation for the project is hosted [here](https://anitab-org.github.io/mentorship-backend/). We use Docusaurus for maintaining the documentation of the project.
+
 You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
 - **Language:** Python 3
