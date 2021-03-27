@@ -171,7 +171,7 @@ class UpdateTask(Resource):
     @task_ns.doc("update_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
     @task_ns.response(HTTPStatus.OK, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}")
-    @task_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.TASK_WAS_ALREADY_ACHIEVED}")
+    @task_ns.response(HTTPStatus.CONFLICT, f"{messages.TASK_WAS_ALREADY_ACHIEVED}")
     @task_ns.response(
         HTTPStatus.UNAUTHORIZED,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
