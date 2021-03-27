@@ -221,6 +221,11 @@ Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of C
 
 Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
 
+### Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ## Branches
 
 The repository has the following permanent branches:
