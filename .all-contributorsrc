@@ -37,6 +37,16 @@
         "maintenance",
         "test"
       ]
+    },
+    {
+      "login": "gaurivn",
+      "name": "Gauri V. Nair",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48416306?v=4",
+      "profile": "https://github.com/gaurivn",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
     }
   ],
   "projectName": "mentorship-backend",
