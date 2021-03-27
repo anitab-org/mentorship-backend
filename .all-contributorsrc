@@ -26,6 +26,17 @@
         "maintenance",
         "design"
       ]
+    },
+    {
+      "login": "epicadk",
+      "name": "Aditya Kurkure",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56596662?v=4",
+      "profile": "https://github.com/epicadk",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
     }
   ],
   "projectName": "mentorship-backend",
