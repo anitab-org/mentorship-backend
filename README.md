@@ -224,6 +224,18 @@ Please follow our [Commit Message Style Guide](https://github.com/anitab-org/men
 ### Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://isabelcosta.github.io/"><img src="https://avatars.githubusercontent.com/u/11148726?v=4" width="100px;" alt=""/><br /><sub><b>Isabel Costa</b></sub></a></td>
+    <td align="center"><a href="https://github.com/vj-codes"><img src="https://avatars.githubusercontent.com/u/60894542?v=4" width="100px;" alt=""/><br /><sub><b>Vaishnavi Joshi</b></sub></a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## Branches
