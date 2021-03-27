@@ -32,7 +32,10 @@
       "profile": "https://github.com/vj-codes",
       "contributions": [
         "maintenance",
-        "design"
+        "design",
+        "code",
+        "test",
+        "doc"
       ]
     }
   ],
