@@ -230,8 +230,9 @@ Thanks goes to these people ([emoji key](https://github.com/all-contributors/all
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://isabelcosta.github.io/"><img src="https://avatars.githubusercontent.com/u/11148726?v=4" width="100px;" alt=""/><br /><sub><b>Isabel Costa</b></sub></a></td>
-    <td align="center"><a href="https://github.com/vj-codes"><img src="https://avatars.githubusercontent.com/u/60894542?v=4" width="100px;" alt=""/><br /><sub><b>Vaishnavi Joshi</b></sub></a></td>
+    <td align="center"><a href="https://isabelcosta.github.io/"><img src="https://avatars.githubusercontent.com/u/11148726?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Isabel Costa</b></sub></a><br /><a href="#maintenance-isabelcosta" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/vj-codes"><img src="https://avatars.githubusercontent.com/u/60894542?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vaishnavi Joshi</b></sub></a><br /><a href="#maintenance-vj-codes" title="Maintenance">🚧</a> <a href="#design-vj-codes" title="Design">🎨</a></td>
+    <td align="center"><a href="https://github.com/epicadk"><img src="https://avatars.githubusercontent.com/u/56596662?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aditya Kurkure</b></sub></a><br /><a href="https://github.com/anitab-org/mentorship-backend/commits?author=epicadk" title="Code">💻</a> <a href="#maintenance-epicadk" title="Maintenance">🚧</a> <a href="https://github.com/anitab-org/mentorship-backend/commits?author=epicadk" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
