@@ -223,6 +223,8 @@ Please follow our [Commit Message Style Guide](https://github.com/anitab-org/men
 
 ### Contributors
 
+Thanks goes to these people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -237,6 +239,9 @@ Please follow our [Commit Message Style Guide](https://github.com/anitab-org/men
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!
 
 ## Branches
 
