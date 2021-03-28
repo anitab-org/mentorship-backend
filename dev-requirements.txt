@@ -1,3 +1,0 @@
--r requirements.txt
-awsebcli==3.19.0
-PyMySQL==0.10.1
