@@ -16,6 +16,7 @@ This API is being used by 3 frontend projects currently being developed:
 
 **Table of Contents**
 
+- [Features](#Features)
 - [Setup and run](#setup-and-run)
     - [Run app in Windows](#run-app-in-Windows)
     - [Run app in Linux](#run-app-in-Linux)
@@ -26,6 +27,22 @@ This API is being used by 3 frontend projects currently being developed:
 - [Branches](#branches)
 - [Contact](#contact)
 - [License](#license)
+
+## Features
+
+- Login and register a new user
+- Create a user profile, view and edit user profiles
+- Change user password, refresh jwt tokens
+- Create relation between two users with a fixed period of time
+- Both mentor and mentee in a relation can create tasks
+- Assign and remove admin roles to users and list all admins
+- List all the relationships of a given user
+- Message displayed if mentorship relation request is accepted, rejected, terminated or deleted
+- List details of current, past and pending mentorship relations
+- Create a new task in a mentorship relation if the specified user is already involved in it.
+- Retrieve and delete tasks from mentorship relation
+- Task comment functionalities like create a task comment, get task comments using a task id.
+- Get statistics of a user like Pending Requests, Accepted Requests, Rejected Requests, Completed Relations, Cancelled Relations and upto 3 recent achievements
 
 ## Setup and run
 
