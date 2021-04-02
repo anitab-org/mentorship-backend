@@ -37,7 +37,6 @@ This API is being used by 3 frontend projects currently being developed:
 - Both mentor and mentee in a relation can create tasks
 - Assign and remove admin roles to users and list all admins
 - List all the relationships of a given user
-- Message displayed if mentorship relation request is accepted, rejected, terminated or deleted
 - List details of current, past and pending mentorship relations
 - Create a new task in a mentorship relation if the specified user is already involved in it.
 - Retrieve and delete tasks from mentorship relation
