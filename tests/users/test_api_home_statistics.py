@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from flask import json
-
+from http import HTTPStatus
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
@@ -29,7 +29,7 @@ class TestHomeStatisticsApi(BaseTestCase):
     def test_relations_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/home", follow_redirects=True)
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_relations_invalid_id(self):
@@ -39,11 +39,11 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(404, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
     def test_pending_requests_auth(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -75,11 +75,11 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_accepted_requests_auth(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -111,11 +111,11 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_rejected_requests(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -147,11 +147,11 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_completed_relations(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -183,11 +183,11 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_cancelled_relations(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -218,17 +218,17 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_achievements(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
 
         tasks_list = TasksListModel()
-        task_created_time = datetime.now().timestamp()
+        task_created_time = datetime.utcnow().timestamp()
         task_completed_time = task_created_time + 100
         tasks_list.add_task(
             description="Test task",
@@ -281,5 +281,5 @@ class TestHomeStatisticsApi(BaseTestCase):
         actual_response = self.client.get(
             "/home", follow_redirects=True, headers=auth_header
         )
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))

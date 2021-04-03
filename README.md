@@ -16,6 +16,7 @@ This API is being used by 3 frontend projects currently being developed:
 
 **Table of Contents**
 
+- [Features](#Features)
 - [Setup and run](#setup-and-run)
     - [Run app in Windows](#run-app-in-Windows)
     - [Run app in Linux](#run-app-in-Linux)
@@ -26,6 +27,21 @@ This API is being used by 3 frontend projects currently being developed:
 - [Branches](#branches)
 - [Contact](#contact)
 - [License](#license)
+
+## Features
+
+- Login and register a new user
+- Create a user profile, view and edit user profiles
+- Change user password, refresh jwt tokens
+- Create relation between two users with a fixed period of time
+- Both mentor and mentee in a relation can create tasks
+- Assign and remove admin roles to users and list all admins
+- List all the relationships of a given user
+- List details of current, past and pending mentorship relations
+- Create a new task in a mentorship relation if the specified user is already involved in it.
+- Retrieve and delete tasks from mentorship relation
+- Task comment functionalities like create a task comment, get task comments using a task id.
+- Get statistics of a user like Pending Requests, Accepted Requests, Rejected Requests, Completed Relations, Cancelled Relations and upto 3 recent achievements
 
 ## Setup and run
 
@@ -194,6 +210,8 @@ black .
 
 ## Documentation
 
+Documentation for the project is hosted [here](https://anitab-org.github.io/mentorship-backend/). We use Docusaurus for maintaining the documentation of the project.
+
 You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
 
 - **Language:** Python 3
@@ -219,6 +237,31 @@ Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of C
 
 Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
 
+### Contributors
+
+Thanks goes to these people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://isabelcosta.github.io/"><img src="https://avatars.githubusercontent.com/u/11148726?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Isabel Costa</b></sub></a><br /><a href="#maintenance-isabelcosta" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/vj-codes"><img src="https://avatars.githubusercontent.com/u/60894542?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vaishnavi Joshi</b></sub></a><br /><a href="#maintenance-vj-codes" title="Maintenance">🚧</a> <a href="#design-vj-codes" title="Design">🎨</a></td>
+    <td align="center"><a href="https://github.com/epicadk"><img src="https://avatars.githubusercontent.com/u/56596662?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aditya Kurkure</b></sub></a><br /><a href="https://github.com/anitab-org/mentorship-backend/commits?author=epicadk" title="Code">💻</a> <a href="#maintenance-epicadk" title="Maintenance">🚧</a> <a href="https://github.com/anitab-org/mentorship-backend/commits?author=epicadk" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/devkapilbansal"><img src="https://avatars.githubusercontent.com/u/42766576?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kapil Bansal</b></sub></a><br /><a href="https://github.com/anitab-org/mentorship-backend/commits?author=devkapilbansal" title="Code">💻</a> <a href="#maintenance-devkapilbansal" title="Maintenance">🚧</a> <a href="https://github.com/anitab-org/mentorship-backend/commits?author=devkapilbansal" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/gaurivn"><img src="https://avatars.githubusercontent.com/u/48416306?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gauri V. Nair</b></sub></a><br /><a href="https://github.com/anitab-org/mentorship-backend/commits?author=gaurivn" title="Code">💻</a> <a href="#maintenance-gaurivn" title="Maintenance">🚧</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!
+
 ## Branches
 
 The repository has the following permanent branches:
@@ -226,6 +269,10 @@ The repository has the following permanent branches:
  * **master** This contains the code which has been released.
 
  * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch. This is the branch that is used in the deployed version of the app on Heroku.
+
+ * **bit** This branch is for MS-backend version specific to [BridgeInTech](https://github.com/anitab-org/bridge-in-tech-backend) project. All the contributing PRs related to BIT-MS integration issue must be sent to this branch.<br>
+**IMPORTANT!!** If this is your first time setting up the BridgeInTech project, please <b>DO NOT RUN</b> the MS backend server from this branch <b>BEFORE</b> you run the BIT backend server. Failing to do this will mess up the postgres db schemas used in BIT project. More instruction on setting up the BridgeInTech project can be found [here](https://github.com/anitab-org/bridge-in-tech-backend/blob/develop/.github/ENV_SETUP_INSTRUCTION.md).
+
 
 ## Contact
 

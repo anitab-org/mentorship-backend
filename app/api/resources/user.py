@@ -45,11 +45,16 @@ class UserList(Resource):
             "per_page": "specify number of users per page (default: 10)",
         },
     )
+    @users_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_user_api_model,
+    )
     @users_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         }
     )
     @users_ns.marshal_list_with(
@@ -83,7 +88,11 @@ class OtherUser(Resource):
     @jwt_required
     @users_ns.doc("get_user")
     @users_ns.expect(auth_header_parser)
-    @users_ns.response(HTTPStatus.OK.value, "Success.", public_user_api_model)
+    @users_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_user_api_model,
+    )
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
         "%s\n%s\n%s"
@@ -102,8 +111,8 @@ class OtherUser(Resource):
         takes "user_id" of such user has input.
         """
         requested_user = DAO.get_user(user_id)
-        if requested_user is None:
-            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        if isinstance(requested_user, tuple):
+            return requested_user
         else:
             return marshal(requested_user, public_user_api_model), HTTPStatus.OK
 
@@ -251,11 +260,16 @@ class VerifiedUser(Resource):
             "per_page": "specify number of users per page",
         },
     )
+    @users_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_user_api_model,
+    )
     @users_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         }
     )
     @users_ns.marshal_list_with(
@@ -369,13 +383,13 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route("user/resend_email")
-@users_ns.response(HTTPStatus.OK.value, "%s" % messages.EMAIL_VERIFICATION_MESSAGE)
-@users_ns.response(HTTPStatus.BAD_REQUEST.value, "Invalid input.")
+@users_ns.response(HTTPStatus.OK.value, f"{messages.EMAIL_VERIFICATION_MESSAGE}")
+@users_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.INVALID_INPUT}")
 @users_ns.response(
-    HTTPStatus.FORBIDDEN.value, "%s" % messages.USER_ALREADY_CONFIRMED_ACCOUNT
+    HTTPStatus.FORBIDDEN.value, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}"
 )
 @users_ns.response(
-    HTTPStatus.NOT_FOUND.value, "%s" % messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM
+    HTTPStatus.NOT_FOUND.value, f"{messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM}"
 )
 class UserResendEmailConfirmation(Resource):
     @classmethod
@@ -413,7 +427,9 @@ class RefreshUser(Resource):
     @jwt_refresh_token_required
     @users_ns.doc("refresh")
     @users_ns.response(
-        HTTPStatus.OK.value, "Successful refresh", refresh_response_body_model
+        HTTPStatus.OK.value,
+        f"{messages.SUCCESSFUL_REFRESH}",
+        refresh_response_body_model,
     )
     @users_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
@@ -428,20 +444,14 @@ class RefreshUser(Resource):
     def post(cls):
         """Refresh user's access
 
-        The return value is an access token and the expiry timestamp.
+        The return value is an access token.
         The token is valid for 1 week.
         """
         user_id = get_jwt_identity()
         access_token = create_access_token(identity=user_id)
 
-        from run import application
-
-        access_expiry = datetime.utcnow() + application.config.get(
-            "JWT_ACCESS_TOKEN_EXPIRES"
-        )
-
         return (
-            {"access_token": access_token, "access_expiry": access_expiry.timestamp()},
+            {"access_token": access_token},
             HTTPStatus.OK,
         )
 
@@ -451,7 +461,7 @@ class LoginUser(Resource):
     @classmethod
     @users_ns.doc("login")
     @users_ns.response(
-        HTTPStatus.OK.value, "Successful login", login_response_body_model
+        HTTPStatus.OK.value, f"{messages.SUCCESSFUL_LOGIN}", login_response_body_model
     )
     @users_ns.response(
         HTTPStatus.BAD_REQUEST.value,
@@ -472,7 +482,7 @@ class LoginUser(Resource):
 
         The user can login with (username or email) + password.
         Username field can be either the User's username or the email.
-        The return value is an access token and the expiry timestamp.
+        The return value is an access token.
         The token is valid for 1 week.
         """
         # if not request.is_json:
@@ -500,21 +510,10 @@ class LoginUser(Resource):
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
 
-        from run import application
-
-        access_expiry = datetime.utcnow() + application.config.get(
-            "JWT_ACCESS_TOKEN_EXPIRES"
-        )
-        refresh_expiry = datetime.utcnow() + application.config.get(
-            "JWT_REFRESH_TOKEN_EXPIRES"
-        )
-
         return (
             {
                 "access_token": access_token,
-                "access_expiry": access_expiry.timestamp(),
                 "refresh_token": refresh_token,
-                "refresh_expiry": refresh_expiry.timestamp(),
             },
             HTTPStatus.OK,
         )
@@ -523,7 +522,9 @@ class LoginUser(Resource):
 @users_ns.route("home")
 @users_ns.doc("home")
 @users_ns.expect(auth_header_parser, validate=True)
-@users_ns.response(HTTPStatus.OK.value, "Successful response", home_response_body_model)
+@users_ns.response(
+    HTTPStatus.OK.value, f"{messages.SUCCESSFUL_RESPONSE}", home_response_body_model
+)
 @users_ns.response(
     HTTPStatus.UNAUTHORIZED.value,
     "%s\n%s\n%s"
@@ -556,9 +557,11 @@ class UserHomeStatistics(Resource):
 @users_ns.route("dashboard")
 @users_ns.expect(auth_header_parser, validate=True)
 @users_ns.response(
-    HTTPStatus.OK.value, "Successful response", dashboard_response_body_model
+    HTTPStatus.OK.value,
+    f"{messages.GENERAL_SUCCESS_MESSAGE}",
+    dashboard_response_body_model,
 )
-@users_ns.response(HTTPStatus.NOT_FOUND.value, "User not found")
+@users_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_NOT_FOUND}")
 class UserDashboard(Resource):
     @classmethod
     @jwt_required

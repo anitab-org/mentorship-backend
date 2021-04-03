@@ -1,7 +1,7 @@
 import datetime
 import unittest
 from werkzeug.security import check_password_hash
-
+from http import HTTPStatus
 from app import messages
 from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
@@ -66,7 +66,8 @@ class TestUserDao(BaseTestCase):
         self.assertTrue(user.is_email_verified)
         self.assertIsNotNone(user.email_verification_date)
         self.assertEqual(
-            (messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, 200), actual_result
+            (messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, HTTPStatus.OK),
+            actual_result,
         )
 
     def test_dao_confirm_registration_bad_token(self):
@@ -96,7 +97,8 @@ class TestUserDao(BaseTestCase):
         self.assertFalse(user.is_email_verified)
         self.assertIsNone(user.email_verification_date)
         self.assertEqual(
-            (messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, 400), actual_result
+            (messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, HTTPStatus.BAD_REQUEST),
+            actual_result,
         )
 
     def test_dao_confirm_registration_of_already_verified_user(self):
@@ -124,7 +126,9 @@ class TestUserDao(BaseTestCase):
         actual_result = dao.confirm_registration(good_token)
 
         self.assertTrue(user.is_email_verified)
-        self.assertEqual((messages.ACCOUNT_ALREADY_CONFIRMED, 200), actual_result)
+        self.assertEqual(
+            (messages.ACCOUNT_ALREADY_CONFIRMED, HTTPStatus.OK), actual_result
+        )
 
     def test_dao_delete_only_user_admin(self):
         dao = UserDAO()
@@ -140,7 +144,9 @@ class TestUserDao(BaseTestCase):
         self.assertTrue(after_delete_user.is_admin)
         self.assertIsNotNone(after_delete_user)
         self.assertEqual(1, after_delete_user.id)
-        self.assertEqual((messages.USER_CANT_DELETE, 400), dao_result)
+        self.assertEqual(
+            (messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST), dao_result
+        )
 
     def test_get_achievements(self):
         dao = UserDAO()
@@ -162,7 +168,7 @@ class TestUserDao(BaseTestCase):
         db.session.add(mentee)
         db.session.commit()
 
-        start_date = datetime.datetime.now()
+        start_date = datetime.datetime.utcnow()
         end_date = start_date + datetime.timedelta(weeks=4)
 
         tasks_list = TasksListModel()
@@ -221,7 +227,7 @@ class TestUserDao(BaseTestCase):
         db.session.add(mentee)
         db.session.commit()
 
-        start_date = datetime.datetime.now()
+        start_date = datetime.datetime.utcnow()
         end_date = start_date + datetime.timedelta(weeks=4)
 
         tasks_list = TasksListModel()

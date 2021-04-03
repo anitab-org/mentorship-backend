@@ -43,14 +43,14 @@ class TestMentorshipRelationModel(BaseTestCase):
 
         self.notes_example = "description of a good mentorship relation"
 
-        now_datetime = datetime.now()
+        now_datetime = datetime.utcnow()
         self.start_date_example = datetime(
             year=now_datetime.year + 1, month=3, day=1
         ).timestamp()
         self.end_date_example = datetime(
             year=now_datetime.year + 1, month=5, day=1
         ).timestamp()
-        self.now_datetime = datetime.now().timestamp()
+        self.now_datetime = datetime.utcnow().timestamp()
 
         db.session.add(self.first_user)
         db.session.add(self.second_user)

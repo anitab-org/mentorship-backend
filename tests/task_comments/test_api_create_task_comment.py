@@ -29,7 +29,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(example="example")),
         )
 
-        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_creation_api_with_comment_not_string(self):
@@ -43,7 +43,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment=5)),
         )
 
-        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_creation_api_with_comment_too_long(self):
@@ -61,7 +61,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="a" * 500)),
         )
 
-        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_creation_api_with_relation_not_existing(self):
@@ -75,7 +75,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_creation_api_with_unaccepted_relation(self):
@@ -103,7 +103,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(HTTPStatus.NOT_FOUND.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_full_task_comment_creation_api(self):
@@ -120,7 +120,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(HTTPStatus.CREATED.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.CREATED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         new_comment = TaskCommentDAO.get_task_comment(1, 1)[0]
