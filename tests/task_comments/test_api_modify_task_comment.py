@@ -119,7 +119,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(HTTPStatus.BAD_REQUEST.value, actual_response.status_code)
+        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_task_not_existing(self):
