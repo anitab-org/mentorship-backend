@@ -35,7 +35,9 @@ class TestDeleteTasksDao(TasksBaseTestCase):
         self.assertIsNotNone(second_task)
 
         actual_response = TaskDAO.delete_task(
-            user_id=self.first_user.id, mentorship_relation_id=4, task_id=second_task_id
+            user_id=self.first_user.id,
+            mentorship_relation_id=100,
+            task_id=second_task_id,
         )
 
         self.assertEqual(expected_response, actual_response)

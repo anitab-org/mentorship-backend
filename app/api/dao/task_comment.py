@@ -203,8 +203,5 @@ class TaskCommentDAO:
                 HTTPStatus.NOT_FOUND,
             )
 
-        if task_comment:
-            task_comment.delete_from_db()
-            return messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
-
-        return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        task_comment.delete_from_db()
+        return messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
