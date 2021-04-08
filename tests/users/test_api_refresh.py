@@ -85,6 +85,22 @@ class TestUserRefreshApi(BaseTestCase):
         self.assertEqual(401, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
+    def test_user_refresh_change_password(self):
+        auth_header = get_test_request_header(self.first_user.id)
+        passDict = {
+            "current_password": user1["password"],
+            "new_password": "somepassword",
+        }
+        UserDAO.change_password(self.first_user.id, passDict)
+        response = self.client.post(
+            "/refresh",
+            follow_redirects=True,
+            headers=auth_header,
+            content_type="application/json",
+        )
+        self.assertEqual(401, response.status_code)
+        self.assertEqual(json.loads(response.data), messages.TOKEN_IS_INVALID)
+
 
 if __name__ == "__main__":
     unittest.main()

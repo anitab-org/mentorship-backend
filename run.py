@@ -2,7 +2,6 @@ from flask import Flask
 from flask_migrate import Migrate
 
 from config import get_env_config
-from app.utils.jwt_utils import setup_jwt
 
 
 def create_app(config_filename: str) -> Flask:
@@ -33,8 +32,6 @@ def create_app(config_filename: str) -> Flask:
     from app.schedulers.background_scheduler import init_schedulers
 
     init_schedulers()
-
-    setup_jwt(app)
 
     return app
 
