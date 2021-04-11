@@ -362,7 +362,7 @@ class UserDAO:
             return messages.ACCOUNT_ALREADY_CONFIRMED, HTTPStatus.OK
         else:
             user.is_email_verified = True
-            user.email_verification_date = datetime.now()
+            user.email_verification_date = datetime.utcnow()
             user.save_to_db()
             return messages.ACCOUNT_ALREADY_CONFIRMED_AND_THANKS, HTTPStatus.OK
 

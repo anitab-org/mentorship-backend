@@ -168,7 +168,7 @@ class TestUserDao(BaseTestCase):
         db.session.add(mentee)
         db.session.commit()
 
-        start_date = datetime.datetime.now()
+        start_date = datetime.datetime.utcnow()
         end_date = start_date + datetime.timedelta(weeks=4)
 
         tasks_list = TasksListModel()
@@ -227,7 +227,7 @@ class TestUserDao(BaseTestCase):
         db.session.add(mentee)
         db.session.commit()
 
-        start_date = datetime.datetime.now()
+        start_date = datetime.datetime.utcnow()
         end_date = start_date + datetime.timedelta(weeks=4)
 
         tasks_list = TasksListModel()

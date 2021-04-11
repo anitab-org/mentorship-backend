@@ -1,0 +1,4 @@
+[run]
+omit = 
+    # omit everything in the tests directory
+    tests/*
