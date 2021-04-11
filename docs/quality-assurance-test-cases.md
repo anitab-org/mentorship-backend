@@ -202,6 +202,16 @@ Only admin users have access to this.
 | Revoke self the admin role when self is not the only admin | Success |
 | Revoking an admin user, when the current user is not an admin | Fail |
 
+### Returns all admin users
+
+**Service:** GET /admins
+
+| Test Case                                                                                | Outcome |
+| ---------------------------------------------------------------------------------------- | ------- |
+| An Admin User with valid access returns all assigned non-admin user which are now admins | Success |
+| A User which is not an admin requests to return all assigned non-admin user              | Fail    |
+| An Admin User tries to find a non-admin user , when returns all admin users              | Fail    |
+| An Admin User returns self details                                                       | Fail    |
 
 ## Tasks
 
