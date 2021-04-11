@@ -230,16 +230,6 @@ Only admin users have access to this.
 
 ## Tasks
 
-### Create
-**Service:** POST /mentorship_relation/{relation_id}/task
-
-|  Test Case                                                                                | Outcome |
-| ----------------------------------------------------------------------------------------- |-------- |
-| Create a task for a relation, in the accepted state, between logged user and another user | Success |
-| Creating a task without a description (either empty or not in the request body at all)    | Fail    |
-| Create a task when a logged user is not involved in the relation                          | Fail    |
-| Create a task if relation state is different than accepted                                | Fail    |
-
 ### Confirmation of users email
 
 **Service:** GET /user/confirm_email/{token}
