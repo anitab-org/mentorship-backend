@@ -26,5 +26,12 @@ jobs:
     - name: Run tests
       run: |
         make docker_test
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./cov/coverage.xml
+        name: codecov-umbrella
+        fail_ci_if_error: true
         
 
