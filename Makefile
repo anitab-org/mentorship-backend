@@ -9,10 +9,10 @@ docker_test:
 docker_dev: 
 	docker-compose up --build --remove-orphans 
 generate_cov: 
-	pip install pytest 
+	pip install pytest  
 	pip install pytest-cov
 	pytest --cov-config=.coveragerc
-    pytest --cov=./ --cov-report=xml 
+	pytest --cov=./ --cov-report=xml 
 
 
 
