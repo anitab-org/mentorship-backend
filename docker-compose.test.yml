@@ -11,11 +11,10 @@ services:
 
     mentorship_system_test: 
       container_name: mentorship_system_test
-      build: .  
+      build: . 
       depends_on:
         - test_postgres 
       environment: 
         FLASK_ENVIRONMENT_CONFIG: test 
       command: 
         - generate_cov
-        

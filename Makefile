@@ -5,7 +5,7 @@ docker_host_dev:
 python_tests: 
 	python -m unittest discover tests 
 docker_test: 
-	docker-compose -f docker-compose.test.yml run --build --remove-orphans
+	docker-compose -f docker-compose.test.yml up --build --remove-orphans  --abort-on-container-exit mentorship_system_test 
 docker_dev: 
 	docker-compose up --build --remove-orphans 
 generate_cov: 
@@ -13,7 +13,8 @@ generate_cov:
 	pip install pytest-cov
 	pytest --cov-config=.coveragerc
 	pytest --cov=./ --cov-report=xml
-	bash < curl -s https://codecov.io/bash 
+	apt install curl
+	curl -s https://codecov.io/bash 
 
 
 
