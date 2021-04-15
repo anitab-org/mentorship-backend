@@ -17,5 +17,5 @@ services:
       environment: 
         FLASK_ENVIRONMENT_CONFIG: test 
       command: 
-        - python_tests
+        - generate_cov
         

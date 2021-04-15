@@ -8,6 +8,12 @@ docker_test:
 	docker-compose -f docker-compose.test.yml up --build --exit-code-from mentorship_system_test --remove-orphans
 docker_dev: 
 	docker-compose up --build --remove-orphans 
+generate_cov: 
+	pip install pytest 
+	pip install pytest-cov
+	pytest --cov-config=.coveragerc
+    pytest --cov=./ --cov-report=xml 
+
 
 
 	
