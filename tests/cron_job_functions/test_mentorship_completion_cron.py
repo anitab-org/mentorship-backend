@@ -45,7 +45,7 @@ class TestCompleteMentorshipRelationCronFunction(BaseTestCase):
 
         self.notes_example = "description of a good mentorship relation"
 
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.past_end_date_example = self.now_datetime - timedelta(weeks=5)
         self.future_end_date_example = self.now_datetime + timedelta(weeks=5)
 

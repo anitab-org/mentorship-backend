@@ -21,7 +21,7 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
         super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         # create new mentorship relation
