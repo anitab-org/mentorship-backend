@@ -14,7 +14,7 @@ generate_cov:
 	pytest --cov-config=.coveragerc
 	pytest --cov=./ --cov-report=xml
 	apt install curl
-	curl -s https://codecov.io/bash 
+	bash | curl -s https://codecov.io/bash 
 
 
 
