@@ -11,7 +11,9 @@ services:
 
     mentorship_system_test: 
       container_name: mentorship_system_test
-      build: . 
+      build: .
+      volumes:
+        - ./cov:/dockerbuild/cov
       depends_on:
         - test_postgres 
       environment: 
