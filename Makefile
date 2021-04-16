@@ -11,7 +11,6 @@ docker_dev:
 generate_cov: 
 	pip install pytest  
 	pip install pytest-cov
-	pytest --cov-config=.coveragerc
 	pytest --cov=. --cov-report=xml
 	mv ./coverage.xml /dockerbuild/cov/
 
