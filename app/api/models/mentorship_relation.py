@@ -86,7 +86,6 @@ mentorship_request_response_body = Model(
     },
 )
 
-
 user_dashboard_user_details = Model(
     "User details for dashboard",
     {
