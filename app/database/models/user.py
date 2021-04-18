@@ -1,6 +1,8 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 from app.database.sqlalchemy_extension import db
+from app.database.db_types.JsonCustomType import JsonCustomType
+from app.utils.bitschema_utils import Timezone
 
 
 class UserModel(db.Model):
@@ -12,6 +14,9 @@ class UserModel(db.Model):
         password: A string for storing the user's password.
         email: A string for storing user email.
         terms_and_conditions_checked: A boolean indicating if user has agreed to terms and conditions or not.
+        is_organization_rep: A boolean indicating that user is a organization representative.
+        additional_info: A json object for storing other information of the user.
+        timezone: A string for storing user timezone information.
     """
 
     # Specifying database table used for UserModel
@@ -56,6 +61,9 @@ class UserModel(db.Model):
 
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
+    is_organization_rep = db.Column(db.Boolean)
+    additional_info = db.Column(JsonCustomType)
+    timezone = db.Column(db.Enum(Timezone))
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked."""
@@ -73,11 +81,14 @@ class UserModel(db.Model):
         self.is_admin = True if self.is_empty() else False  # first user is admin
         self.is_email_verified = False
         self.registration_date = time.time()
+        self.is_organization_rep = False
 
         ## optional fields
 
         self.need_mentoring = False
         self.available_to_mentor = False
+        self.additional_info = None
+        self.timezone = Timezone.GMT0
 
     def json(self):
         """Returns Usermodel object in json format."""
@@ -106,6 +117,9 @@ class UserModel(db.Model):
             "photo_url": self.photo_url,
             "need_mentoring": self.need_mentoring,
             "available_to_mentor": self.available_to_mentor,
+            "is_organization_rep": self.is_organization_rep,
+            "additional_info": self.additional_info,
+            "timezone": self.timezone,
         }
 
     def __repr__(self):

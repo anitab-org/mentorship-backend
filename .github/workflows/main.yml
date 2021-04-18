@@ -5,9 +5,9 @@ name: Lint Code and Run Tests
 
 on:
   pull_request:
-    branches: [develop]
+    branches: [develop, bit]
   push:
-    branches: [develop]
+    branches: [develop, bit]
 
 jobs:
   lint:

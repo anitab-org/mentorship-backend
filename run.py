@@ -14,7 +14,7 @@ def create_app(config_filename: str) -> Flask:
 
     db.init_app(app)
 
-    migrate = Migrate(app, db)
+    migrate = Migrate(app, db, render_as_batch=True)
 
     from app.api.jwt_extension import jwt
 
