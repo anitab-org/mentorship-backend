@@ -13,7 +13,6 @@
 5. Run the following commands to get to the PR branch, where `<contributor>` is the GitHub username of the contributor that submitted the PR:
 
 ```
-git clone https://github.com/<contributor>/mentorship-backend/
 git fetch upstream pull/ID/head:<branch_name>
 git checkout <branch-name>
 ```
