@@ -14,7 +14,7 @@
 
 ```
 git clone https://github.com/<contributor>/mentorship-backend/
-git fetch origin pull/ID/head:BRANCHNAME
+git fetch upstream pull/ID/head:<branch_name>
 git checkout <branch-name>
 ```
 
