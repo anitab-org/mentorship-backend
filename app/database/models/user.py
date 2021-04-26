@@ -129,7 +129,7 @@ class UserModel(db.Model):
 
     @classmethod
     def get_all_admins(cls, is_admin=True):
-        """Returns all the admins. """
+        """Returns all the admins."""
         return cls.query.filter_by(is_admin=is_admin).all()
 
     @classmethod
