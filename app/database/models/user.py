@@ -1,6 +1,12 @@
+import uuid
+
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 from app.database.sqlalchemy_extension import db
+
+
+def generate_UUID():
+    return str(uuid.uuid4())
 
 
 class UserModel(db.Model):
@@ -18,7 +24,7 @@ class UserModel(db.Model):
     __tablename__ = "users"
     __table_args__ = {"extend_existing": True}
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(32), primary_key=True, default=generate_UUID)
 
     # personal data
     name = db.Column(db.String(30))

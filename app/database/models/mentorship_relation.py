@@ -33,9 +33,9 @@ class MentorshipRelationModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # personal data
-    mentor_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    mentee_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    action_user_id = db.Column(db.Integer, nullable=False)
+    mentor_id = db.Column(db.String(32), db.ForeignKey("users.id"))
+    mentee_id = db.Column(db.String(32), db.ForeignKey("users.id"))
+    action_user_id = db.Column(db.String(32), nullable=False)
     mentor = db.relationship(
         UserModel,
         backref="mentor_relations",

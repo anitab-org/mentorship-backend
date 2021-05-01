@@ -21,7 +21,7 @@ class TaskCommentModel(db.Model):
     __table_args__ = {"extend_existing": True}
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.String(32), db.ForeignKey("users.id"))
     task_id = db.Column(db.Integer, db.ForeignKey("tasks_list.id"))
     relation_id = db.Column(db.Integer, db.ForeignKey("mentorship_relations.id"))
     creation_date = db.Column(db.Float, nullable=False)
