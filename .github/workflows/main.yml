@@ -8,6 +8,8 @@ on:
     branches: [develop]
   push:
     branches: [develop]
+    paths-ignore: 
+      - '**.md'
 
 jobs:
   lint:
