@@ -3,11 +3,8 @@
 ![Build Status](https://github.com/anitab-org/mentorship-backend/workflows/Run%20tests/badge.svg)
 [![codecov](https://codecov.io/gh/anitab-org/mentorship-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/anitab-org/mentorship-backend)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system)
-[![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
 [![Docs](https://img.shields.io/badge/documentation-mentorship--backend-blue.svg)](https://anitab-org.github.io/mentorship-backend)
-=======
 [![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/)
->>>>>>> 8f044bccb816f8a07789312d8991d8d8d5cbed0b
 
 
 Mentorship System is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.

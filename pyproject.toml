@@ -38,6 +38,7 @@ python-dotenv = "0.8.2"
 requests = "2.18.4"
 SQLAlchemy = "1.2.7"
 Werkzeug = "0.16.1"
+psycopg2 = "^2.8.6"
 
 
 [tool.poetry.dev-dependencies]
