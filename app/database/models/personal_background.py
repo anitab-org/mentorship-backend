@@ -1,3 +1,4 @@
+### This is BridgeInTech backend extension ###
 from sqlalchemy import null
 from app.database.sqlalchemy_extension import db
 from app.database.db_types.JsonCustomType import JsonCustomType

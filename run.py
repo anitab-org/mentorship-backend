@@ -14,12 +14,15 @@ def create_app(config_filename: str) -> Flask:
 
     db.init_app(app)
 
+    # mentorship backend models
     from app.database.models.user import UserModel
     from app.database.models.mentorship_relation import (
         MentorshipRelationModel,
     )
     from app.database.models.tasks_list import TasksListModel
     from app.database.models.task_comment import TaskCommentModel
+    
+    # bridge-in-tech backend models
     from app.database.models.personal_background import (
         PersonalBackgroundModel,
     )
@@ -52,12 +55,15 @@ application = create_app(get_env_config())
 def create_tables():
     from app.database.sqlalchemy_extension import db
 
+    # mentoship backend models
     from app.database.models.user import UserModel
     from app.database.models.mentorship_relation import (
         MentorshipRelationModel,
     )
     from app.database.models.tasks_list import TasksListModel
     from app.database.models.task_comment import TaskCommentModel
+    
+    # bridge-in-tech backend models
     from app.database.models.personal_background import (
         PersonalBackgroundModel,
     )
@@ -68,10 +74,14 @@ def create_tables():
     def make_shell_context():
         return {
             "db": db,
+
+            # mentorship backend models
             "UserModel": UserModel,
             "MentorshipRelationModel": MentorshipRelationModel,
             "TaskListModel": TasksListModel,
             "TaskCommentModel": TaskCommentModel,
+
+            # bridge-in-tech backend models
             "PersonalBackgroundModel": PersonalBackgroundModel,
         }
 
