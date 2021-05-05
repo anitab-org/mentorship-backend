@@ -13,8 +13,4 @@ generate_cov:
 	pip install pytest-cov
 	pytest --cov=. --cov-report=xml
 	mv ./coverage.xml /dockerbuild/cov/
-
-
-
 	
-
