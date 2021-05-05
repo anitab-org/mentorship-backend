@@ -59,7 +59,7 @@ class UserModel(db.Model):
     available_to_mentor = db.Column(db.Boolean)
 
     def __init__(self, name, username, password, email, terms_and_conditions_checked):
-        """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked. """
+        """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked."""
         ## required fields
 
         self.name = name
@@ -110,45 +110,45 @@ class UserModel(db.Model):
         }
 
     def __repr__(self):
-        """Returns the user's name and username. """
+        """Returns the user's name and username."""
         return f"User name {self.name} . Username is {self.username} ."
 
     @classmethod
     def find_by_username(cls, username: str) -> "UserModel":
-        """Returns the user that has the username we searched for. """
+        """Returns the user that has the username we searched for."""
         return cls.query.filter_by(username=username).first()
 
     @classmethod
     def find_by_email(cls, email: str) -> "UserModel":
-        """Returns the user that has the email we searched for. """
+        """Returns the user that has the email we searched for."""
         return cls.query.filter_by(email=email).first()
 
     @classmethod
     def find_by_id(cls, _id: int) -> "UserModel":
-        """Returns the user that has the id we searched for. """
+        """Returns the user that has the id we searched for."""
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
     def get_all_admins(cls, is_admin=True):
-        """Returns all the admins. """
+        """Returns all the admins."""
         return cls.query.filter_by(is_admin=is_admin).all()
 
     @classmethod
     def is_empty(cls) -> bool:
-        """Returns a boolean if the Usermodel is empty or not. """
+        """Returns a boolean if the Usermodel is empty or not."""
         return cls.query.first() is None
 
     def set_password(self, password_plain_text: str) -> None:
-        """Sets user password when they create an account or when they are changing their password. """
+        """Sets user password when they create an account or when they are changing their password."""
         self.password_hash = generate_password_hash(password_plain_text)
 
     # checks if password is the same, using its hash
     def check_password(self, password_plain_text: str) -> bool:
-        """Returns a boolean if password is the same as it hash or not. """
+        """Returns a boolean if password is the same as it hash or not."""
         return check_password_hash(self.password_hash, password_plain_text)
 
     def save_to_db(self) -> None:
-        """Adds a user to the database. """
+        """Adds a user to the database."""
         try:
             db.session.add(self)
             db.session.commit()
@@ -157,6 +157,6 @@ class UserModel(db.Model):
             raise e
 
     def delete_from_db(self) -> None:
-        """Deletes a user from the database. """
+        """Deletes a user from the database."""
         db.session.delete(self)
         db.session.commit()

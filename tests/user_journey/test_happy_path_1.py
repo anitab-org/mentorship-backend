@@ -74,7 +74,7 @@ class TestHappyPath1(BaseTestCase):
         request_body = {
             "mentor_id": self.mentor.id,
             "mentee_id": self.mentee.id,
-            "end_date": int((datetime.now() + timedelta(days=40)).timestamp()),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         send_request_response = self.client.post(
@@ -163,11 +163,9 @@ class TestHappyPath1(BaseTestCase):
         new_task = tasks[0]
         task_id = new_task["id"]
         task_description = new_task["description"]
-        task_state = new_task["is_done"]
         task_completed_at = new_task["completed_at"]
 
         self.assertIsNotNone(task_id)
-        self.assertFalse(task_state)
         self.assertIsNone(task_completed_at)
         self.assertEqual(self.test_description, task_description)
 
@@ -191,11 +189,9 @@ class TestHappyPath1(BaseTestCase):
         updated_task = tasks[0]
         updated_task_id = updated_task["id"]
         updated_task_description = updated_task["description"]
-        updated_task_state = updated_task["is_done"]
         updated_task_completed_at = updated_task["completed_at"]
 
         self.assertEqual(task_id, updated_task_id)
-        self.assertTrue(updated_task_state)
         self.assertIsNotNone(updated_task_completed_at)
         self.assertEqual(self.test_description, updated_task_description)
 
