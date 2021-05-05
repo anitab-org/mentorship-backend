@@ -670,7 +670,7 @@ class Ethnicity(Enum):
 @unique
 class SexualOrientation(Enum):
     HETEROSEXUAL = "Heterosexual/Straight"
-    LGBTIA = "LGBTIA+"
+    LGBTQIA = "LGBTQIA+"
     OTHER = "Other"
     DECLINED = "Prefer not to say"
     NOT_APPLICABLE = "Not Applicable"

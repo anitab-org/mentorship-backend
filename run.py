@@ -21,7 +21,7 @@ def create_app(config_filename: str) -> Flask:
     )
     from app.database.models.tasks_list import TasksListModel
     from app.database.models.task_comment import TaskCommentModel
-    
+
     # bridge-in-tech backend models
     from app.database.models.personal_background import (
         PersonalBackgroundModel,
@@ -62,7 +62,7 @@ def create_tables():
     )
     from app.database.models.tasks_list import TasksListModel
     from app.database.models.task_comment import TaskCommentModel
-    
+
     # bridge-in-tech backend models
     from app.database.models.personal_background import (
         PersonalBackgroundModel,
@@ -74,13 +74,11 @@ def create_tables():
     def make_shell_context():
         return {
             "db": db,
-
             # mentorship backend models
             "UserModel": UserModel,
             "MentorshipRelationModel": MentorshipRelationModel,
             "TaskListModel": TasksListModel,
             "TaskCommentModel": TaskCommentModel,
-
             # bridge-in-tech backend models
             "PersonalBackgroundModel": PersonalBackgroundModel,
         }

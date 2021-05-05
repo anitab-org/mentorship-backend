@@ -67,7 +67,7 @@ def upgrade():
             "sexual_orientation",
             sa.Enum(
                 "HETEROSEXUAL",
-                "LGBTIA",
+                "LGBTQIA",
                 "OTHER",
                 "DECLINED",
                 "NOT_APPLICABLE",
