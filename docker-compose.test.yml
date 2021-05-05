@@ -20,3 +20,4 @@ services:
         FLASK_ENVIRONMENT_CONFIG: test 
       command: 
         - generate_cov
+        
