@@ -8,7 +8,6 @@ ENV DB_PASSWORD=postgres
 ENV DB_ENDPOINT=postgres:5432
 ENV DB_TEST_ENDPOINT=test_postgres:5432 
 ENV DB_NAME=mentorship_system
-ENV CI=true 
 ENV DB_TEST_NAME=mentorship_system_test
 ENV POSTGRES_HOST=postgres
 ENV POSTGRES_PORT=5432 
