@@ -16,15 +16,15 @@ from app.database.models.user import UserModel
 from app.database.models.personal_background import PersonalBackgroundModel
 from app.database.sqlalchemy_extension import db
 from app.database.db_types.JsonCustomType import JsonCustomType
-from tests.test_data import user1
+from tests.test_data import user1, user2
 
 # Testing User's Personal background database model
 class TestPersonalBackgroundModel(BaseTestCase):
     def setUp(self):
         super().setUp()
 
-        # Add a user into the database
-        user = UserModel(
+        # Add a user1 into the database
+        user_1 = UserModel(
             name=user1["name"],
             email=user1["email"],
             username=user1["username"],
@@ -32,22 +32,25 @@ class TestPersonalBackgroundModel(BaseTestCase):
             terms_and_conditions_checked=user1["terms_and_conditions_checked"],
         )
 
-        db.session.add(user)
+        # Add a user2 into the database
+        user_2 = UserModel(
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
+        )
+
+        db.session.add(user_1)
+        db.session.add(user_2)
         db.session.commit()
 
-        self.user = UserModel.query.filter_by(email=user.email).first()
+        self.user1 = UserModel.query.filter_by(email=user_1.email).first()
+        self.user2 = UserModel.query.filter_by(email=user_2.email).first()
 
-    def test_user_background_not_exist(self):
-
-        user_background = PersonalBackgroundModel.query.filter_by(
-            user_id=self.user.id
-        ).first()
-        self.assertTrue(user_background is None)
-
-    def test_user_background_successfully_added(self):
-        # add user personal_background
-        user_background = PersonalBackgroundModel(
-            user_id=self.user.id,
+        # add user2 personal_background
+        self.user2_background = PersonalBackgroundModel(
+            user_id=self.user2.id,
             gender=Gender.FEMALE,
             age=Age.AGE_25_TO_34,
             ethnicity=Ethnicity.CAUCASIAN,
@@ -59,35 +62,67 @@ class TestPersonalBackgroundModel(BaseTestCase):
             highest_education=HighestEducation.BACHELOR,
             years_of_experience=YearsOfExperience.UP_TO_10,
         )
-        user_background.others = {"religion": "Daoism"}
-        user_background.is_public = True
+        self.user2_background.others = {"religion": "Daoism"}
+        self.user2_background.is_public = True
 
-        db.session.add(user_background)
+        db.session.add(self.user2_background)
         db.session.commit()
 
+    def test_user1_background_not_exist(self):
+
+        user1_background = PersonalBackgroundModel.query.filter_by(
+            user_id=self.user1.id
+        ).first()
+        self.assertTrue(user1_background is None)
+
+    def test_user2_background_creation(self):
         background = PersonalBackgroundModel.query.filter_by(
-            user_id=self.user.id
+            user_id=self.user2.id
         ).first()
         self.assertTrue(background is not None)
         self.assertTrue(background.id is not None)
-        self.assertTrue(background.gender == user_background.gender)
-        self.assertTrue(background.age == user_background.age)
-        self.assertTrue(background.ethnicity == user_background.ethnicity)
+        self.assertTrue(background.gender == self.user2_background.gender)
+        self.assertTrue(background.age == self.user2_background.age)
+        self.assertTrue(background.ethnicity == self.user2_background.ethnicity)
         self.assertTrue(
-            background.sexual_orientation == user_background.sexual_orientation
+            background.sexual_orientation == self.user2_background.sexual_orientation
         )
-        self.assertTrue(background.religion == user_background.religion)
-        self.assertTrue(background.physical_ability == user_background.physical_ability)
-        self.assertTrue(background.mental_ability == user_background.mental_ability)
-        self.assertTrue(background.socio_economic == user_background.socio_economic)
+        self.assertTrue(background.religion == self.user2_background.religion)
         self.assertTrue(
-            background.highest_education == user_background.highest_education
+            background.physical_ability == self.user2_background.physical_ability
         )
         self.assertTrue(
-            background.years_of_experience == user_background.years_of_experience
+            background.mental_ability == self.user2_background.mental_ability
         )
-        self.assertTrue(background.others == user_background.others)
-        self.assertTrue(background.is_public == user_background.is_public)
+        self.assertTrue(
+            background.socio_economic == self.user2_background.socio_economic
+        )
+        self.assertTrue(
+            background.highest_education == self.user2_background.highest_education
+        )
+        self.assertTrue(
+            background.years_of_experience == self.user2_background.years_of_experience
+        )
+        self.assertTrue(background.others == self.user2_background.others)
+        self.assertTrue(background.is_public == self.user2_background.is_public)
+
+    def test_personal_background_json_representation(self):
+        expected_json = {
+            "id": self.user2_background.id,
+            "user_id": self.user2_background.user_id,
+            "age": self.user2_background.age,
+            "ethnicity": self.user2_background.ethnicity,
+            "sexual_orientation": self.user2_background.sexual_orientation,
+            "religion": self.user2_background.religion,
+            "physical_ability": self.user2_background.physical_ability,
+            "mental_ability": self.user2_background.mental_ability,
+            "socio_economic": self.user2_background.socio_economic,
+            "highest_education": self.user2_background.highest_education,
+            "years_of_experience": self.user2_background.years_of_experience,
+            "others": self.user2_background.others,
+            "is_public": self.user2_background.is_public,
+        }
+        self.assertEqual(expected_json, self.user2_background.json())
 
 
 if __name__ == "__main__":
