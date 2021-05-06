@@ -81,6 +81,7 @@ class TestPersonalBackgroundModel(BaseTestCase):
         ).first()
         self.assertTrue(background is not None)
         self.assertTrue(background.id is not None)
+        self.assertTrue(background.user_id, self.user2_background.user_id)
         self.assertTrue(background.gender == self.user2_background.gender)
         self.assertTrue(background.age == self.user2_background.age)
         self.assertTrue(background.ethnicity == self.user2_background.ethnicity)
@@ -123,6 +124,13 @@ class TestPersonalBackgroundModel(BaseTestCase):
             "is_public": self.user2_background.is_public,
         }
         self.assertEqual(expected_json, self.user2_background.json())
+
+    def test_find_personal_background_by_user_id(self):
+        query_personal_background = PersonalBackgroundModel.query.filter_by(user_id=self.user2_background.user_id).first()
+        find_by_user_id_result = PersonalBackgroundModel.find_by_user_id(
+            query_personal_background.user_id
+        )
+        self.assertEqual(query_personal_background, find_by_user_id_result)
 
 
 if __name__ == "__main__":
