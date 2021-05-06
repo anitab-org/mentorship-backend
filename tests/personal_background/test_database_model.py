@@ -126,7 +126,9 @@ class TestPersonalBackgroundModel(BaseTestCase):
         self.assertEqual(expected_json, self.user2_background.json())
 
     def test_find_personal_background_by_user_id(self):
-        query_personal_background = PersonalBackgroundModel.query.filter_by(user_id=self.user2_background.user_id).first()
+        query_personal_background = PersonalBackgroundModel.query.filter_by(
+            user_id=self.user2_background.user_id
+        ).first()
         find_by_user_id_result = PersonalBackgroundModel.find_by_user_id(
             query_personal_background.user_id
         )
