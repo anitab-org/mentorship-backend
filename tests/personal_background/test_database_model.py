@@ -73,14 +73,14 @@ class TestPersonalBackgroundModel(BaseTestCase):
         user1_background = PersonalBackgroundModel.query.filter_by(
             user_id=self.user1.id
         ).first()
-        self.assertTrue(user1_background is None)
+        self.assertIsNotNone(user1_background)
 
     def test_user2_background_creation(self):
         background = PersonalBackgroundModel.query.filter_by(
             user_id=self.user2.id
         ).first()
-        self.assertTrue(background is not None)
-        self.assertTrue(background.id is not None)
+        self.assertIsNotNone(background)
+        self.assertIsNotNone(background.id)
         self.assertTrue(background.user_id, self.user2_background.user_id)
         self.assertTrue(background.gender == self.user2_background.gender)
         self.assertTrue(background.age == self.user2_background.age)
@@ -106,6 +106,19 @@ class TestPersonalBackgroundModel(BaseTestCase):
         )
         self.assertTrue(background.others == self.user2_background.others)
         self.assertTrue(background.is_public == self.user2_background.is_public)
+
+    def test_personal_background_update(self):
+        # user change their personal background info
+        self.user2_background.gender = Gender.OTHER
+
+        db.session.add(self.user2_background)
+        db.session.commit()
+
+        background = PersonalBackgroundModel.query.filter_by(
+            user_id=self.user2.id
+        ).first()
+
+        self.assertTrue(background.gender, Gender.OTHER)
 
     def test_personal_background_json_representation(self):
         expected_json = {
@@ -133,6 +146,13 @@ class TestPersonalBackgroundModel(BaseTestCase):
             query_personal_background.user_id
         )
         self.assertEqual(query_personal_background, find_by_user_id_result)
+    
+    def test_find_personal_background_by_id(self):
+        query_personal_background = PersonalBackgroundModel.query.first()
+        find_by_id_result = PersonalBackgroundModel.find_by_id(
+            query_personal_background.id
+        )
+        self.assertEqual(query_personal_background, find_by_id_result)
 
 
 if __name__ == "__main__":
