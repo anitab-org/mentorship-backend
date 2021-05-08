@@ -73,7 +73,7 @@ class TestPersonalBackgroundModel(BaseTestCase):
         user1_background = PersonalBackgroundModel.query.filter_by(
             user_id=self.user1.id
         ).first()
-        self.assertIsNotNone(user1_background)
+        self.assertIsNone(user1_background)
 
     def test_user2_background_creation(self):
         background = PersonalBackgroundModel.query.filter_by(
