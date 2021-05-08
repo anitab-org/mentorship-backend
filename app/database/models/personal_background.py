@@ -131,7 +131,7 @@ class PersonalBackgroundModel(db.Model):
     def find_by_id(cls, _id: int) -> "PersonalBackgroundModel":
         """Returns the user's personal background that has the id we searched for."""
         return cls.query.filter_by(id=_id).first()
-        
+
     @classmethod
     def find_by_user_id(cls, user_id) -> "PersonalBackgroundModel":
 

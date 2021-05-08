@@ -146,7 +146,7 @@ class TestPersonalBackgroundModel(BaseTestCase):
             query_personal_background.user_id
         )
         self.assertEqual(query_personal_background, find_by_user_id_result)
-    
+
     def test_find_personal_background_by_id(self):
         query_personal_background = PersonalBackgroundModel.query.first()
         find_by_id_result = PersonalBackgroundModel.find_by_id(
