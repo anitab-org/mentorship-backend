@@ -32,7 +32,7 @@ class TestUserModel(BaseTestCase):
 
     def test_second_user_cannot_be_admin(self):
         user = UserModel(
-            name="User1",
+            name="UserA",
             email="user1@email.com",
             username="user_not_admin",
             password="user1_password",
@@ -44,7 +44,7 @@ class TestUserModel(BaseTestCase):
         user = UserModel.query.filter_by(email="user1@email.com").first()
         self.assertTrue(user is not None)
         self.assertTrue(user.id is not None)
-        self.assertTrue(user.name == "User1")
+        self.assertTrue(user.name == "UserA")
         self.assertTrue(user.username == "user_not_admin")
         self.assertTrue(user.email == "user1@email.com")
         self.assertFalse(user.password_hash == "user1_password")

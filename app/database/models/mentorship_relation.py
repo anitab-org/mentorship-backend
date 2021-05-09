@@ -128,7 +128,7 @@ class MentorshipRelationModel(db.Model):
     @validates("notes")
     def validate(self, key, value):
         if key == "notes":
-            assert value is not None
-            value = str(value).strip()
-            assert len(value.strip()) > 2
+            if value is not None:
+                value = str(value).strip()
+                assert len(value.strip()) > 2
         return value
