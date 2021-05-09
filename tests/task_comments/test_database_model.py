@@ -2,7 +2,7 @@ from app.database.models.task_comment import TaskCommentModel
 from tests.base_test_case import BaseTestCase
 
 
-class TestAdminUserModel(BaseTestCase):
+class TestTaskCommentModel(BaseTestCase):
     def test_task_validations_comment(self):
         self.assertRaises(
             AssertionError,
