@@ -38,6 +38,7 @@ class UserList(Resource):
         "list_users",
         params={
             "search": "Search query",
+            "skills": "Search based on skill",
             "page": "specify page of users (default: 1)",
             "per_page": "specify number of users per page (default: 10)",
         },
@@ -75,7 +76,7 @@ class UserList(Resource):
         )
 
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page)
+        return DAO.list_users(user_id, request.args.get("search", ""), request.args.get("skills", ""), page, per_page)
 
 
 @users_ns.route("users/<int:user_id>")
@@ -242,6 +243,7 @@ class VerifiedUser(Resource):
         "get_verified_users",
         params={
             "search": "Search query",
+            "skills": "Search based on skill",
             "page": "specify page of users",
             "per_page": "specify number of users per page",
         },
@@ -280,7 +282,7 @@ class VerifiedUser(Resource):
 
         user_id = get_jwt_identity()
         return DAO.list_users(
-            user_id, request.args.get("search", ""), page, per_page, is_verified=True
+            user_id, request.args.get("search", ""), request.args.get("skills", ""), page, per_page, is_verified=True
         )
 
 
