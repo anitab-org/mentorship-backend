@@ -296,6 +296,7 @@ class VerifiedUser(Resource):
             is_verified=True,
         )
 
+
 @users_ns.route("register")
 class UserRegister(Resource):
     @classmethod
