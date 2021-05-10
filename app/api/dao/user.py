@@ -150,12 +150,12 @@ class UserDAO:
 
     @staticmethod
     def list_users(
-        user_id: int,
-        search_query: str = "",
-        skill: str = "",
-        page: int = DEFAULT_PAGE,
-        per_page: int = DEFAULT_USERS_PER_PAGE,
-        is_verified=None,
+            user_id: int,
+            search_query: str = "",
+            skill: str = "",
+            page: int = DEFAULT_PAGE,
+            per_page: int = DEFAULT_USERS_PER_PAGE,
+            is_verified=None,
     ):
         """Retrieves a list of verified users with the specified ID.
 
@@ -201,7 +201,7 @@ class UserDAO:
                 # is_available is true
                 # when either need_mentoring or available_to_mentor is true
                 user["is_available"] = (
-                    user["need_mentoring"] or user["available_to_mentor"]
+                        user["need_mentoring"] or user["available_to_mentor"]
                 )
 
         return list_of_users, HTTPStatus.OK
@@ -663,8 +663,8 @@ class UserDAO:
         )
 
         if current_relation != (
-            messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
-            HTTPStatus.OK,
+                messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
+                HTTPStatus.OK,
         ):
             response["tasks_todo"] = marshal(
                 [
