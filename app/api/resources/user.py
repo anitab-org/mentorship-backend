@@ -76,7 +76,13 @@ class UserList(Resource):
         )
 
         user_id = get_jwt_identity()
-        return DAO.list_users(user_id, request.args.get("search", ""), request.args.get("skills", ""), page, per_page)
+        return DAO.list_users(
+            user_id,
+            request.args.get("search", ""),
+            request.args.get("skills", ""),
+            page,
+            per_page,
+        )
 
 
 @users_ns.route("users/<int:user_id>")
@@ -282,9 +288,13 @@ class VerifiedUser(Resource):
 
         user_id = get_jwt_identity()
         return DAO.list_users(
-            user_id, request.args.get("search", ""), request.args.get("skills", ""), page, per_page, is_verified=True
+            user_id,
+            request.args.get("search", ""),
+            request.args.get("skills", ""),
+            page,
+            per_page,
+            is_verified=True,
         )
-
 
 @users_ns.route("register")
 class UserRegister(Resource):

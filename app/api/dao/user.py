@@ -150,12 +150,12 @@ class UserDAO:
 
     @staticmethod
     def list_users(
-            user_id: int,
-            search_query: str = "",
-            skill: str = "",
-            page: int = DEFAULT_PAGE,
-            per_page: int = DEFAULT_USERS_PER_PAGE,
-            is_verified=None,
+        user_id: int,
+        search_query: str = "",
+        skill: str = "",
+        page: int = DEFAULT_PAGE,
+        per_page: int = DEFAULT_USERS_PER_PAGE,
+        is_verified=None,
     ):
         """Retrieves a list of verified users with the specified ID.
 
@@ -176,17 +176,23 @@ class UserDAO:
             UserModel.id != user_id,
             not is_verified or UserModel.is_email_verified,
             func.lower(UserModel.name).contains(search_query.lower())
-            | func.lower(UserModel.username).contains(search_query.lower())
+            | func.lower(UserModel.username).contains(search_query.lower()),
         )
-        if skill != '':
-            users_list_query = users_list_query.filter(func.lower(UserModel.skills) == func.lower(skill))
+        if skill != "":
+            users_list_query = users_list_query.filter(
+                func.lower(UserModel.skills) == func.lower(skill)
+            )
 
-        users_list = users_list_query.order_by(UserModel.id).paginate(
-            page=page,
-            per_page=per_page,
-            error_out=False,
-            max_per_page=UserDAO.MAX_USERS_PER_PAGE,
-        ).items
+        users_list = (
+            users_list_query.order_by(UserModel.id)
+            .paginate(
+                page=page,
+                per_page=per_page,
+                error_out=False,
+                max_per_page=UserDAO.MAX_USERS_PER_PAGE,
+            )
+            .items
+        )
 
         list_of_users = [user.json() for user in users_list]
 
@@ -201,7 +207,7 @@ class UserDAO:
                 # is_available is true
                 # when either need_mentoring or available_to_mentor is true
                 user["is_available"] = (
-                        user["need_mentoring"] or user["available_to_mentor"]
+                    user["need_mentoring"] or user["available_to_mentor"]
                 )
 
         return list_of_users, HTTPStatus.OK
@@ -663,8 +669,8 @@ class UserDAO:
         )
 
         if current_relation != (
-                messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
-                HTTPStatus.OK,
+            messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
+            HTTPStatus.OK,
         ):
             response["tasks_todo"] = marshal(
                 [

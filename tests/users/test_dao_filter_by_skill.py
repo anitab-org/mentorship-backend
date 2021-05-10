@@ -9,7 +9,6 @@ from tests.test_utils import get_test_request_header
 
 
 class FilterUsersBySkill(BaseTestCase):
-
     def insert_entries_in_database(self):
 
         # Insert data of the first entry
@@ -67,7 +66,7 @@ class FilterUsersBySkill(BaseTestCase):
         )
 
         for data in json.loads(actual_response_1.data):
-            self.assertEqual(expected_response_1, data['skills'])
+            self.assertEqual(expected_response_1, data["skills"])
 
     def test_case_2(self):
         self.insert_entries_in_database()
@@ -82,7 +81,7 @@ class FilterUsersBySkill(BaseTestCase):
         )
 
         for data in json.loads(actual_response_2.data):
-            self.assertEqual(expected_response_2, data['skills'])
+            self.assertEqual(expected_response_2, data["skills"])
 
 
 if __name__ == "__main__":
