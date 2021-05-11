@@ -78,8 +78,8 @@ class UserList(Resource):
         user_id = get_jwt_identity()
         return DAO.list_users(
             user_id,
-            request.args.get("search", ""),
-            request.args.get("skills", ""),
+            request.args.get("search", None),
+            request.args.get("skills", None),
             page,
             per_page,
         )
@@ -289,8 +289,8 @@ class VerifiedUser(Resource):
         user_id = get_jwt_identity()
         return DAO.list_users(
             user_id,
-            request.args.get("search", ""),
-            request.args.get("skills", ""),
+            request.args.get("search", None),
+            request.args.get("skills", None),
             page,
             per_page,
             is_verified=True,
