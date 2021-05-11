@@ -78,7 +78,7 @@ class UserList(Resource):
         user_id = get_jwt_identity()
         return DAO.list_users(
             user_id,
-            request.args.get("search", None),
+            request.args.get("search", ""),
             request.args.get("skills", None),
             page,
             per_page,
@@ -215,7 +215,7 @@ class MyUserProfile(Resource):
 class ChangeUserPassword(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("update_user_password")
+    @users_ns.doc("updateNone_user_password")
     @users_ns.expect(
         auth_header_parser, change_password_request_data_model, validate=True
     )
@@ -289,7 +289,7 @@ class VerifiedUser(Resource):
         user_id = get_jwt_identity()
         return DAO.list_users(
             user_id,
-            request.args.get("search", None),
+            request.args.get("search", ""),
             request.args.get("skills", None),
             page,
             per_page,

@@ -178,7 +178,7 @@ class UserDAO:
             func.lower(UserModel.name).contains(search_query.lower())
             | func.lower(UserModel.username).contains(search_query.lower()),
         )
-        if skill != "":
+        if skill:
             users_list_query = users_list_query.filter(
                 func.lower(UserModel.skills) == func.lower(skill)
             )
