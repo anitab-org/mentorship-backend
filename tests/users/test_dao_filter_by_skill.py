@@ -59,7 +59,7 @@ class TestFilterUsersBySkill(BaseTestCase):
 
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = {"user1": "Problem Solving", "user2": "Problem Solving"}
-        
+
         actual_response = self.client.get(
             "/users/verified?skills=Problem Solving",
             headers=auth_header,
