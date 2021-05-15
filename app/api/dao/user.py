@@ -181,7 +181,9 @@ class UserDAO:
         )
         if skill:
             ps = PorterStemmer()
-            users_list_query = users_list_query.filter(func.lower(UserModel.skills).contains(ps.stem(skill.lower())))
+            users_list_query = users_list_query.filter(
+                func.lower(UserModel.skills).contains(ps.stem(skill.lower()))
+            )
         users_list = (
             users_list_query.order_by(UserModel.id)
             .paginate(
@@ -668,8 +670,8 @@ class UserDAO:
         )
 
         if current_relation != (
-                messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
-                HTTPStatus.OK,
+            messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
+            HTTPStatus.OK,
         ):
             response["tasks_todo"] = marshal(
                 [

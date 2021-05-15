@@ -54,7 +54,7 @@ class TestFilterUsersBySkill(BaseTestCase):
         db.session.add(self.third_user)
         db.session.commit()
 
-        #Insert data of the fourth entry
+        # Insert data of the fourth entry
         self.fourth_user = UserModel(
             name=user4["name"],
             email=user4["email"],
