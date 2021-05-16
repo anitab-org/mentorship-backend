@@ -8,10 +8,12 @@ on:
     branches: [develop]
     paths-ignore: 
       - '**.md'
+      - /docs/CODEOWNERS
   push:
     branches: [develop]
     paths-ignore: 
       - '**.md'
+      - /docs/CODEOWNERS
 
 jobs:
   lint:
