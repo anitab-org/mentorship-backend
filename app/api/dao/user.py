@@ -4,7 +4,6 @@ from http import HTTPStatus
 from typing import Dict
 from flask_restx import marshal
 from sqlalchemy import func
-from nltk.stem import PorterStemmer
 
 from app import messages
 from app.api.email_utils import confirm_token
@@ -180,9 +179,8 @@ class UserDAO:
             | func.lower(UserModel.username).contains(search_query.lower()),
         )
         if skill:
-            ps = PorterStemmer()
             users_list_query = users_list_query.filter(
-                func.lower(UserModel.skills).contains(ps.stem(skill.lower()))
+                func.lower(UserModel.skills) == func.lower(skill)
             )
         users_list = (
             users_list_query.order_by(UserModel.id)
