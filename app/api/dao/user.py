@@ -670,8 +670,10 @@ class UserDAO:
         response["as_mentor"] = as_mentor
         response["as_mentee"] = as_mentee
 
-        current_relation = MentorshipRelationDAO.list_current_mentorship_relation(
-            user_id=user_id
+        current_relation = (
+            MentorshipRelationDAO.list_current_mentorship_relation(
+                user_id=user_id
+            )
         )
 
         if current_relation != (
