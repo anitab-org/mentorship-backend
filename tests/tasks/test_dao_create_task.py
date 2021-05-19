@@ -21,7 +21,9 @@ class TestListTasksDao(TasksBaseTestCase):
         actual_response = TaskDAO.create_task(
             user_id=self.first_user.id,
             mentorship_relation_id=self.mentorship_relation_w_second_user.id,
-            data=dict(description=self.test_description, is_done=self.test_is_done),
+            data=dict(
+                description=self.test_description, is_done=self.test_is_done
+            ),
         )
         self.assertEqual(expected_response, actual_response)
 
@@ -40,7 +42,9 @@ class TestListTasksDao(TasksBaseTestCase):
         actual_response = TaskDAO.create_task(
             user_id=self.first_user.id,
             mentorship_relation_id=123123,
-            data=dict(description=self.test_description, is_done=self.test_is_done),
+            data=dict(
+                description=self.test_description, is_done=self.test_is_done
+            ),
         )
 
         self.assertEqual(expected_response, actual_response)
@@ -51,12 +55,16 @@ class TestListTasksDao(TasksBaseTestCase):
             messages.UNACCEPTED_STATE_RELATION,
             HTTPStatus.FORBIDDEN,
         )
-        self.mentorship_relation_w_second_user.state = MentorshipRelationState.CANCELLED
+        self.mentorship_relation_w_second_user.state = (
+            MentorshipRelationState.CANCELLED
+        )
 
         actual_response = TaskDAO.create_task(
             user_id=self.first_user.id,
             mentorship_relation_id=self.mentorship_relation_w_second_user.id,
-            data=dict(description=self.test_description, is_done=self.test_is_done),
+            data=dict(
+                description=self.test_description, is_done=self.test_is_done
+            ),
         )
 
         self.assertEqual(expected_response, actual_response)
@@ -67,12 +75,16 @@ class TestListTasksDao(TasksBaseTestCase):
             messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
             HTTPStatus.FORBIDDEN,
         )
-        self.mentorship_relation_w_second_user.state = MentorshipRelationState.ACCEPTED
+        self.mentorship_relation_w_second_user.state = (
+            MentorshipRelationState.ACCEPTED
+        )
 
         actual_response = TaskDAO.create_task(
             user_id=self.fourth_user.id,
             mentorship_relation_id=self.mentorship_relation_w_second_user.id,
-            data=dict(description=self.test_description, is_done=self.test_is_done),
+            data=dict(
+                description=self.test_description, is_done=self.test_is_done
+            ),
         )
 
         self.assertEqual(expected_response, actual_response)

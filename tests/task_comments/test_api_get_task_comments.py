@@ -1,5 +1,6 @@
 import json
 import unittest
+from http import HTTPStatus
 
 from flask_restx import marshal
 
@@ -8,7 +9,6 @@ from app.api.dao.task_comment import TaskCommentDAO
 from app.api.models.mentorship_relation import task_comments_model
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
-from http import HTTPStatus
 
 
 class TestGetTaskCommentsApi(TasksBaseTestCase):
@@ -20,13 +20,22 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
         self.task_id_one = 4
 
         TaskCommentDAO().create_task_comment(
-            user_id=1, task_id=1, relation_id=self.relation_id, comment="comment"
+            user_id=1,
+            task_id=1,
+            relation_id=self.relation_id,
+            comment="comment",
         )
         TaskCommentDAO().create_task_comment(
-            user_id=1, task_id=1, relation_id=self.relation_id, comment="comment"
+            user_id=1,
+            task_id=1,
+            relation_id=self.relation_id,
+            comment="comment",
         )
         TaskCommentDAO().create_task_comment(
-            user_id=1, task_id=1, relation_id=self.relation_id, comment="comment"
+            user_id=1,
+            task_id=1,
+            relation_id=self.relation_id,
+            comment="comment",
         )
 
     def test_task_comment_listing_api_without_auth_header(self):
@@ -38,7 +47,9 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_task_comment_listing_api_with_task_not_existing(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -51,7 +62,9 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_task_comment_listing_api_with_relation_not_existing(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -64,7 +77,9 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_task_comment_listing_api_with_unaccepted_relation(self):
         auth_header = get_test_request_header(self.fourth_user.id)
@@ -77,7 +92,9 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_task_comment_listing_api(self):
         auth_header = get_test_request_header(self.admin_user.id)

@@ -1,8 +1,8 @@
 import datetime
-from itsdangerous import URLSafeTimedSerializer, BadSignature
 
-from flask_mail import Message
 from flask import render_template
+from flask_mail import Message
+from itsdangerous import BadSignature, URLSafeTimedSerializer
 
 import config
 from app.api.mail_extension import mail
@@ -13,10 +13,14 @@ def generate_confirmation_token(email):
     from run import application
 
     serializer = URLSafeTimedSerializer(application.config["SECRET_KEY"])
-    return serializer.dumps(email, salt=application.config["SECURITY_PASSWORD_SALT"])
+    return serializer.dumps(
+        email, salt=application.config["SECURITY_PASSWORD_SALT"]
+    )
 
 
-def confirm_token(token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD):
+def confirm_token(
+    token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD
+):
     """Confirms the token matches the expected email address.
 
     Args:
@@ -36,7 +40,9 @@ def confirm_token(token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD)
     serializer = URLSafeTimedSerializer(application.config["SECRET_KEY"])
     try:
         email = serializer.loads(
-            token, salt=application.config["SECURITY_PASSWORD_SALT"], max_age=expiration
+            token,
+            salt=application.config["SECURITY_PASSWORD_SALT"],
+            max_age=expiration,
         )
     except BadSignature:
         return False
@@ -81,10 +87,10 @@ def send_email_verification_message(user_name, email):
         email: User email address.
     """
     confirmation_token = generate_confirmation_token(email)
-    from app.api.resources.user import (
-        UserEmailConfirmation,
-    )  # import here to avoid circular imports
     from app.api.api_extension import api
+    from app.api.resources.user import (  # import here to avoid circular imports
+        UserEmailConfirmation,
+    )
 
     confirm_url = api.url_for(
         UserEmailConfirmation, token=confirmation_token, _external=True
@@ -108,8 +114,8 @@ def send_email_mentorship_relation_accepted(request_id):
         request_id: Request id of the mentorship request.
     """
 
-    from app.database.models.user import UserModel
     from app.database.models.mentorship_relation import MentorshipRelationModel
+    from app.database.models.user import UserModel
 
     # Getting the request from id.
     request = MentorshipRelationModel.find_by_id(request_id)

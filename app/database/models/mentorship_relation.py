@@ -74,7 +74,9 @@ class MentorshipRelationModel(db.Model):
 
         self.action_user_id = action_user_id
         self.mentor = mentor_user
-        self.mentee = mentee_user  # same as mentee_user.mentee_relations.append(self)
+        self.mentee = (
+            mentee_user  # same as mentee_user.mentee_relations.append(self)
+        )
         self.creation_date = creation_date
         self.end_date = end_date
         self.state = state

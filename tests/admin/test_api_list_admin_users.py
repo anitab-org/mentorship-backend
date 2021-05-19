@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from flask import json
 from flask_restx import marshal
@@ -12,9 +13,13 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
+from tests.test_data import (
+    test_admin_user,
+    test_admin_user_2,
+    test_admin_user_3,
+    user1,
+)
 from tests.test_utils import get_test_request_header
-from tests.test_data import user1, test_admin_user, test_admin_user_2, test_admin_user_3
-from http import HTTPStatus
 
 
 class TestListAdminUsersApi(BaseTestCase):
@@ -72,7 +77,9 @@ class TestListAdminUsersApi(BaseTestCase):
         actual_response = self.client.get("/admins")
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     """
     Test for api call from admin users

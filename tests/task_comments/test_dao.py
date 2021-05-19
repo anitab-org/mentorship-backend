@@ -1,16 +1,18 @@
 import unittest
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
-from http import HTTPStatus
 
 
 class TestTaskCommentDao(TasksBaseTestCase):
     @staticmethod
     def create_task_comment():
         dao = TaskCommentDAO()
-        dao.create_task_comment(user_id=1, task_id=1, relation_id=2, comment="comment")
+        dao.create_task_comment(
+            user_id=1, task_id=1, relation_id=2, comment="comment"
+        )
 
     def test_dao_create_task_comment(self):
         self.create_task_comment()
@@ -37,7 +39,9 @@ class TestTaskCommentDao(TasksBaseTestCase):
         self.create_task_comment()
 
         # Verify that find_all_by_user_id() function is working properly
-        task_comments = TaskCommentDAO.get_all_task_comments_by_user_id(user_id=1)[0]
+        task_comments = TaskCommentDAO.get_all_task_comments_by_user_id(
+            user_id=1
+        )[0]
         task_comment = task_comments[0]
         self.assertEqual(len(task_comments), 1)
         self.assertTrue(task_comment is not None)
@@ -50,7 +54,11 @@ class TestTaskCommentDao(TasksBaseTestCase):
         self.create_task_comment()
 
         TaskCommentDAO.modify_comment(
-            user_id=1, _id=1, task_id=1, relation_id=2, comment="modified comment"
+            user_id=1,
+            _id=1,
+            task_id=1,
+            relation_id=2,
+            comment="modified comment",
         )
 
         # Verify that task comment was modified
@@ -65,7 +73,9 @@ class TestTaskCommentDao(TasksBaseTestCase):
     def test_dao_delete_comment(self):
         self.create_task_comment()
 
-        TaskCommentDAO.delete_comment(user_id=1, _id=1, task_id=1, relation_id=2)
+        TaskCommentDAO.delete_comment(
+            user_id=1, _id=1, task_id=1, relation_id=2
+        )
 
         expected_response = (
             messages.TASK_COMMENT_DOES_NOT_EXIST,

@@ -1,11 +1,12 @@
 import unittest
-from flask import json
+from datetime import timedelta
 from http import HTTPStatus
+
+from flask import json
 
 from app import messages
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
-from datetime import timedelta
 
 
 class TestCreateTaskApi(TasksBaseTestCase):
@@ -22,7 +23,9 @@ class TestCreateTaskApi(TasksBaseTestCase):
             data=json.dumps(dict(description=self.test_description)),
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     # Valid user tries to create task without description in the body (FAIL)
     # gives 400 (HTTP Status BAD_REQUEST), DESCRIPTION_FIELD_IS_MISSING response
@@ -37,7 +40,9 @@ class TestCreateTaskApi(TasksBaseTestCase):
             data=json.dumps(dict()),
         )
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     # Valid user tries to create a task with authentication token expired (FAIL)
     # gives 401 (HTTP Status Unauthorized), TOKEN_HAS_EXPIRED response
@@ -55,7 +60,9 @@ class TestCreateTaskApi(TasksBaseTestCase):
             data=json.dumps(dict(description=self.test_description)),
         )
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_create_task_api_resource_non_auth(self):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
@@ -65,7 +72,9 @@ class TestCreateTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_full_task_creation_api(self):
 
@@ -83,7 +92,9 @@ class TestCreateTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.CREATED, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
         new_task = self.tasks_list_1.find_task_by_id(3)
         self.assertIsNotNone(new_task)

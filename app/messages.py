@@ -9,10 +9,14 @@ from app.api.validations.user import (
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
 USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your username is invalid."}
-NEW_USERNAME_INPUT_BY_USER_IS_INVALID = {"message": "Your new username is" " invalid."}
+NEW_USERNAME_INPUT_BY_USER_IS_INVALID = {
+    "message": "Your new username is" " invalid."
+}
 TOKEN_IS_INVALID = {"message": "The token is invalid!"}
 USER_ID_IS_NOT_VALID = {"message": "User id is not valid."}
-FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is" " not valid."}
+FIELD_NEED_MENTORING_IS_NOT_VALID = {
+    "message": "Field need_mentoring is" " not valid."
+}
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
 }
@@ -50,9 +54,13 @@ EMAIL_FIELD_IS_MISSING = {"message": "Email field is missing."}
 TERMS_AND_CONDITIONS_FIELD_IS_MISSING = {
     "message": "Terms and conditions" " field is missing."
 }
-CURRENT_PASSWORD_FIELD_IS_MISSING = {"message": "Current password field is" " missing."}
+CURRENT_PASSWORD_FIELD_IS_MISSING = {
+    "message": "Current password field is" " missing."
+}
 NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
-AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!"}
+AUTHORISATION_TOKEN_IS_MISSING = {
+    "message": "The authorization token is" " missing!"
+}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
 USERNAME_HAS_INVALID_LENGTH = {
@@ -67,14 +75,19 @@ USER_CANNOT_BE_ASSIGNED_ADMIN_BY_USER = {
 USER_IS_NOT_AN_ADMIN = {"message": "User is not an Admin."}
 USER_ADMIN_STATUS_WAS_REVOKED = {"message": "User admin status was revoked."}
 USER_CANT_DELETE = {
-    "message": "You cannot delete your account, since you are" " the only Admin left."
+    "message": "You cannot delete your account, since you are"
+    " the only Admin left."
 }
-USER_CANNOT_REVOKE_ADMIN_STATUS = {"message": "You cannot revoke your admin" "status."}
+USER_CANNOT_REVOKE_ADMIN_STATUS = {
+    "message": "You cannot revoke your admin" "status."
+}
 USER_ASSIGN_NOT_ADMIN = {
-    "message": "You don't have admin status. You can't" " assign other user as admin."
+    "message": "You don't have admin status. You can't"
+    " assign other user as admin."
 }
 USER_REVOKE_NOT_ADMIN = {
-    "message": "You don't have admin status. You can't" " revoke other admin user."
+    "message": "You don't have admin status. You can't"
+    " revoke other admin user."
 }
 USER_IS_NOW_AN_ADMIN = {"message": "User is now an Admin."}
 
@@ -82,7 +95,9 @@ USER_IS_NOW_AN_ADMIN = {"message": "User is now an Admin."}
 MENTOR_NOT_AVAILABLE_TO_MENTOR = {
     "message": "Mentor user is not available to" " mentor."
 }
-MENTOR_ALREADY_IN_A_RELATION = {"message": "Mentor user is already in a relationship."}
+MENTOR_ALREADY_IN_A_RELATION = {
+    "message": "Mentor user is already in a relationship."
+}
 
 # Mentee availability
 MENTEE_NOT_AVAIL_TO_BE_MENTORED = {
@@ -97,10 +112,12 @@ MATCH_EITHER_MENTOR_OR_MENTEE = {
     "message": "Your ID has to match either" " Mentor or Mentee IDs."
 }
 TASK_COMMENT_WAS_NOT_CREATED_BY_YOU = {
-    "message": "You have not created the comment and therefore cannot " "modify it."
+    "message": "You have not created the comment and therefore cannot "
+    "modify it."
 }
 TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE = {
-    "message": "You have not created the comment and therefore cannot " "delete it."
+    "message": "You have not created the comment and therefore cannot "
+    "delete it."
 }
 
 # Update
@@ -112,7 +129,9 @@ NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {
 MENTOR_ID_SAME_AS_MENTEE_ID = {
     "message": "You cannot have a mentorship" " relation with yourself."
 }
-END_TIME_BEFORE_PRESENT = {"message": "End date is invalid since date has" " passed."}
+END_TIME_BEFORE_PRESENT = {
+    "message": "End date is invalid since date has" " passed."
+}
 MENTOR_TIME_GREATER_THAN_MAX_TIME = {
     "message": "Mentorship relation maximum" " duration is 6 months."
 }
@@ -136,10 +155,12 @@ CANT_REJECT_UNINVOLVED_RELATION_REQUEST = {
     " not involved."
 }
 CANT_CANCEL_UNINVOLVED_REQUEST = {
-    "message": "You cannot cancel a mentorship" " relation where you are not involved."
+    "message": "You cannot cancel a mentorship"
+    " relation where you are not involved."
 }
 CANT_DELETE_UNINVOLVED_REQUEST = {
-    "message": "You cannot delete a mentorship" " request that you did not create."
+    "message": "You cannot delete a mentorship"
+    " request that you did not create."
 }
 NOT_IN_MENTORED_RELATION_CURRENTLY = {
     "message": "You are not in a current" " mentorship relation."
@@ -182,7 +203,8 @@ NOT_PENDING_STATE_RELATION = {
     "message": "This mentorship relation is not in" " the pending state."
 }
 UNACCEPTED_STATE_RELATION = {
-    "message": "This mentorship relation status is" " not in the accepted state."
+    "message": "This mentorship relation status is"
+    " not in the accepted state."
 }
 MENTORSHIP_RELATION_NOT_IN_ACCEPT_STATE = {
     "message": "Mentorship relation is" " not in the accepted state."
@@ -207,7 +229,9 @@ COMMENT_NOT_IN_STRING_FORMAT = {"message": "Comment must be in string format."}
 TERMS_AND_CONDITIONS_ARE_NOT_CHECKED = {
     "message": "Terms and conditions are" " not checked."
 }
-USER_INPUTS_SPACE_IN_PASSWORD = {"message": "Password shouldn't contain" " spaces."}
+USER_INPUTS_SPACE_IN_PASSWORD = {
+    "message": "Password shouldn't contain" " spaces."
+}
 TOKEN_HAS_EXPIRED = {
     "message": "The token has expired! Please, login again or refresh it."
 }
@@ -235,7 +259,9 @@ MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY = {
 }
 TASK_WAS_CREATED_SUCCESSFULLY = {"message": "Task was created successfully."}
 TASK_WAS_DELETED_SUCCESSFULLY = {"message": "Task was deleted successfully."}
-TASK_WAS_ACHIEVED_SUCCESSFULLY = {"message": "Task was achieved" " successfully."}
+TASK_WAS_ACHIEVED_SUCCESSFULLY = {
+    "message": "Task was achieved" " successfully."
+}
 USER_WAS_CREATED_SUCCESSFULLY = {
     "message": "User was created successfully."
     "A confirmation email has been sent via"
@@ -268,7 +294,9 @@ UPDATED_TASK_WITH_SUCCESS = {"message": "Updated task with success."}
 USER_SUCCESSFULLY_CREATED = {"message": "User successfully created."}
 USER_SUCCESSFULLY_DELETED = {"message": "User was deleted successfully."}
 USER_SUCCESSFULLY_UPDATED = {"message": "User was updated successfully."}
-PASSWORD_SUCCESSFULLY_UPDATED = {"message": "Password was updated " "successfully."}
+PASSWORD_SUCCESSFULLY_UPDATED = {
+    "message": "Password was updated " "successfully."
+}
 TASK_COMMENT_WAS_CREATED_SUCCESSFULLY = {
     "message": "Task comment was created successfully."
 }

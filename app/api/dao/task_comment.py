@@ -1,15 +1,19 @@
+from http import HTTPStatus
+
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.task_comment import TaskCommentModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
-from http import HTTPStatus
 
 
 def validate_data_for_task_comment(user_id, task_id, relation_id):
     relation = MentorshipRelationModel.find_by_id(relation_id)
     if relation is None:
-        return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        return (
+            messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+            HTTPStatus.NOT_FOUND,
+        )
 
     if user_id != relation.mentor_id and user_id != relation.mentee_id:
         return (
@@ -51,14 +55,19 @@ class TaskCommentDAO:
             The second is the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
+        is_valid = validate_data_for_task_comment(
+            user_id, task_id, relation_id
+        )
         if is_valid != {}:
             return is_valid
 
         task_comment = TaskCommentModel(user_id, task_id, relation_id, comment)
         task_comment.save_to_db()
 
-        return messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY, HTTPStatus.CREATED
+        return (
+            messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY,
+            HTTPStatus.CREATED,
+        )
 
     @staticmethod
     @email_verification_required
@@ -97,11 +106,15 @@ class TaskCommentDAO:
             and the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
+        is_valid = validate_data_for_task_comment(
+            user_id, task_id, relation_id
+        )
         if is_valid != {}:
             return is_valid
 
-        comments_list = TaskCommentModel.find_all_by_task_id(task_id, relation_id)
+        comments_list = TaskCommentModel.find_all_by_task_id(
+            task_id, relation_id
+        )
         return [comment.json() for comment in comments_list]
 
     @staticmethod
@@ -140,7 +153,9 @@ class TaskCommentDAO:
             The second is the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
+        is_valid = validate_data_for_task_comment(
+            user_id, task_id, relation_id
+        )
         if is_valid != {}:
             return is_valid
 
@@ -150,7 +165,10 @@ class TaskCommentDAO:
             return messages.TASK_COMMENT_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task_comment.user_id != user_id:
-            return messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU, HTTPStatus.FORBIDDEN
+            return (
+                messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU,
+                HTTPStatus.FORBIDDEN,
+            )
 
         if task_comment.task_id != task_id:
             return (
@@ -182,7 +200,9 @@ class TaskCommentDAO:
             The second is the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
+        is_valid = validate_data_for_task_comment(
+            user_id, task_id, relation_id
+        )
         if is_valid != {}:
             return is_valid
 

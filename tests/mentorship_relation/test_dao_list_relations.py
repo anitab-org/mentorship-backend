@@ -8,7 +8,9 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
-from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
+from tests.mentorship_relation.relation_base_setup import (
+    MentorshipRelationBaseTestCase,
+)
 
 
 class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
@@ -86,7 +88,10 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         result = MentorshipRelationDAO.list_current_mentorship_relation(
             user_id=self.admin_user.id
         )
-        expected_response = (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK)
+        expected_response = (
+            messages.NOT_IN_MENTORED_RELATION_CURRENTLY,
+            HTTPStatus.OK,
+        )
 
         self.assertEqual(expected_response, result)
 

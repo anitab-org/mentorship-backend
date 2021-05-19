@@ -1,7 +1,8 @@
 import unittest
+from http import HTTPStatus
+
 from flask import json
 from flask_restx import marshal
-from http import HTTPStatus
 
 from app import messages
 from app.api.models.mentorship_relation import list_tasks_response_body
@@ -19,12 +20,16 @@ class TestListTasksApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_list_tasks_api_first_mentorship_relation(self):
 
         auth_header = get_test_request_header(self.first_user.id)
-        expected_response = marshal(self.tasks_list_1.tasks, list_tasks_response_body)
+        expected_response = marshal(
+            self.tasks_list_1.tasks, list_tasks_response_body
+        )
         actual_response = self.client.get(
             f"/mentorship_relation/{self.mentorship_relation_w_second_user.id}"
             "/tasks",
@@ -38,7 +43,9 @@ class TestListTasksApi(TasksBaseTestCase):
     def test_list_tasks_api_second_mentorship_relation(self):
 
         auth_header = get_test_request_header(self.first_user.id)
-        expected_response = marshal(self.tasks_list_2.tasks, list_tasks_response_body)
+        expected_response = marshal(
+            self.tasks_list_2.tasks, list_tasks_response_body
+        )
         actual_response = self.client.get(
             f"/mentorship_relation/{self.mentorship_relation_w_admin_user.id}/tasks",
             follow_redirects=True,
@@ -59,7 +66,9 @@ class TestListTasksApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+        self.assertDictEqual(
+            expected_response, json.loads(actual_response.data)
+        )
 
     def test_list_tasks_api_mentorship_relation_without_tasks(self):
 

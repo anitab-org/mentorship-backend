@@ -1,10 +1,10 @@
 from app import messages
 from app.utils.validation_utils import (
-    is_name_valid,
+    get_stripped_string,
     is_email_valid,
+    is_name_valid,
     is_username_valid,
     validate_length,
-    get_stripped_string,
 )
 
 # Field character limit
@@ -56,7 +56,10 @@ def validate_user_registration_request_data(data):
         return messages.USER_INPUTS_SPACE_IN_PASSWORD
 
     is_valid = validate_length(
-        len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, "name"
+        len(get_stripped_string(name)),
+        NAME_MIN_LENGTH,
+        NAME_MAX_LENGTH,
+        "name",
     )
     if not is_valid[0]:
         return is_valid[1]
@@ -130,7 +133,10 @@ def validate_update_profile_request_data(data):
     name = data.get("name", None)
     if name:
         is_valid = validate_length(
-            len(get_stripped_string(name)), NAME_MIN_LENGTH, NAME_MAX_LENGTH, "name"
+            len(get_stripped_string(name)),
+            NAME_MIN_LENGTH,
+            NAME_MAX_LENGTH,
+            "name",
         )
         if not is_valid[0]:
             return is_valid[1]
@@ -149,7 +155,10 @@ def validate_update_profile_request_data(data):
     location = data.get("location", None)
     if location:
         is_valid = validate_length(
-            len(get_stripped_string(location)), 0, LOCATION_MAX_LENGTH, "location"
+            len(get_stripped_string(location)),
+            0,
+            LOCATION_MAX_LENGTH,
+            "location",
         )
         if not is_valid[0]:
             return is_valid[1]
@@ -157,7 +166,10 @@ def validate_update_profile_request_data(data):
     occupation = data.get("occupation", None)
     if occupation:
         is_valid = validate_length(
-            len(get_stripped_string(occupation)), 0, OCCUPATION_MAX_LENGTH, "occupation"
+            len(get_stripped_string(occupation)),
+            0,
+            OCCUPATION_MAX_LENGTH,
+            "occupation",
         )
         if not is_valid[0]:
             return is_valid[1]
@@ -206,7 +218,10 @@ def validate_update_profile_request_data(data):
     interests = data.get("interests", None)
     if interests:
         is_valid = validate_length(
-            len(get_stripped_string(interests)), 0, INTERESTS_MAX_LENGTH, "interests"
+            len(get_stripped_string(interests)),
+            0,
+            INTERESTS_MAX_LENGTH,
+            "interests",
         )
         if not is_valid[0]:
             return is_valid[1]

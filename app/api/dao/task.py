@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import Dict
 from http import HTTPStatus
+from typing import Dict
+
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
@@ -13,7 +14,9 @@ class TaskDAO:
 
     @staticmethod
     @email_verification_required
-    def create_task(user_id: int, mentorship_relation_id: int, data: Dict[str, str]):
+    def create_task(
+        user_id: int, mentorship_relation_id: int, data: Dict[str, str]
+    ):
         """Creates a new task.
 
         Creates a new task in a mentorship relation if the specified user is already involved in it.
@@ -32,9 +35,14 @@ class TaskDAO:
         description = data["description"]
 
         user = UserModel.find_by_id(user_id)
-        relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
+        relation = MentorshipRelationModel.find_by_id(
+            _id=mentorship_relation_id
+        )
         if relation is None:
-            return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         if relation.state != MentorshipRelationState.ACCEPTED:
             return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN
@@ -46,7 +54,9 @@ class TaskDAO:
             )
 
         now_timestamp = datetime.utcnow().timestamp()
-        relation.tasks_list.add_task(description=description, created_at=now_timestamp)
+        relation.tasks_list.add_task(
+            description=description, created_at=now_timestamp
+        )
         relation.tasks_list.save_to_db()
 
         return messages.TASK_WAS_CREATED_SUCCESSFULLY, HTTPStatus.CREATED
@@ -71,9 +81,14 @@ class TaskDAO:
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
-            return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
-        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
+        if not (
+            user_id == relation.mentee_id or user_id == relation.mentor_id
+        ):
             return (
                 messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
                 HTTPStatus.UNAUTHORIZED,
@@ -104,13 +119,18 @@ class TaskDAO:
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
-            return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
         task = relation.tasks_list.find_task_by_id(task_id)
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
-        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
+        if not (
+            user_id == relation.mentee_id or user_id == relation.mentor_id
+        ):
             return (
                 messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
                 HTTPStatus.UNAUTHORIZED,
@@ -141,9 +161,14 @@ class TaskDAO:
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
-            return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+            return (
+                messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
+                HTTPStatus.NOT_FOUND,
+            )
 
-        if not (user_id == relation.mentee_id or user_id == relation.mentor_id):
+        if not (
+            user_id == relation.mentee_id or user_id == relation.mentor_id
+        ):
             return (
                 messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
                 HTTPStatus.UNAUTHORIZED,

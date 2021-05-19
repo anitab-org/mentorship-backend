@@ -1,14 +1,12 @@
 import unittest
+from http import HTTPStatus
 
 from flask import json
 
 from app import messages
+from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
-
-from app.database.models.user import UserModel
-from http import HTTPStatus
-
 # Testing User API resources
 #
 # TODO tests:
@@ -62,7 +60,9 @@ class TestUserLoginApi(BaseTestCase):
             self.assertIsNone(response.json.get("refresh_token"))
 
             self.assertEqual(1, len(response.json))
-            self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
+            self.assertEqual(
+                messages.WRONG_USERNAME_OR_PASSWORD, response.json
+            )
 
             self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
 
@@ -71,7 +71,9 @@ class TestUserLoginApi(BaseTestCase):
             response = self.client.post(
                 "/login",
                 data=json.dumps(
-                    dict(username=user1["username"], password=user1["password"])
+                    dict(
+                        username=user1["username"], password=user1["password"]
+                    )
                 ),
                 follow_redirects=True,
                 content_type="application/json",
@@ -81,7 +83,8 @@ class TestUserLoginApi(BaseTestCase):
             self.assertIsNone(response.json.get("refresh_token"))
             self.assertEqual(1, len(response.json))
             self.assertEqual(
-                messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json
+                messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN,
+                response.json,
             )
             self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
 
@@ -90,7 +93,9 @@ class TestUserLoginApi(BaseTestCase):
             response = self.client.post(
                 "/login",
                 data=json.dumps(
-                    dict(username=user2["username"], password=user2["password"])
+                    dict(
+                        username=user2["username"], password=user2["password"]
+                    )
                 ),
                 follow_redirects=True,
                 content_type="application/json",

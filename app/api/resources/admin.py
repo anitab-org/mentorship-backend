@@ -1,11 +1,13 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
+
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
 from app import messages
+from app.api.dao.admin import AdminDAO
 from app.api.dao.user import UserDAO
 from app.api.models.admin import *
-from app.api.dao.admin import AdminDAO
 from app.api.resources.common import auth_header_parser
 
 admin_ns = Namespace("Admins", description="Operations related to Admin users")
@@ -13,19 +15,29 @@ add_models_to_namespace(admin_ns)
 
 
 @admin_ns.route("admin/new")
-@admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_IS_NOW_AN_ADMIN}")
-@admin_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.USER_IS_ALREADY_AN_ADMIN}")
+@admin_ns.response(
+    HTTPStatus.FORBIDDEN.value, f"{messages.USER_IS_NOW_AN_ADMIN}"
+)
+@admin_ns.response(
+    HTTPStatus.BAD_REQUEST.value, f"{messages.USER_IS_ALREADY_AN_ADMIN}"
+)
 @admin_ns.response(
     HTTPStatus.UNAUTHORIZED.value,
     f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}",
 )
-@admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_ASSIGN_NOT_ADMIN}")
-@admin_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}")
+@admin_ns.response(
+    HTTPStatus.FORBIDDEN.value, f"{messages.USER_ASSIGN_NOT_ADMIN}"
+)
+@admin_ns.response(
+    HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}"
+)
 class AssignNewUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(
-        auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
+        auth_header_parser,
+        assign_and_revoke_user_admin_request_body,
+        validate=True,
     )
     def post(cls):
         """
@@ -45,19 +57,29 @@ class AssignNewUserAdmin(Resource):
 
 
 @admin_ns.route("admin/remove")
-@admin_ns.response(HTTPStatus.OK.value, f"{messages.USER_ADMIN_STATUS_WAS_REVOKED}")
-@admin_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.USER_IS_NOT_AN_ADMIN}")
+@admin_ns.response(
+    HTTPStatus.OK.value, f"{messages.USER_ADMIN_STATUS_WAS_REVOKED}"
+)
+@admin_ns.response(
+    HTTPStatus.BAD_REQUEST.value, f"{messages.USER_IS_NOT_AN_ADMIN}"
+)
 @admin_ns.response(
     HTTPStatus.UNAUTHORIZED.value,
     f"{messages.TOKEN_HAS_EXPIRED}\n{messages.TOKEN_IS_INVALID}\n{messages.AUTHORISATION_TOKEN_IS_MISSING}",
 )
-@admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_REVOKE_NOT_ADMIN}")
-@admin_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}")
+@admin_ns.response(
+    HTTPStatus.FORBIDDEN.value, f"{messages.USER_REVOKE_NOT_ADMIN}"
+)
+@admin_ns.response(
+    HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}"
+)
 class RevokeUserAdmin(Resource):
     @classmethod
     @jwt_required
     @admin_ns.expect(
-        auth_header_parser, assign_and_revoke_user_admin_request_body, validate=True
+        auth_header_parser,
+        assign_and_revoke_user_admin_request_body,
+        validate=True,
     )
     def post(cls):
         """
@@ -93,7 +115,9 @@ class ListAdmins(Resource):
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         }
     )
-    @admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_IS_NOT_AN_ADMIN}")
+    @admin_ns.response(
+        HTTPStatus.FORBIDDEN.value, f"{messages.USER_IS_NOT_AN_ADMIN}"
+    )
     @admin_ns.expect(auth_header_parser)
     def get(cls):
         """

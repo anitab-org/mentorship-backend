@@ -5,10 +5,11 @@ from http import HTTPStatus
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
-from app.utils.enum_utils import MentorshipRelationState
-from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from app.database.sqlalchemy_extension import db
-
+from app.utils.enum_utils import MentorshipRelationState
+from tests.mentorship_relation.relation_base_setup import (
+    MentorshipRelationBaseTestCase,
+)
 
 # TODO test combination of parameters while listing relations
 
@@ -47,7 +48,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.list_mentorship_relations(
-            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+            user_id=self.first_user.id,
+            state=self.mentorship_relation.state.name,
         )
         expected_response = [self.mentorship_relation], HTTPStatus.OK
 
@@ -61,7 +63,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.list_mentorship_relations(
-            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+            user_id=self.first_user.id,
+            state=self.mentorship_relation.state.name,
         )
         expected_response = [self.mentorship_relation], HTTPStatus.OK
 
@@ -75,7 +78,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.list_mentorship_relations(
-            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+            user_id=self.first_user.id,
+            state=self.mentorship_relation.state.name,
         )
         expected_response = [self.mentorship_relation], HTTPStatus.OK
 
@@ -89,7 +93,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.list_mentorship_relations(
-            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+            user_id=self.first_user.id,
+            state=self.mentorship_relation.state.name,
         )
         expected_response = [self.mentorship_relation], HTTPStatus.OK
 
@@ -103,7 +108,8 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.list_mentorship_relations(
-            user_id=self.first_user.id, state=self.mentorship_relation.state.name
+            user_id=self.first_user.id,
+            state=self.mentorship_relation.state.name,
         )
         expected_response = [self.mentorship_relation], HTTPStatus.OK
 
@@ -112,7 +118,9 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
     def test_dao_list_mentorship_relation_state_none(self):
         DAO = MentorshipRelationDAO()
 
-        result = DAO.list_mentorship_relations(user_id=self.first_user.id, state=None)
+        result = DAO.list_mentorship_relations(
+            user_id=self.first_user.id, state=None
+        )
         expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)

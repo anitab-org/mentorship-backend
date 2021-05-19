@@ -1,18 +1,19 @@
 from datetime import datetime
-from operator import itemgetter
 from http import HTTPStatus
+from operator import itemgetter
 from typing import Dict
+
 from flask_restx import marshal
 from sqlalchemy import func
 
 from app import messages
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
+from app.api.models.task import list_tasks_response_body
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
-from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.api.models.task import list_tasks_response_body
-from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.utils.validation_utils import is_email_valid
 
 
@@ -59,7 +60,9 @@ class UserDAO:
                     HTTPStatus.CONFLICT,
                 )
 
-        user = UserModel(name, username, password, email, terms_and_conditions_checked)
+        user = UserModel(
+            name, username, password, email, terms_and_conditions_checked
+        )
         if "need_mentoring" in data:
             user.need_mentoring = data["need_mentoring"]
 
@@ -175,7 +178,9 @@ class UserDAO:
                 UserModel.id != user_id,
                 not is_verified or UserModel.is_email_verified,
                 func.lower(UserModel.name).contains(search_query.lower())
-                | func.lower(UserModel.username).contains(search_query.lower()),
+                | func.lower(UserModel.username).contains(
+                    search_query.lower()
+                ),
             )
             .order_by(UserModel.id)
             .paginate(
@@ -355,7 +360,10 @@ class UserDAO:
         email_from_token = confirm_token(token)
 
         if not email_from_token or email_from_token is None:
-            return messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, HTTPStatus.BAD_REQUEST
+            return (
+                messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID,
+                HTTPStatus.BAD_REQUEST,
+            )
 
         user = UserModel.find_by_email(email_from_token)
         if user.is_email_verified:
@@ -493,28 +501,33 @@ class UserDAO:
 
         all_user_relations = user.mentee_relations + user.mentor_relations
         relations_in_response_form = [
-            DashboardRelationResponseModel(relation) for relation in all_user_relations
+            DashboardRelationResponseModel(relation)
+            for relation in all_user_relations
         ]
 
         mentor_sent_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id == user_id and relation.mentor_id == user_id
+            if relation.action_user_id == user_id
+            and relation.mentor_id == user_id
         ]
         mentor_received_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id != user_id and relation.mentor_id == user_id
+            if relation.action_user_id != user_id
+            and relation.mentor_id == user_id
         ]
         mentee_sent_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id == user_id and relation.mentee_id == user_id
+            if relation.action_user_id == user_id
+            and relation.mentee_id == user_id
         ]
         mentee_received_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id != user_id and relation.mentee_id == user_id
+            if relation.action_user_id != user_id
+            and relation.mentee_id == user_id
         ]
 
         as_mentee = {
@@ -674,7 +687,11 @@ class UserDAO:
                 list_tasks_response_body,
             )
             response["tasks_done"] = marshal(
-                [task for task in current_relation.tasks_list.tasks if task["is_done"]],
+                [
+                    task
+                    for task in current_relation.tasks_list.tasks
+                    if task["is_done"]
+                ],
                 list_tasks_response_body,
             )
 

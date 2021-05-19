@@ -4,7 +4,9 @@ import config
 from app.schedulers.complete_mentorship_cron_job import (
     complete_overdue_mentorship_relations_job,
 )
-from app.schedulers.delete_unverified_users_cron_job import delete_unverified_users_job
+from app.schedulers.delete_unverified_users_cron_job import (
+    delete_unverified_users_job,
+)
 
 scheduler = BackgroundScheduler()
 

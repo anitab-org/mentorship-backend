@@ -1,8 +1,8 @@
-from enum import unique, Enum
+from datetime import date
+from enum import Enum, unique
 
 from app.database.db_types.JsonCustomType import JsonCustomType
 from app.database.sqlalchemy_extension import db
-from datetime import date
 
 
 class TasksListModel(db.Model):
@@ -42,7 +42,11 @@ class TasksListModel(db.Model):
                 raise ValueError(TypeError)
 
     def add_task(
-        self, description: str, created_at: date, is_done=False, completed_at=None
+        self,
+        description: str,
+        created_at: date,
+        is_done=False,
+        completed_at=None,
     ) -> None:
         """Adds a task to the list of tasks.
 
@@ -71,7 +75,9 @@ class TasksListModel(db.Model):
         """
 
         new_list = list(
-            filter(lambda task: task[TasksFields.ID.value] != task_id, self.tasks)
+            filter(
+                lambda task: task[TasksFields.ID.value] != task_id, self.tasks
+            )
         )
 
         self.tasks = new_list
@@ -125,7 +131,9 @@ class TasksListModel(db.Model):
             The task instance.
         """
         task = list(
-            filter(lambda task: task[TasksFields.ID.value] == task_id, self.tasks)
+            filter(
+                lambda task: task[TasksFields.ID.value] == task_id, self.tasks
+            )
         )
         if len(task) == 0:
             return None

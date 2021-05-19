@@ -4,11 +4,13 @@ from datetime import datetime, timedelta
 from http import HTTPStatus
 
 from app import messages
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
-from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
-from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
+from tests.mentorship_relation.relation_base_setup import (
+    MentorshipRelationBaseTestCase,
+)
 from tests.test_utils import get_test_request_header
 
 
@@ -52,7 +54,8 @@ class TestRejectMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
             self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(
-                MentorshipRelationState.REJECTED, self.mentorship_relation.state
+                MentorshipRelationState.REJECTED,
+                self.mentorship_relation.state,
             )
             self.assertEqual(
                 messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY,

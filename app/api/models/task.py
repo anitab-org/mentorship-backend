@@ -1,9 +1,13 @@
-from flask_restx import fields, Model
+from flask_restx import Model, fields
 
 
 def add_models_to_namespace(api_namespace):
-    api_namespace.models[create_task_request_body.name] = create_task_request_body
-    api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
+    api_namespace.models[
+        create_task_request_body.name
+    ] = create_task_request_body
+    api_namespace.models[
+        list_tasks_response_body.name
+    ] = list_tasks_response_body
 
 
 create_task_request_body = Model(
@@ -23,10 +27,12 @@ list_tasks_response_body = Model(
             required=True, description="Mentorship relation task description"
         ),
         "created_at": fields.Float(
-            required=True, description="Task creation date in UNIX timestamp format"
+            required=True,
+            description="Task creation date in UNIX timestamp format",
         ),
         "completed_at": fields.Float(
-            required=False, description="Task completion date in UNIX timestamp format"
+            required=False,
+            description="Task completion date in UNIX timestamp format",
         ),
     },
 )

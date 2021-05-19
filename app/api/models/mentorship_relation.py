@@ -1,6 +1,7 @@
-from flask_restx import fields, Model
+from flask_restx import Model, fields
 
 from app.utils.enum_utils import MentorshipRelationState
+
 from .task import create_task_request_body, list_tasks_response_body
 from .task_comment import task_comment_model, task_comments_model
 
@@ -12,13 +13,21 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[
         mentorship_request_response_body.name
     ] = mentorship_request_response_body
-    api_namespace.models[relation_user_response_body.name] = relation_user_response_body
-    api_namespace.models[create_task_request_body.name] = create_task_request_body
-    api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
+    api_namespace.models[
+        relation_user_response_body.name
+    ] = relation_user_response_body
+    api_namespace.models[
+        create_task_request_body.name
+    ] = create_task_request_body
+    api_namespace.models[
+        list_tasks_response_body.name
+    ] = list_tasks_response_body
     api_namespace.models[
         mentorship_request_response_body_for_user_dashboard_body.name
     ] = mentorship_request_response_body_for_user_dashboard_body
-    api_namespace.models[user_dashboard_user_details.name] = user_dashboard_user_details
+    api_namespace.models[
+        user_dashboard_user_details.name
+    ] = user_dashboard_user_details
     api_namespace.models[task_comment_model.name] = task_comment_model
     api_namespace.models[task_comments_model.name] = task_comments_model
 
@@ -36,7 +45,9 @@ send_mentorship_request_body = Model(
             required=True,
             description="Mentorship relation end date in UNIX timestamp format",
         ),
-        "notes": fields.String(required=True, description="Mentorship relation notes"),
+        "notes": fields.String(
+            required=True, description="Mentorship relation notes"
+        ),
     },
 )
 
@@ -51,7 +62,9 @@ relation_user_response_body = Model(
 mentorship_request_response_body = Model(
     "List mentorship relation request model",
     {
-        "id": fields.Integer(required=True, description="Mentorship relation ID"),
+        "id": fields.Integer(
+            required=True, description="Mentorship relation ID"
+        ),
         "action_user_id": fields.Integer(
             required=True, description="Mentorship relation requester user ID"
         ),
@@ -82,7 +95,9 @@ mentorship_request_response_body = Model(
             enum=MentorshipRelationState.values,
             description="Mentorship relation state",
         ),
-        "notes": fields.String(required=True, description="Mentorship relation notes"),
+        "notes": fields.String(
+            required=True, description="Mentorship relation notes"
+        ),
     },
 )
 
@@ -94,7 +109,8 @@ user_dashboard_user_details = Model(
             required=True, description="Mentorship relation user name"
         ),
         "photo_url": fields.String(
-            required=True, description="Mentorship relation user profile picture URL"
+            required=True,
+            description="Mentorship relation user profile picture URL",
         ),
     },
 )
@@ -102,7 +118,9 @@ user_dashboard_user_details = Model(
 mentorship_request_response_body_for_user_dashboard_body = Model(
     "List mentorship relation request model for user dashboard",
     {
-        "id": fields.Integer(required=True, description="Mentorship relation ID"),
+        "id": fields.Integer(
+            required=True, description="Mentorship relation ID"
+        ),
         "action_user_id": fields.Integer(
             required=True, description="Mentorship relation requester user ID"
         ),
@@ -129,6 +147,8 @@ mentorship_request_response_body_for_user_dashboard_body = Model(
             enum=MentorshipRelationState.values,
             description="Mentorship relation state",
         ),
-        "notes": fields.String(required=True, description="Mentorship relation notes"),
+        "notes": fields.String(
+            required=True, description="Mentorship relation notes"
+        ),
     },
 )

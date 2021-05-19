@@ -6,17 +6,16 @@ from flask import json
 from flask_restx import marshal
 
 from app import messages
+from app.api.models.mentorship_relation import mentorship_request_response_body
 from app.api.models.user import public_user_api_model
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2, user3
-from app.api.models.mentorship_relation import mentorship_request_response_body
+from tests.test_utils import get_test_request_header
 
 
 class TestHappyPath1(BaseTestCase):
@@ -74,7 +73,9 @@ class TestHappyPath1(BaseTestCase):
         request_body = {
             "mentor_id": self.mentor.id,
             "mentee_id": self.mentee.id,
-            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
+            "end_date": int(
+                (datetime.utcnow() + timedelta(days=40)).timestamp()
+            ),
             "notes": "some notes",
         }
         send_request_response = self.client.post(
@@ -104,7 +105,8 @@ class TestHappyPath1(BaseTestCase):
         # POST /mentorship_relation/{request_id}/accept
 
         accept_response = self.client.put(
-            f"/mentorship_relation/{request_id}/accept", headers=mentor_auth_header
+            f"/mentorship_relation/{request_id}/accept",
+            headers=mentor_auth_header,
         )
 
         self.assertEqual(HTTPStatus.OK, accept_response.status_code)
@@ -118,7 +120,9 @@ class TestHappyPath1(BaseTestCase):
 
         self.assertEqual(HTTPStatus.OK, mentee_current_relation.status_code)
         self.assertEqual(HTTPStatus.OK, mentor_current_relation.status_code)
-        self.assertFalse(json.loads(mentor_current_relation.data)["sent_by_me"])
+        self.assertFalse(
+            json.loads(mentor_current_relation.data)["sent_by_me"]
+        )
         self.assertTrue(json.loads(mentee_current_relation.data)["sent_by_me"])
         self.assertEqual(
             json.loads(mentor_current_relation.data)["mentor"],
@@ -151,10 +155,13 @@ class TestHappyPath1(BaseTestCase):
             data=task_request_body,
         )
 
-        self.assertEqual(HTTPStatus.CREATED, task_creation_response.status_code)
+        self.assertEqual(
+            HTTPStatus.CREATED, task_creation_response.status_code
+        )
 
         tasks_response = self.client.get(
-            f"/mentorship_relation/{request_id}/tasks", headers=mentor_auth_header
+            f"/mentorship_relation/{request_id}/tasks",
+            headers=mentor_auth_header,
         )
 
         self.assertEqual(HTTPStatus.OK, tasks_response.status_code)
@@ -180,7 +187,8 @@ class TestHappyPath1(BaseTestCase):
         self.assertEqual(HTTPStatus.OK, complete_task_response.status_code)
 
         tasks_response = self.client.get(
-            f"/mentorship_relation/{request_id}/tasks", headers=mentor_auth_header
+            f"/mentorship_relation/{request_id}/tasks",
+            headers=mentor_auth_header,
         )
 
         self.assertEqual(HTTPStatus.OK, tasks_response.status_code)

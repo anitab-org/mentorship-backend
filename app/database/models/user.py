@@ -1,5 +1,7 @@
-from werkzeug.security import generate_password_hash, check_password_hash
 import time
+
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from app.database.sqlalchemy_extension import db
 
 
@@ -57,7 +59,9 @@ class UserModel(db.Model):
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
 
-    def __init__(self, name, username, password, email, terms_and_conditions_checked):
+    def __init__(
+        self, name, username, password, email, terms_and_conditions_checked
+    ):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked."""
         ## required fields
 
@@ -70,7 +74,9 @@ class UserModel(db.Model):
         self.set_password(password)
 
         # default values
-        self.is_admin = True if self.is_empty() else False  # first user is admin
+        self.is_admin = (
+            True if self.is_empty() else False
+        )  # first user is admin
         self.is_email_verified = False
         self.registration_date = time.time()
 

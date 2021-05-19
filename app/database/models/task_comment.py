@@ -23,7 +23,9 @@ class TaskCommentModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     task_id = db.Column(db.Integer, db.ForeignKey("tasks_list.id"))
-    relation_id = db.Column(db.Integer, db.ForeignKey("mentorship_relations.id"))
+    relation_id = db.Column(
+        db.Integer, db.ForeignKey("mentorship_relations.id")
+    )
     creation_date = db.Column(db.Float, nullable=False)
     modification_date = db.Column(db.Float)
     comment = db.Column(db.String(COMMENT_MAX_LENGTH), nullable=False)
@@ -73,7 +75,9 @@ class TaskCommentModel(db.Model):
              task_id: The id of the task.
              relation_id: The id of the relation.
         """
-        return cls.query.filter_by(task_id=task_id, relation_id=relation_id).all()
+        return cls.query.filter_by(
+            task_id=task_id, relation_id=relation_id
+        ).all()
 
     @classmethod
     def find_all_by_user_id(cls, user_id):

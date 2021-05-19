@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from flask import json
 from flask_restx import marshal
@@ -12,9 +13,8 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_utils import get_test_request_header
 from tests.test_data import test_admin_user_2, test_admin_user_3
-from http import HTTPStatus
+from tests.test_utils import get_test_request_header
 
 
 class TestRemoveAdminUsersApi(BaseTestCase):
@@ -52,7 +52,9 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         db.session.add(self.admin_user_2)
         db.session.commit()
 
-    def test_remove_self_admin_status_with_other_admins_api_resource_auth_admin(self):
+    def test_remove_self_admin_status_with_other_admins_api_resource_auth_admin(
+        self,
+    ):
         auth_header = get_test_request_header(self.admin_user_1.id)
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED
         actual_response = self.client.post(
@@ -65,7 +67,9 @@ class TestRemoveAdminUsersApi(BaseTestCase):
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
-    def test_remove_self_admin_status_when_only_admin_api_resource_auth_admin(self):
+    def test_remove_self_admin_status_when_only_admin_api_resource_auth_admin(
+        self,
+    ):
         # remove other admins
         auth_header = get_test_request_header(self.admin_user_1.id)
         expected_response = messages.USER_ADMIN_STATUS_WAS_REVOKED

@@ -1,20 +1,25 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
 
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
 from app import messages
-from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.dao.user import UserDAO
+from app.api.email_utils import (
+    send_email_mentorship_relation_accepted,
+    send_email_new_request,
+)
 from app.api.models.mentorship_relation import *
+from app.api.resources.common import auth_header_parser
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.api.email_utils import send_email_mentorship_relation_accepted
-from app.api.email_utils import send_email_new_request
 
 mentorship_relation_ns = Namespace(
     "Mentorship Relation",
-    description="Operations related to " "mentorship relations " "between users",
+    description="Operations related to "
+    "mentorship relations "
+    "between users",
 )
 add_models_to_namespace(mentorship_relation_ns)
 
@@ -27,9 +32,12 @@ class SendRequest(Resource):
     @classmethod
     @jwt_required
     @mentorship_relation_ns.doc("send_request")
-    @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
+    @mentorship_relation_ns.expect(
+        auth_header_parser, send_mentorship_request_body
+    )
     @mentorship_relation_ns.response(
-        HTTPStatus.CREATED, f"{messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY}"
+        HTTPStatus.CREATED,
+        f"{messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY}",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST,
@@ -54,7 +62,8 @@ class SendRequest(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND,
-        f"{messages.MENTOR_DOES_NOT_EXIST}\n" f"{messages.MENTEE_DOES_NOT_EXIST}",
+        f"{messages.MENTOR_DOES_NOT_EXIST}\n"
+        f"{messages.MENTEE_DOES_NOT_EXIST}",
     )
     def post(cls):
         """
@@ -178,7 +187,8 @@ class AcceptMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("accept_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, f"{messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY}"
+        HTTPStatus.OK,
+        f"{messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY}",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN,
@@ -194,7 +204,8 @@ class AcceptMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def put(cls, request_id):
         """
@@ -227,7 +238,8 @@ class RejectMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("reject_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, f"{messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY}"
+        HTTPStatus.OK,
+        f"{messages.MENTORSHIP_RELATION_WAS_REJECTED_SUCCESSFULLY}",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN,
@@ -242,7 +254,8 @@ class RejectMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def put(cls, request_id):
         """
@@ -271,7 +284,8 @@ class CancelMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("cancel_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, f"{messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY}"
+        HTTPStatus.OK,
+        f"{messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY}",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN,
@@ -285,7 +299,8 @@ class CancelMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def put(cls, request_id):
         """
@@ -314,7 +329,8 @@ class DeleteMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("delete_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK, f"{messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY}"
+        HTTPStatus.OK,
+        f"{messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY}",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN,
@@ -328,7 +344,8 @@ class DeleteMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def delete(cls, request_id):
         """

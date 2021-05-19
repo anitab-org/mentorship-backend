@@ -1,14 +1,16 @@
 import datetime
 import unittest
-from werkzeug.security import check_password_hash
 from http import HTTPStatus
+
+from werkzeug.security import check_password_hash
+
 from app import messages
-from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
+from app.api.email_utils import generate_confirmation_token
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
-from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user2
@@ -35,7 +37,9 @@ class TestUserDao(BaseTestCase):
         self.assertTrue(user.email == "user2@email.com")
         self.assertFalse(user.is_admin)
         self.assertFalse(user.password_hash == "test_password")
-        self.assertTrue(check_password_hash(user.password_hash, "test_password"))
+        self.assertTrue(
+            check_password_hash(user.password_hash, "test_password")
+        )
         self.assertTrue(user.terms_and_conditions_checked)
         self.assertIsInstance(user.registration_date, float)
         self.assertFalse(user.is_email_verified)
@@ -97,7 +101,10 @@ class TestUserDao(BaseTestCase):
         self.assertFalse(user.is_email_verified)
         self.assertIsNone(user.email_verification_date)
         self.assertEqual(
-            (messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID, HTTPStatus.BAD_REQUEST),
+            (
+                messages.EMAIL_EXPIRED_OR_TOKEN_IS_INVALID,
+                HTTPStatus.BAD_REQUEST,
+            ),
             actual_result,
         )
 
@@ -152,11 +159,19 @@ class TestUserDao(BaseTestCase):
         dao = UserDAO()
 
         mentor = UserModel(
-            "Test mentor", "test_mentor", "test_password", "mentor@email.com", True
+            "Test mentor",
+            "test_mentor",
+            "test_password",
+            "mentor@email.com",
+            True,
         )
 
         mentee = UserModel(
-            "Test mentee", "test_mentee", "test_password", "mentee@email.com", True
+            "Test mentee",
+            "test_mentee",
+            "test_password",
+            "mentee@email.com",
+            True,
         )
 
         mentor.is_email_verified = True

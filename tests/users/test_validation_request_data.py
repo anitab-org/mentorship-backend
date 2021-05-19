@@ -4,14 +4,14 @@ from string import ascii_lowercase
 
 from app import messages
 from app.api.validations.user import (
-    validate_user_registration_request_data,
-    NAME_MIN_LENGTH,
     NAME_MAX_LENGTH,
-    USERNAME_MIN_LENGTH,
-    USERNAME_MAX_LENGTH,
+    NAME_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    USERNAME_MIN_LENGTH,
     validate_new_password,
+    validate_user_registration_request_data,
 )
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.test_data import user1
@@ -79,7 +79,9 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
 
         self.assertDictEqual(expected_result, actual_result)
 
-    def test_user_registration_request_data_missing_terms_and_conditions_field(self):
+    def test_user_registration_request_data_missing_terms_and_conditions_field(
+        self,
+    ):
         expected_result = messages.TERMS_AND_CONDITIONS_FIELD_IS_MISSING
         request_body = dict(
             name=user1["name"],
@@ -107,7 +109,8 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
     def test_user_registration_request_data_name_inferior_to_limit(self):
         secure_random = SystemRandom()
         random_generated_name = "".join(
-            secure_random.choice(ascii_lowercase) for x in range(NAME_MIN_LENGTH - 1)
+            secure_random.choice(ascii_lowercase)
+            for x in range(NAME_MIN_LENGTH - 1)
         )
         request_body = dict(
             name=random_generated_name,
@@ -129,7 +132,8 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
     def test_user_registration_request_data_name_superior_to_limit(self):
         secure_random = SystemRandom()
         random_generated_name = "".join(
-            secure_random.choice(ascii_lowercase) for x in range(NAME_MAX_LENGTH + 1)
+            secure_random.choice(ascii_lowercase)
+            for x in range(NAME_MAX_LENGTH + 1)
         )
         request_body = dict(
             name=random_generated_name,
@@ -240,7 +244,9 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
 
         self.assertEqual(expected_result, actual_result)
 
-    def test_user_registration_request_data_name_with_just_spaces_good_length(self):
+    def test_user_registration_request_data_name_with_just_spaces_good_length(
+        self,
+    ):
         request_body = dict(
             name=" " * (NAME_MIN_LENGTH + 1),
             username=user1["username"],
@@ -265,7 +271,8 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
             for x in range(PASSWORD_MIN_LENGTH - 1)
         )
         data = dict(
-            new_password=random_generated_password, current_password=user1["password"]
+            new_password=random_generated_password,
+            current_password=user1["password"],
         )
 
         expected_result = {
@@ -284,7 +291,8 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
             for x in range(PASSWORD_MAX_LENGTH + 1)
         )
         data = dict(
-            new_password=random_generated_password, current_password=user1["password"]
+            new_password=random_generated_password,
+            current_password=user1["password"],
         )
 
         expected_result = {

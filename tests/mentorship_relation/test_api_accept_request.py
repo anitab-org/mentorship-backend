@@ -1,15 +1,17 @@
 import json
 import unittest
-from unittest.mock import patch
 from datetime import datetime, timedelta
 from http import HTTPStatus
+from unittest.mock import patch
 
 from app import messages
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
-from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
-from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
+from tests.mentorship_relation.relation_base_setup import (
+    MentorshipRelationBaseTestCase,
+)
 from tests.test_utils import get_test_request_header
 
 
@@ -55,7 +57,8 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
             self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(
-                MentorshipRelationState.ACCEPTED, self.mentorship_relation.state
+                MentorshipRelationState.ACCEPTED,
+                self.mentorship_relation.state,
             )
             self.assertDictEqual(
                 messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY,
@@ -92,7 +95,8 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
             )
             self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertEqual(
-                MentorshipRelationState.ACCEPTED, mentorship_relation_current.state
+                MentorshipRelationState.ACCEPTED,
+                mentorship_relation_current.state,
             )  # current
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
@@ -118,7 +122,8 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
             self.assertDictEqual(
-                messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, json.loads(response.data)
+                messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER,
+                json.loads(response.data),
             )
 
     # User1 accepts a mentorship relation which the User1 is not involved with
@@ -159,7 +164,8 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
             self.assertDictEqual(
-                messages.AUTHORISATION_TOKEN_IS_MISSING, json.loads(response.data)
+                messages.AUTHORISATION_TOKEN_IS_MISSING,
+                json.loads(response.data),
             )
 
     # Valid user tries to accept valid task with authentication token expired
@@ -171,7 +177,8 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         with self.client:
             # generate token that expired 10 seconds ago
             auth_header = get_test_request_header(
-                self.second_user.id, token_expiration_delta=timedelta(seconds=-10)
+                self.second_user.id,
+                token_expiration_delta=timedelta(seconds=-10),
             )
             response = self.client.put(
                 f"/mentorship_relation/{self.mentorship_relation.id}/accept",
@@ -181,7 +188,9 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
-            self.assertDictEqual(messages.TOKEN_HAS_EXPIRED, json.loads(response.data))
+            self.assertDictEqual(
+                messages.TOKEN_HAS_EXPIRED, json.loads(response.data)
+            )
 
 
 if __name__ == "__main__":
