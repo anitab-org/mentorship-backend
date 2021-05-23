@@ -20,9 +20,7 @@ class MentorshipRelationDAO:
         MINIMUM_MENTORSHIP_DURATION
     """
 
-    MAXIMUM_MENTORSHIP_DURATION = timedelta(
-        weeks=24
-    )  # 6 months = approximately 6*4
+    MAXIMUM_MENTORSHIP_DURATION = timedelta(weeks=24)
     MINIMUM_MENTORSHIP_DURATION = timedelta(weeks=4)
 
     def create_mentorship_relation(self, user_id: int, data: Dict[str, str]):
