@@ -7,6 +7,7 @@ from app import messages
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
+
 # Testing User API resources
 #
 # TODO tests:

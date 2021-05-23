@@ -15,6 +15,7 @@ from app.messages import (
     USERNAME_HAS_INVALID_LENGTH,
 )
 from tests.base_test_case import BaseTestCase
+
 # Testing User API resources
 #
 # TODO tests:
