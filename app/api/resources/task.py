@@ -23,7 +23,7 @@ class CreateTask(Resource):
     @task_ns.doc("create_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser, create_task_request_body)
     @task_ns.response(HTTPStatus.CREATED, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}")
-    @task_ns.response(HTTPStatus.FORBIDDEN, f"{messages.UNACCEPTED_STATE_RELATION}")
+    @task_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.UNACCEPTED_STATE_RELATION}")
     @task_ns.response(
         HTTPStatus.UNAUTHORIZED,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
