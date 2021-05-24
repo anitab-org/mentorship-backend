@@ -209,9 +209,24 @@ To run black:
 black .
 ```
 
+### Sorting imports with isort
+
+We use [_isort_](https://pypi.org/project/isort/) to sort imports alphabetically, and automatically separated into 
+sections and by type. To install _isort_:
+
+```
+pip install isort
+```
+
+To run isort:
+
+```
+isort .
+```
+
 ### Automate auto-formatting tools with pre-commit
 
-We use [_pre-commit_](https://pre-commit.com/) to run basic hooks to format code automatically before every commit message. To install _pre-commit_:
+We use [_pre-commit_](https://pre-commit.com/) to check formatting before every commit message. To install _pre-commit_:
 
 ```
 pip install pre-commit
