@@ -39,11 +39,11 @@ class UserDAO:
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
 
-        name = data["name"]
-        username = data["username"]
-        password = data["password"]
-        email = data["email"]
-        terms_and_conditions_checked = data["terms_and_conditions_checked"]
+        name = data.get("name", None)
+        username = data.get("username", None)
+        password = data.get("password", None)
+        email = data.get("email", None)
+        terms_and_conditions_checked = data.get("terms_and_conditions_checked", None)
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
@@ -61,10 +61,10 @@ class UserDAO:
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
-            user.need_mentoring = data["need_mentoring"]
+            user.need_mentoring = data.get("need_mentoring", None)
 
         if "available_to_mentor" in data:
-            user.available_to_mentor = data["available_to_mentor"]
+            user.available_to_mentor = data.get("available_to_mentor", None)
 
         user.save_to_db()
 
@@ -238,74 +238,31 @@ class UserDAO:
 
             user.username = username
 
-        if "name" in data and data["name"]:
-            user.name = data["name"]
+        user.name = data.get("name", None)
 
-        if "bio" in data:
-            if data["bio"]:
-                user.bio = data["bio"]
-            else:
-                user.bio = None
+        user.bio = data.get("bio", None)
 
-        if "location" in data:
-            if data["location"]:
-                user.location = data["location"]
-            else:
-                user.location = None
+        user.location = data.get("location", None)
 
-        if "occupation" in data:
-            if data["occupation"]:
-                user.occupation = data["occupation"]
-            else:
-                user.occupation = None
+        user.occupation = data.get("occupation", None) or None
 
-        if "organization" in data:
-            if data["organization"]:
-                user.organization = data["organization"]
-            else:
-                user.organization = None
+        user.organization = data.get("organization", None) or None
 
-        if "slack_username" in data:
-            if data["slack_username"]:
-                user.slack_username = data["slack_username"]
-            else:
-                user.slack_username = None
+        user.slack_username = data.get("slack_username", None)
 
-        if "social_media_links" in data:
-            if data["social_media_links"]:
-                user.social_media_links = data["social_media_links"]
-            else:
-                user.social_media_links = None
+        user.social_media_links = data.get("social_media_links", None)
 
-        if "skills" in data:
-            if data["skills"]:
-                user.skills = data["skills"]
-            else:
-                user.skills = None
+        user.skills = data.get("skills", None)
 
-        if "interests" in data:
-            if data["interests"]:
-                user.interests = data["interests"]
-            else:
-                user.interests = None
+        user.interests = data.get("interests", None)
 
-        if "resume_url" in data:
-            if data["resume_url"]:
-                user.resume_url = data["resume_url"]
-            else:
-                user.resume_url = None
+        user.resume_url = data.get("resume_url", None)
 
-        if "photo_url" in data:
-            if data["photo_url"]:
-                user.photo_url = data["photo_url"]
-            else:
-                user.photo_url = None
+        user.photo_url = data.get("photo_url", None)
 
-        if "need_mentoring" in data:
-            user.need_mentoring = data["need_mentoring"]
+        user.need_mentoring = data.get("need_mentoring", None)
 
-        if "available_to_mentor" in data:
-            user.available_to_mentor = data["available_to_mentor"]
+        user.available_to_mentor = data.get("available_to_mentor", None)
 
         user.save_to_db()
 
