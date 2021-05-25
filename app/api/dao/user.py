@@ -247,37 +247,37 @@ class UserDAO:
             user.name = data["name"]
 
         if "bio" in data:
-            user.bio = data.get("bio",None);
+            user.bio = data.get("bio", None)
 
         if "location" in data:
-            user.location = data.get("location",None)
+            user.location = data.get("location", None)
 
         if "occupation" in data:
-            user.occupation = data.get("occupation",None)
+            user.occupation = data.get("occupation", None)
 
         if "organization" in data:
-                user.organization = data.get("organization",None)
+            user.organization = data.get("organization", None)
 
         if "slack_username" in data:
-                user.slack_username = data.get("slack_username",None)
+            user.slack_username = data.get("slack_username", None)
 
         if "social_media_links" in data:
             if data["social_media_links"]:
-                user.social_media_links = data.get("social_media_links",None)
+                user.social_media_links = data.get("social_media_links", None)
 
         if "skills" in data:
             if data["skills"]:
-                user.skills = data.get("skills",None)
+                user.skills = data.get("skills", None)
 
         if "interests" in data:
-                user.interests = data.get("interests",None)
+            user.interests = data.get("interests", None)
 
         if "resume_url" in data:
-                user.resume_url = data.get("resume_url",None)
+            user.resume_url = data.get("resume_url", None)
 
         if "photo_url" in data:
             if data["photo_url"]:
-                user.photo_url = data.get("photo_url",None)
+                user.photo_url = data.get("photo_url", None)
 
         if "need_mentoring" in data:
             user.need_mentoring = data["need_mentoring"]
