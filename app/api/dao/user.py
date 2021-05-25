@@ -60,9 +60,7 @@ class UserDAO:
                     HTTPStatus.CONFLICT,
                 )
 
-        user = UserModel(
-            name, username, password, email, terms_and_conditions_checked
-        )
+        user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
             user.need_mentoring = data["need_mentoring"]
 
@@ -178,9 +176,7 @@ class UserDAO:
                 UserModel.id != user_id,
                 not is_verified or UserModel.is_email_verified,
                 func.lower(UserModel.name).contains(search_query.lower())
-                | func.lower(UserModel.username).contains(
-                    search_query.lower()
-                ),
+                | func.lower(UserModel.username).contains(search_query.lower()),
             )
             .order_by(UserModel.id)
             .paginate(
@@ -501,33 +497,28 @@ class UserDAO:
 
         all_user_relations = user.mentee_relations + user.mentor_relations
         relations_in_response_form = [
-            DashboardRelationResponseModel(relation)
-            for relation in all_user_relations
+            DashboardRelationResponseModel(relation) for relation in all_user_relations
         ]
 
         mentor_sent_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id == user_id
-            and relation.mentor_id == user_id
+            if relation.action_user_id == user_id and relation.mentor_id == user_id
         ]
         mentor_received_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id != user_id
-            and relation.mentor_id == user_id
+            if relation.action_user_id != user_id and relation.mentor_id == user_id
         ]
         mentee_sent_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id == user_id
-            and relation.mentee_id == user_id
+            if relation.action_user_id == user_id and relation.mentee_id == user_id
         ]
         mentee_received_relations = [
             relation
             for relation in relations_in_response_form
-            if relation.action_user_id != user_id
-            and relation.mentee_id == user_id
+            if relation.action_user_id != user_id and relation.mentee_id == user_id
         ]
 
         as_mentee = {
@@ -670,10 +661,8 @@ class UserDAO:
         response["as_mentor"] = as_mentor
         response["as_mentee"] = as_mentee
 
-        current_relation = (
-            MentorshipRelationDAO.list_current_mentorship_relation(
-                user_id=user_id
-            )
+        current_relation = MentorshipRelationDAO.list_current_mentorship_relation(
+            user_id=user_id
         )
 
         if current_relation != (
@@ -689,11 +678,7 @@ class UserDAO:
                 list_tasks_response_body,
             )
             response["tasks_done"] = marshal(
-                [
-                    task
-                    for task in current_relation.tasks_list.tasks
-                    if task["is_done"]
-                ],
+                [task for task in current_relation.tasks_list.tasks if task["is_done"]],
                 list_tasks_response_body,
             )
 

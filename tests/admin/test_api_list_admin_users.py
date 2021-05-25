@@ -77,9 +77,7 @@ class TestListAdminUsersApi(BaseTestCase):
         actual_response = self.client.get("/admins")
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     """
     Test for api call from admin users

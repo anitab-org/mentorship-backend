@@ -2,12 +2,8 @@ from flask_restx import Model, fields
 
 
 def add_models_to_namespace(api_namespace):
-    api_namespace.models[
-        create_task_request_body.name
-    ] = create_task_request_body
-    api_namespace.models[
-        list_tasks_response_body.name
-    ] = list_tasks_response_body
+    api_namespace.models[create_task_request_body.name] = create_task_request_body
+    api_namespace.models[list_tasks_response_body.name] = list_tasks_response_body
 
 
 create_task_request_body = Model(

@@ -17,12 +17,8 @@ class TestHomeStatisticsApi(BaseTestCase):
     def setUp(self):
         super().setUp()
 
-        self.user1 = UserModel(
-            "User1", "user1", "__test__", "test@email.com", True
-        )
-        self.user2 = UserModel(
-            "User2", "user2", "__test__", "test2@email.com", True
-        )
+        self.user1 = UserModel("User1", "user1", "__test__", "test@email.com", True)
+        self.user2 = UserModel("User2", "user2", "__test__", "test2@email.com", True)
         self.user1.available_to_mentor = True
         self.user1.is_email_verified = True
         self.user2.need_mentoring = True
@@ -36,9 +32,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/home", follow_redirects=True)
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_relations_invalid_id(self):
         auth_header = get_test_request_header(
@@ -48,9 +42,7 @@ class TestHomeStatisticsApi(BaseTestCase):
             "/home", follow_redirects=True, headers=auth_header
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertEqual(
-            messages.USER_NOT_FOUND, json.loads(actual_response.data)
-        )
+        self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
     def test_pending_requests_auth(self):
         start_date = datetime.utcnow()

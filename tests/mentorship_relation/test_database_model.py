@@ -75,35 +75,23 @@ class TestMentorshipRelationModel(BaseTestCase):
         self.assertEqual(1, query_mentorship_relation.id)
 
         # asserting relation extra fields
-        self.assertEqual(
-            self.first_user.id, query_mentorship_relation.action_user_id
-        )
-        self.assertEqual(
-            self.now_datetime, query_mentorship_relation.creation_date
-        )
+        self.assertEqual(self.first_user.id, query_mentorship_relation.action_user_id)
+        self.assertEqual(self.now_datetime, query_mentorship_relation.creation_date)
         self.assertIsNone(query_mentorship_relation.accept_date)
         self.assertIsNone(query_mentorship_relation.start_date)
-        self.assertEqual(
-            self.end_date_example, query_mentorship_relation.end_date
-        )
+        self.assertEqual(self.end_date_example, query_mentorship_relation.end_date)
         self.assertEqual(self.notes_example, query_mentorship_relation.notes)
         self.assertEqual(
             MentorshipRelationState.PENDING, query_mentorship_relation.state
         )
 
         # asserting mentor and mentees setup
-        self.assertEqual(
-            self.first_user.id, query_mentorship_relation.mentor_id
-        )
-        self.assertEqual(
-            self.second_user.id, query_mentorship_relation.mentee_id
-        )
+        self.assertEqual(self.first_user.id, query_mentorship_relation.mentor_id)
+        self.assertEqual(self.second_user.id, query_mentorship_relation.mentee_id)
 
         # assert mentors' mentor_relations and mentee_relations
         self.assertEqual(1, len(self.first_user.mentor_relations))
-        self.assertEqual(
-            query_mentorship_relation, self.first_user.mentor_relations[0]
-        )
+        self.assertEqual(query_mentorship_relation, self.first_user.mentor_relations[0])
         self.assertEqual([], self.first_user.mentee_relations)
 
         # assert mentees' mentor_relations and mentee_relations

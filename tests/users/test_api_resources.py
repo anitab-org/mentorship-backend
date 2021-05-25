@@ -31,9 +31,7 @@ class TestUserRegistrationApi(BaseTestCase):
 
     # mocking mail.send function which connects with smtp server
     @patch("flask_mail._MailMixin.send", side_effect=mail_send_mocked)
-    def test_user_registration_without_optional_fields(
-        self, send_email_function
-    ):
+    def test_user_registration_without_optional_fields(self, send_email_function):
         # Ensure user registration behaves correctly
 
         with self.client:
@@ -73,9 +71,7 @@ class TestUserRegistrationApi(BaseTestCase):
                 self.assertFalse(user.available_to_mentor)
 
     @patch("flask_mail._MailMixin.send", side_effect=mail_send_mocked)
-    def test_user_registration_with_both_optional_fields(
-        self, send_email_function
-    ):
+    def test_user_registration_with_both_optional_fields(self, send_email_function):
         with self.client:
             self.client.post(
                 "/register",
@@ -153,9 +149,7 @@ class TestUserRegistrationApi(BaseTestCase):
     # new tests to verify response status codes
     # BAD_REQUEST status
     @patch("flask_mail._MailMixin.send", side_effect=mail_send_mocked)
-    def test_user_registration_with_invalid_length_username(
-        self, send_email_function
-    ):
+    def test_user_registration_with_invalid_length_username(self, send_email_function):
         with self.client:
             # invalid username and password length
             response = self.client.post(
@@ -176,19 +170,13 @@ class TestUserRegistrationApi(BaseTestCase):
             )
 
             user = UserModel.query.filter_by(username="test").first()
-            message = json.loads(response.get_data(as_text=True)).get(
-                "message"
-            )
+            message = json.loads(response.get_data(as_text=True)).get("message")
             self.assertIsNone(user)
-            self.assertEqual(
-                message, USERNAME_HAS_INVALID_LENGTH.get("message")
-            )
+            self.assertEqual(message, USERNAME_HAS_INVALID_LENGTH.get("message"))
             self.assertEqual(response.status_code, 400)
 
     @patch("flask_mail._MailMixin.send", side_effect=mail_send_mocked)
-    def test_user_registration_with_invalid_length_password(
-        self, send_email_function
-    ):
+    def test_user_registration_with_invalid_length_password(self, send_email_function):
         with self.client:
             # invalid username and password length
             response = self.client.post(
@@ -208,12 +196,8 @@ class TestUserRegistrationApi(BaseTestCase):
                 content_type="application/json",
             )
 
-            user = UserModel.query.filter_by(
-                username=user1["username"]
-            ).first()
-            message = json.loads(response.get_data(as_text=True)).get(
-                "message"
-            )
+            user = UserModel.query.filter_by(username=user1["username"]).first()
+            message = json.loads(response.get_data(as_text=True)).get("message")
             self.assertIsNone(user)
             self.assertEqual(
                 message,
@@ -222,9 +206,7 @@ class TestUserRegistrationApi(BaseTestCase):
             self.assertEqual(response.status_code, 400)
 
     @patch("flask_mail._MailMixin.send", side_effect=mail_send_mocked)
-    def test_user_registration_with_space_in_password(
-        self, send_email_function
-    ):
+    def test_user_registration_with_space_in_password(self, send_email_function):
         with self.client:
             # invalid username and password length
             response = self.client.post(
@@ -244,16 +226,10 @@ class TestUserRegistrationApi(BaseTestCase):
                 content_type="application/json",
             )
 
-            user = UserModel.query.filter_by(
-                username=user1["username"]
-            ).first()
-            message = json.loads(response.get_data(as_text=True)).get(
-                "message"
-            )
+            user = UserModel.query.filter_by(username=user1["username"]).first()
+            message = json.loads(response.get_data(as_text=True)).get("message")
             self.assertIsNone(user)
-            self.assertEqual(
-                message, USER_INPUTS_SPACE_IN_PASSWORD.get("message")
-            )
+            self.assertEqual(message, USER_INPUTS_SPACE_IN_PASSWORD.get("message"))
             self.assertEqual(response.status_code, 400)
 
     @patch("flask_mail._MailMixin.send", side_effect=mail_send_mocked)
@@ -276,14 +252,10 @@ class TestUserRegistrationApi(BaseTestCase):
                 follow_redirects=True,
                 content_type="application/json",
             )
-            message = json.loads(response.get_data(as_text=True)).get(
-                "message"
-            )
+            message = json.loads(response.get_data(as_text=True)).get("message")
             user = UserModel.query.filter_by(email="testemail").first()
             self.assertIsNone(user)
-            self.assertEqual(
-                message, EMAIL_INPUT_BY_USER_IS_INVALID.get("message")
-            )
+            self.assertEqual(message, EMAIL_INPUT_BY_USER_IS_INVALID.get("message"))
             self.assertEqual(response.status_code, 400)
 
     @patch("flask_mail._MailMixin.send", side_effect=mail_send_mocked)
@@ -306,12 +278,8 @@ class TestUserRegistrationApi(BaseTestCase):
                 follow_redirects=True,
                 content_type="application/json",
             )
-            message = json.loads(response.get_data(as_text=True)).get(
-                "message"
-            )
-            user = UserModel.query.filter_by(
-                username=user1["username"]
-            ).first()
+            message = json.loads(response.get_data(as_text=True)).get("message")
+            user = UserModel.query.filter_by(username=user1["username"]).first()
             self.assertIsNone(user)
             self.assertEqual(
                 message, TERMS_AND_CONDITIONS_ARE_NOT_CHECKED.get("message")
@@ -340,9 +308,7 @@ class TestUserRegistrationApi(BaseTestCase):
                 follow_redirects=True,
                 content_type="application/json",
             )
-            message = json.loads(response.get_data(as_text=True)).get(
-                "message"
-            )
+            message = json.loads(response.get_data(as_text=True)).get("message")
             users_count = UserModel.query.filter_by(username=username).count()
             self.assertEqual(users_count, 1)
             self.assertEqual(
@@ -372,9 +338,7 @@ class TestUserRegistrationApi(BaseTestCase):
                 follow_redirects=True,
                 content_type="application/json",
             )
-            message = json.loads(response.get_data(as_text=True)).get(
-                "message"
-            )
+            message = json.loads(response.get_data(as_text=True)).get("message")
             users_count = UserModel.query.filter_by(email=email).count()
             self.assertEqual(users_count, 1)
             self.assertEqual(

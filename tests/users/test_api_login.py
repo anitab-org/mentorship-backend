@@ -61,9 +61,7 @@ class TestUserLoginApi(BaseTestCase):
             self.assertIsNone(response.json.get("refresh_token"))
 
             self.assertEqual(1, len(response.json))
-            self.assertEqual(
-                messages.WRONG_USERNAME_OR_PASSWORD, response.json
-            )
+            self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
 
             self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
 
@@ -72,9 +70,7 @@ class TestUserLoginApi(BaseTestCase):
             response = self.client.post(
                 "/login",
                 data=json.dumps(
-                    dict(
-                        username=user1["username"], password=user1["password"]
-                    )
+                    dict(username=user1["username"], password=user1["password"])
                 ),
                 follow_redirects=True,
                 content_type="application/json",
@@ -94,9 +90,7 @@ class TestUserLoginApi(BaseTestCase):
             response = self.client.post(
                 "/login",
                 data=json.dumps(
-                    dict(
-                        username=user2["username"], password=user2["password"]
-                    )
+                    dict(username=user2["username"], password=user2["password"])
                 ),
                 follow_redirects=True,
                 content_type="application/json",

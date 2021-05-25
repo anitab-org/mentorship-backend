@@ -79,9 +79,7 @@ class UserList(Resource):
         )
 
         user_id = get_jwt_identity()
-        return DAO.list_users(
-            user_id, request.args.get("search", ""), page, per_page
-        )
+        return DAO.list_users(user_id, request.args.get("search", ""), page, per_page)
 
 
 @users_ns.route("users/<int:user_id>")
@@ -102,9 +100,7 @@ class OtherUser(Resource):
         f"{messages.TOKEN_IS_INVALID}\n"
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
-    @users_ns.response(
-        HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}"
-    )
+    @users_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}")
     def get(cls, user_id):
         """
         Returns a user.
@@ -129,9 +125,7 @@ class OtherUser(Resource):
     f"{messages.TOKEN_IS_INVALID}\n"
     f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
 )
-@users_ns.response(
-    HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}"
-)
+@users_ns.response(HTTPStatus.NOT_FOUND.value, f"{messages.USER_DOES_NOT_EXIST}")
 class MyUserProfile(Resource):
     @classmethod
     @jwt_required
@@ -154,9 +148,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("update_user_profile")
     @users_ns.expect(auth_header_parser, update_user_request_body_model)
-    @users_ns.response(
-        HTTPStatus.OK.value, f"{messages.USER_SUCCESSFULLY_UPDATED}"
-    )
+    @users_ns.response(HTTPStatus.OK.value, f"{messages.USER_SUCCESSFULLY_UPDATED}")
     @users_ns.response(
         HTTPStatus.BAD_REQUEST.value,
         f"{messages.NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT}\n"
@@ -192,9 +184,7 @@ class MyUserProfile(Resource):
     @jwt_required
     @users_ns.doc("delete_user")
     @users_ns.expect(auth_header_parser, validate=True)
-    @users_ns.response(
-        HTTPStatus.OK.value, f"{messages.USER_SUCCESSFULLY_DELETED}"
-    )
+    @users_ns.response(HTTPStatus.OK.value, f"{messages.USER_SUCCESSFULLY_DELETED}")
     def delete(cls):
         """
         Deletes user.
@@ -384,9 +374,7 @@ class UserEmailConfirmation(Resource):
 
 
 @users_ns.route("user/resend_email")
-@users_ns.response(
-    HTTPStatus.OK.value, f"{messages.EMAIL_VERIFICATION_MESSAGE}"
-)
+@users_ns.response(HTTPStatus.OK.value, f"{messages.EMAIL_VERIFICATION_MESSAGE}")
 @users_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.INVALID_INPUT}")
 @users_ns.response(
     HTTPStatus.FORBIDDEN.value, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}"

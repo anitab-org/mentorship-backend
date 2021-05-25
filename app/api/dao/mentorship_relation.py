@@ -42,9 +42,7 @@ class MentorshipRelationDAO:
         notes = data["notes"]
 
         # user_id has to match either mentee_id or mentor_id
-        is_valid_user_ids = (
-            action_user_id == mentor_id or action_user_id == mentee_id
-        )
+        is_valid_user_ids = action_user_id == mentor_id or action_user_id == mentee_id
         if not is_valid_user_ids:
             return (
                 messages.MATCH_EITHER_MENTOR_OR_MENTEE,
@@ -182,9 +180,7 @@ class MentorshipRelationDAO:
         if state:
             if isValidState(state):
                 all_relations = list(
-                    filter(
-                        lambda rel: (rel.state.name == state), all_relations
-                    )
+                    filter(lambda rel: (rel.state.name == state), all_relations)
                 )
             else:
                 return [], HTTPStatus.BAD_REQUEST
@@ -459,9 +455,7 @@ class MentorshipRelationDAO:
 
         for relation in all_relations:
             if relation.state == MentorshipRelationState.ACCEPTED:
-                setattr(
-                    relation, "sent_by_me", relation.action_user_id == user_id
-                )
+                setattr(relation, "sent_by_me", relation.action_user_id == user_id)
                 return relation
 
         return messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK
@@ -488,9 +482,7 @@ class MentorshipRelationDAO:
                 relation.state == MentorshipRelationState.PENDING
                 and relation.end_date > now_timestamp
             ):
-                setattr(
-                    relation, "sent_by_me", relation.action_user_id == user_id
-                )
+                setattr(relation, "sent_by_me", relation.action_user_id == user_id)
                 pending_requests += [relation]
 
         return pending_requests, HTTPStatus.OK

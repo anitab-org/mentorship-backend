@@ -13,14 +13,10 @@ def generate_confirmation_token(email):
     from run import application
 
     serializer = URLSafeTimedSerializer(application.config["SECRET_KEY"])
-    return serializer.dumps(
-        email, salt=application.config["SECURITY_PASSWORD_SALT"]
-    )
+    return serializer.dumps(email, salt=application.config["SECURITY_PASSWORD_SALT"])
 
 
-def confirm_token(
-    token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD
-):
+def confirm_token(token, expiration=config.BaseConfig.UNVERIFIED_USER_THRESHOLD):
     """Confirms the token matches the expected email address.
 
     Args:

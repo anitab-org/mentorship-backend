@@ -32,9 +32,7 @@ class TestUserRefreshApi(BaseTestCase):
 
     def test_user_refresh(self):
         with self.client:
-            refresh_header = get_test_request_header(
-                user1["username"], refresh=True
-            )
+            refresh_header = get_test_request_header(user1["username"], refresh=True)
             response = self.client.post(
                 "/refresh",
                 headers=refresh_header,
@@ -65,12 +63,8 @@ class TestUserRefreshApi(BaseTestCase):
                 content_type="application/json",
             )
 
-            self.assertEqual(
-                HTTPStatus.UNAUTHORIZED, actual_response.status_code
-            )
-            self.assertEqual(
-                expected_response, json.loads(actual_response.data)
-            )
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
+            self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_refresh_expired_token(self):
         auth_header = get_test_request_header(

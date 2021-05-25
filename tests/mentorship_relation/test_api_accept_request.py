@@ -188,9 +188,7 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
-            self.assertDictEqual(
-                messages.TOKEN_HAS_EXPIRED, json.loads(response.data)
-            )
+            self.assertDictEqual(messages.TOKEN_HAS_EXPIRED, json.loads(response.data))
 
 
 if __name__ == "__main__":

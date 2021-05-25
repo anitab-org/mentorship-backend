@@ -37,9 +37,7 @@ class TestUserDao(BaseTestCase):
         self.assertTrue(user.email == "user2@email.com")
         self.assertFalse(user.is_admin)
         self.assertFalse(user.password_hash == "test_password")
-        self.assertTrue(
-            check_password_hash(user.password_hash, "test_password")
-        )
+        self.assertTrue(check_password_hash(user.password_hash, "test_password"))
         self.assertTrue(user.terms_and_conditions_checked)
         self.assertIsInstance(user.registration_date, float)
         self.assertFalse(user.is_email_verified)

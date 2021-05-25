@@ -24,9 +24,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": self.first_user.id,
             "mentee_id": self.second_user.id,
-            "end_date": int(
-                (datetime.utcnow() + timedelta(days=40)).timestamp()
-            ),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
@@ -36,9 +34,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
             data=json.dumps(test_payload),
         )
         self.assertEqual(HTTPStatus.CREATED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_fail_send_request_bad_mentee_id(self):
         auth_header = get_test_request_header(self.first_user.id)
@@ -46,9 +42,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": self.first_user.id,
             "mentee_id": 1234,
-            "end_date": int(
-                (datetime.utcnow() + timedelta(days=40)).timestamp()
-            ),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
@@ -58,9 +52,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
             data=json.dumps(test_payload),
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_fail_send_request_bad_mentor_id(self):
         auth_header = get_test_request_header(self.first_user.id)
@@ -68,9 +60,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": 1234,
             "mentee_id": self.first_user.id,
-            "end_date": int(
-                (datetime.utcnow() + timedelta(days=40)).timestamp()
-            ),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
@@ -80,9 +70,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
             data=json.dumps(test_payload),
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     # In case if a user tries to send request on behalf of some other user
     def test_fail_send_request_bad_user_id(self):
@@ -91,9 +79,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         test_payload = {
             "mentor_id": self.second_user.id,
             "mentee_id": 4321,
-            "end_date": int(
-                (datetime.utcnow() + timedelta(days=40)).timestamp()
-            ),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         actual_response = self.client.post(
@@ -103,9 +89,7 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
             data=json.dumps(test_payload),
         )
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
 if __name__ == "__main__":

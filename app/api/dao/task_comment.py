@@ -55,9 +55,7 @@ class TaskCommentDAO:
             The second is the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(
-            user_id, task_id, relation_id
-        )
+        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
         if is_valid != {}:
             return is_valid
 
@@ -106,15 +104,11 @@ class TaskCommentDAO:
             and the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(
-            user_id, task_id, relation_id
-        )
+        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
         if is_valid != {}:
             return is_valid
 
-        comments_list = TaskCommentModel.find_all_by_task_id(
-            task_id, relation_id
-        )
+        comments_list = TaskCommentModel.find_all_by_task_id(task_id, relation_id)
         return [comment.json() for comment in comments_list]
 
     @staticmethod
@@ -153,9 +147,7 @@ class TaskCommentDAO:
             The second is the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(
-            user_id, task_id, relation_id
-        )
+        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
         if is_valid != {}:
             return is_valid
 
@@ -200,9 +192,7 @@ class TaskCommentDAO:
             The second is the HTTP response code.
         """
 
-        is_valid = validate_data_for_task_comment(
-            user_id, task_id, relation_id
-        )
+        is_valid = validate_data_for_task_comment(user_id, task_id, relation_id)
         if is_valid != {}:
             return is_valid
 

@@ -47,9 +47,7 @@ class TestProtectedApi(BaseTestCase):
         actual_response = self.client.get("/user", follow_redirects=True)
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_incomplete_token_api(self):
         access_token = "invalid_token"
@@ -60,9 +58,7 @@ class TestProtectedApi(BaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_user_profile_with_token_expired_api(self):
         auth_header = get_test_request_header(
@@ -74,9 +70,7 @@ class TestProtectedApi(BaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
 if __name__ == "__main__":

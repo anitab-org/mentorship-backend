@@ -46,9 +46,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_comment_too_long(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -67,9 +65,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_comment_not_string(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -84,9 +80,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_not_created_by_user(self):
         auth_header = get_test_request_header(self.first_user.id)
@@ -101,9 +95,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_relation_not_existing(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -117,9 +109,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_unaccepted_relation(self):
         auth_header = get_test_request_header(self.fourth_user.id)
@@ -133,9 +123,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_task_not_existing(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -150,9 +138,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_comment_not_existing(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -166,15 +152,11 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_modification_api_with_wrong_task_id(self):
         auth_header = get_test_request_header(self.admin_user.id)
-        expected_response = (
-            messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST
-        )
+        expected_response = messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST
         actual_response = self.client.put(
             f"mentorship_relation/{self.relation_id}/task/2/comment/"
             f"{self.comment_id}",
@@ -185,9 +167,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_full_task_comment_modification_api(self):
         auth_header = get_test_request_header(self.admin_user.id)
@@ -202,9 +182,7 @@ class TestModifyTaskCommentApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         modified_comment = TaskCommentDAO.get_task_comment(1, 1)[0]
         self.assertIsNotNone(modified_comment)

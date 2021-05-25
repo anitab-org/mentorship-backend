@@ -73,9 +73,7 @@ class TestHappyPath1(BaseTestCase):
         request_body = {
             "mentor_id": self.mentor.id,
             "mentee_id": self.mentee.id,
-            "end_date": int(
-                (datetime.utcnow() + timedelta(days=40)).timestamp()
-            ),
+            "end_date": int((datetime.utcnow() + timedelta(days=40)).timestamp()),
             "notes": "some notes",
         }
         send_request_response = self.client.post(
@@ -120,9 +118,7 @@ class TestHappyPath1(BaseTestCase):
 
         self.assertEqual(HTTPStatus.OK, mentee_current_relation.status_code)
         self.assertEqual(HTTPStatus.OK, mentor_current_relation.status_code)
-        self.assertFalse(
-            json.loads(mentor_current_relation.data)["sent_by_me"]
-        )
+        self.assertFalse(json.loads(mentor_current_relation.data)["sent_by_me"])
         self.assertTrue(json.loads(mentee_current_relation.data)["sent_by_me"])
         self.assertEqual(
             json.loads(mentor_current_relation.data)["mentor"],
@@ -155,9 +151,7 @@ class TestHappyPath1(BaseTestCase):
             data=task_request_body,
         )
 
-        self.assertEqual(
-            HTTPStatus.CREATED, task_creation_response.status_code
-        )
+        self.assertEqual(HTTPStatus.CREATED, task_creation_response.status_code)
 
         tasks_response = self.client.get(
             f"/mentorship_relation/{request_id}/tasks",

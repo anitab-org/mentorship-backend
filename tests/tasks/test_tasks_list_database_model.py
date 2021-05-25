@@ -59,9 +59,7 @@ class TestTasksListModel(BaseTestCase):
             is_done=False,
         )
 
-        self.assertEqual(
-            [expected_task_1, expected_task_2], tasks_list_one.tasks
-        )
+        self.assertEqual([expected_task_1, expected_task_2], tasks_list_one.tasks)
 
     def test_remove_task_from_tasks_list(self):
 

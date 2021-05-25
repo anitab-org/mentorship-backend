@@ -63,9 +63,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.cancel_relation(123, self.mentorship_relation.id)
 
-        self.assertEqual(
-            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result
-        )
+        self.assertEqual((messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result)
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
         )
@@ -76,9 +74,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         DAO = MentorshipRelationDAO()
-        result = DAO.cancel_relation(
-            self.second_user.id, self.mentorship_relation.id
-        )
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
 
         self.assertEqual(
             (
@@ -97,9 +93,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         DAO = MentorshipRelationDAO()
-        result = DAO.cancel_relation(
-            self.first_user.id, self.mentorship_relation.id
-        )
+        result = DAO.cancel_relation(self.first_user.id, self.mentorship_relation.id)
 
         self.assertEqual(
             (
@@ -119,9 +113,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(
-            self.second_user.id, self.mentorship_relation.id
-        )
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
             (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )
@@ -130,9 +122,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(
-            self.second_user.id, self.mentorship_relation.id
-        )
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
             (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )
@@ -141,9 +131,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(
-            self.second_user.id, self.mentorship_relation.id
-        )
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
             (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )
@@ -152,9 +140,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
-        result = DAO.cancel_relation(
-            self.second_user.id, self.mentorship_relation.id
-        )
+        result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
             (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )

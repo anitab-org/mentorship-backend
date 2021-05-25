@@ -5,9 +5,7 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[
         assign_and_revoke_user_admin_request_body.name
     ] = assign_and_revoke_user_admin_request_body
-    api_namespace.models[
-        public_admin_user_api_model.name
-    ] = public_admin_user_api_model
+    api_namespace.models[public_admin_user_api_model.name] = public_admin_user_api_model
 
 
 assign_and_revoke_user_admin_request_body = Model(
@@ -33,12 +31,8 @@ public_admin_user_api_model = Model(
         ),
         "bio": fields.String(required=True, description="User bio"),
         "location": fields.String(required=True, description="User location"),
-        "occupation": fields.String(
-            required=True, description="User occupation"
-        ),
-        "organization": fields.String(
-            required=True, description="User organization"
-        ),
+        "occupation": fields.String(required=True, description="User occupation"),
+        "organization": fields.String(required=True, description="User organization"),
         "skills": fields.String(required=True, description="User skills"),
     },
 )

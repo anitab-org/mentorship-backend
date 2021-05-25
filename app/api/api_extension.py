@@ -14,15 +14,11 @@ from app.api.resources.user import users_ns as user_namespace
 
 
 def androidlink():
-    return (
-        "<a href=https://github.com/anitab-org/mentorship-android>Android</a>"
-    )
+    return "<a href=https://github.com/anitab-org/mentorship-android>Android</a>"
 
 
 def flutterlink():
-    return (
-        "<a href=https://github.com/anitab-org/mentorship-flutter>Flutter</a>"
-    )
+    return "<a href=https://github.com/anitab-org/mentorship-flutter>Flutter</a>"
 
 
 def ioslink():

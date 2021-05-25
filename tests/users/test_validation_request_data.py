@@ -109,8 +109,7 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
     def test_user_registration_request_data_name_inferior_to_limit(self):
         secure_random = SystemRandom()
         random_generated_name = "".join(
-            secure_random.choice(ascii_lowercase)
-            for x in range(NAME_MIN_LENGTH - 1)
+            secure_random.choice(ascii_lowercase) for x in range(NAME_MIN_LENGTH - 1)
         )
         request_body = dict(
             name=random_generated_name,
@@ -132,8 +131,7 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
     def test_user_registration_request_data_name_superior_to_limit(self):
         secure_random = SystemRandom()
         random_generated_name = "".join(
-            secure_random.choice(ascii_lowercase)
-            for x in range(NAME_MAX_LENGTH + 1)
+            secure_random.choice(ascii_lowercase) for x in range(NAME_MAX_LENGTH + 1)
         )
         request_body = dict(
             name=random_generated_name,

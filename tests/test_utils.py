@@ -1,9 +1,7 @@
 from flask_jwt_extended import create_access_token, create_refresh_token
 
 
-def get_test_request_header(
-    user_identity, token_expiration_delta=None, refresh=False
-):
+def get_test_request_header(user_identity, token_expiration_delta=None, refresh=False):
     """
     This function returns the header needed to access auth protected
     endpoints

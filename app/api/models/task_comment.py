@@ -17,9 +17,7 @@ task_comments_model = Model(
         "id": fields.Integer(required=True, description="Task comment's id."),
         "user_id": fields.Integer(required=True, description="User's id."),
         "task_id": fields.Integer(required=True, description="Task's id."),
-        "relation_id": fields.Integer(
-            required=True, description="Relation's id."
-        ),
+        "relation_id": fields.Integer(required=True, description="Relation's id."),
         "creation_date": fields.Float(
             required=True, description="Creation date of the task comment."
         ),

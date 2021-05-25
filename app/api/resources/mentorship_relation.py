@@ -17,9 +17,7 @@ from app.database.models.mentorship_relation import MentorshipRelationModel
 
 mentorship_relation_ns = Namespace(
     "Mentorship Relation",
-    description="Operations related to "
-    "mentorship relations "
-    "between users",
+    description="Operations related to " "mentorship relations " "between users",
 )
 add_models_to_namespace(mentorship_relation_ns)
 
@@ -32,9 +30,7 @@ class SendRequest(Resource):
     @classmethod
     @jwt_required
     @mentorship_relation_ns.doc("send_request")
-    @mentorship_relation_ns.expect(
-        auth_header_parser, send_mentorship_request_body
-    )
+    @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(
         HTTPStatus.CREATED,
         f"{messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY}",
@@ -62,8 +58,7 @@ class SendRequest(Resource):
     )
     @mentorship_relation_ns.response(
         HTTPStatus.NOT_FOUND,
-        f"{messages.MENTOR_DOES_NOT_EXIST}\n"
-        f"{messages.MENTEE_DOES_NOT_EXIST}",
+        f"{messages.MENTOR_DOES_NOT_EXIST}\n" f"{messages.MENTEE_DOES_NOT_EXIST}",
     )
     def post(cls):
         """

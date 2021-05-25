@@ -19,9 +19,7 @@ class TestCompleteTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_complete_task_api(self):
 
@@ -43,9 +41,7 @@ class TestCompleteTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         relation = MentorshipRelationModel.find_by_id(
             self.mentorship_relation_w_second_user.id

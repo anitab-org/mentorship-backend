@@ -21,12 +21,8 @@ class CreateTask(Resource):
     @jwt_required
     @task_ns.doc("create_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser, create_task_request_body)
-    @task_ns.response(
-        HTTPStatus.CREATED, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}"
-    )
-    @task_ns.response(
-        HTTPStatus.FORBIDDEN, f"{messages.UNACCEPTED_STATE_RELATION}"
-    )
+    @task_ns.response(HTTPStatus.CREATED, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}")
+    @task_ns.response(HTTPStatus.FORBIDDEN, f"{messages.UNACCEPTED_STATE_RELATION}")
     @task_ns.response(
         HTTPStatus.UNAUTHORIZED,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
@@ -84,9 +80,7 @@ class DeleteTask(Resource):
     @jwt_required
     @task_ns.doc("delete_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
-    @task_ns.response(
-        HTTPStatus.OK, f"{messages.TASK_WAS_DELETED_SUCCESSFULLY}"
-    )
+    @task_ns.response(HTTPStatus.OK, f"{messages.TASK_WAS_DELETED_SUCCESSFULLY}")
     @task_ns.response(
         HTTPStatus.UNAUTHORIZED,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
@@ -172,20 +166,14 @@ class ListTasks(Resource):
         return marshal(response, list_tasks_response_body), HTTPStatus.OK
 
 
-@task_ns.route(
-    "mentorship_relation/<int:request_id>/task/<int:task_id>/complete"
-)
+@task_ns.route("mentorship_relation/<int:request_id>/task/<int:task_id>/complete")
 class UpdateTask(Resource):
     @classmethod
     @jwt_required
     @task_ns.doc("update_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
-    @task_ns.response(
-        HTTPStatus.OK, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}"
-    )
-    @task_ns.response(
-        HTTPStatus.CONFLICT, f"{messages.TASK_WAS_ALREADY_ACHIEVED}"
-    )
+    @task_ns.response(HTTPStatus.OK, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}")
+    @task_ns.response(HTTPStatus.CONFLICT, f"{messages.TASK_WAS_ALREADY_ACHIEVED}")
     @task_ns.response(
         HTTPStatus.UNAUTHORIZED,
         f"{messages.TOKEN_HAS_EXPIRED}\n"

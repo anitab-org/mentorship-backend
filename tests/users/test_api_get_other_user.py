@@ -57,9 +57,7 @@ class TestnGetOtherUserApi(BaseTestCase):
             "/users/1234", follow_redirects=True, headers=auth_header
         )
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertEqual(
-            json.loads(actual_response.data), messages.USER_DOES_NOT_EXIST
-        )
+        self.assertEqual(json.loads(actual_response.data), messages.USER_DOES_NOT_EXIST)
 
 
 if __name__ == "__main__":

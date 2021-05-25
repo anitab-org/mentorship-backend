@@ -87,13 +87,9 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
 
     def test_dao_sender_does_not_exist(self):
 
-        result = MentorshipRelationDAO.delete_request(
-            123, self.mentorship_relation.id
-        )
+        result = MentorshipRelationDAO.delete_request(123, self.mentorship_relation.id)
 
-        self.assertEqual(
-            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result
-        )
+        self.assertEqual((messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result)
         self.assertIsNotNone(
             MentorshipRelationModel.query.filter_by(
                 id=self.mentorship_relation.id
@@ -123,9 +119,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
             MentorshipRelationModel.query.filter_by(id=relation_id).first()
         )
 
-        result = MentorshipRelationDAO.delete_request(
-            self.first_user.id, relation_id
-        )
+        result = MentorshipRelationDAO.delete_request(self.first_user.id, relation_id)
         self.assertEqual(
             (
                 messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY,

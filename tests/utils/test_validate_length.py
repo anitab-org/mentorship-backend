@@ -21,9 +21,7 @@ class TestValidateLengthFunction(unittest.TestCase):
         field_length = 3
 
         expected_result = (True, {})
-        actual_result = validate_length(
-            field_length, 0, field_length + 1, "field"
-        )
+        actual_result = validate_length(field_length, 0, field_length + 1, "field")
 
         self.assertEqual(expected_result, actual_result)
 
@@ -34,9 +32,7 @@ class TestValidateLengthFunction(unittest.TestCase):
         field_name = "field"
 
         expected_error_msg = {
-            "message": get_length_validation_error_message(
-                field_name, None, max_length
-            )
+            "message": get_length_validation_error_message(field_name, None, max_length)
         }
         expected_result = (False, expected_error_msg)
         actual_result = validate_length(

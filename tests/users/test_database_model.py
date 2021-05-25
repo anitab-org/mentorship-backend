@@ -17,9 +17,7 @@ from tests.test_data import test_admin_user
 class TestAdminUserModel(BaseTestCase):
     def test_is_first_user_admin(self):
 
-        user = UserModel.query.filter_by(
-            email=test_admin_user["email"]
-        ).first()
+        user = UserModel.query.filter_by(email=test_admin_user["email"]).first()
         self.assertTrue(user is not None)
         self.assertTrue(user.id is not None)
         self.assertTrue(user.name == test_admin_user["name"])
@@ -51,9 +49,7 @@ class TestAdminUserModel(BaseTestCase):
         self.assertTrue(user.username == "user_not_admin")
         self.assertTrue(user.email == "user1@email.com")
         self.assertFalse(user.password_hash == "user1_password")
-        self.assertTrue(
-            check_password_hash(user.password_hash, "user1_password")
-        )
+        self.assertTrue(check_password_hash(user.password_hash, "user1_password"))
         self.assertFalse(user.is_admin)
         self.assertTrue(user.terms_and_conditions_checked)
         self.assertIsInstance(user.registration_date, float)

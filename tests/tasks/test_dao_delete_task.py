@@ -15,9 +15,7 @@ class TestDeleteTasksDao(TasksBaseTestCase):
         )
         first_task_id = 1
 
-        not_deleted_yet_task = self.tasks_list_1.find_task_by_id(
-            task_id=first_task_id
-        )
+        not_deleted_yet_task = self.tasks_list_1.find_task_by_id(task_id=first_task_id)
         self.assertIsNotNone(not_deleted_yet_task)
 
         actual_response = TaskDAO.delete_task(

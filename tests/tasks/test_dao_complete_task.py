@@ -49,9 +49,7 @@ class TestCompleteTasksDao(TasksBaseTestCase):
     def test_achieve_task_from_non_existing_relation(self):
         task_id = 1
 
-        self.assertFalse(
-            self.tasks_list_2.find_task_by_id(task_id).get("is_done")
-        )
+        self.assertFalse(self.tasks_list_2.find_task_by_id(task_id).get("is_done"))
         expected_response = (
             messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
             HTTPStatus.NOT_FOUND,
@@ -63,9 +61,7 @@ class TestCompleteTasksDao(TasksBaseTestCase):
             task_id=task_id,
         )
         self.assertEqual(expected_response, actual_response)
-        self.assertFalse(
-            self.tasks_list_2.find_task_by_id(task_id).get("is_done")
-        )
+        self.assertFalse(self.tasks_list_2.find_task_by_id(task_id).get("is_done"))
 
 
 if __name__ == "__main__":

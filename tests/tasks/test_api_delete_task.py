@@ -18,9 +18,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_delete_task_api_w_user_not_belonging_to_mentorship_relation_1(
         self,
@@ -35,9 +33,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_delete_task_api_w_user_not_belonging_to_mentorship_relation_2(
         self,
@@ -52,9 +48,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_full_task_deletion_api(self):
 
@@ -71,9 +65,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
         deleted_task = self.tasks_list_1.find_task_by_id(2)
         self.assertIsNone(deleted_task)
@@ -89,9 +81,7 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         )
 
         self.assertEqual(HTTPStatus.NOT_FOUND, actual_response.status_code)
-        self.assertDictEqual(
-            expected_response, json.loads(actual_response.data)
-        )
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
 if __name__ == "__main__":

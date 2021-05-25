@@ -115,17 +115,15 @@ class TasksBaseTestCase(BaseTestCase):
             tasks_list=self.tasks_list_3,
         )
 
-        self.mentorship_relation_bw_fourth_fifth_user = (
-            MentorshipRelationModel(
-                action_user_id=self.fourth_user.id,
-                mentor_user=self.fourth_user,
-                mentee_user=self.fifth_user,
-                creation_date=self.now_datetime.timestamp(),
-                end_date=self.end_date_example.timestamp(),
-                state=MentorshipRelationState.COMPLETED,
-                notes=self.notes_example,
-                tasks_list=self.tasks_list_4,
-            )
+        self.mentorship_relation_bw_fourth_fifth_user = MentorshipRelationModel(
+            action_user_id=self.fourth_user.id,
+            mentor_user=self.fourth_user,
+            mentee_user=self.fifth_user,
+            creation_date=self.now_datetime.timestamp(),
+            end_date=self.end_date_example.timestamp(),
+            state=MentorshipRelationState.COMPLETED,
+            notes=self.notes_example,
+            tasks_list=self.tasks_list_4,
         )
 
         db.session.add(self.mentorship_relation_w_second_user)

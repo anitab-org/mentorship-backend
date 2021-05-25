@@ -118,9 +118,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
     def test_dao_list_mentorship_relation_state_none(self):
         DAO = MentorshipRelationDAO()
 
-        result = DAO.list_mentorship_relations(
-            user_id=self.first_user.id, state=None
-        )
+        result = DAO.list_mentorship_relations(user_id=self.first_user.id, state=None)
         expected_response = [self.mentorship_relation], HTTPStatus.OK
 
         self.assertEqual(expected_response, result)

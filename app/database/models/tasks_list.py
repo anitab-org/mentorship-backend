@@ -75,9 +75,7 @@ class TasksListModel(db.Model):
         """
 
         new_list = list(
-            filter(
-                lambda task: task[TasksFields.ID.value] != task_id, self.tasks
-            )
+            filter(lambda task: task[TasksFields.ID.value] != task_id, self.tasks)
         )
 
         self.tasks = new_list
@@ -131,9 +129,7 @@ class TasksListModel(db.Model):
             The task instance.
         """
         task = list(
-            filter(
-                lambda task: task[TasksFields.ID.value] == task_id, self.tasks
-            )
+            filter(lambda task: task[TasksFields.ID.value] == task_id, self.tasks)
         )
         if len(task) == 0:
             return None

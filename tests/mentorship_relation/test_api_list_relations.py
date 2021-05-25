@@ -155,9 +155,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
 
             self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
-            self.assertFalse(
-                self.future_accepted_mentorship_relation.sent_by_me
-            )
+            self.assertFalse(self.future_accepted_mentorship_relation.sent_by_me)
 
     def test_list_current_mentorship_relation_sent_by_another_user(self):
         with self.client:
@@ -172,9 +170,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
 
             self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
-            self.assertTrue(
-                self.future_accepted_mentorship_relation.sent_by_me
-            )
+            self.assertTrue(self.future_accepted_mentorship_relation.sent_by_me)
 
     # The following test cases are concerned with the filtering of mentorship relations by the query param(relation_state) value.
     # When relation_state = ''.
