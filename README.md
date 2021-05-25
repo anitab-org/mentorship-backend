@@ -211,7 +211,7 @@ black .
 
 ### Sorting imports with isort
 
-We use [_isort_](https://pypi.org/project/isort/) to sort imports alphabetically, and automatically separated into 
+We use [_isort_](https://pypi.org/project/isort/) to sort imports alphabetically, and automatically separated into
 sections and by type. To install _isort_:
 
 ```
