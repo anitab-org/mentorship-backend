@@ -1,0 +1,14 @@
+[flake8]
+ignore =
+    # F403: ‘from module import *’ used; unable to detect undefined names
+    F403,
+    # F405: name may be undefined, or defined from star imports: module
+    F405,
+    # E712: comparison to True should be 'if cond is True:' or 'if cond:'
+    E712,
+    # E266: too many leading '#' for block comment
+    E266,
+    # E402: module level import not at top of file
+    E402
+max-line-length = 88
+max-complexity = 18
