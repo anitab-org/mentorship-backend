@@ -23,5 +23,3 @@ Created the following users :
      _Expected Result_:  FAIL
 
      _Actual Result_:    FAIL
-
-

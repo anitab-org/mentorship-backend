@@ -38,4 +38,3 @@ The next table explains more of the image above.
 | COMPLETED | A cron job running every day 23h59 (automatically)                       | A cron job in the backend iterates over every mentorship relation, in the ACCEPTED state, and sets this states for relations that passed the end date | Sets only if the relation is in the ACCEPTED state |
 
 **Note:** Even though is not represented in the previous image, the User that sent the mentorship request can delete the request if its state wasn't changed by the receiving User.
-

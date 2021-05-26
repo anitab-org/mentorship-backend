@@ -177,4 +177,3 @@ Only admin users have access to this.
 | Revoke self the admin role when self is the only admin | Fail |
 | Revoke self the admin role when self is not the only admin | Success |
 | Revoking an admin user, when the current user is not an admin | Fail |
-
