@@ -1,15 +1,13 @@
 import unittest
 from datetime import datetime
 
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
+from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from app.database.models.user import UserModel
-from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.database.sqlalchemy_extension import db
-
 from tests.test_data import user1, user2
-
 
 # Testing Mentorship Relation database model
 #

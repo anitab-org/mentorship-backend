@@ -1,21 +1,25 @@
 from datetime import datetime
 from http import HTTPStatus
+
 from flask import request
 from flask_jwt_extended import (
-    jwt_required,
-    jwt_refresh_token_required,
     create_access_token,
     create_refresh_token,
     get_jwt_identity,
+    jwt_refresh_token_required,
+    jwt_required,
 )
-from flask_restx import Resource, marshal, Namespace
+from flask_restx import Namespace, Resource, marshal
 
 from app import messages
-from app.api.validations.user import *
+from app.api.dao.user import UserDAO
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
-from app.api.dao.user import UserDAO
-from app.api.resources.common import auth_header_parser, refresh_auth_header_parser
+from app.api.resources.common import (
+    auth_header_parser,
+    refresh_auth_header_parser,
+)
+from app.api.validations.user import *
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)

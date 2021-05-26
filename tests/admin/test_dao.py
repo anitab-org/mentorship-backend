@@ -1,13 +1,12 @@
 import unittest
-
-from tests.base_test_case import BaseTestCase
-from tests.test_data import user1
+from http import HTTPStatus
 
 from app import messages
-from app.database.models.user import UserModel
 from app.api.dao.admin import AdminDAO
+from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
-from http import HTTPStatus
+from tests.base_test_case import BaseTestCase
+from tests.test_data import user1
 
 
 class TestAdminDao(BaseTestCase):

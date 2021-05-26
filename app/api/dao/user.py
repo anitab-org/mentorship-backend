@@ -1,18 +1,19 @@
 from datetime import datetime
-from operator import itemgetter
 from http import HTTPStatus
+from operator import itemgetter
 from typing import Dict
+
 from flask_restx import marshal
 from sqlalchemy import func
 
 from app import messages
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
+from app.api.models.task import list_tasks_response_body
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
-from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.api.models.task import list_tasks_response_body
-from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.utils.validation_utils import is_email_valid
 
 

@@ -1,16 +1,19 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
 
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
 from app import messages
-from app.api.resources.common import auth_header_parser
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.dao.user import UserDAO
+from app.api.email_utils import (
+    send_email_mentorship_relation_accepted,
+    send_email_new_request,
+)
 from app.api.models.mentorship_relation import *
+from app.api.resources.common import auth_header_parser
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.api.email_utils import send_email_mentorship_relation_accepted
-from app.api.email_utils import send_email_new_request
 
 mentorship_relation_ns = Namespace(
     "Mentorship Relation",

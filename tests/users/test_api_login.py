@@ -1,13 +1,12 @@
 import unittest
+from http import HTTPStatus
 
 from flask import json
 
 from app import messages
+from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
-
-from app.database.models.user import UserModel
-from http import HTTPStatus
 
 # Testing User API resources
 #

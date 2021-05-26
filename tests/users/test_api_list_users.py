@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
 from http import HTTPStatus
+
 from flask import json
 from flask_restx import marshal
 
@@ -12,8 +13,8 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2, user3
+from tests.test_utils import get_test_request_header
 
 
 class TestListUsersApi(BaseTestCase):

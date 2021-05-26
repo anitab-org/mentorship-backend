@@ -1,8 +1,8 @@
-from enum import unique, Enum
+from datetime import date
+from enum import Enum, unique
 
 from app.database.db_types.JsonCustomType import JsonCustomType
 from app.database.sqlalchemy_extension import db
-from datetime import date
 
 
 class TasksListModel(db.Model):

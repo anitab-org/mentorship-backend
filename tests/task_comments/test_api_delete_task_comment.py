@@ -1,12 +1,12 @@
 import json
 import unittest
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
 from app.database.sqlalchemy_extension import db
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
-from http import HTTPStatus
 
 
 class TestDeleteTaskCommentApi(TasksBaseTestCase):
