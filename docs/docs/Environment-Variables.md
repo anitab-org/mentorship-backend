@@ -6,7 +6,7 @@ title: Export Environment Variables
 
 ---
 
-To run the backend you need to export environment variables. 
+To run the backend you need to export environment variables.
 
 These are the needed environment variables:
 ```
@@ -50,13 +50,13 @@ Email verification is when a user registers into the application and to be able 
 | APP_MAIL_USERNAME    | Username of the email account used to send verification emails. This is in string format.                       | 'some_username'        |
 | APP_MAIL_PASSWORD    | Password of the email account used to send verification emails. This is in string format.                       | 'some_password'        |
 
-_Note:_ 
+_Note:_
 - In the examples we use Gmail account example, but you are not restricted to use a Gmail account to send the verification email. If you use other email providers make sure to research about the correct SMTP server name.
 - The `'` character may be optional for environment variables without space on them.
 
 ## Exporting environment variables
 
-Assume that KEY is the name of the variable and VALUE is the actual value of the environment variable. 
+Assume that KEY is the name of the variable and VALUE is the actual value of the environment variable.
 To export an environment variable you have to run:
 ```
 export KEY=VALUE

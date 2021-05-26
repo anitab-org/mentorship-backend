@@ -118,7 +118,7 @@ class TestAdminDao(BaseTestCase):
         )
 
     """
-    Checks if a user tries to self-assign admin role.  
+    Checks if a user tries to self-assign admin role.
     """
 
     def test_dao_assign_admin_role_to_myself(self):
@@ -151,7 +151,7 @@ class TestAdminDao(BaseTestCase):
         )
 
     """
-    Checks whether a user is trying to revoke other user's admin priviledges. 
+    Checks whether a user is trying to revoke other user's admin priviledges.
     """
 
     def test_dao_revoke_admin_role_to_valid_user(self):
@@ -180,7 +180,7 @@ class TestAdminDao(BaseTestCase):
         self.assertFalse(user.is_admin)
 
     """
-    Checks whether a user is trying to revoke other user's admin privileges. 
+    Checks whether a user is trying to revoke other user's admin privileges.
     """
 
     def test_dao_revoke_admin_role_by_non_admin_user(self):

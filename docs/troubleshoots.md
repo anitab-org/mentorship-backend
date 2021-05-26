@@ -1,4 +1,4 @@
-# Troubleshoots 
+# Troubleshoots
 
 ## Setting up Gmail to be used as default mail server in .env
 
@@ -13,7 +13,7 @@ Here are the steps:
 You will see this section:
 ![signing_in_settings_gmail_original](https://user-images.githubusercontent.com/29667122/80807468-a1c2ac80-8c00-11ea-9053-7e6759f4c7e6.png)
 
-2. In the section *Signing in to Google* select **2-step verification** and follow the prompts to turn it ON. 
+2. In the section *Signing in to Google* select **2-step verification** and follow the prompts to turn it ON.
 3. Once step 2 completed, go back to Security page and from the same section (*Signing in to Google*) select **App password**.
 ![signing_in_settings_gmail_2steps_on](https://user-images.githubusercontent.com/29667122/80807613-07af3400-8c01-11ea-881c-fb2944e080d4.png)
 
