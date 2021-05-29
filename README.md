@@ -33,7 +33,7 @@ This API is being used by 3 frontend projects currently being developed:
 - Login and register a new user
 - Create a user profile, view and edit user profiles
 - Change user password, refresh jwt tokens
-- Create relation between two users with a fixed period of time
+- Create relation between two users for a fixed period of time
 - Both mentor and mentee in a relation can create tasks
 - Assign and remove admin roles to users and list all admins
 - List all the relationships of a given user
