@@ -8,7 +8,7 @@ license = "GNU GPL v3"
 readme = "README.md"
 homepage = "https://github.com/anitab-org/mentorship-backend"
 repository = "https://github.com/anitab-org/mentorship-backend"
-documentation = "https://github.com/anitab-org/mentorship-backend/wiki"
+documentation = "https://anitab-org.github.io/mentorship-backend/"
 keywords = ["REST API",
     "Anita Borg",
     "Poetry",
