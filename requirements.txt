@@ -24,7 +24,6 @@ pyparsing==2.4.7; python_version >= "2.6" and python_full_version < "3.0.0" or p
 pyrsistent==0.17.3; python_version >= "3.5"
 pytest==5.2.0; python_version >= "3.5"
 python-dateutil==2.8.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
-python-dotenv==0.8.2
 python-editor==1.0.4
 pytz==2020.1
 requests==2.18.4
@@ -37,7 +36,5 @@ wcwidth==0.2.5
 werkzeug==0.16.1; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
 zipp==3.3.1; python_version >= "3.6" and python_version < "3.8"
 Flask-Testing==0.8.1
-gunicorn==20.0.4
 psycopg2-binary==2.8.6
 python-dotenv==0.17.1
-six==1.11.0
