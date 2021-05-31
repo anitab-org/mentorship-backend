@@ -4,7 +4,6 @@ from typing import Dict
 
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
@@ -32,7 +31,6 @@ class TaskDAO:
 
         description = data["description"]
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -69,7 +67,6 @@ class TaskDAO:
             mentorship relation as a string. The last element is the HTTP response code
         """
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -102,7 +99,6 @@ class TaskDAO:
             task was deleted successfully or not as a string. The last element is the HTTP response code.
         """
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -139,7 +135,6 @@ class TaskDAO:
             if the task was set to complete successfully or not as a string. The last element is the HTTP response code.
         """
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
