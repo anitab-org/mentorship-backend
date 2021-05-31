@@ -4,9 +4,7 @@ from datetime import datetime, timedelta
 from http import HTTPStatus
 
 from app import messages
-from tests.mentorship_relation.relation_base_setup import (
-    MentorshipRelationBaseTestCase,
-)
+from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from tests.test_utils import get_test_request_header
 
 

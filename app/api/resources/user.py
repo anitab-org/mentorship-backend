@@ -14,10 +14,7 @@ from app import messages
 from app.api.dao.user import UserDAO
 from app.api.email_utils import send_email_verification_message
 from app.api.models.user import *
-from app.api.resources.common import (
-    auth_header_parser,
-    refresh_auth_header_parser,
-)
+from app.api.resources.common import auth_header_parser, refresh_auth_header_parser
 from app.api.validations.user import *
 
 users_ns = Namespace("Users", description="Operations related to users")

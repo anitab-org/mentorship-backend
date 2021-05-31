@@ -5,9 +5,7 @@ from app.api.resources.mentorship_relation import (
     mentorship_relation_ns as mentorship_namespace,
 )
 from app.api.resources.task import task_ns as task_namespace
-from app.api.resources.task_comment import (
-    task_comment_ns as task_comment_namespace,
-)
+from app.api.resources.task_comment import task_comment_ns as task_comment_namespace
 
 # Adding namespaces
 from app.api.resources.user import users_ns as user_namespace

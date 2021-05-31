@@ -4,9 +4,7 @@ from unittest.mock import patch
 import config
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
-from app.schedulers.delete_unverified_users_cron_job import (
-    delete_unverified_users_job,
-)
+from app.schedulers.delete_unverified_users_cron_job import delete_unverified_users_job
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1, user2, user3
 
