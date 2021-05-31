@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from flask_restx import marshal
 
 from app.api.dao.user import DashboardRelationResponseModel, UserDAO
-from app.api.email_utils import generate_confirmation_token
 from app.api.models.mentorship_relation import list_tasks_response_body
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel

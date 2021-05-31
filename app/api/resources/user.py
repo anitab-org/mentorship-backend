@@ -1,4 +1,3 @@
-from datetime import datetime
 from http import HTTPStatus
 
 from flask import request

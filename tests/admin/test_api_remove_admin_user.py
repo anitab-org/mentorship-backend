@@ -1,17 +1,11 @@
 import unittest
-from datetime import datetime, timedelta
 from http import HTTPStatus
 
 from flask import json
-from flask_restx import marshal
 
 from app import messages
-from app.api.models.admin import public_admin_user_api_model
-from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
-from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_data import test_admin_user_2, test_admin_user_3
 from tests.test_utils import get_test_request_header
