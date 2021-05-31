@@ -129,7 +129,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get(
-            f"/users?search=s_t-r%24a%2Fn'ge",
+            "/users?search=s_t-r%24a%2Fn'ge",
             follow_redirects=True,
             headers=auth_header,
         )

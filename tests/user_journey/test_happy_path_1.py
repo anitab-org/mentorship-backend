@@ -103,10 +103,10 @@ class TestHappyPath1(BaseTestCase):
         self.assertEqual(HTTPStatus.OK, accept_response.status_code)
 
         mentee_current_relation = self.client.get(
-            f"/mentorship_relations/current", headers=mentee_auth_header
+            "/mentorship_relations/current", headers=mentee_auth_header
         )
         mentor_current_relation = self.client.get(
-            f"/mentorship_relations/current", headers=mentor_auth_header
+            "/mentorship_relations/current", headers=mentor_auth_header
         )
 
         self.assertEqual(HTTPStatus.OK, mentee_current_relation.status_code)
