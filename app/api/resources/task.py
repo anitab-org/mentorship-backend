@@ -6,7 +6,11 @@ from flask_restx import Namespace, Resource, marshal
 
 from app import messages
 from app.api.dao.task import TaskDAO
-from app.api.models.task import *
+from app.api.models.task import (
+    add_models_to_namespace,
+    create_task_request_body,
+    list_tasks_response_body,
+)
 from app.api.resources.common import auth_header_parser
 
 task_ns = Namespace(

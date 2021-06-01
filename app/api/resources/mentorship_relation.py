@@ -11,7 +11,11 @@ from app.api.email_utils import (
     send_email_mentorship_relation_accepted,
     send_email_new_request,
 )
-from app.api.models.mentorship_relation import *
+from app.api.models.mentorship_relation import (
+    add_models_to_namespace,
+    mentorship_request_response_body,
+    send_mentorship_request_body,
+)
 from app.api.resources.common import auth_header_parser
 from app.database.models.mentorship_relation import MentorshipRelationModel
 

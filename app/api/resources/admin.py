@@ -7,7 +7,11 @@ from flask_restx import Namespace, Resource, marshal
 from app import messages
 from app.api.dao.admin import AdminDAO
 from app.api.dao.user import UserDAO
-from app.api.models.admin import *
+from app.api.models.admin import (
+    add_models_to_namespace,
+    assign_and_revoke_user_admin_request_body,
+    public_admin_user_api_model,
+)
 from app.api.resources.common import auth_header_parser
 
 admin_ns = Namespace("Admins", description="Operations related to Admin users")

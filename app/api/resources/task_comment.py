@@ -6,7 +6,11 @@ from flask_restx import Namespace, Resource, marshal
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
-from app.api.models.task_comment import *
+from app.api.models.task_comment import (
+    add_models_to_namespace,
+    task_comment_model,
+    task_comments_model,
+)
 from app.api.resources.common import auth_header_parser
 from app.api.validations.task_comment import validate_task_comment_request_data
 
