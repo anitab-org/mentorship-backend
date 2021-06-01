@@ -4,6 +4,12 @@ import logging
 from logging.config import fileConfig
 
 from alembic import context
+
+# add your model's MetaData object here
+# for 'autogenerate' support
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
+from flask import current_app
 from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides
@@ -15,11 +21,6 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger("alembic.env")
 
-# add your model's MetaData object here
-# for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-from flask import current_app
 
 config.set_main_option(
     "sqlalchemy.url",
