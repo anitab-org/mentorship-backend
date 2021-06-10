@@ -44,11 +44,11 @@ class UserDAO:
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
 
-        name = data["name"]
-        username = data["username"]
-        password = data["password"]
-        email = data["email"]
-        terms_and_conditions_checked = data["terms_and_conditions_checked"]
+        name = data.get("name", None)
+        username = data.get("username", None)
+        password = data.get("password", None)
+        email = data.get("email", None)
+        terms_and_conditions_checked = data.get("terms_and_conditions_checked", None)
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
@@ -66,10 +66,10 @@ class UserDAO:
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
-            user.need_mentoring = data["need_mentoring"]
+            user.need_mentoring = data.get("need_mentoring", None)
 
         if "available_to_mentor" in data:
-            user.available_to_mentor = data["available_to_mentor"]
+            user.available_to_mentor = data.get("available_to_mentor", None)
 
         user.save_to_db()
 
@@ -244,7 +244,7 @@ class UserDAO:
             user.username = username
 
         if "name" in data and data["name"]:
-            user.name = data["name"]
+            user.name = data.get("name", None) or None
 
         if "bio" in data:
             user.bio = data.get("bio", None)
@@ -253,10 +253,10 @@ class UserDAO:
             user.location = data.get("location", None)
 
         if "occupation" in data:
-            user.occupation = data.get("occupation", None)
+            user.occupation = data.get("occupation", None) or None
 
         if "organization" in data:
-            user.organization = data.get("organization", None)
+            user.organization = data.get("organization", None) or None
 
         if "slack_username" in data:
             user.slack_username = data.get("slack_username", None)
@@ -280,10 +280,10 @@ class UserDAO:
                 user.photo_url = data.get("photo_url", None)
 
         if "need_mentoring" in data:
-            user.need_mentoring = data["need_mentoring"]
+            user.need_mentoring = data.get("need_mentoring", None)
 
         if "available_to_mentor" in data:
-            user.available_to_mentor = data["available_to_mentor"]
+            user.available_to_mentor = data.get("available_to_mentor", None)
 
         user.save_to_db()
 
@@ -305,8 +305,8 @@ class UserDAO:
 
         """
 
-        current_password = data["current_password"]
-        new_password = data["new_password"]
+        current_password = data.get("current_password", None)
+        new_password = data.get("new_password", None)
 
         user = UserModel.find_by_id(user_id)
         if user.check_password(current_password):
