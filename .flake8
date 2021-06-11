@@ -1,3 +1,13 @@
 [flake8]
+ignore =
+    # W503: line break before binary operator
+    # ignored as it creates inconsistency with black
+    W503,
+    # E501: line too long (> 88 characters)
+    # ignored till a final decision is made on what to do with long comments
+    E501,
+    # C901: variable or function name is too complex (> 18 characters)
+    # ignored till someone simplifies the names
+    C901
 max-line-length = 88
 max-complexity = 18
