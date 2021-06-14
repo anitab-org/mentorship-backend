@@ -148,6 +148,51 @@ class TestUserDao(BaseTestCase):
             (messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST), dao_result
         )
 
+    def test_dao_delete_user(self):
+        dao = UserDAO()
+
+        user = UserModel(
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
+        )
+        db.session.add(user)
+        db.session.commit()
+        
+        # Verify that user was inserted in database through DAO
+        before_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNotNone(before_delete_user)
+
+        # Verify email 
+        token = generate_confirmation_token(user2["email"])
+        result = dao.confirm_registration(token)
+        self.assertTrue(user.is_email_verified)
+
+        dao_result = dao.delete_user(2)
+
+        after_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNone(after_delete_user)
+        self.assertEqual(
+            (messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK), dao_result
+        )
+
+    def test_dao_delete_user_that_does_not_exist(self):
+        dao = UserDAO()
+
+        # Verify that user does not exist
+        before_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNone(before_delete_user)
+
+        dao_result = dao.delete_user(2)
+
+        after_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNone(after_delete_user)
+        self.assertEqual(
+            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), dao_result
+        )
+
     def test_get_achievements(self):
         dao = UserDAO()
 
