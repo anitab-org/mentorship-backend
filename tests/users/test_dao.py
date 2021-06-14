@@ -160,12 +160,12 @@ class TestUserDao(BaseTestCase):
         )
         db.session.add(user)
         db.session.commit()
-        
+
         # Verify that user was inserted in database through DAO
         before_delete_user = UserModel.query.filter_by(id=2).first()
         self.assertIsNotNone(before_delete_user)
 
-        # Verify email 
+        # Verify email
         token = generate_confirmation_token(user2["email"])
         result = dao.confirm_registration(token)
         self.assertTrue(user.is_email_verified)
