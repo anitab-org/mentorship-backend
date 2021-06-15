@@ -1,14 +1,16 @@
 import datetime
 import unittest
-from werkzeug.security import check_password_hash
 from http import HTTPStatus
+
+from werkzeug.security import check_password_hash
+
 from app import messages
-from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
+from app.api.email_utils import generate_confirmation_token
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
-from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user2
@@ -192,6 +194,27 @@ class TestUserDao(BaseTestCase):
         self.assertEqual(
             (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), dao_result
         )
+
+    def test_dao_get_user_by_email(self):
+        dao = UserDAO()
+
+        user = UserModel(
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
+        )
+        db.session.add(user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        user = UserModel.query.filter_by(email=user2["email"]).first()
+        self.assertIsNotNone(user)
+
+        user_with_given_email = dao.get_user_by_email(user2["email"])
+        self.assertIsNotNone(user_with_given_email)
+        self.assertEqual(user_with_given_email, user)
 
     def test_get_achievements(self):
         dao = UserDAO()
