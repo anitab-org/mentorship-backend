@@ -216,6 +216,27 @@ class TestUserDao(BaseTestCase):
         self.assertIsNotNone(user_with_given_email)
         self.assertEqual(user_with_given_email, user)
 
+    def test_dao_get_user_by_username(self):
+        dao = UserDAO()
+
+        user = UserModel(
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
+        )
+        db.session.add(user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        user = UserModel.query.filter_by(email=user2["email"]).first()
+        self.assertIsNotNone(user)
+
+        user_with_given_username = dao.get_user_by_username(user2["username"])
+        self.assertIsNotNone(user_with_given_username)
+        self.assertEqual(user_with_given_username, user)
+
     def test_get_achievements(self):
         dao = UserDAO()
 
