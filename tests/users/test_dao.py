@@ -286,15 +286,13 @@ class TestUserDao(BaseTestCase):
         result = dao.confirm_registration(token)
         self.assertTrue(user.is_email_verified)
 
-        data = dict(
-            current_password="wrong password",
-            new_password="new password"
-        )
+        data = dict(current_password="wrong password", new_password="new password")
         dao_result = dao.change_password(user_id=2, data=data)
 
         self.assertIsNotNone(dao_result)
         self.assertEqual(
-            (messages.USER_ENTERED_INCORRECT_PASSWORD, HTTPStatus.BAD_REQUEST), dao_result
+            (messages.USER_ENTERED_INCORRECT_PASSWORD, HTTPStatus.BAD_REQUEST),
+            dao_result,
         )
 
     def test_get_achievements(self):
