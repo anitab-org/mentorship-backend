@@ -237,6 +237,33 @@ class TestUserDao(BaseTestCase):
         self.assertIsNotNone(user_with_given_username)
         self.assertEqual(user_with_given_username, user)
 
+    def test_authenticate_user_by_email(self):
+        dao = UserDAO()
+
+        user = UserModel(
+            name=user2["name"],
+            email=user2["email"],
+            username=user2["username"],
+            password=user2["password"],
+            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
+        )
+        db.session.add(user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        before_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNotNone(before_delete_user)
+
+        # Verify email
+        token = generate_confirmation_token(user2["email"])
+        result = dao.confirm_registration(token)
+        self.assertTrue(user.is_email_verified)
+
+        dao_result = dao.authenticate(user2["email"], user2["password"])
+
+        self.assertIsNotNone(dao_result)
+        self.assertEqual(dao_result, user)
+
     def test_get_achievements(self):
         dao = UserDAO()
 
