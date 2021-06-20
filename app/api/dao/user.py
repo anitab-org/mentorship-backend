@@ -235,7 +235,6 @@ class UserDAO:
                     messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
                     HTTPStatus.BAD_REQUEST,
                 )
-
             user.username = username
 
         user.name = data.get("name", None)
