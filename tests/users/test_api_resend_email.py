@@ -10,15 +10,9 @@ from tests.test_data import user1
 
 class TestResendEmailApi(BaseTestCase):
     def setUp(self):
-        super(TestResendEmailApi, self).setUp()
+        super().setUp()
 
-        self.verified_user = UserModel(
-            name=user1["name"] + "Example",
-            email=user1["email"],
-            username=user1["username"],
-            password=user1["password"],
-            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
-        )
+        self.verified_user = UserModel(**user1)
 
         self.verified_user.is_email_verified = True
         self.verified_user.is_available = False
@@ -34,7 +28,7 @@ class TestResendEmailApi(BaseTestCase):
             content_type="application/json",
             data=json.dumps(test_payload),
         )
-        self.assertEqual(409, actual_response.status_code)
+        self.assertEqual(HTTP_STATUS.CONFLICT, actual_response.status_code)
 
 
 if __name__ == "__main__":
