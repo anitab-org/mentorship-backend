@@ -39,11 +39,11 @@ class UserDAO:
             A tuple with two elements. The first element is a dictionary containing a key 'message' containing a string which indicates whether or not the user was created successfully. The second is the HTTP response code.
         """
 
-        name = data.get("name", None)
-        username = data.get("username", None)
-        password = data.get("password", None)
-        email = data.get("email", None)
-        terms_and_conditions_checked = data.get("terms_and_conditions_checked", None)
+        name = data["name"]
+        username = data["username"]
+        password = data["password"]
+        email = data["email"]
+        terms_and_conditions_checked = data["terms_and_conditions_checked"]
 
         existing_user = UserModel.find_by_username(data["username"])
         if existing_user:
@@ -61,10 +61,10 @@ class UserDAO:
 
         user = UserModel(name, username, password, email, terms_and_conditions_checked)
         if "need_mentoring" in data:
-            user.need_mentoring = data.get("need_mentoring", None)
+            user.need_mentoring = data["need_mentoring"]
 
         if "available_to_mentor" in data:
-            user.available_to_mentor = data.get("available_to_mentor", None)
+            user.available_to_mentor = data["available_to_mentor"]
 
         user.save_to_db()
 
@@ -225,7 +225,7 @@ class UserDAO:
         if not user:
             return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
-        username = data.get("username", None)
+        username = data.get("username",None)
         if username:
             user_with_same_username = UserModel.find_by_username(username)
 
@@ -237,7 +237,7 @@ class UserDAO:
                 )
             user.username = username
 
-        user.name = data.get("name", None)
+        user.name = data.get("name")
 
         user.bio = data.get("bio", None)
 
