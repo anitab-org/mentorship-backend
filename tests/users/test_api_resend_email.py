@@ -20,7 +20,7 @@ class TestResendEmailApi(BaseTestCase):
         db.session.commit()
 
     # This function checks if the status code returns 409 for exisiting email
-    def test_error_code_for_resend_email(self):
+    def test_resend_email_user_already_verified(self):
         test_payload = {"email": self.verified_user.email}
         actual_response = self.client.post(
             "user/resend_email",
@@ -29,6 +29,7 @@ class TestResendEmailApi(BaseTestCase):
             data=json.dumps(test_payload),
         )
         self.assertEqual(HTTP_STATUS.CONFLICT, actual_response.status_code)
+        self.assertEqual(messages.USER_ALREADY_CONFIRMED_ACCOUNT, actual_response.json)
 
 
 if __name__ == "__main__":
