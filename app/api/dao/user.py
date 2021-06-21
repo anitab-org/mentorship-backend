@@ -237,7 +237,7 @@ class UserDAO:
                 )
             user.username = username
 
-        user.name = data["name"]
+        user.name = data.get("name", None)
 
         user.bio = data.get("bio", None)
 
