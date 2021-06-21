@@ -225,7 +225,7 @@ class UserDAO:
         if not user:
             return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
-        username = data.get("username",None)
+        username = data.get("username", None)
         if username:
             user_with_same_username = UserModel.find_by_username(username)
 
@@ -237,7 +237,7 @@ class UserDAO:
                 )
             user.username = username
 
-        user.name = data.get("name")
+        user.name = data["name"]
 
         user.bio = data.get("bio", None)
 
