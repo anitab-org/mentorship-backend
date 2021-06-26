@@ -20,8 +20,7 @@ def add_models_to_namespace(api_namespace):
         mentorship_request_response_body_for_user_dashboard_body.name
     ] = mentorship_request_response_body_for_user_dashboard_body
     api_namespace.models[user_dashboard_user_details.name] = user_dashboard_user_details
-    # api_namespace.models[task_comment_model.name] = task_comment_model
-    # api_namespace.models[task_comments_model.name] = task_comments_model
+
 
 
 send_mentorship_request_body = Model(
