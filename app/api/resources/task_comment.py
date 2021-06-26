@@ -5,6 +5,8 @@ from http import HTTPStatus
 from app import messages
 from app.api.resources.common import auth_header_parser
 
+from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.api.models.user import public_user_api_model
 from app.api.validations.task_comment import validate_task_comment_request_data
 from app.api.dao.task_comment import TaskCommentDAO
 from app.api.models.task_comment import *
@@ -137,7 +139,7 @@ class TaskComments(Resource):
     @task_comment_ns.response(
         HTTPStatus.OK,
         f"{messages.LIST_TASK_COMMENTS_WITH_SUCCESS}",
-        task_comments_model,
+        task_comments_response_model,
     )
     @task_comment_ns.doc(
         responses={
@@ -156,11 +158,22 @@ class TaskComments(Resource):
         Lists the task comments.
         """
 
-        response = TaskCommentDAO.get_all_task_comments_by_task_id(
+        comments = TaskCommentDAO.get_all_task_comments_by_task_id(
             get_jwt_identity(), task_id, relation_id
         )
 
-        if isinstance(response, tuple):
-            return response
+        if isinstance(comments, tuple):
+            return comments
         else:
-            return marshal(response, task_comments_model), HTTPStatus.OK
+            users = MentorshipRelationModel.find_by_id(relation_id)
+            mentor_details = users.mentor
+            mentee_details = users.mentee
+            mentor_details = marshal(mentor_details, public_user_api_model)
+            mentee_details = marshal(mentee_details, public_user_api_model)
+
+            comments = marshal(comments, task_comments_model)
+            response = {
+                "comments": comments,
+                "users": {"mentor": mentor_details, "mentee": mentee_details},
+            }
+            return marshal(response, task_comments_response_model), HTTPStatus.OK

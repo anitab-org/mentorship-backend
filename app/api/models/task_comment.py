@@ -1,9 +1,13 @@
 from flask_restx import fields, Model
+from app.api.models.user import public_user_api_model
 
 
 def add_models_to_namespace(api_namespace):
     api_namespace.models[task_comment_model.name] = task_comment_model
     api_namespace.models[task_comments_model.name] = task_comments_model
+    api_namespace.models[
+        task_comments_response_model.name
+    ] = task_comments_response_model
 
 
 task_comment_model = Model(
@@ -25,5 +29,14 @@ task_comments_model = Model(
             required=False, description="Modification date of the task comment."
         ),
         "comment": fields.String(required=True, description="Task comment."),
+    },
+)
+
+task_comments_response_model = Model(
+    "Task comments response model",
+    {
+        "comments": fields.List(fields.Nested(task_comments_model)),
+        "mentor": fields.Nested(public_user_api_model),
+        "mentee": fields.Nested(public_user_api_model),
     },
 )
