@@ -95,68 +95,14 @@ poetry run start
 ```
 deactivate
 ```
-
-### Run app in Linux
-
-The project runs on Python 3.
-
-1. Create a virtual enviorntment:
-```
-virtualenv venv
-```
-
-2. Activate the virtual environment:
-```
-source venv/bin/activate
-```
-
-3. Install all the dependencies in `requirements.txt` file:
-```
-pip3 install -r requirements.txt
-```
-
-4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
-
-```
-export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
-export SECRET_KEY=<your-secret-key>
-export SECURITY_PASSWORD_SALT=<your-security-password-salt>
-export MAIL_DEFAULT_SENDER=<mail-default-sender>
-export MAIL_SERVER=<mail-server>
-export APP_MAIL_USERNAME=<app-mail-username>
-export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL=<True-or-False>
-```
-
-If you're testing any environment other than "local", then you have to also set these other variables in the .env file.
-```
-export DB_TYPE=<database_type>
-export DB_USERNAME=<database_username>
-export DB_PASSWORD=<database_password>
-export DB_ENDPOINT=<database_endpoint>
-export DB_NAME=<database_name>
-```
-
-Use: `printenv` to print the environment variables and check all configurations.
-
-5. Run the app with `python run.py` or:
-```
- export FLASK_APP=run.py
- flask run
-```
-
-6. Navigate to http://localhost:5000 or the current server in which you are running(will be shown when app is running) in your browser.
-
-7. When you are done using the app, deactivate the virtual environment:
-```
-deactivate
-```
-
-or use:
-
-```
-source deactivate
-```
+### Poetry commands
+As said earlier, we use [Poetry](https://python-poetry.org/).
+To get you up to speed, here's a few basic commands you'll use the most:
+- `poetry install` - installs the dependencies from `pyproject.toml` package
+- `poetry add <package>` - adds the `<package>` to `pyproject.toml` and installs it
+- `poetry remove <package>`- removes the `<package>` from `pyproject.toml` and uninstalls it
+- `poetry shell` - spawns a shell within the virtual environment. Equivalent of `virtualenv activate`, for those familiar with [`virtualenv`](https://pypi.org/project/virtualenv/)
+- `deactivate` - deactivates the virtual environemnt. Counterpart for `poetry shell`. Use this when you finish work.
 
 ### Run with docker
 
@@ -217,15 +163,6 @@ Here are some links to documentation for this project:
 - [User Authentication](/docs/user_authentication.md) which is JSON Web Token (JWT) based and tells about the user authentication in the application.
 
 Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
-
-### Poetry commands
-As said earlier, we use [Poetry](https://python-poetry.org/).
-To get you up to speed, here's a few basic commands you'll use the most:
-- `poetry install` - installs the dependencies from `pyproject.toml` package
-- `poetry add <package>` - adds the `<package>` to `pyproject.toml` and installs it
-- `poetry remove <package>`- removes the `<package>` from `pyproject.toml` and uninstalls it
-- `poetry shell` - spawns a shell within the virtual environment. Equivalent of `virtualenv activate`, for those familiar with [`virtualenv`](https://pypi.org/project/virtualenv/)
-- `deactivate` - deactivates the virtual environemnt. Counterpart for `poetry shell`. Use this when you finish work.
 
 ## Contributing
 
