@@ -9,7 +9,7 @@ from http import HTTPStatus
 def validate_data_for_task_comment(user_id, task_id, relation_id):
     relation = MentorshipRelationModel.find_by_id(relation_id)
     if relation is None:
-        return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.FORBIDDEN
 
     if user_id != relation.mentor_id and user_id != relation.mentee_id:
         return (
@@ -18,7 +18,7 @@ def validate_data_for_task_comment(user_id, task_id, relation_id):
         )
 
     if relation.state != MentorshipRelationState.ACCEPTED:
-        return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
+        return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN
 
     task = relation.tasks_list.find_task_by_id(task_id)
     if task is None:
