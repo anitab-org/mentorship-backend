@@ -139,7 +139,7 @@ class TaskComments(Resource):
     @task_comment_ns.response(
         HTTPStatus.OK,
         f"{messages.LIST_TASK_COMMENTS_WITH_SUCCESS}",
-        task_comments_response_model,
+        task_comments_model,
     )
     @task_comment_ns.doc(
         responses={
@@ -158,22 +158,11 @@ class TaskComments(Resource):
         Lists the task comments.
         """
 
-        comments = TaskCommentDAO.get_all_task_comments_by_task_id(
+        response = TaskCommentDAO.get_all_task_comments_by_task_id(
             get_jwt_identity(), task_id, relation_id
         )
 
-        if isinstance(comments, tuple):
-            return comments
+        if isinstance(response, tuple):
+            return response
         else:
-            users = MentorshipRelationModel.find_by_id(relation_id)
-            mentor_details = users.mentor
-            mentee_details = users.mentee
-            mentor_details = marshal(mentor_details, public_user_api_model)
-            mentee_details = marshal(mentee_details, public_user_api_model)
-
-            comments = marshal(comments, task_comments_model)
-            response = {
-                "comments": comments,
-                "users": {"mentor": mentor_details, "mentee": mentee_details},
-            }
-            return marshal(response, task_comments_response_model), HTTPStatus.OK
+            return marshal(response, task_comments_model), HTTPStatus.OK

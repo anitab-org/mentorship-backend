@@ -2,6 +2,7 @@ import unittest
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
+from app.database.models.user import UserModel
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from http import HTTPStatus
 
@@ -30,7 +31,11 @@ class TestTaskCommentDao(TasksBaseTestCase):
         task_comments = TaskCommentDAO.get_all_task_comments_by_task_id(
             user_id=1, task_id=1, relation_id=2
         )[0]
-        task_comment = TaskCommentDAO.get_task_comment(1, 1)[0].json()
+        task_comment = TaskCommentDAO.get_task_comment(1, 1)[0]
+        user_details = UserModel.find_by_id(1)
+        task_comment = task_comment.json()
+        del task_comment["user_id"]
+        task_comment["user"] = user_details
         self.assertEqual(task_comment, task_comments)
 
     def test_dao_find_by_user_id(self):
