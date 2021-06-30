@@ -188,8 +188,7 @@ class TestUserDao(BaseTestCase):
         self.assertIsNone(before_delete_user)
 
         dao_result = dao.delete_user(2)
-
-        after_delete_user = UserModel.query.filter_by(id=2).first()
+        
         self.assertEqual(
             (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), dao_result
         )
