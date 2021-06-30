@@ -5,8 +5,7 @@ from http import HTTPStatus
 from app import messages
 from app.api.resources.common import auth_header_parser
 
-from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.api.models.user import public_user_api_model
+
 from app.api.validations.task_comment import validate_task_comment_request_data
 from app.api.dao.task_comment import TaskCommentDAO
 from app.api.models.task_comment import *
