@@ -22,7 +22,6 @@ def add_models_to_namespace(api_namespace):
     api_namespace.models[user_dashboard_user_details.name] = user_dashboard_user_details
 
 
-
 send_mentorship_request_body = Model(
     "Send mentorship relation request model",
     {

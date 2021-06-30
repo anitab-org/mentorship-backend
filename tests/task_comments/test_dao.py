@@ -32,7 +32,7 @@ class TestTaskCommentDao(TasksBaseTestCase):
             user_id=1, task_id=1, relation_id=2
         )[0]
         task_comment = TaskCommentDAO.get_task_comment(1, 1)[0]
-        user_details = UserModel.find_by_id(1)
+        user_details = UserModel.find_by_id(1).json()
         task_comment = task_comment.json()
         del task_comment["user_id"]
         task_comment["user"] = user_details

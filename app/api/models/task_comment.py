@@ -31,12 +31,3 @@ task_comments_model = Model(
         "comment": fields.String(required=True, description="Task comment."),
     },
 )
-
-task_comments_response_model = Model(
-    "Task comments response model",
-    {
-        "comments": fields.List(fields.Nested(task_comments_model)),
-        "mentor": fields.Nested(public_user_api_model),
-        "mentee": fields.Nested(public_user_api_model),
-    },
-)
