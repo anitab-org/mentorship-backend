@@ -164,8 +164,8 @@ class TestUserDao(BaseTestCase):
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
-        before_delete_user = UserModel.query.filter_by(id=2).first()
-        self.assertIsNotNone(before_delete_user)
+        user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNotNone(user)
 
         # Verify email
         token = generate_confirmation_token(user2["email"])
@@ -174,8 +174,8 @@ class TestUserDao(BaseTestCase):
 
         dao_result = dao.delete_user(2)
 
-        after_delete_user = UserModel.query.filter_by(id=2).first()
-        self.assertIsNone(after_delete_user)
+        user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNone(user)
         self.assertEqual(
             (messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK), dao_result
         )
