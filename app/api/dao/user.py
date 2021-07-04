@@ -97,8 +97,6 @@ class UserDAO:
             user.delete_from_db()
             return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
 
-        return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
-
     @staticmethod
     @email_verification_required
     def get_user(user_id: int):
@@ -222,8 +220,6 @@ class UserDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        if not user:
-            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         username = data.get("username", None)
         if username:
