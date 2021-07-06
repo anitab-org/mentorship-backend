@@ -17,6 +17,11 @@ from tests.test_data import user2
 
 
 class TestUserDao(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+
+        self.user = UserModel(**user2)
+
     def test_dao_create_user(self):
         dao = UserDAO()
         data = dict(
@@ -45,14 +50,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_confirm_registration_good_token(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -75,14 +73,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_confirm_registration_bad_token(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -106,14 +97,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_confirm_registration_of_already_verified_user(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -153,14 +137,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_delete_user(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -196,14 +173,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_get_user_by_email(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -217,14 +187,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_get_user_by_username(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -238,14 +201,7 @@ class TestUserDao(BaseTestCase):
     def test_authenticate_user_by_email(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -255,24 +211,17 @@ class TestUserDao(BaseTestCase):
         # Verify email
         token = generate_confirmation_token(user2["email"])
         result = dao.confirm_registration(token)
-        self.assertTrue(user.is_email_verified)
+        self.assertTrue(self.user.is_email_verified)
 
         dao_result = dao.authenticate(user2["email"], user2["password"])
 
         self.assertIsNotNone(dao_result)
-        self.assertEqual(dao_result, user)
+        self.assertEqual(dao_result, self.user)
 
     def test_change_password_with_incorrect_password(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -282,7 +231,7 @@ class TestUserDao(BaseTestCase):
         # Verify email
         token = generate_confirmation_token(user2["email"])
         result = dao.confirm_registration(token)
-        self.assertTrue(user.is_email_verified)
+        self.assertTrue(self.user.is_email_verified)
 
         data = dict(current_password="wrong password", new_password="new password")
         dao_result = dao.change_password(user_id=2, data=data)
