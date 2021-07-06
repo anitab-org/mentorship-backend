@@ -93,9 +93,8 @@ class UserDAO:
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
                 return messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST
 
-        if user:
-            user.delete_from_db()
-            return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
+        user.delete_from_db()
+        return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
