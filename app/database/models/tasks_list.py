@@ -42,7 +42,7 @@ class TasksListModel(db.Model):
                 raise ValueError(TypeError)
 
     def add_task(
-        self, description: str, created_at: date, is_done=False, completed_at=None
+        self, description: str, created_at: date, is_done=False, completed_at=None,requires_approval=False
     ) -> None:
         """Adds a task to the list of tasks.
 
@@ -51,6 +51,7 @@ class TasksListModel(db.Model):
             created_at: Date on which the task is created.
             is_done: Boolean specifying completion of the task.
             completed_at: Date on which task is completed.
+            requires_approval:  Boolean specifying whether mentee can mark task as completed on his own.
         """
 
         task = {
@@ -59,6 +60,7 @@ class TasksListModel(db.Model):
             TasksFields.IS_DONE.value: is_done,
             TasksFields.CREATED_AT.value: created_at,
             TasksFields.COMPLETED_AT.value: completed_at,
+            TasksFields.REQUIRES_APPROVAL.value: requires_approval
         }
         self.next_task_id += 1
         self.tasks = self.tasks + [task]
@@ -195,6 +197,7 @@ class TasksFields(Enum):
         IS_DONE: Boolean specifying the completion of the task.
         COMPLETED_AT: The date on which the task is completed.
         CREATED_AT: The date on which the task was created.
+        REQUIRES_APPROVAL: Boolean specifying whether mentee can mark task as completed on his own.
     """
 
     ID = "id"
@@ -202,6 +205,7 @@ class TasksFields(Enum):
     IS_DONE = "is_done"
     COMPLETED_AT = "completed_at"
     CREATED_AT = "created_at"
+    REQUIRES_APPROVAL = 'requires_approval'
 
     def values(self):
         """Returns a list containing a task."""

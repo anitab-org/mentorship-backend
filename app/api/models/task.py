@@ -11,7 +11,8 @@ create_task_request_body = Model(
     {
         "description": fields.String(
             required=True, description="Mentorship relation task description"
-        )
+        ),
+        'requires_approval': fields.Boolean(required=False, description='If true, only mentor can mark task as completed.')
     },
 )
 
@@ -28,5 +29,6 @@ list_tasks_response_body = Model(
         "completed_at": fields.Float(
             required=False, description="Task completion date in UNIX timestamp format"
         ),
+        'requires_approval': fields.Boolean(required=False, description='If true, only mentor can mark task as completed.')
     },
 )

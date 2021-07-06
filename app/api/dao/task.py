@@ -30,6 +30,10 @@ class TaskDAO:
         """
 
         description = data["description"]
+        if 'requires_approval' in data.keys():
+            requires_approval = data['requires_approval']
+        else:
+            requires_approval = False
 
         user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
@@ -46,7 +50,8 @@ class TaskDAO:
             )
 
         now_timestamp = datetime.utcnow().timestamp()
-        relation.tasks_list.add_task(description=description, created_at=now_timestamp)
+        relation.tasks_list.add_task(description=description, created_at=now_timestamp,
+                                     requires_approval=requires_approval)
         relation.tasks_list.save_to_db()
 
         return messages.TASK_WAS_CREATED_SUCCESSFULLY, HTTPStatus.CREATED
@@ -152,6 +157,9 @@ class TaskDAO:
         task = relation.tasks_list.find_task_by_id(task_id)
         if task is None:
             return messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+
+        if user_id == relation.mentee_id and task.get('requires_approval'):
+            return messages.TASK_REQUIRES_APPROVAL, HTTPStatus.UNAUTHORIZED    
 
         if task.get("is_done"):
             return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.CONFLICT
