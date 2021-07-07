@@ -209,6 +209,43 @@ To run black:
 black .
 ```
 
+### Run migration Scripts
+#### If this is you first time running migration: 
+Run the below command to attach the current alembic version number on the repo to your local db.
+* Note: For new contributors who just completed environment setup, run the following command **AFTER** running the application for the first time.
+
+```
+flask db stamp head
+```
+
+#### If you have run migration before and have just pulled the latest update from upstream that includes newer version/s of migration script.
+
+Confirm you have the same version number as the second last one on the repo (if there're multiple versions). To do this, run the below commmand
+```
+flask db history // to check the list of version history on the repo
+flask db current // to check your latest version on the local db
+```
+If you're missing other updates listed beside the latest version, run the below command **IN SEQUENTIAL ORDER** one command at a time from the first update you've missed. If you are up to date and only need to update to the latest version, you don't need to specify the `missing version number`.
+
+```
+flask db upgrade <missing version number>
+```
+
+#### If you are making changes to db model/s 
+1. make sure you have the latest version as per the upstream repo
+2. make the necessary schema changes on your db model/s
+3. run the following command to add the update onto the migration version history
+```
+flask db migrate -m "<message>"
+```
+where `<message>` is a clear message what the change was about. This will be your alembic version title.
+You should see the new version inside the `versions` folder
+3. run the following command to apply the update to your local db
+```
+flask db upgrade
+```
+**IMPORTANT!!** If you are **altering/modifying** an existing column inside an existing table, **YOU MUST CHECK** the auto-generated alembic script (new version file) to make sure the script is reflecting the schema changes. If this is not the case, you **MUST MODIFY** this script yourself accordingly.
+
 ## Documentation
 
 Documentation for the project is hosted [here](https://anitab-org.github.io/mentorship-backend/). We use Docusaurus for maintaining the documentation of the project.
