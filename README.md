@@ -224,7 +224,7 @@ To run isort:
 isort . --profile=black
 ```
 
-### Automate auto-formatting tools with pre-commit
+#### Automate auto-formatting tools with pre-commit
 
 We use [_pre-commit_](https://pre-commit.com/) to check formatting before every commit message. To install _pre-commit_:
 
