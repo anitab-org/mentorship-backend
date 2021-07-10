@@ -308,7 +308,7 @@ class UserRegister(Resource):
         f"{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}",
     )
     @users_ns.response(
-        HTTPStatus.CONFLICT,
+        HTTPStatus.CONFLICT.value,
         f"{messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS}\n"
         f"{messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS}",
     )
