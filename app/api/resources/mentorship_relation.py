@@ -29,7 +29,8 @@ class SendRequest(Resource):
     @mentorship_relation_ns.doc("send_request")
     @mentorship_relation_ns.expect(auth_header_parser, send_mentorship_request_body)
     @mentorship_relation_ns.response(
-        HTTPStatus.CREATED.value, f"{messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY}"
+        HTTPStatus.CREATED.value,
+        f"{messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY}",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.BAD_REQUEST.value,
@@ -194,7 +195,8 @@ class AcceptMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND.value,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def put(cls, request_id):
         """
@@ -242,7 +244,8 @@ class RejectMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND.value,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def put(cls, request_id):
         """
@@ -271,7 +274,8 @@ class CancelMentorshipRelation(Resource):
     @mentorship_relation_ns.doc("cancel_mentorship_relation")
     @mentorship_relation_ns.expect(auth_header_parser)
     @mentorship_relation_ns.response(
-        HTTPStatus.OK.value, f"{messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY}"
+        HTTPStatus.OK.value,
+        f"{messages.MENTORSHIP_RELATION_WAS_CANCELLED_SUCCESSFULLY}",
     )
     @mentorship_relation_ns.response(
         HTTPStatus.FORBIDDEN.value,
@@ -285,7 +289,8 @@ class CancelMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND.value,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def put(cls, request_id):
         """
@@ -328,7 +333,8 @@ class DeleteMentorshipRelation(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @mentorship_relation_ns.response(
-        HTTPStatus.NOT_FOUND.value, f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND.value,
+        f"{messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST}",
     )
     def delete(cls, request_id):
         """

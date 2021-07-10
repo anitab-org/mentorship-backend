@@ -22,8 +22,12 @@ class CreateTask(Resource):
     @jwt_required
     @task_ns.doc("create_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser, create_task_request_body)
-    @task_ns.response(HTTPStatus.CREATED.value, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}")
-    @task_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.UNACCEPTED_STATE_RELATION}")
+    @task_ns.response(
+        HTTPStatus.CREATED.value, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}"
+    )
+    @task_ns.response(
+        HTTPStatus.FORBIDDEN.value, f"{messages.UNACCEPTED_STATE_RELATION}"
+    )
     @task_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
@@ -31,7 +35,8 @@ class CreateTask(Resource):
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @task_ns.response(
-        HTTPStatus.FORBIDDEN.value, f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}"
+        HTTPStatus.FORBIDDEN.value,
+        f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
     )
     def post(cls, request_id):
         """
@@ -171,7 +176,9 @@ class UpdateTask(Resource):
     @task_ns.doc("update_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
     @task_ns.response(HTTPStatus.OK.value, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}")
-    @task_ns.response(HTTPStatus.CONFLICT.value, f"{messages.TASK_WAS_ALREADY_ACHIEVED}")
+    @task_ns.response(
+        HTTPStatus.CONFLICT.value, f"{messages.TASK_WAS_ALREADY_ACHIEVED}"
+    )
     @task_ns.response(
         HTTPStatus.UNAUTHORIZED.value,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
