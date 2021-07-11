@@ -3,7 +3,6 @@ from http import HTTPStatus
 
 from app import messages
 from app.api.dao.task import TaskDAO
-from http import HTTPStatus
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 
 

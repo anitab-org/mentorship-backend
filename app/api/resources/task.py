@@ -1,13 +1,17 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
+
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
 
 from app import messages
 from app.api.dao.task import TaskDAO
+from app.api.models.task import (
+    add_models_to_namespace,
+    create_task_request_body,
+    list_tasks_response_body,
+)
 from app.api.resources.common import auth_header_parser
-from app.api.models.task import *
-
 
 task_ns = Namespace(
     "Task",

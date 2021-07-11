@@ -97,7 +97,7 @@ export DB_NAME=<database_name>
 | Environment Variable | Description                                                                 | Example           |
 |----------------------|-----------------------------------------------------------------------------|-------------------|
 | DB_TYPE | Type of database you want to use | postgres, mysql |
-| DB_USERNAME          | Username of the user through which you will be doing operations in database | admin123 | 
+| DB_USERNAME          | Username of the user through which you will be doing operations in database | admin123 |
 | DB_PASSWORD | Database password of the `DB_USERNAME` user | mypwd123 |
 | DB_ENDPOINT | Path to database or connection string connecting to database | /path/to/database.db, remote-database-url:5432 |
 | DB_NAME | Name of the database to which you want to connect | mentorship |

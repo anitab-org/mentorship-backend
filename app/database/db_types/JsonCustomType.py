@@ -1,4 +1,5 @@
 import json
+
 from app.database.sqlalchemy_extension import db
 
 

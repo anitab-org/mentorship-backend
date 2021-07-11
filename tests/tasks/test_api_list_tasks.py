@@ -1,7 +1,8 @@
 import unittest
+from http import HTTPStatus
+
 from flask import json
 from flask_restx import marshal
-from http import HTTPStatus
 
 from app import messages
 from app.api.models.mentorship_relation import list_tasks_response_body

@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
-from flask import json
 from http import HTTPStatus
+
+from flask import json
+
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel

@@ -6,9 +6,9 @@ from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
-from app.database.sqlalchemy_extension import db
 
 
 class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):

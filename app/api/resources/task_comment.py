@@ -1,13 +1,18 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
-from app import messages
-from app.api.resources.common import auth_header_parser
 
-from app.api.validations.task_comment import validate_task_comment_request_data
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
+from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
-from app.api.models.task_comment import *
+from app.api.models.task_comment import (
+    add_models_to_namespace,
+    task_comment_model,
+    task_comments_model,
+)
+from app.api.resources.common import auth_header_parser
+from app.api.validations.task_comment import validate_task_comment_request_data
 
 task_comment_ns = Namespace(
     "Task comment",

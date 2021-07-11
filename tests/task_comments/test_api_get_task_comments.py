@@ -1,5 +1,6 @@
 import json
 import unittest
+from http import HTTPStatus
 
 from flask_restx import marshal
 
@@ -8,7 +9,6 @@ from app.api.dao.task_comment import TaskCommentDAO
 from app.api.models.mentorship_relation import task_comments_model
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
-from http import HTTPStatus
 
 
 class TestGetTaskCommentsApi(TasksBaseTestCase):
