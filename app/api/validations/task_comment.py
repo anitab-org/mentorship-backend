@@ -1,5 +1,5 @@
 from app import messages
-from app.utils.validation_utils import validate_length, get_stripped_string
+from app.utils.validation_utils import get_stripped_string, validate_length
 
 COMMENT_MAX_LENGTH = 400
 

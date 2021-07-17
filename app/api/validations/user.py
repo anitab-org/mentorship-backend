@@ -1,10 +1,10 @@
 from app import messages
 from app.utils.validation_utils import (
-    is_name_valid,
+    get_stripped_string,
     is_email_valid,
+    is_name_valid,
     is_username_valid,
     validate_length,
-    get_stripped_string,
 )
 
 # Field character limit

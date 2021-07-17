@@ -19,4 +19,3 @@ If you want to implement one of this ideas feel free to start a discussion about
 | Tutorial                                              | A tutorial screen, explaining what a user can do in the app, in its first login in the app would be helpful                                                                                                        |
 | Mentor and Mentee recommendation                      | Users can be recommended to each other according to their interests, skills, availability to mentor and be mentored                                                                                                 |
 | Mentorship Agreements from One Mentor to Many Mentees | A mentor can mentor many mentee’s on one topic, at the same time… Group Mentoring (to be discussed: the initial idea is for the mentor to focus on one mentee only instead of sharing attention with many mentees) |
-

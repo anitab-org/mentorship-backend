@@ -1,5 +1,6 @@
-from tests.base_test_case import BaseTestCase
 import unittest
+
+from tests.base_test_case import BaseTestCase
 
 
 class TestFlaskApp(BaseTestCase):

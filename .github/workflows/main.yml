@@ -6,12 +6,12 @@ name: Lint Code and Run Tests
 on:
   pull_request:
     branches: [develop]
-    paths-ignore: 
+    paths-ignore:
       - '**.md'
       - /docs/CODEOWNERS
   push:
     branches: [develop]
-    paths-ignore: 
+    paths-ignore:
       - '**.md'
       - /docs/CODEOWNERS
 
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - uses: psf/black@stable      
+      - uses: psf/black@stable
 
   build:
     needs: lint

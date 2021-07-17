@@ -55,3 +55,19 @@ test = "scripts:test"
 
 [tool.poetry.urls]
 issues = "https://github.com/anitab-org/mentorship-backend/issues"
+
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''

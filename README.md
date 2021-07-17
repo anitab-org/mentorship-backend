@@ -153,6 +153,35 @@ To run black:
 black .
 ```
 
+#### Sorting imports with isort
+
+We use [_isort_](https://pypi.org/project/isort/) to sort imports alphabetically, and automatically separated into
+sections and by type. To install _isort_:
+
+```
+pip install isort
+```
+
+To run isort:
+
+```
+isort . --profile=black
+```
+
+#### Automate auto-formatting tools with pre-commit
+
+We use [_pre-commit_](https://pre-commit.com/) to check formatting before every commit message. To install _pre-commit_:
+
+```
+pip install pre-commit
+```
+
+To set up the git hook scripts:
+
+```
+pre-commit install
+```
+
 ## Documentation
 
 Documentation for the project is hosted [here](https://anitab-org.github.io/mentorship-backend/). We use Docusaurus for maintaining the documentation of the project.
