@@ -27,7 +27,6 @@ python-dateutil==2.8.1; python_version >= "2.7" and python_full_version < "3.0.0
 python-editor==1.0.4
 pytz==2020.1
 requests==2.18.4
-six==1.15.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.3.0"
 sqlalchemy==1.2.7
 toml==0.10.1
 tzlocal==2.1
