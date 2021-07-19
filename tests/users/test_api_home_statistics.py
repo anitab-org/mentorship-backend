@@ -297,10 +297,10 @@ class TestHomeStatisticsApi(BaseTestCase):
         task_completed_time = task_created_time + 100
         for i in range(5):
             tasks_list.add_task(
-                description="Test task "+i,
+                description="Test task " + i,
                 created_at=task_created_time,
                 is_done=True,
-                completed_at=task_completed_time+(i*60),
+                completed_at=task_completed_time + (i * 60),
             )
         db.session.add(tasks_list)
         db.session.commit()
@@ -328,26 +328,26 @@ class TestHomeStatisticsApi(BaseTestCase):
             "cancelled_relations": 0,
             "achievements": [
                 {
-                    "completed_at": task_completed_time+4*60,
+                    "completed_at": task_completed_time + 4 * 60,
                     "created_at": task_created_time,
                     "description": "Test task 4",
                     "id": 4,
                     "is_done": True,
                 },
                 {
-                    "completed_at": task_completed_time+3*60,
+                    "completed_at": task_completed_time + 3 * 60,
                     "created_at": task_created_time,
                     "description": "Test task 3",
                     "id": 3,
                     "is_done": True,
                 },
                 {
-                    "completed_at": task_completed_time+2*60,
+                    "completed_at": task_completed_time + 2 * 60,
                     "created_at": task_created_time,
                     "description": "Test task 2",
                     "id": 2,
                     "is_done": True,
-                }
+                },
             ],
         }
         auth_header = get_test_request_header(self.user1.id)
