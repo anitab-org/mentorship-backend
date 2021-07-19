@@ -295,9 +295,9 @@ class TestHomeStatisticsApi(BaseTestCase):
         tasks_list = TasksListModel()
         task_created_time = datetime.utcnow().timestamp()
         task_completed_time = task_created_time + 100
-        for i in range(5):
+        for i in range(1, 5):
             tasks_list.add_task(
-                description="Test task " + i,
+                description="Test task " + str(i),
                 created_at=task_created_time,
                 is_done=True,
                 completed_at=task_completed_time + (i * 60),
