@@ -59,6 +59,25 @@ class TestRejectMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 json.loads(response.data),
             )
 
+    def test_reject_request_by_uninvolved_user(self):
+        self.assertEqual(
+            MentorshipRelationState.PENDING, self.mentorship_relation.state
+        )
+        with self.client:
+            # admin_user acts as uninvolved 3rd user
+            response = self.client.put(
+                f"/mentorship_relation/{self.mentorship_relation.id}/reject",
+                headers=get_test_request_header(self.admin_user.id),
+            )
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
+            self.assertEqual(
+                MentorshipRelationState.PENDING, self.mentorship_relation.state
+            )
+            self.assertDictEqual(
+                messages.CANT_REJECT_UNINVOLVED_RELATION_REQUEST,
+                json.loads(response.data),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
