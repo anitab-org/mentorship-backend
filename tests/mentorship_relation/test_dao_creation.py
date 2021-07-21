@@ -248,7 +248,7 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         self.assertEqual(messages.INVALID_END_DATE, result[0])
         self.assertEqual(HTTPStatus.BAD_REQUEST, result[1])
-    
+
     def test_dao_create_mentorship_relation_with_same_id_mentor_mentee(self):
         dao = MentorshipRelationDAO()
         data = dict(
@@ -261,6 +261,21 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
 
         result = dao.create_mentorship_relation(self.first_user.id, data)
         self.assertDictEqual(messages.MENTOR_ID_SAME_AS_MENTEE_ID, result[0])
+        query_mentorship_relation = MentorshipRelationModel.query.first()
+        self.assertIsNone(query_mentorship_relation)
+
+    def test_dao_create_mentorship_relation_incorrect_end_time(self):
+        dao = MentorshipRelationDAO()
+        data = dict(
+            mentor_id=self.first_user.id,
+            mentee_id=self.second_user.id,
+            end_date=self.now_datetime.timestamp() - 5000,
+            notes=self.notes_example,
+            tasks_list=TasksListModel(),
+        )
+
+        result = dao.create_mentorship_relation(self.first_user.id, data)
+        self.assertDictEqual(messages.END_TIME_BEFORE_PRESENT, result[0])
         query_mentorship_relation = MentorshipRelationModel.query.first()
         self.assertIsNone(query_mentorship_relation)
 
