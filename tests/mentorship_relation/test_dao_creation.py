@@ -279,6 +279,38 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         query_mentorship_relation = MentorshipRelationModel.query.first()
         self.assertIsNone(query_mentorship_relation)
 
+    def test_dao_create_mentorship_relation_not_available_mentor(self):
+        dao = MentorshipRelationDAO()
+        self.first_user.available_to_mentor = False
+        data = dict(
+            mentor_id=self.first_user.id,
+            mentee_id=self.second_user.id,
+            end_date=self.end_date_example.timestamp(),
+            notes=self.notes_example,
+            tasks_list=TasksListModel(),
+        )
+
+        result = dao.create_mentorship_relation(self.first_user.id, data)
+        self.assertDictEqual(messages.MENTOR_NOT_AVAILABLE_TO_MENTOR, result[0])
+        query_mentorship_relation = MentorshipRelationModel.query.first()
+        self.assertIsNone(query_mentorship_relation)
+
+    def test_dao_create_mentorship_relation_not_available_mentee(self):
+        dao = MentorshipRelationDAO()
+        self.second_user.need_mentoring = False
+        data = dict(
+            mentor_id=self.first_user.id,
+            mentee_id=self.second_user.id,
+            end_date=self.end_date_example.timestamp(),
+            notes=self.notes_example,
+            tasks_list=TasksListModel(),
+        )
+
+        result = dao.create_mentorship_relation(self.first_user.id, data)
+        self.assertDictEqual(messages.MENTEE_NOT_AVAIL_TO_BE_MENTORED, result[0])
+        query_mentorship_relation = MentorshipRelationModel.query.first()
+        self.assertIsNone(query_mentorship_relation)
+
 
 if __name__ == "__main__":
     unittest.main()
