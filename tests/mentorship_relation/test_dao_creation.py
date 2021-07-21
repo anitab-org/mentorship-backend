@@ -311,6 +311,39 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         query_mentorship_relation = MentorshipRelationModel.query.first()
         self.assertIsNone(query_mentorship_relation)
 
+    def test_dao_create_mentorship_relation_duration_max(self):
+        dao = MentorshipRelationDAO()
+        end_date_max = (
+            self.now_datetime + dao.MAXIMUM_MENTORSHIP_DURATION + timedelta(seconds=30)
+        )
+        data = dict(
+            mentor_id=self.first_user.id,
+            mentee_id=self.second_user.id,
+            end_date=end_date_max.timestamp(),
+            notes=self.notes_example,
+            tasks_list=TasksListModel(),
+        )
+
+        result = dao.create_mentorship_relation(self.first_user.id, data)
+        self.assertDictEqual(messages.MENTOR_TIME_GREATER_THAN_MAX_TIME, result[0])
+        query_mentorship_relation = MentorshipRelationModel.query.first()
+        self.assertIsNone(query_mentorship_relation)
+
+    def test_dao_create_mentorship_relation_duration_min(self):
+        dao = MentorshipRelationDAO()
+        data = dict(
+            mentor_id=self.first_user.id,
+            mentee_id=self.second_user.id,
+            end_date=(self.now_datetime + dao.MINIMUM_MENTORSHIP_DURATION).timestamp(),
+            notes=self.notes_example,
+            tasks_list=TasksListModel(),
+        )
+
+        result = dao.create_mentorship_relation(self.first_user.id, data)
+        self.assertDictEqual(messages.MENTOR_TIME_LESS_THAN_MIN_TIME, result[0])
+        query_mentorship_relation = MentorshipRelationModel.query.first()
+        self.assertIsNone(query_mentorship_relation)
+
 
 if __name__ == "__main__":
     unittest.main()
