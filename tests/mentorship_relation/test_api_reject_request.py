@@ -78,6 +78,45 @@ class TestRejectMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 json.loads(response.data),
             )
 
+    def test_reject_request_token_missing(self):
+        self.assertEqual(
+            MentorshipRelationState.PENDING, self.mentorship_relation.state
+        )
+        with self.client:
+            response = self.client.put(
+                f"/mentorship_relation/{self.mentorship_relation.id}/reject"
+            )
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
+            self.assertEqual(
+                MentorshipRelationState.PENDING, self.mentorship_relation.state
+            )
+            self.assertDictEqual(
+                messages.AUTHORISATION_TOKEN_IS_MISSING,
+                json.loads(response.data),
+            )
+
+    def test_reject_request_token_expired(self):
+        self.assertEqual(
+            MentorshipRelationState.PENDING, self.mentorship_relation.state
+        )
+        with self.client:
+            # generate token that expired 10 seconds ago
+            auth_header = get_test_request_header(
+                self.second_user.id, token_expiration_delta=timedelta(seconds=-10)
+            )
+            response = self.client.put(
+                f"/mentorship_relation/{self.mentorship_relation.id}/reject",
+                headers=auth_header,
+            )
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
+            self.assertEqual(
+                MentorshipRelationState.PENDING, self.mentorship_relation.state
+            )
+            self.assertDictEqual(
+                messages.TOKEN_HAS_EXPIRED,
+                json.loads(response.data),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
