@@ -462,9 +462,9 @@ class UserDAO:
 
         achievements = UserDAO.get_achievements(user_id)
         if achievements:
-            # We only need the first three of these achievements
-            achievements = achievements[0:3]
-            sorted(achievements, key=itemgetter("created_at"))
+            # We only need the last three of these achievements
+            achievements = achievements[-3:]
+            achievements.sort(key=itemgetter("completed_at"), reverse=True)
 
         response = {
             "name": user.name,
