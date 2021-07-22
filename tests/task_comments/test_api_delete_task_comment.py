@@ -92,7 +92,7 @@ class TestDeleteTaskCommentApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_deletion_api_with_task_not_existing(self):
