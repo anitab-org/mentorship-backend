@@ -1,5 +1,6 @@
 import json
 import unittest
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
@@ -7,7 +8,6 @@ from app.api.validations.task_comment import COMMENT_MAX_LENGTH
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
-from http import HTTPStatus
 
 
 class TestCreateTaskCommentApi(TasksBaseTestCase):

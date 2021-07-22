@@ -1,11 +1,17 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
+
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
 from app import messages
-from app.api.dao.user import UserDAO
-from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
+from app.api.dao.user import UserDAO
+from app.api.models.admin import (
+    add_models_to_namespace,
+    assign_and_revoke_user_admin_request_body,
+    public_admin_user_api_model,
+)
 from app.api.resources.common import auth_header_parser
 
 admin_ns = Namespace("Admins", description="Operations related to Admin users")

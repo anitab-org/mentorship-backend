@@ -1,4 +1,5 @@
-from flask_restx import fields, Model
+from flask_restx import Model, fields
+
 from app.api.models.mentorship_relation import (
     mentorship_request_response_body_for_user_dashboard_body,
 )
