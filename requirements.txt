@@ -4,7 +4,6 @@ Flask==1.0.2
 Flask-JWT-Extended==3.25.0
 Flask-Mail==0.9.1
 Flask-Migrate==2.5.3
-flask-restx==0.2.0
 flask-sqlalchemy==2.3.2
 flask==1.0.2
 gunicorn==20.0.4; python_version >= "3.4"
@@ -34,8 +33,9 @@ urllib3==1.22
 wcwidth==0.2.5
 werkzeug==0.16.1; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.4.0")
 zipp==3.3.1; python_version >= "3.6" and python_version < "3.8"
+flask-restx==0.5.0
 Flask-Testing==0.8.1
 psycopg2-binary==2.8.6
-python-dotenv==0.17.1
+python-dotenv==0.18.0
 six==1.11.0
 pre-commit
