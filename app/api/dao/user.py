@@ -5,7 +5,6 @@ from typing import Dict
 
 from flask_restx import marshal
 from sqlalchemy import func
-
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
@@ -226,7 +225,7 @@ class UserDAO:
         if not user:
             return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
-        username = data.get("username", None)
+        username = data.get("username")
         if username:
             user_with_same_username = UserModel.find_by_username(username)
 
@@ -238,31 +237,31 @@ class UserDAO:
                 )
             user.username = username
 
-        user.name = data.get("name", None)
+        user.name = data.get("name")
 
-        user.bio = data.get("bio", None)
+        user.bio = data.get("bio")
 
-        user.location = data.get("location", None)
+        user.location = data.get("location")
 
-        user.occupation = data.get("occupation", None) or None
+        user.occupation = data.get("occupation") or None
 
-        user.organization = data.get("organization", None) or None
+        user.organization = data.get("organization") or None
 
-        user.slack_username = data.get("slack_username", None)
+        user.slack_username = data.get("slack_username")
 
-        user.social_media_links = data.get("social_media_links", None)
+        user.social_media_links = data.get("social_media_links")
 
-        user.skills = data.get("skills", None)
+        user.skills = data.get("skills")
 
-        user.interests = data.get("interests", None)
+        user.interests = data.get("interests")
 
-        user.resume_url = data.get("resume_url", None)
+        user.resume_url = data.get("resume_url")
 
-        user.photo_url = data.get("photo_url", None)
+        user.photo_url = data.get("photo_url")
 
-        user.need_mentoring = data.get("need_mentoring", None)
+        user.need_mentoring = data.get("need_mentoring")
 
-        user.available_to_mentor = data.get("available_to_mentor", None)
+        user.available_to_mentor = data.get("available_to_mentor")
 
         user.save_to_db()
 
