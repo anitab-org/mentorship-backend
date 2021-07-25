@@ -1,10 +1,10 @@
 import unittest
+
 from werkzeug.security import check_password_hash
 
-from tests.base_test_case import BaseTestCase
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
-
+from tests.base_test_case import BaseTestCase
 from tests.test_data import test_admin_user
 
 # Testing User database model

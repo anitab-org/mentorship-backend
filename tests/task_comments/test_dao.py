@@ -1,10 +1,10 @@
 import unittest
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
 from app.database.models.user import UserModel
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
-from http import HTTPStatus
 
 
 class TestTaskCommentDao(TasksBaseTestCase):

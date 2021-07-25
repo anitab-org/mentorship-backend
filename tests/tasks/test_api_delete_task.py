@@ -1,6 +1,7 @@
 import unittest
-from flask import json
 from http import HTTPStatus
+
+from flask import json
 
 from app import messages
 from tests.tasks.tasks_base_setup import TasksBaseTestCase

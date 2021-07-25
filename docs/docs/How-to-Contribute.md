@@ -10,8 +10,8 @@ Issues labeled as `First Timers Only` are more oriented towards newcomers, with 
 
 There are many ways you can contribute to this project.
 - **Test the backend for Quality Assurance** purposes and **report bugs** (if any);
-- **Give feedback** on what is shared with the community (UI prototype, suggesting new features); 
-- **Participate in discussions** on Slack; 
+- **Give feedback** on what is shared with the community (UI prototype, suggesting new features);
+- **Participate in discussions** on Slack;
 - **Solving the available issues**, implement features, fix bugs, develop tests, etc...;
 - **Helping others** understand the project **on Slack**;
 - Review pull requests (PRs), even if you're a newcomer.
@@ -32,11 +32,11 @@ You can find more about [Tech Stack here](Tech-Stack).
 
 You can test the backend for bugs. We have a set of [Quality Assurance Test Cases](Quality-Assurance) to help you with test the backend to lookup these bugs.
 
-**If you find any bug you can report** by creating an issue, using the **Bug report template**. Here's a nice [example of a Bug Report issue](https://github.com/anitab-org/mentorship-backend/issues/83). 
+**If you find any bug you can report** by creating an issue, using the **Bug report template**. Here's a nice [example of a Bug Report issue](https://github.com/anitab-org/mentorship-backend/issues/83).
 These types of reports are very important because we can detect bugs in the backend and then create issues that fix these bugs. Also if you're not comfortable with the code you can just report a bugs you find, without having to suggest a solution on it, and thats a valuable contribution to the project.
 
 **Tools** you can use to do this:
-- Create disposable emails with https://temp-mail.org/ to create accounts and verify them, throught this temporary emails; 
+- Create disposable emails with https://temp-mail.org/ to create accounts and verify them, throught this temporary emails;
 - **Swagger UI** provided in root of the deployed server. You can check the deployed server link in the the README.md file of the project. You can learn more about [how to use Swagger here](Using-Backend-Swagger-UI).
 - [Postman](https://www.getpostman.com/) to make your HTTP requests to the backend without being limited by Swagger API. E.g.: With this you can see the results of not sending an autorization token, which with the Swagger UI you're not allowed to do it.
 

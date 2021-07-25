@@ -1,5 +1,6 @@
 import json
 import unittest
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
@@ -7,7 +8,6 @@ from app.api.validations.task_comment import COMMENT_MAX_LENGTH
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.tasks.tasks_base_setup import TasksBaseTestCase
 from tests.test_utils import get_test_request_header
-from http import HTTPStatus
 
 
 class TestCreateTaskCommentApi(TasksBaseTestCase):
@@ -89,7 +89,7 @@ class TestCreateTaskCommentApi(TasksBaseTestCase):
             data=json.dumps(dict(comment="comment")),
         )
 
-        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_creation_api_with_task_not_existing(self):
