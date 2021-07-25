@@ -2,7 +2,6 @@ from flask_restx import fields, Model
 from app.api.models.user import public_user_api_model
 
 
-
 def add_models_to_namespace(api_namespace):
     api_namespace.models[task_comment_model.name] = task_comment_model
     api_namespace.models[task_comments_model.name] = task_comments_model
