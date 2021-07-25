@@ -231,7 +231,7 @@ class UserDAO:
             user_with_same_username = UserModel.find_by_username(username)
 
             # username should be unique
-            if user_with_same_username and user_with_same_username.id!=user_id:
+            if user_with_same_username and user_with_same_username.id != user_id:
                 return (
                     messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
                     HTTPStatus.BAD_REQUEST,
