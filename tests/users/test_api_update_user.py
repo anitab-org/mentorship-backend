@@ -1,7 +1,8 @@
 import unittest
+from http import HTTPStatus
 from random import SystemRandom
 from string import ascii_lowercase
-from http import HTTPStatus
+
 from flask import json
 
 from app import messages

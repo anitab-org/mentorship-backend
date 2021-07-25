@@ -2,7 +2,7 @@
 against predetermined patterns as well as to ensure the string input is within the accepted length.
 
 For the "name" field to be valid, it may contain one or more character from:
-- letter "a" to "z" and/or "A" to "Z", 
+- letter "a" to "z" and/or "A" to "Z",
 - any of the whitespace characters, and/or
 - special character "-".
 

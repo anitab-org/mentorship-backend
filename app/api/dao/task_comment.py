@@ -1,9 +1,10 @@
+from http import HTTPStatus
+
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.task_comment import TaskCommentModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
-from http import HTTPStatus
 
 
 def validate_data_for_task_comment(user_id, task_id, relation_id):
@@ -18,7 +19,7 @@ def validate_data_for_task_comment(user_id, task_id, relation_id):
         )
 
     if relation.state != MentorshipRelationState.ACCEPTED:
-        return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
+        return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN
 
     task = relation.tasks_list.find_task_by_id(task_id)
     if task is None:
