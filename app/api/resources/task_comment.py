@@ -13,7 +13,10 @@ from app.api.models.task_comment import (
 )
 from app.api.resources.common import auth_header_parser
 from app.utils.validation_utils import get_length_validation_error_message
-from app.api.validations.task_comment import validate_task_comment_request_data,COMMENT_MAX_LENGTH
+from app.api.validations.task_comment import (
+    validate_task_comment_request_data,
+    COMMENT_MAX_LENGTH,
+)
 from app.api.dao.task_comment import TaskCommentDAO
 from app.api.models.task_comment import *
 
@@ -51,7 +54,7 @@ class CreateTaskComment(Resource):
         """
         Creates a new task comment.
         """
-        
+
         data = request.json
 
         is_valid = validate_task_comment_request_data(data)
@@ -86,12 +89,10 @@ class TaskComment(Resource):
             f"{messages.TASK_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_COMMENT_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST}",
-            HTTPStatus.FORBIDDEN.value : f"{messages.UNACCEPTED_STATE_RELATION}<br>"
+            HTTPStatus.FORBIDDEN.value: f"{messages.UNACCEPTED_STATE_RELATION}<br>"
             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}",
         }
-        
     )
-    
     def put(cls, relation_id, task_id, comment_id):
         """
         Modifies the task comment.
