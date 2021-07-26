@@ -27,7 +27,7 @@ class TestUpdateUserDao(BaseTestCase):
         self.assertEqual("good_developer", self.admin_user.occupation)
         self.assertEqual("good_org", self.admin_user.organization)
 
-        data = dict(occupation="", organization="")
+        data = dict(occupation=None, organization=None)
         UserDAO.update_user_profile(self.admin_user.id, data)
 
         self.assertIsNone(self.admin_user.occupation)

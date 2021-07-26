@@ -5,7 +5,6 @@ from typing import Dict
 
 from flask_restx import marshal
 from sqlalchemy import func
-
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
@@ -226,7 +225,7 @@ class UserDAO:
         if not user:
             return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
-        username = data.get("username", None)
+        username = data.get("username")
         if username:
             user_with_same_username = UserModel.find_by_username(username)
 
@@ -236,77 +235,33 @@ class UserDAO:
                     messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
                     HTTPStatus.BAD_REQUEST,
                 )
-
             user.username = username
 
-        if "name" in data and data["name"]:
-            user.name = data["name"]
+        user.name = data.get("name")
 
-        if "bio" in data:
-            if data["bio"]:
-                user.bio = data["bio"]
-            else:
-                user.bio = None
+        user.bio = data.get("bio")
 
-        if "location" in data:
-            if data["location"]:
-                user.location = data["location"]
-            else:
-                user.location = None
+        user.location = data.get("location")
 
-        if "occupation" in data:
-            if data["occupation"]:
-                user.occupation = data["occupation"]
-            else:
-                user.occupation = None
+        user.occupation = data.get("occupation")
 
-        if "organization" in data:
-            if data["organization"]:
-                user.organization = data["organization"]
-            else:
-                user.organization = None
+        user.organization = data.get("organization")
 
-        if "slack_username" in data:
-            if data["slack_username"]:
-                user.slack_username = data["slack_username"]
-            else:
-                user.slack_username = None
+        user.slack_username = data.get("slack_username")
 
-        if "social_media_links" in data:
-            if data["social_media_links"]:
-                user.social_media_links = data["social_media_links"]
-            else:
-                user.social_media_links = None
+        user.social_media_links = data.get("social_media_links")
 
-        if "skills" in data:
-            if data["skills"]:
-                user.skills = data["skills"]
-            else:
-                user.skills = None
+        user.skills = data.get("skills")
 
-        if "interests" in data:
-            if data["interests"]:
-                user.interests = data["interests"]
-            else:
-                user.interests = None
+        user.interests = data.get("interests")
 
-        if "resume_url" in data:
-            if data["resume_url"]:
-                user.resume_url = data["resume_url"]
-            else:
-                user.resume_url = None
+        user.resume_url = data.get("resume_url")
 
-        if "photo_url" in data:
-            if data["photo_url"]:
-                user.photo_url = data["photo_url"]
-            else:
-                user.photo_url = None
+        user.photo_url = data.get("photo_url")
 
-        if "need_mentoring" in data:
-            user.need_mentoring = data["need_mentoring"]
+        user.need_mentoring = data.get("need_mentoring")
 
-        if "available_to_mentor" in data:
-            user.available_to_mentor = data["available_to_mentor"]
+        user.available_to_mentor = data.get("available_to_mentor")
 
         user.save_to_db()
 
