@@ -1,6 +1,7 @@
-from flask_restx import fields, Model
+from flask_restx import Model, fields
 
 from app.utils.enum_utils import MentorshipRelationState
+
 from .task import create_task_request_body, list_tasks_response_body
 from .task_comment import task_comment_model, task_comments_model
 
@@ -85,7 +86,6 @@ mentorship_request_response_body = Model(
         "notes": fields.String(required=True, description="Mentorship relation notes"),
     },
 )
-
 
 user_dashboard_user_details = Model(
     "User details for dashboard",

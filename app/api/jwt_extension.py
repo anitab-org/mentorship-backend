@@ -1,5 +1,7 @@
-from flask_jwt_extended import JWTManager
 from http import HTTPStatus
+
+from flask_jwt_extended import JWTManager
+
 from app import messages
 from app.api.api_extension import api
 import os

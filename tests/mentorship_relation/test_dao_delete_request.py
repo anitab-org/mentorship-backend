@@ -3,11 +3,11 @@ from http import HTTPStatus
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
-from app.database.models.tasks_list import TasksListModel
-from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
+from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1, user2
 
@@ -45,7 +45,7 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
 
         self.notes_example = "description of a good mentorship relation"
 
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         db.session.add(self.first_user)

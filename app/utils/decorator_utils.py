@@ -1,8 +1,9 @@
 """
 This module is used to define decorators for the app
 """
-from app import messages
 from http import HTTPStatus
+
+from app import messages
 from app.database.models.user import UserModel
 
 
