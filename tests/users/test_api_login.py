@@ -1,13 +1,12 @@
 import unittest
+from http import HTTPStatus
 
 from flask import json
 
 from app import messages
+from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
-
-from app.database.models.user import UserModel
-from http import HTTPStatus
 
 # Testing User API resources
 #
@@ -59,9 +58,7 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
 
             self.assertEqual(1, len(response.json))
             self.assertEqual(messages.WRONG_USERNAME_OR_PASSWORD, response.json)
@@ -80,14 +77,12 @@ class TestUserLoginApi(BaseTestCase):
             )
 
             self.assertIsNone(response.json.get("access_token"))
-            self.assertIsNone(response.json.get("access_expiry"))
             self.assertIsNone(response.json.get("refresh_token"))
-            self.assertIsNone(response.json.get("refresh_expiry"))
             self.assertEqual(1, len(response.json))
             self.assertEqual(
                 messages.USER_HAS_NOT_VERIFIED_EMAIL_BEFORE_LOGIN, response.json
             )
-            self.assertEqual(403, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
 
     def test_user_login_verified_user(self):
         with self.client:
@@ -100,11 +95,9 @@ class TestUserLoginApi(BaseTestCase):
                 content_type="application/json",
             )
             self.assertIsNotNone(response.json.get("access_token"))
-            self.assertIsNotNone(response.json.get("access_expiry"))
             self.assertIsNotNone(response.json.get("refresh_token"))
-            self.assertIsNotNone(response.json.get("refresh_expiry"))
-            self.assertEqual(4, len(response.json))
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(2, len(response.json))
+            self.assertEqual(HTTPStatus.OK, response.status_code)
 
 
 if __name__ == "__main__":

@@ -5,10 +5,9 @@ from http import HTTPStatus
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
-from app.database.sqlalchemy_extension import db
-
 
 # TODO test combination of parameters while listing relations
 
@@ -20,7 +19,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         # create new mentorship relation

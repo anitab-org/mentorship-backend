@@ -1,11 +1,17 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
+
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
 from app import messages
-from app.api.dao.user import UserDAO
-from app.api.models.admin import *
 from app.api.dao.admin import AdminDAO
+from app.api.dao.user import UserDAO
+from app.api.models.admin import (
+    add_models_to_namespace,
+    assign_and_revoke_user_admin_request_body,
+    public_admin_user_api_model,
+)
 from app.api.resources.common import auth_header_parser
 
 admin_ns = Namespace("Admins", description="Operations related to Admin users")
@@ -81,12 +87,16 @@ class ListAdmins(Resource):
     @classmethod
     @jwt_required()
     @admin_ns.doc("get_list_of_admins")
-    @admin_ns.response(HTTPStatus.OK.value, "Success.", public_admin_user_api_model)
+    @admin_ns.response(
+        HTTPStatus.OK.value,
+        f"{messages.GENERAL_SUCCESS_MESSAGE}",
+        public_admin_user_api_model,
+    )
     @admin_ns.doc(
         responses={
-            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED['message']}<br>"
-            f"{messages.TOKEN_IS_INVALID['message']}<br>"
-            f"{messages.AUTHORISATION_TOKEN_IS_MISSING['message']}"
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            f"{messages.TOKEN_IS_INVALID}<br>"
+            f"{messages.AUTHORISATION_TOKEN_IS_MISSING}"
         }
     )
     @admin_ns.response(HTTPStatus.FORBIDDEN.value, f"{messages.USER_IS_NOT_AN_ADMIN}")

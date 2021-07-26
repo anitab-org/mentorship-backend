@@ -1,4 +1,5 @@
 import unittest
+
 from app.utils.validation_utils import get_stripped_string
 
 

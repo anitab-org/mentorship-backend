@@ -2,18 +2,18 @@ import unittest
 from unittest.mock import patch
 
 from flask import json
-from tests.base_test_case import BaseTestCase
+
 from app.database.models.user import UserModel
 from app.messages import (
-    USER_WAS_CREATED_SUCCESSFULLY,
-    USERNAME_HAS_INVALID_LENGTH,
-    PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
-    USER_INPUTS_SPACE_IN_PASSWORD,
     EMAIL_INPUT_BY_USER_IS_INVALID,
+    PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH,
+    TERMS_AND_CONDITIONS_ARE_NOT_CHECKED,
+    USER_INPUTS_SPACE_IN_PASSWORD,
     USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
     USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS,
-    TERMS_AND_CONDITIONS_ARE_NOT_CHECKED,
+    USERNAME_HAS_INVALID_LENGTH,
 )
+from tests.base_test_case import BaseTestCase
 
 # Testing User API resources
 #
