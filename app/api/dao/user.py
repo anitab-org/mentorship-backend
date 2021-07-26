@@ -243,9 +243,9 @@ class UserDAO:
 
         user.location = data.get("location")
 
-        user.occupation = data.get("occupation") or None
+        user.occupation = data.get("occupation")
 
-        user.organization = data.get("organization") or None
+        user.organization = data.get("organization")
 
         user.slack_username = data.get("slack_username")
 
