@@ -5,6 +5,7 @@ from typing import Dict
 
 from flask_restx import marshal
 from sqlalchemy import func
+from sqlalchemy.exc import IntegrityError
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -228,15 +229,6 @@ class UserDAO:
 
         username = data.get("username", None)
         if username:
-            user_with_same_username = UserModel.find_by_username(username)
-
-            # username should be unique
-            if user_with_same_username and user_with_same_username.id != user_id:
-                return (
-                    messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
-                    HTTPStatus.BAD_REQUEST,
-                )
-
             user.username = username
 
         if "name" in data and data["name"]:
@@ -308,8 +300,13 @@ class UserDAO:
         if "available_to_mentor" in data:
             user.available_to_mentor = data["available_to_mentor"]
 
-        user.save_to_db()
-
+        try:
+            user.save_to_db()
+        except IntegrityError:
+            return (
+                messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
+                HTTPStatus.BAD_REQUEST,
+            )
         return messages.USER_SUCCESSFULLY_UPDATED, HTTPStatus.OK
 
     @staticmethod
