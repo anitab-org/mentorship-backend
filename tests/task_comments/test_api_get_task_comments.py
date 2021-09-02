@@ -76,7 +76,7 @@ class TestGetTaskCommentsApi(TasksBaseTestCase):
             content_type="application/json",
         )
 
-        self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_task_comment_listing_api(self):

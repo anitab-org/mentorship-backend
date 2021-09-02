@@ -94,11 +94,8 @@ class UserDAO:
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
                 return messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST
 
-        if user:
-            user.delete_from_db()
-            return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
-
-        return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        user.delete_from_db()
+        return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
@@ -223,8 +220,6 @@ class UserDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        if not user:
-            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         username = data.get("username", None)
         if username:

@@ -176,6 +176,14 @@ class TestUserDao(BaseTestCase):
         actual_response = UserDAO.get_user_dashboard(self.first_user.id)
         self.assertEqual(actual_response, expected_response)
 
+    def test_user_does_not_exist(self):
+        id_with_no_user = 4
+        user = UserModel.query.filter_by(id=id_with_no_user).first()
+        self.assertIsNone(user)
+
+        response = UserDAO.get_user_dashboard(id_with_no_user)
+        self.assertIsNone(response)
+
 
 if __name__ == "__main__":
     unittest.main()
