@@ -1,5 +1,6 @@
-from typing import Dict
 from http import HTTPStatus
+from typing import Dict
+
 from app import messages
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
@@ -65,7 +66,7 @@ class AdminDAO:
         """
         admin_user_id = data["user_id"]
 
-        admin_count = UserModel.query.filter(UserModel.is_admin == True).count()
+        admin_count = UserModel.query.filter(UserModel.is_admin).count()
 
         if user_id == admin_user_id and admin_count == 1:
             return messages.USER_CANNOT_REVOKE_ADMIN_STATUS, HTTPStatus.FORBIDDEN

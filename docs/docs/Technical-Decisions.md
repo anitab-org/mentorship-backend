@@ -21,7 +21,7 @@ N/A
 
 ## March 2020 - Why Development Backend is hosted on Heroku?
 
-We were using AWS, but the Backend stopped working (500 error) after one specific deploy, which we could not investigate due to not having appropriate access for it (AnitaB.org IT team has the credentials). So [Isabel](https://github.com/isabelcosta) decided to deploy it on Heroku, so we could continue having a Swagger UI endpoint for the REST API that people could access it for testing purposes. So until we have proper access to AWS, we are using Heroku. 
+We were using AWS, but the Backend stopped working (500 error) after one specific deploy, which we could not investigate due to not having appropriate access for it (AnitaB.org IT team has the credentials). So [Isabel](https://github.com/isabelcosta) decided to deploy it on Heroku, so we could continue having a Swagger UI endpoint for the REST API that people could access it for testing purposes. So until we have proper access to AWS, we are using Heroku.
 
 ## August 2018 - Why use AWS?
 

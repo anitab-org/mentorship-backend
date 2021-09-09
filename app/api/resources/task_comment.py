@@ -1,13 +1,18 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
-from app import messages
-from app.api.resources.common import auth_header_parser
 
-from app.api.validations.task_comment import validate_task_comment_request_data
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
+
+from app import messages
 from app.api.dao.task_comment import TaskCommentDAO
-from app.api.models.task_comment import *
+from app.api.models.task_comment import (
+    add_models_to_namespace,
+    task_comment_model,
+    task_comments_model,
+)
+from app.api.resources.common import auth_header_parser
+from app.api.validations.task_comment import validate_task_comment_request_data
 
 task_comment_ns = Namespace(
     "Task comment",
@@ -25,16 +30,16 @@ class CreateTaskComment(Resource):
     @task_comment_ns.expect(auth_header_parser, task_comment_model)
     @task_comment_ns.doc(
         responses={
-            HTTPStatus.CREATED: f"{messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY}",
-            HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
+            HTTPStatus.CREATED.value: f"{messages.TASK_COMMENT_WAS_CREATED_SUCCESSFULLY}",
+            HTTPStatus.BAD_REQUEST.value: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
             f"{messages.COMMENT_NOT_IN_STRING_FORMAT}<br>"
             f"{{'message': get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}}<br>"
             f"{messages.UNACCEPTED_STATE_RELATION}",
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
             f"{messages.TOKEN_IS_INVALID}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
-            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            HTTPStatus.NOT_FOUND.value: f"{messages.USER_DOES_NOT_EXIST}<br>"
             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_DOES_NOT_EXIST}",
         }
@@ -65,17 +70,17 @@ class TaskComment(Resource):
     @task_comment_ns.expect(auth_header_parser, task_comment_model)
     @task_comment_ns.doc(
         responses={
-            HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY}",
-            HTTPStatus.BAD_REQUEST: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
+            HTTPStatus.OK.value: f"{messages.TASK_COMMENT_WAS_UPDATED_SUCCESSFULLY}",
+            HTTPStatus.BAD_REQUEST.value: f"{messages.COMMENT_FIELD_IS_MISSING}<br>"
             f"{messages.COMMENT_NOT_IN_STRING_FORMAT}<br>"
             f"{{'message': get_length_validation_error_message('comment', None, COMMENT_MAX_LENGTH)}}<br>"
             f"{messages.UNACCEPTED_STATE_RELATION}<br>"
             f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU}",
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
             f"{messages.TOKEN_IS_INVALID}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
-            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            HTTPStatus.NOT_FOUND.value: f"{messages.USER_DOES_NOT_EXIST}<br>"
             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_COMMENT_DOES_NOT_EXIST}<br>"
@@ -103,14 +108,14 @@ class TaskComment(Resource):
     @task_comment_ns.expect(auth_header_parser)
     @task_comment_ns.doc(
         responses={
-            HTTPStatus.OK: f"{messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY}",
-            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}",
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            HTTPStatus.OK.value: f"{messages.TASK_COMMENT_WAS_DELETED_SUCCESSFULLY}",
+            HTTPStatus.BAD_REQUEST.value: f"{messages.UNACCEPTED_STATE_RELATION}",
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
             f"{messages.TOKEN_IS_INVALID}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
-            HTTPStatus.FORBIDDEN: f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE}",
-            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            HTTPStatus.FORBIDDEN.value: f"{messages.TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE}",
+            HTTPStatus.NOT_FOUND.value: f"{messages.USER_DOES_NOT_EXIST}<br>"
             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_COMMENT_DOES_NOT_EXIST}<br>"
@@ -135,18 +140,18 @@ class TaskComments(Resource):
     @jwt_required
     @task_comment_ns.expect(auth_header_parser)
     @task_comment_ns.response(
-        HTTPStatus.OK,
+        HTTPStatus.OK.value,
         f"{messages.LIST_TASK_COMMENTS_WITH_SUCCESS}",
         task_comments_model,
     )
     @task_comment_ns.doc(
         responses={
-            HTTPStatus.BAD_REQUEST: f"{messages.UNACCEPTED_STATE_RELATION}",
-            HTTPStatus.UNAUTHORIZED: f"{messages.TOKEN_HAS_EXPIRED}<br>"
+            HTTPStatus.FORBIDDEN.value: f"{messages.UNACCEPTED_STATE_RELATION}",
+            HTTPStatus.UNAUTHORIZED.value: f"{messages.TOKEN_HAS_EXPIRED}<br>"
             f"{messages.TOKEN_IS_INVALID}<br>"
             f"{messages.AUTHORISATION_TOKEN_IS_MISSING}<br>"
             f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
-            HTTPStatus.NOT_FOUND: f"{messages.USER_DOES_NOT_EXIST}<br>"
+            HTTPStatus.NOT_FOUND.value: f"{messages.USER_DOES_NOT_EXIST}<br>"
             f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}<br>"
             f"{messages.TASK_DOES_NOT_EXIST}",
         }
