@@ -10,16 +10,11 @@ from tests.test_utils import get_test_request_header
 
 
 class TestFilterUsersBySkill(BaseTestCase):
-    def insert_entries_in_database(self):
-
+    def setUp(self):
+        super().setUp()
+        
         # Insert data of the first entry
-        self.first_user = UserModel(
-            name=user1["name"],
-            email=user1["email"],
-            username=user1["username"],
-            password=user1["password"],
-            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
-        )
+        self.first_user = UserModel(**user1)
         self.first_user.is_email_verified = True
         self.first_user.skills = "Problem Solving"
 
@@ -27,13 +22,7 @@ class TestFilterUsersBySkill(BaseTestCase):
         db.session.commit()
 
         # Insert data of the second entry
-        self.second_user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
+        self.second_user = UserModel(**user2)
         self.second_user.is_email_verified = True
         self.second_user.skills = "Problem Solving"
 
@@ -41,13 +30,7 @@ class TestFilterUsersBySkill(BaseTestCase):
         db.session.commit()
 
         # Insert data of the third entry
-        self.third_user = UserModel(
-            name=user3["name"],
-            email=user3["email"],
-            username=user3["username"],
-            password=user3["password"],
-            terms_and_conditions_checked=user3["terms_and_conditions_checked"],
-        )
+        self.third_user = UserModel(**user3)
         self.third_user.is_email_verified = True
         self.third_user.skills = "Critical thinking"
 
@@ -55,7 +38,6 @@ class TestFilterUsersBySkill(BaseTestCase):
         db.session.commit()
 
     def test_filter_users_by_skill_problem_solving(self):
-        self.insert_entries_in_database()
 
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = "Problem Solving"
@@ -72,7 +54,6 @@ class TestFilterUsersBySkill(BaseTestCase):
             self.assertEqual(expected_response, data["skills"])
 
     def test_filter_users_by_skill_critical(self):
-        self.insert_entries_in_database()
 
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = "Critical thinking"
