@@ -67,7 +67,7 @@ class UserModel(db.Model):
         email,
         terms_and_conditions_checked,
         need_mentoring=False,
-        available_to_mentor=False
+        available_to_mentor=False,
     ):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked."""
         # required fields
