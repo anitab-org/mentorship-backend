@@ -13,6 +13,7 @@ class TestFilterUsersBySkill(BaseTestCase):
     def setUp(self):
         super().setUp()
         
+
         # Insert data of the first entry
         self.first_user = UserModel(**user1)
         self.first_user.is_email_verified = True
