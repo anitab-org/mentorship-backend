@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/anitab-org/mentorship-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/anitab-org/mentorship-backend)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system)
 [![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
+[![Docs](https://img.shields.io/badge/documentation-mentorship--backend-blue.svg)](https://anitab-org.github.io/mentorship-backend)
 
 
 Mentorship System is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
@@ -33,7 +34,7 @@ This API is being used by 3 frontend projects currently being developed:
 - Login and register a new user
 - Create a user profile, view and edit user profiles
 - Change user password, refresh jwt tokens
-- Create relation between two users with a fixed period of time
+- Create relation between two users for a fixed period of time
 - Both mentor and mentee in a relation can create tasks
 - Assign and remove admin roles to users and list all admins
 - List all the relationships of a given user
@@ -206,6 +207,35 @@ To run black:
 
 ```
 black .
+```
+
+#### Sorting imports with isort
+
+We use [_isort_](https://pypi.org/project/isort/) to sort imports alphabetically, and automatically separated into
+sections and by type. To install _isort_:
+
+```
+pip install isort
+```
+
+To run isort:
+
+```
+isort . --profile=black
+```
+
+#### Automate auto-formatting tools with pre-commit
+
+We use [_pre-commit_](https://pre-commit.com/) to check formatting before every commit message. To install _pre-commit_:
+
+```
+pip install pre-commit
+```
+
+To set up the git hook scripts:
+
+```
+pre-commit install
 ```
 
 ## Documentation

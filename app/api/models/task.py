@@ -1,4 +1,4 @@
-from flask_restx import fields, Model
+from flask_restx import Model, fields
 
 
 def add_models_to_namespace(api_namespace):
@@ -21,9 +21,6 @@ list_tasks_response_body = Model(
         "id": fields.Integer(required=True, description="Task ID"),
         "description": fields.String(
             required=True, description="Mentorship relation task description"
-        ),
-        "is_done": fields.Boolean(
-            required=True, description="Mentorship relation task is done indication"
         ),
         "created_at": fields.Float(
             required=True, description="Task creation date in UNIX timestamp format"

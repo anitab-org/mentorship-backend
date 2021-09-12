@@ -1,8 +1,10 @@
 import unittest
+from datetime import datetime, timedelta
 
-from app.api.email_utils import generate_confirmation_token
-from app.api.dao.user import UserDAO, DashboardRelationResponseModel
-from datetime import timedelta, datetime
+from flask_restx import marshal
+
+from app.api.dao.user import DashboardRelationResponseModel, UserDAO
+from app.api.models.mentorship_relation import list_tasks_response_body
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
@@ -164,11 +166,23 @@ class TestUserDao(BaseTestCase):
                     "pending": [],
                 },
             },
-            "tasks_todo": [self.tasks_list_1.find_task_by_id(1)],
-            "tasks_done": [self.tasks_list_1.find_task_by_id(2)],
+            "tasks_todo": [
+                marshal(self.tasks_list_1.find_task_by_id(1), list_tasks_response_body)
+            ],
+            "tasks_done": [
+                marshal(self.tasks_list_1.find_task_by_id(2), list_tasks_response_body)
+            ],
         }
         actual_response = UserDAO.get_user_dashboard(self.first_user.id)
         self.assertEqual(actual_response, expected_response)
+
+    def test_user_does_not_exist(self):
+        id_with_no_user = 4
+        user = UserModel.query.filter_by(id=id_with_no_user).first()
+        self.assertIsNone(user)
+
+        response = UserDAO.get_user_dashboard(id_with_no_user)
+        self.assertIsNone(response)
 
 
 if __name__ == "__main__":

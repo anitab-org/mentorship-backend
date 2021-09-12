@@ -1,18 +1,19 @@
 from datetime import datetime
-from operator import itemgetter
 from http import HTTPStatus
+from operator import itemgetter
 from typing import Dict
+
 from flask_restx import marshal
 from sqlalchemy import func
 
 from app import messages
+from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.api.email_utils import confirm_token
+from app.api.models.task import list_tasks_response_body
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
-from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.api.models.task import list_tasks_response_body
-from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.utils.validation_utils import is_email_valid
 
 
@@ -93,11 +94,8 @@ class UserDAO:
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
                 return messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST
 
-        if user:
-            user.delete_from_db()
-            return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
-
-        return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
+        user.delete_from_db()
+        return messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK
 
     @staticmethod
     @email_verification_required
@@ -222,8 +220,6 @@ class UserDAO:
         """
 
         user = UserModel.find_by_id(user_id)
-        if not user:
-            return messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         username = data.get("username", None)
         if username:
@@ -461,9 +457,9 @@ class UserDAO:
 
         achievements = UserDAO.get_achievements(user_id)
         if achievements:
-            # We only need the first three of these achievements
-            achievements = achievements[0:3]
-            sorted(achievements, key=itemgetter("created_at"))
+            # We only need the last three of these achievements
+            achievements = achievements[-3:]
+            achievements.sort(key=itemgetter("completed_at"), reverse=True)
 
         response = {
             "name": user.name,

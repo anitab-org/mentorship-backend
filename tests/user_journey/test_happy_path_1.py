@@ -3,20 +3,13 @@ from datetime import datetime, timedelta
 from http import HTTPStatus
 
 from flask import json
-from flask_restx import marshal
 
-from app import messages
-from app.api.models.user import public_user_api_model
-from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.utils.enum_utils import MentorshipRelationState
-from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
+from tests.test_data import user1, user2
 from tests.test_utils import get_test_request_header
-from tests.test_data import user1, user2, user3
-from app.api.models.mentorship_relation import mentorship_request_response_body
 
 
 class TestHappyPath1(BaseTestCase):
@@ -110,10 +103,10 @@ class TestHappyPath1(BaseTestCase):
         self.assertEqual(HTTPStatus.OK, accept_response.status_code)
 
         mentee_current_relation = self.client.get(
-            f"/mentorship_relations/current", headers=mentee_auth_header
+            "/mentorship_relations/current", headers=mentee_auth_header
         )
         mentor_current_relation = self.client.get(
-            f"/mentorship_relations/current", headers=mentor_auth_header
+            "/mentorship_relations/current", headers=mentor_auth_header
         )
 
         self.assertEqual(HTTPStatus.OK, mentee_current_relation.status_code)
@@ -163,11 +156,9 @@ class TestHappyPath1(BaseTestCase):
         new_task = tasks[0]
         task_id = new_task["id"]
         task_description = new_task["description"]
-        task_state = new_task["is_done"]
         task_completed_at = new_task["completed_at"]
 
         self.assertIsNotNone(task_id)
-        self.assertFalse(task_state)
         self.assertIsNone(task_completed_at)
         self.assertEqual(self.test_description, task_description)
 
@@ -191,11 +182,9 @@ class TestHappyPath1(BaseTestCase):
         updated_task = tasks[0]
         updated_task_id = updated_task["id"]
         updated_task_description = updated_task["description"]
-        updated_task_state = updated_task["is_done"]
         updated_task_completed_at = updated_task["completed_at"]
 
         self.assertEqual(task_id, updated_task_id)
-        self.assertTrue(updated_task_state)
         self.assertIsNotNone(updated_task_completed_at)
         self.assertEqual(self.test_description, updated_task_description)
 

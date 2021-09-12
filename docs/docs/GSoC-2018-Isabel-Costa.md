@@ -5,7 +5,7 @@ title: GSoC 2018 Isabel Costa
 ## Isabel Costa
 
 I proposed and worked on Mentorship System Backend and Android application. I was mentored by
-[Dilushi](https://github.com/Dilu9218), [Murad](https://github.com/m-murad), [Roopal](https://github.com/roopalJazz) and [May](https://github.com/exactlymay) as an admin. 
+[Dilushi](https://github.com/Dilu9218), [Murad](https://github.com/m-murad), [Roopal](https://github.com/roopalJazz) and [May](https://github.com/exactlymay) as an admin.
 
 ## Work Hours
 
@@ -51,12 +51,12 @@ You can find...
 **What issues or roadblocks have you encountered this week?**
 
 - Problems with PC.
-- Thesis reunion and pending work. 
+- Thesis reunion and pending work.
 - Lack of experience with backend development with Flask.
 
 **Have they been resolved, and if so, how?**
 
-- The PC is fixed. 
+- The PC is fixed.
 - I’m still a newbie at backend development with flask, but I’m picking up.
 
 **Do any of the issues or roadblocks still exist and what steps have been taken to resolve them?**
@@ -179,7 +179,7 @@ Late on email verification and mentorship relation
 
 - Created issues reported by Murad (#33, #34, #35)
 - Solved above issues
-- Created tests for app configurations (#37) 
+- Created tests for app configurations (#37)
 - Attended project weekly
 - Reviewed Mentorship Relation feature in project weekly meeting
 - Created issue for sending the expiry date on Login response #39
@@ -288,7 +288,7 @@ N/A
 
 **What do you plan to accomplish next week?**
 
-1. Have completed accept/reject/cancel/complete 
+1. Have completed accept/reject/cancel/complete
 2. Deploy Backend
 3. Share the deployed backend update with the community and ask for feedback and testing
 4. Refactor app to be able to test the API
@@ -460,7 +460,7 @@ On time to do the Android app!
 - Created issue #94 and submitted PR #95 to solve user registration data validation
 - Submitted PR #89 imports database URI from environment variables (persistence to DB)
 - Submitted PR #90 that adds organization field to User (occupation was already there)
-- Reviewed PR #105 regarding change password request data validation 
+- Reviewed PR #105 regarding change password request data validation
 
 **What issues or roadblocks have you encountered this week?**
 
@@ -562,7 +562,7 @@ Late on the Android application
 1. Had 1:1 with Murad (discussed best practices for Android)
 2. Created .svg file of Current Relation icon
 3. Added Travis CI support to Android repository
-4. Submit PR #17 with my initial code (register, login, bottom nav) 
+4. Submit PR #17 with my initial code (register, login, bottom nav)
 5. List Item UI of All Members list with ConstraintLayout (on my fork only)
 6. My Profile Screen UI with ConstraintLayout (on my fork only)
 7. Hosted AMA sessions
