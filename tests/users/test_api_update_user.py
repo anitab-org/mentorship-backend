@@ -79,15 +79,9 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
         self.assertEqual(user1_new_username, self.first_user.username)
 
-    def test_update_username_same(self):
+    def test_update_same_username(self):
 
-        self.first_user = UserModel(
-            name=user1["name"],
-            email=user1["email"],
-            username=user1["username"],
-            password=user1["password"],
-            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
-        )
+        self.first_user = UserModel(**user1)
         self.first_user.is_email_verified = True
 
         db.session.add(self.first_user)
