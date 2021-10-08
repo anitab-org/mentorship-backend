@@ -1,21 +1,39 @@
-from datetime import datetime
 from http import HTTPStatus
+
 from flask import request
 from flask_jwt_extended import (
-    jwt_required,
-    jwt_refresh_token_required,
     create_access_token,
     create_refresh_token,
     get_jwt_identity,
+    jwt_refresh_token_required,
+    jwt_required,
 )
-from flask_restx import Resource, marshal, Namespace
+from flask_restx import Namespace, Resource, marshal
 
 from app import messages
-from app.api.validations.user import *
-from app.api.email_utils import send_email_verification_message
-from app.api.models.user import *
 from app.api.dao.user import UserDAO
+from app.api.email_utils import send_email_verification_message
+from app.api.models.user import (
+    add_models_to_namespace,
+    change_password_request_data_model,
+    dashboard_response_body_model,
+    full_user_api_model,
+    home_response_body_model,
+    login_request_body_model,
+    login_response_body_model,
+    public_user_api_model,
+    refresh_response_body_model,
+    register_user_api_model,
+    resend_email_request_body_model,
+    update_user_request_body_model,
+)
 from app.api.resources.common import auth_header_parser, refresh_auth_header_parser
+from app.api.validations.user import (
+    validate_new_password,
+    validate_resend_email_request_data,
+    validate_update_profile_request_data,
+    validate_user_registration_request_data,
+)
 
 users_ns = Namespace("Users", description="Operations related to users")
 add_models_to_namespace(users_ns)
@@ -308,7 +326,7 @@ class UserRegister(Resource):
         f"{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}",
     )
     @users_ns.response(
-        HTTPStatus.CONFLICT,
+        HTTPStatus.CONFLICT.value,
         f"{messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS}\n"
         f"{messages.USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS}",
     )

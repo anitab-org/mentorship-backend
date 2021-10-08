@@ -1,20 +1,27 @@
 import datetime
 import unittest
-from werkzeug.security import check_password_hash
 from http import HTTPStatus
+
+from werkzeug.security import check_password_hash
+
 from app import messages
-from app.api.email_utils import generate_confirmation_token
 from app.api.dao.user import UserDAO
+from app.api.email_utils import generate_confirmation_token
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
-from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user2
 
 
 class TestUserDao(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+
+        self.user = UserModel(**user2)
+
     def test_dao_create_user(self):
         dao = UserDAO()
         data = dict(
@@ -43,14 +50,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_confirm_registration_good_token(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -73,14 +73,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_confirm_registration_bad_token(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -104,14 +97,7 @@ class TestUserDao(BaseTestCase):
     def test_dao_confirm_registration_of_already_verified_user(self):
         dao = UserDAO()
 
-        user = UserModel(
-            name=user2["name"],
-            email=user2["email"],
-            username=user2["username"],
-            password=user2["password"],
-            terms_and_conditions_checked=user2["terms_and_conditions_checked"],
-        )
-        db.session.add(user)
+        db.session.add(self.user)
         db.session.commit()
 
         # Verify that user was inserted in database through DAO
@@ -146,6 +132,114 @@ class TestUserDao(BaseTestCase):
         self.assertEqual(1, after_delete_user.id)
         self.assertEqual(
             (messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST), dao_result
+        )
+
+    def test_dao_delete_user(self):
+        dao = UserDAO()
+
+        db.session.add(self.user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNotNone(user)
+
+        # Verify email
+        token = generate_confirmation_token(user2["email"])
+        result = dao.confirm_registration(token)
+        self.assertTrue(user.is_email_verified)
+
+        dao_result = dao.delete_user(2)
+
+        user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNone(user)
+        self.assertEqual(
+            (messages.USER_SUCCESSFULLY_DELETED, HTTPStatus.OK), dao_result
+        )
+
+    def test_dao_delete_user_that_does_not_exist(self):
+        dao = UserDAO()
+
+        # Verify that user does not exist
+        before_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNone(before_delete_user)
+
+        dao_result = dao.delete_user(2)
+
+        self.assertEqual(
+            (messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), dao_result
+        )
+
+    def test_dao_get_user_by_email(self):
+        dao = UserDAO()
+
+        db.session.add(self.user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        user = UserModel.query.filter_by(email=user2["email"]).first()
+        self.assertIsNotNone(user)
+
+        user_with_given_email = dao.get_user_by_email(user2["email"])
+        self.assertIsNotNone(user_with_given_email)
+        self.assertEqual(user_with_given_email, user)
+
+    def test_dao_get_user_by_username(self):
+        dao = UserDAO()
+
+        db.session.add(self.user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        user = UserModel.query.filter_by(email=user2["email"]).first()
+        self.assertIsNotNone(user)
+
+        user_with_given_username = dao.get_user_by_username(user2["username"])
+        self.assertIsNotNone(user_with_given_username)
+        self.assertEqual(user_with_given_username, user)
+
+    def test_authenticate_user_by_email(self):
+        dao = UserDAO()
+
+        db.session.add(self.user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        before_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNotNone(before_delete_user)
+
+        # Verify email
+        token = generate_confirmation_token(user2["email"])
+        result = dao.confirm_registration(token)
+        self.assertTrue(self.user.is_email_verified)
+
+        dao_result = dao.authenticate(user2["email"], user2["password"])
+
+        self.assertIsNotNone(dao_result)
+        self.assertEqual(dao_result, self.user)
+
+    def test_change_password_with_incorrect_password(self):
+        dao = UserDAO()
+
+        db.session.add(self.user)
+        db.session.commit()
+
+        # Verify that user was inserted in database through DAO
+        before_delete_user = UserModel.query.filter_by(id=2).first()
+        self.assertIsNotNone(before_delete_user)
+
+        # Verify email
+        token = generate_confirmation_token(user2["email"])
+        result = dao.confirm_registration(token)
+        self.assertTrue(self.user.is_email_verified)
+
+        data = dict(current_password="wrong password", new_password="new password")
+        dao_result = dao.change_password(user_id=2, data=data)
+
+        self.assertIsNotNone(dao_result)
+        self.assertEqual(
+            (messages.USER_ENTERED_INCORRECT_PASSWORD, HTTPStatus.BAD_REQUEST),
+            dao_result,
         )
 
     def test_get_achievements(self):

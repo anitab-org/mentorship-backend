@@ -1,19 +1,19 @@
 ## Manual testing for POST /user/refresh API
 
 #### Dummy data used:
-* **username**: refresh_test, 
+* **username**: refresh_test,
 * **password**: refresh_test@1234
 
 * _Refresh using the expired token_
 
     Refresh token returned on login response:
-    
-    _Screenshot_: 
+
+    _Screenshot_:
     ![loginOnce](https://user-images.githubusercontent.com/50259869/94347905-e0e11680-0055-11eb-8569-0249b45e52e6.PNG)
 
     Entering the expired login response refresh token in the Authorization field:
-    
-    _Screenshot_: 
+
+    _Screenshot_:
     ![enterExpired](https://user-images.githubusercontent.com/56799401/102400371-d5273f80-4007-11eb-870e-b56b78a52eab.png)
     ![enterExpiredCurl](https://user-images.githubusercontent.com/50259869/94347907-e2124380-0055-11eb-982b-52e9f087540c.PNG)
 
@@ -24,13 +24,13 @@
 * _Refresh using new refresh token returned on login response_
 
     Login again to get a new refresh token:
-    
-    _Screenshot_: 
+
+    _Screenshot_:
     ![loginAgain](https://user-images.githubusercontent.com/50259869/94347910-e2aada00-0055-11eb-982f-3919042cbac4.PNG)
 
     Entering the login response refresh token in the Authorization field:
-    
-    _Screenshot_: 
+
+    _Screenshot_:
     ![correctToken](https://user-images.githubusercontent.com/56799401/102400371-d5273f80-4007-11eb-870e-b56b78a52eab.png)
     ![correctTokenCurl](https://user-images.githubusercontent.com/50259869/94347912-e3437080-0055-11eb-9912-452d4a637942.PNG)
 

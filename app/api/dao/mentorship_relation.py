@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
-from typing import Dict
 from http import HTTPStatus
+from typing import Dict
+
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
@@ -242,7 +243,6 @@ class MentorshipRelationDAO:
             message: A message corresponding to the completed action; success if mentorship relation request is rejected, failure if otherwise.
         """
 
-        user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists
@@ -286,7 +286,6 @@ class MentorshipRelationDAO:
             message: A message corresponding to the completed action; success if mentorship relation is terminated, failure if otherwise.
         """
 
-        user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(relation_id)
 
         # verify if request exists
@@ -298,11 +297,11 @@ class MentorshipRelationDAO:
 
         # verify if request is in pending state
         if request.state != MentorshipRelationState.ACCEPTED:
-            return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST
+            return messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN
 
         # verify if I'm involved in this relation
         if not (request.mentee_id == user_id or request.mentor_id == user_id):
-            return messages.CANT_CANCEL_UNINVOLVED_REQUEST, HTTPStatus.BAD_REQUEST
+            return messages.CANT_CANCEL_UNINVOLVED_REQUEST, HTTPStatus.FORBIDDEN
 
         # All was checked
         request.state = MentorshipRelationState.CANCELLED
@@ -325,7 +324,6 @@ class MentorshipRelationDAO:
             message: A message corresponding to the completed action; success if mentorship relation request is deleted, failure if otherwise.
         """
 
-        user = UserModel.find_by_id(user_id)
         request = MentorshipRelationModel.find_by_id(request_id)
 
         # verify if request exists

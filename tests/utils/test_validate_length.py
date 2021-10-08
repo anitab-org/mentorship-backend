@@ -1,7 +1,8 @@
 import unittest
+
 from app.utils.validation_utils import (
-    validate_length,
     get_length_validation_error_message,
+    validate_length,
 )
 
 
