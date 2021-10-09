@@ -233,7 +233,7 @@ class MyUserProfile(Resource):
 class ChangeUserPassword(Resource):
     @classmethod
     @jwt_required
-    @users_ns.doc("updateNone_user_password")
+    @users_ns.doc("update_user_password")
     @users_ns.expect(
         auth_header_parser, change_password_request_data_model, validate=True
     )
