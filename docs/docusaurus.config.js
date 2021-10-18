@@ -52,7 +52,7 @@ module.exports = {
             <a href="https://www.linkedin.com/company/anitab-org/" rel="noopener noreferrer" target="_blank"><i id="fa fa-linkedin-square fa-3x social" class="fa fa-linkedin-square fa-3x social"></i></a>
             <a href="https://www.instagram.com/anitab_org/" rel="noopener noreferrer" target="_blank"><i id="fa fa-instagram-square fa-2x social" class="fa fa-instagram fa-3x social"></i></a>
             <a href="https://medium.com/anitab-org-open-source" rel="noopener noreferrer" target="_blank"><i id="fa fa-medium" class="fa fa-medium fa-3x social"></i></a>
-            <a href="https://anitab-org.github.io/mentorship-backend" rel="noopener noreferrer" target="_blank"><i id="fa fa-github" class="fa fa-github fa-3x social"></i></a>
+            <a href="https://github.com/anitab-org/mentorship-backend" rel="noopener noreferrer" target="_blank"><i id="fa fa-github" class="fa fa-github fa-3x social"></i></a>
         </div>
         <b>Copyright © ${new Date().getFullYear()} AnitaB.org</b>
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
