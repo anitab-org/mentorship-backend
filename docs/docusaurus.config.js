@@ -37,6 +37,11 @@ module.exports = {
           position: "right",
         },
         {
+          href: "https://medium.com/anitab-org-open-source",
+          label: "Medium",
+          position: "right",
+        },
+        {
           href: "https://github.com/anitab-org/mentorship-backend",
           label: "GitHub",
           position: "right",
