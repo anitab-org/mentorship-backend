@@ -1,5 +1,5 @@
-import unittest
 import os
+import unittest
 from datetime import timedelta
 
 from flask import current_app

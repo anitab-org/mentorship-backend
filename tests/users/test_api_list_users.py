@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timedelta
 from http import HTTPStatus
+
 from flask import json
 from flask_restx import marshal
 
@@ -12,8 +13,8 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2, user3
+from tests.test_utils import get_test_request_header
 
 
 class TestListUsersApi(BaseTestCase):
@@ -62,8 +63,8 @@ class TestListUsersApi(BaseTestCase):
             self.other_user.id,
             self.other_user,
             self.verified_user,
-            datetime.now().timestamp(),
-            (datetime.now() + timedelta(weeks=5)).timestamp(),
+            datetime.utcnow().timestamp(),
+            (datetime.utcnow() + timedelta(weeks=5)).timestamp(),
             MentorshipRelationState.ACCEPTED,
             "notes",
             TasksListModel(),
@@ -128,7 +129,7 @@ class TestListUsersApi(BaseTestCase):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get(
-            f"/users?search=s_t-r%24a%2Fn'ge",
+            "/users?search=s_t-r%24a%2Fn'ge",
             follow_redirects=True,
             headers=auth_header,
         )

@@ -2,14 +2,14 @@ import unittest
 from datetime import datetime, timedelta
 from unittest.mock import patch
 
-from app.database.models.tasks_list import TasksListModel
-from app.database.sqlalchemy_extension import db
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
+from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from app.schedulers.complete_mentorship_cron_job import (
     complete_overdue_mentorship_relations_job,
 )
 from app.utils.enum_utils import MentorshipRelationState
-from app.database.models.user import UserModel
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1, user2
 
@@ -45,7 +45,7 @@ class TestCompleteMentorshipRelationCronFunction(BaseTestCase):
 
         self.notes_example = "description of a good mentorship relation"
 
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.past_end_date_example = self.now_datetime - timedelta(weeks=5)
         self.future_end_date_example = self.now_datetime + timedelta(weeks=5)
 

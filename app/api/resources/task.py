@@ -1,13 +1,17 @@
-from flask import request
-from flask_restx import Resource, Namespace, marshal
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from http import HTTPStatus
+
+from flask import request
+from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_restx import Namespace, Resource, marshal
 
 from app import messages
 from app.api.dao.task import TaskDAO
+from app.api.models.task import (
+    add_models_to_namespace,
+    create_task_request_body,
+    list_tasks_response_body,
+)
 from app.api.resources.common import auth_header_parser
-from app.api.models.task import *
-
 
 task_ns = Namespace(
     "Task",
@@ -22,16 +26,21 @@ class CreateTask(Resource):
     @jwt_required
     @task_ns.doc("create_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser, create_task_request_body)
-    @task_ns.response(HTTPStatus.CREATED, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}")
-    @task_ns.response(HTTPStatus.FORBIDDEN, f"{messages.UNACCEPTED_STATE_RELATION}")
     @task_ns.response(
-        HTTPStatus.UNAUTHORIZED,
+        HTTPStatus.CREATED.value, f"{messages.TASK_WAS_CREATED_SUCCESSFULLY}"
+    )
+    @task_ns.response(
+        HTTPStatus.FORBIDDEN.value, f"{messages.UNACCEPTED_STATE_RELATION}"
+    )
+    @task_ns.response(
+        HTTPStatus.UNAUTHORIZED.value,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
     )
     @task_ns.response(
-        HTTPStatus.FORBIDDEN, f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}"
+        HTTPStatus.FORBIDDEN.value,
+        f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
     )
     def post(cls, request_id):
         """
@@ -78,16 +87,16 @@ class DeleteTask(Resource):
     @jwt_required
     @task_ns.doc("delete_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
-    @task_ns.response(HTTPStatus.OK, f"{messages.TASK_WAS_DELETED_SUCCESSFULLY}")
+    @task_ns.response(HTTPStatus.OK.value, f"{messages.TASK_WAS_DELETED_SUCCESSFULLY}")
     @task_ns.response(
-        HTTPStatus.UNAUTHORIZED,
+        HTTPStatus.UNAUTHORIZED.value,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}\n"
         f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
     )
     @task_ns.response(
-        HTTPStatus.NOT_FOUND,
+        HTTPStatus.NOT_FOUND.value,
         f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}\n"
         f"{messages.TASK_DOES_NOT_EXIST}",
     )
@@ -123,19 +132,19 @@ class ListTasks(Resource):
     @task_ns.doc("list_tasks_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
     @task_ns.response(
-        HTTPStatus.OK,
+        HTTPStatus.OK.value,
         "List tasks from a mentorship relation with success.",
         model=list_tasks_response_body,
     )
     @task_ns.response(
-        HTTPStatus.UNAUTHORIZED,
+        HTTPStatus.UNAUTHORIZED.value,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}\n"
         f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
     )
     @task_ns.response(
-        HTTPStatus.NOT_FOUND, f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}"
+        HTTPStatus.NOT_FOUND.value, f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}"
     )
     def get(cls, request_id):
         """
@@ -170,17 +179,19 @@ class UpdateTask(Resource):
     @jwt_required
     @task_ns.doc("update_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
-    @task_ns.response(HTTPStatus.OK, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}")
-    @task_ns.response(HTTPStatus.BAD_REQUEST, f"{messages.TASK_WAS_ALREADY_ACHIEVED}")
+    @task_ns.response(HTTPStatus.OK.value, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}")
     @task_ns.response(
-        HTTPStatus.UNAUTHORIZED,
+        HTTPStatus.CONFLICT.value, f"{messages.TASK_WAS_ALREADY_ACHIEVED}"
+    )
+    @task_ns.response(
+        HTTPStatus.UNAUTHORIZED.value,
         f"{messages.TOKEN_HAS_EXPIRED}\n"
         f"{messages.TOKEN_IS_INVALID}\n"
         f"{messages.AUTHORISATION_TOKEN_IS_MISSING}\n"
         f"{messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION}",
     )
     @task_ns.response(
-        HTTPStatus.NOT_FOUND,
+        HTTPStatus.NOT_FOUND.value,
         f"{messages.MENTORSHIP_RELATION_DOES_NOT_EXIST}\n{messages.TASK_DOES_NOT_EXIST}",
     )
     def put(cls, request_id, task_id):

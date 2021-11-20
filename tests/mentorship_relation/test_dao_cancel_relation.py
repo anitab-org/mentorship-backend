@@ -3,12 +3,11 @@ from http import HTTPStatus
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
-from app.database.models.tasks_list import TasksListModel
-from app.utils.enum_utils import MentorshipRelationState
 from app.database.models.mentorship_relation import MentorshipRelationModel
+from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
+from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
-
 
 # TODO test when a user tries to cancel a relation where this user is not involved
 
@@ -22,7 +21,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
         super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         # create new mentorship relation
@@ -105,7 +104,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
-            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
@@ -114,7 +113,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
-            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
@@ -123,7 +122,7 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
-            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
@@ -132,5 +131,5 @@ class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.cancel_relation(self.second_user.id, self.mentorship_relation.id)
         self.assertEqual(
-            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.BAD_REQUEST), result
+            (messages.UNACCEPTED_STATE_RELATION, HTTPStatus.FORBIDDEN), result
         )

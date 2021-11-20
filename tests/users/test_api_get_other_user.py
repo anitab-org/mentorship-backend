@@ -1,8 +1,8 @@
 import unittest
+from http import HTTPStatus
 
 from flask import json
 from flask_restx import marshal
-from http import HTTPStatus
 
 from app import messages
 from app.api.models.user import public_user_api_model

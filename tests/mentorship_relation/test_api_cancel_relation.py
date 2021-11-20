@@ -4,13 +4,12 @@ from datetime import datetime, timedelta
 from http import HTTPStatus
 
 from app import messages
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
-from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from tests.test_utils import get_test_request_header
-from datetime import timedelta
 
 
 class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
@@ -23,7 +22,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
 
         self.notes_example = "description of a good mentorship relation"
 
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         # create new mentorship relation
@@ -126,7 +125,7 @@ class TestCancelMentorshipRelationApi(MentorshipRelationBaseTestCase):
                 headers=get_test_request_header(self.admin_user.id),
             )
 
-            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertDictEqual(expected_response, json.loads(response.data))
 
 

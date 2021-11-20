@@ -1,11 +1,12 @@
 import unittest
 from datetime import timedelta
 from http import HTTPStatus
+
 from flask import json
 
 from app import messages
-from app.database.sqlalchemy_extension import db
 from app.database.models.user import UserModel
+from app.database.sqlalchemy_extension import db
 from tests.base_test_case import BaseTestCase
 from tests.test_data import user1
 from tests.test_utils import get_test_request_header

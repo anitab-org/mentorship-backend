@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
-from flask import json
 from http import HTTPStatus
+
+from flask import json
+
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
@@ -43,7 +45,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(messages.USER_NOT_FOUND, json.loads(actual_response.data))
 
     def test_pending_requests_auth(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -79,7 +81,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_accepted_requests_auth(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -115,7 +117,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_rejected_requests(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -151,7 +153,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_completed_relations(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -187,7 +189,7 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_cancelled_relations(self):
-        start_date = datetime.now()
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
@@ -221,14 +223,14 @@ class TestHomeStatisticsApi(BaseTestCase):
         self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
-    def test_achievements(self):
-        start_date = datetime.now()
+    def test_achievements_incomplete(self):
+        start_date = datetime.utcnow()
         end_date = start_date + timedelta(weeks=4)
         start_date = start_date.timestamp()
         end_date = end_date.timestamp()
 
         tasks_list = TasksListModel()
-        task_created_time = datetime.now().timestamp()
+        task_created_time = datetime.utcnow().timestamp()
         task_completed_time = task_created_time + 100
         tasks_list.add_task(
             description="Test task",
@@ -275,6 +277,77 @@ class TestHomeStatisticsApi(BaseTestCase):
                     "id": 1,  # This is the only task in the list
                     "is_done": True,
                 }
+            ],
+        }
+        auth_header = get_test_request_header(self.user1.id)
+        actual_response = self.client.get(
+            "/home", follow_redirects=True, headers=auth_header
+        )
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_achievements_last_three(self):
+        start_date = datetime.utcnow()
+        end_date = start_date + timedelta(weeks=4)
+        start_date = start_date.timestamp()
+        end_date = end_date.timestamp()
+
+        tasks_list = TasksListModel()
+        task_created_time = datetime.utcnow().timestamp()
+        task_completed_time = task_created_time + 100
+        for i in range(1, 5):
+            tasks_list.add_task(
+                description="Test task " + str(i),
+                created_at=task_created_time,
+                is_done=True,
+                completed_at=task_completed_time + (i * 60),
+            )
+        db.session.add(tasks_list)
+        db.session.commit()
+
+        mentorship_relation = MentorshipRelationModel(
+            action_user_id=self.user2.id,
+            mentor_user=self.user1,
+            mentee_user=self.user2,
+            creation_date=start_date,
+            end_date=end_date,
+            state=MentorshipRelationState.ACCEPTED,
+            notes="",
+            tasks_list=tasks_list,
+        )
+
+        db.session.add(mentorship_relation)
+        db.session.commit()
+
+        expected_response = {
+            "name": "User1",
+            "pending_requests": 0,
+            "accepted_requests": 1,
+            "rejected_requests": 0,
+            "completed_relations": 0,
+            "cancelled_relations": 0,
+            "achievements": [
+                {
+                    "completed_at": task_completed_time + 4 * 60,
+                    "created_at": task_created_time,
+                    "description": "Test task 4",
+                    "id": 4,
+                    "is_done": True,
+                },
+                {
+                    "completed_at": task_completed_time + 3 * 60,
+                    "created_at": task_created_time,
+                    "description": "Test task 3",
+                    "id": 3,
+                    "is_done": True,
+                },
+                {
+                    "completed_at": task_completed_time + 2 * 60,
+                    "created_at": task_created_time,
+                    "description": "Test task 2",
+                    "id": 2,
+                    "is_done": True,
+                },
             ],
         }
         auth_header = get_test_request_header(self.user1.id)

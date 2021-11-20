@@ -1,5 +1,3 @@
-from datetime import date
-
 from app.database.models.tasks_list import TasksListModel
 from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db

@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import Dict
 from http import HTTPStatus
+from typing import Dict
+
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
-from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
@@ -31,7 +31,6 @@ class TaskDAO:
 
         description = data["description"]
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(_id=mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -45,7 +44,7 @@ class TaskDAO:
                 HTTPStatus.FORBIDDEN,
             )
 
-        now_timestamp = datetime.now().timestamp()
+        now_timestamp = datetime.utcnow().timestamp()
         relation.tasks_list.add_task(description=description, created_at=now_timestamp)
         relation.tasks_list.save_to_db()
 
@@ -68,7 +67,6 @@ class TaskDAO:
             mentorship relation as a string. The last element is the HTTP response code
         """
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -101,7 +99,6 @@ class TaskDAO:
             task was deleted successfully or not as a string. The last element is the HTTP response code.
         """
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -138,7 +135,6 @@ class TaskDAO:
             if the task was set to complete successfully or not as a string. The last element is the HTTP response code.
         """
 
-        user = UserModel.find_by_id(user_id)
         relation = MentorshipRelationModel.find_by_id(mentorship_relation_id)
         if relation is None:
             return messages.MENTORSHIP_RELATION_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
@@ -154,10 +150,12 @@ class TaskDAO:
             return messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
 
         if task.get("is_done"):
-            return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.FORBIDDEN
+            return messages.TASK_WAS_ALREADY_ACHIEVED, HTTPStatus.CONFLICT
         else:
             relation.tasks_list.update_task(
-                task_id=task_id, is_done=True, completed_at=datetime.now().timestamp()
+                task_id=task_id,
+                is_done=True,
+                completed_at=datetime.utcnow().timestamp(),
             )
 
         return messages.TASK_WAS_ACHIEVED_SUCCESSFULLY, HTTPStatus.OK
