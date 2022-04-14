@@ -136,12 +136,12 @@ class MentorshipRelationDAO:
             message: A message corresponding to the completed action; success if all relationships of a given user are listed, failure if otherwise.
         """
         # To check if the entered 'state' is valid.
-        valid_states = ["PENDING", "ACCEPTED", "REJECTED", "CANCELLED", "COMPLETED"]
-
         def isValidState(rel_state):
-            if rel_state in valid_states:
-                return True
-            return False
+            try:
+                MentorshipRelationState[rel_state]
+            except KeyError:
+                return False
+            return True
 
         user = UserModel.find_by_id(user_id)
         all_relations = user.mentor_relations + user.mentee_relations
