@@ -47,15 +47,15 @@ module.exports = {
       style: "dark",
       copyright: `
         <div>
-            <a href="https://www.facebook.com/AnitaB.0rg/" rel="noopener noreferrer" target="_blank"><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a>
-            <a href="https://twitter.com/anitab_org" rel="noopener noreferrer" target="_blank"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a>
-            <a href="https://www.linkedin.com/company/anitab-org/" rel="noopener noreferrer" target="_blank"><i id="fa fa-linkedin-square fa-3x social" class="fa fa-linkedin-square fa-3x social"></i></a>
-            <a href="https://www.instagram.com/anitab_org/" rel="noopener noreferrer" target="_blank"><i id="fa fa-instagram-square fa-2x social" class="fa fa-instagram fa-3x social"></i></a>
-            <a href="https://medium.com/anitab-org-open-source" rel="noopener noreferrer" target="_blank"><i id="fa fa-medium" class="fa fa-medium fa-3x social"></i></a>
-            <a href="https://github.com/anitab-org/mentorship-backend" rel="noopener noreferrer" target="_blank"><i id="fa fa-github" class="fa fa-github fa-3x social"></i></a>
+          <a href="https://www.facebook.com/AnitaB.0rg/" rel="noopener noreferrer" target="_blank"><i id="social-fb" class="fa-brands fa-facebook-square fa-3x social"></i></a>
+          <a href="https://twitter.com/anitab_org" rel="noopener noreferrer" target="_blank"><i id="social-tw" class="fa-brands fa-twitter-square fa-3x social"></i></a>
+          <a href="https://www.linkedin.com/company/anitab-org/" rel="noopener noreferrer" target="_blank"><i id="fa fa-linkedin fa-3x social" class="fa-brands fa-linkedin fa-3x social"></i></a>
+          <a href="https://www.instagram.com/anitab_org/" rel="noopener noreferrer" target="_blank"><i id="fa fa-instagram-square fa-2x social" class="fa-brands fa-instagram-square fa-3x social"></i></a>
+          <a href="https://medium.com/anitab-org-open-source" rel="noopener noreferrer" target="_blank"><i id="fa fa-medium" class="fa-brands fa-medium fa-3x social"></i></a>
+          <a href="https://github.com/anitab-org/mentorship-backend" rel="noopener noreferrer" target="_blank"><i id="fa-brands fa-github" class="fa-brands fa-github fa-3x social"></i></a>
         </div>
         <b>Copyright © ${new Date().getFullYear()} AnitaB.org</b>
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
       `,
     },
   },
