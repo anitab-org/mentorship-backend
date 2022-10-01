@@ -9,7 +9,6 @@ from tests.test_data import user1
 
 
 class TestResendEmailApi(BaseTestCase):
-
     def setUp(self):
         super(TestResendEmailApi, self).setUp()
 
@@ -27,14 +26,12 @@ class TestResendEmailApi(BaseTestCase):
         db.session.commit()
 
     def test_user_error_code_conflict_for_resend_email(self):
-        test_payload = {
-            "email": self.verified_user.email
-        }
+        test_payload = {"email": self.verified_user.email}
         actual_response = self.client.post(
             "user/resend_email",
             follow_redirects=True,
             content_type="application/json",
-            data=json.dumps(test_payload)
+            data=json.dumps(test_payload),
         )
         self.assertEqual(409, actual_response.status_code)
 
