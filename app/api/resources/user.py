@@ -384,7 +384,7 @@ class UserEmailConfirmation(Resource):
 @users_ns.response(HTTPStatus.OK.value, f"{messages.EMAIL_VERIFICATION_MESSAGE}")
 @users_ns.response(HTTPStatus.BAD_REQUEST.value, f"{messages.INVALID_INPUT}")
 @users_ns.response(
-    HTTPStatus.FORBIDDEN.value, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}"
+    HTTPStatus.CONFLICT.value, f"{messages.USER_ALREADY_CONFIRMED_ACCOUNT}"
 )
 @users_ns.response(
     HTTPStatus.NOT_FOUND.value, f"{messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM}"
@@ -412,7 +412,7 @@ class UserResendEmailConfirmation(Resource):
             return messages.USER_IS_NOT_REGISTERED_IN_THE_SYSTEM, HTTPStatus.NOT_FOUND
 
         if user.is_email_verified:
-            return messages.USER_ALREADY_CONFIRMED_ACCOUNT, HTTPStatus.FORBIDDEN
+            return messages.USER_ALREADY_CONFIRMED_ACCOUNT, HTTPStatus.CONFLICT
 
         send_email_verification_message(user.name, data["email"])
 
