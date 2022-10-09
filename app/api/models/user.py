@@ -54,7 +54,8 @@ public_user_api_model = Model(
             required=True, description="User need to be mentored indication"
         ),
         "available_to_mentor": fields.Boolean(
-            required=True, description="User availability to mentor indication"
+            required=True, 
+            description="User availability to mentor indication"
         ),
         "is_available": fields.Boolean(
             required=True,
@@ -74,7 +75,7 @@ full_user_api_model = Model(
         "email": fields.String(required=True, description="User email"),
         "password_hash": fields.String(required=True, description="User password hash"),
         "terms_and_conditions_checked": fields.Boolean(
-            required=True, description="User Terms and Conditions check state"
+            required=False, description="User Terms and Conditions check state"
         ),
         "is_admin": fields.Boolean(required=True, description="User admin status"),
         "registration_date": fields.Float(
