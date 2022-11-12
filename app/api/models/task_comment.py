@@ -1,4 +1,5 @@
-from flask_restx import Model, fields
+from flask_restx import fields, Model
+from app.api.models.user import public_user_api_model
 
 
 def add_models_to_namespace(api_namespace):
@@ -15,7 +16,7 @@ task_comments_model = Model(
     "Task comments model",
     {
         "id": fields.Integer(required=True, description="Task comment's id."),
-        "user_id": fields.Integer(required=True, description="User's id."),
+        "user": fields.Nested(public_user_api_model),
         "task_id": fields.Integer(required=True, description="Task's id."),
         "relation_id": fields.Integer(required=True, description="Relation's id."),
         "creation_date": fields.Float(

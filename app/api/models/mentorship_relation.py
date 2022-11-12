@@ -3,7 +3,8 @@ from flask_restx import Model, fields
 from app.utils.enum_utils import MentorshipRelationState
 
 from .task import create_task_request_body, list_tasks_response_body
-from .task_comment import task_comment_model, task_comments_model
+
+# from .task_comment import task_comment_model, task_comments_model
 
 
 def add_models_to_namespace(api_namespace):
@@ -20,8 +21,6 @@ def add_models_to_namespace(api_namespace):
         mentorship_request_response_body_for_user_dashboard_body.name
     ] = mentorship_request_response_body_for_user_dashboard_body
     api_namespace.models[user_dashboard_user_details.name] = user_dashboard_user_details
-    api_namespace.models[task_comment_model.name] = task_comment_model
-    api_namespace.models[task_comments_model.name] = task_comments_model
 
 
 send_mentorship_request_body = Model(

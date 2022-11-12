@@ -3,6 +3,7 @@ from http import HTTPStatus
 from app import messages
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.task_comment import TaskCommentModel
+from app.database.models.user import UserModel
 from app.utils.decorator_utils import email_verification_required
 from app.utils.enum_utils import MentorshipRelationState
 
@@ -103,7 +104,15 @@ class TaskCommentDAO:
             return is_valid
 
         comments_list = TaskCommentModel.find_all_by_task_id(task_id, relation_id)
-        return [comment.json() for comment in comments_list]
+        response = []
+        for comment in comments_list:
+            user_details = UserModel.find_by_id(comment.user_id)
+            comment = comment.json()
+            del comment["user_id"]
+            comment["user"] = user_details
+            response.append(comment)
+
+        return response
 
     @staticmethod
     @email_verification_required
