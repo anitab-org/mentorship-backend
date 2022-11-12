@@ -85,6 +85,37 @@ class TestSendRequestApi(MentorshipRelationBaseTestCase):
         self.assertEqual(HTTPStatus.BAD_REQUEST, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
+    # When a mentee tries to send request multiple time to same mentor
+    def test_fail_send_multiple_request_to_same_mentor(self):
+        auth_header = get_test_request_header(self.first_user.id)
+        expected_response = messages.MENTORSHIP_RELATION_WAS_SENT_SUCCESSFULLY
+        test_payload = {
+            "mentor_id": self.second_user.id,
+            "mentee_id": self.first_user.id,
+            "end_date": int((datetime.now() + timedelta(days=40)).timestamp()),
+            "notes": "some notes",
+        }
+        # First request (sent successfully)
+        actual_response = self.client.post(
+            "/mentorship_relation/send_request",
+            headers=auth_header,
+            content_type="application/json",
+            data=json.dumps(test_payload),
+        )
+        self.assertEqual(HTTPStatus.CREATED, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
+        expected_response = messages.RELATION_REQUEST_ALREADY_PENDING
+        # Second request (not created)
+        actual_response = self.client.post(
+            "/mentorship_relation/send_request",
+            headers=auth_header,
+            content_type="application/json",
+            data=json.dumps(test_payload),
+        )
+        self.assertEqual(HTTPStatus.CONFLICT, actual_response.status_code)
+        self.assertDictEqual(expected_response, json.loads(actual_response.data))
+
 
 if __name__ == "__main__":
     unittest.main()
