@@ -37,6 +37,7 @@ TASK_COMMENT_DOES_NOT_EXIST = {"message": "Task comment does not exist."}
 TASK_COMMENT_WITH_GIVEN_TASK_ID_DOES_NOT_EXIST = {
     "message": "Task comment with given task id does not exist."
 }
+TASK_REQUIRES_APPROVAL = {"message": "Task requires mentor's approval."}
 
 # Missing fields
 MENTOR_ID_FIELD_IS_MISSING = {"message": "Mentor ID field is missing."}
