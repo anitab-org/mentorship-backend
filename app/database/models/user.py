@@ -3,6 +3,7 @@ import time
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database.sqlalchemy_extension import db
+from sqlalchemy.exc import IntegrityError
 
 
 class UserModel(db.Model):
@@ -150,8 +151,12 @@ class UserModel(db.Model):
 
     def save_to_db(self) -> None:
         """Adds a user to the database."""
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except IntegrityError as e:
+            db.session.rollback()
+            raise e
 
     def delete_from_db(self) -> None:
         """Deletes a user from the database."""
