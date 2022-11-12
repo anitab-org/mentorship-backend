@@ -22,6 +22,7 @@ class TaskCommentModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_name = db.Column(db.String, db.ForeignKey("users.name"))
     task_id = db.Column(db.Integer, db.ForeignKey("tasks_list.id"))
     relation_id = db.Column(db.Integer, db.ForeignKey("mentorship_relations.id"))
     creation_date = db.Column(db.Float, nullable=False)
@@ -40,8 +41,17 @@ class TaskCommentModel(db.Model):
 
     def json(self):
         """Returns information of task comment as a JSON object."""
+        if self.id == self.user_id:
+            sent_by_me = True
+        else:
+            sent_by_me = False
         return {
             "id": self.id,
+            "sent_by_me": sent_by_me,
+            "user": {
+                "id": self.user_id,
+                "name": self.user_name,
+            },
             "user_id": self.user_id,
             "task_id": self.task_id,
             "relation_id": self.relation_id,
