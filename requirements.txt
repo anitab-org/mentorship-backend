@@ -1,7 +1,7 @@
 APScheduler==3.7.0
 coverage==5.5
 Flask==1.0.2
-Flask-JWT-Extended==3.25.0
+Flask-JWT-Extended==4.0.2
 Flask-Mail==0.9.1
 Flask-Migrate==2.5.3
 flask-restx==0.5.0

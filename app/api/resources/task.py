@@ -23,7 +23,7 @@ add_models_to_namespace(task_ns)
 @task_ns.route("mentorship_relation/<int:relation_id>/task")
 class CreateTask(Resource):
     @classmethod
-    @jwt_required
+    @jwt_required()
     @task_ns.doc("create_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser, create_task_request_body)
     @task_ns.response(
@@ -84,7 +84,7 @@ class CreateTask(Resource):
 @task_ns.route("mentorship_relation/<int:request_id>/task/<int:task_id>")
 class DeleteTask(Resource):
     @classmethod
-    @jwt_required
+    @jwt_required()
     @task_ns.doc("delete_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
     @task_ns.response(HTTPStatus.OK.value, f"{messages.TASK_WAS_DELETED_SUCCESSFULLY}")
@@ -128,7 +128,7 @@ class DeleteTask(Resource):
 @task_ns.route("mentorship_relation/<int:relation_id>/tasks")
 class ListTasks(Resource):
     @classmethod
-    @jwt_required
+    @jwt_required()
     @task_ns.doc("list_tasks_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
     @task_ns.response(
@@ -176,7 +176,7 @@ class ListTasks(Resource):
 @task_ns.route("mentorship_relation/<int:relation_id>/task/<int:task_id>/complete")
 class UpdateTask(Resource):
     @classmethod
-    @jwt_required
+    @jwt_required()
     @task_ns.doc("update_task_in_mentorship_relation")
     @task_ns.expect(auth_header_parser)
     @task_ns.response(HTTPStatus.OK.value, f"{messages.TASK_WAS_ACHIEVED_SUCCESSFULLY}")
