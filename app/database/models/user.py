@@ -59,7 +59,16 @@ class UserModel(db.Model):
     need_mentoring = db.Column(db.Boolean)
     available_to_mentor = db.Column(db.Boolean)
 
-    def __init__(self, name, username, password, email, terms_and_conditions_checked):
+    def __init__(
+        self,
+        name,
+        username,
+        password,
+        email,
+        terms_and_conditions_checked,
+        need_mentoring=False,
+        available_to_mentor=False,
+    ):
         """Initialises userModel class with name, username, password, email, and terms_and_conditions_checked."""
         # required fields
 
@@ -78,8 +87,8 @@ class UserModel(db.Model):
 
         # optional fields
 
-        self.need_mentoring = False
-        self.available_to_mentor = False
+        self.need_mentoring = need_mentoring
+        self.available_to_mentor = available_to_mentor
 
     def json(self):
         """Returns Usermodel object in json format."""

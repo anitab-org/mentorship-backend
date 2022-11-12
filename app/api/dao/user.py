@@ -150,6 +150,7 @@ class UserDAO:
     def list_users(
         user_id: int,
         search_query: str = "",
+        skill: str = "",
         page: int = DEFAULT_PAGE,
         per_page: int = DEFAULT_USERS_PER_PAGE,
         is_verified=None,
@@ -159,6 +160,7 @@ class UserDAO:
         Arguments:
             user_id: The ID of the user to be listed.
             search_query: The search query for name of the users to be found.
+            skill: The skill of the user to be listed.
             is_verified: Status of the user's verification; None when provided as an argument.
             page: The page of users to be returned
             per_page: The number of users to return per page
@@ -168,14 +170,18 @@ class UserDAO:
 
         """
 
-        users_list = (
-            UserModel.query.filter(
-                UserModel.id != user_id,
-                not is_verified or UserModel.is_email_verified,
-                func.lower(UserModel.name).contains(search_query.lower())
-                | func.lower(UserModel.username).contains(search_query.lower()),
+        users_list_query = UserModel.query.filter(
+            UserModel.id != user_id,
+            not is_verified or UserModel.is_email_verified,
+            func.lower(UserModel.name).contains(search_query.lower())
+            | func.lower(UserModel.username).contains(search_query.lower()),
+        )
+        if skill:
+            users_list_query = users_list_query.filter(
+                func.lower(UserModel.skills) == func.lower(skill)
             )
-            .order_by(UserModel.id)
+        users_list = (
+            users_list_query.order_by(UserModel.id)
             .paginate(
                 page=page,
                 per_page=per_page,
