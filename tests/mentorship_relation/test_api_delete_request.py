@@ -1,11 +1,12 @@
 import json
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
-from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from tests.test_utils import get_test_request_header
@@ -17,10 +18,10 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver
     def setUp(self):
-        super(TestDeleteMentorshipRequestApi, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         # create new mentorship relation
@@ -51,11 +52,10 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
         with self.client:
             response = self.client.delete(
-                "/mentorship_relation/%s" % request_id,
+                f"/mentorship_relation/{request_id}",
                 headers=get_test_request_header(self.first_user.id),
             )
-
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(HTTPStatus.OK, response.status_code)
         self.assertDictEqual(
             messages.MENTORSHIP_RELATION_WAS_DELETED_SUCCESSFULLY,
             json.loads(response.data),
@@ -76,11 +76,10 @@ class TestDeleteMentorshipRequestApi(MentorshipRelationBaseTestCase):
 
         with self.client:
             response = self.client.delete(
-                "/mentorship_relation/%s" % request_id,
+                f"/mentorship_relation/{request_id}",
                 headers=get_test_request_header(self.second_user.id),
             )
-
-        self.assertEqual(400, response.status_code)
+        self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
         self.assertDictEqual(
             messages.CANT_DELETE_UNINVOLVED_REQUEST, json.loads(response.data)
         )

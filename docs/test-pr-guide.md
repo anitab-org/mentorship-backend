@@ -3,18 +3,18 @@
 1. Follow instructions in
 [README](https://github.com/anitab-org/mentorship-backend/blob/develop/README.md) to setup the system running locally.
 
-2. Check on Zulip chat if any of the PR's 
+2. Check on Zulip chat if any of the PR's
 [here](https://github.com/anitab-org/mentorship-backend/labels/Needs%20Testing) are high-priority if the priority is not set already.
 
 3. If the PRs are not prioritized then pick any 1 PR from the list from the link in step 2 to test locally.
 
 4. Go to the Issue that PR is fixing and follow the steps to reproduce that issue while you are under the develop branch.
 
-5. Run the following commands to get to the PR branch, where `<contributor>` is the GitHub username of the contributor that submitted the PR:
+5. Run the following commands to get to the PR branch, where `<id>` is the PR id and `<branch_name>` is the random name for the branch.
 
 ```
-git checkout -b <contributor>-<branch-name> develop
-git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
+git fetch upstream pull/ID/head:<branch_name>
+git checkout <branch-name>
 ```
 
 6. Verify the code addition/deletions in the PR.
@@ -23,14 +23,50 @@ git pull https://github.com/<contributor>/mentorship-backend/ <branch-name>
 
 8. Get screenshots/gifs of before and after the fix and attach them to the PR comment.
 
+9. If the testing is unsuccessful and fixes are needed change then remove the label `Status: Needs Testing` and add `Status: Needs Review`.
+
+10. If the testing is successful and no improvements needed then remove the label `Status: Needs Testing` and add `Status: Ready to Merge`.
+
+<h2>Template to report PR testing results</h2>
+This template can be used to add a review comment to a PR after testing is done. It can be used irrespective of the success or failure of testing.
+
+```
+The changes made in this PR were tested locally. Following are the results:
+
+1. Code review - Done or Not Done
+
+2. All possible responses (positive and negative tests) were tested as below:
+
+  * _Test1 Description_
+    _Screenshot/gif_:
+    _Expected Result_:
+    _Actual Result_:
+  * _Test2 Description_
+    _Screenshot/gif_:
+    _Expected Result_:
+    _Actual Result_:
+    ...
+
+3. Additional testcases covered:
+
+  * _Test1 Description_
+    _Screenshot/gif_:
+    _Expected Result_:
+    _Actual Result_:
+
+4. Additional Comments:
+
+5. Status of PR Changed to: Needs Review or Ready to Merge.
+```
+
 <h1>Steps to test multiple features (User Registration, List users, ...) of the Mentorship System.</h1>
 
 <h2>Registering users</h2>
 
-Register 3 users. Follow instructions in 
+Register 3 users. Follow instructions in
 [this video](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672)
 
-The users used here are 
+The users used here are
 
 * _testusera_
 * _testuserb_
@@ -40,7 +76,7 @@ The users used here are
 
 <h2>Login as the users and capture the access tokens</h2>
 
-Steps to login and capture the token are shown in 
+Steps to login and capture the token are shown in
 [this video](https://www.youtube.com/watch?v=xRZrdR47R-w&feature=youtu.be&t=672)
 
 ![Login user screenshot](https://user-images.githubusercontent.com/26095715/79673507-4a582180-81a8-11ea-96ff-2268733e9673.png)

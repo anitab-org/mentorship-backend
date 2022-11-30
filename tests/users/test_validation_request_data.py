@@ -4,14 +4,14 @@ from string import ascii_lowercase
 
 from app import messages
 from app.api.validations.user import (
-    validate_user_registration_request_data,
-    NAME_MIN_LENGTH,
     NAME_MAX_LENGTH,
-    USERNAME_MIN_LENGTH,
-    USERNAME_MAX_LENGTH,
+    NAME_MIN_LENGTH,
     PASSWORD_MAX_LENGTH,
     PASSWORD_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    USERNAME_MIN_LENGTH,
     validate_new_password,
+    validate_user_registration_request_data,
 )
 from app.utils.validation_utils import get_length_validation_error_message
 from tests.test_data import user1
@@ -293,6 +293,20 @@ class TestUserApiRequestDataValidation(unittest.TestCase):
             )
         }
         actual_result = validate_new_password(data)
+
+        self.assertEqual(expected_result, actual_result)
+
+    def test_password_to_one_with_empty_spaces(self):
+        password = "password with spaces"
+        request_body = dict(
+            name=user1["name"],
+            username=user1["username"],
+            password=password,
+            email=user1["email"],
+            terms_and_conditions_checked=user1["terms_and_conditions_checked"],
+        )
+        expected_result = messages.USER_INPUTS_SPACE_IN_PASSWORD
+        actual_result = validate_user_registration_request_data(request_body)
 
         self.assertEqual(expected_result, actual_result)
 

@@ -1,0 +1,66 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "contributorsPerLine": 7,
+  "contributorsSortAlphabetically": false,
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors)",
+  "skipCi": true,
+  "contributors": [
+    {
+      "login": "isabelcosta",
+      "name": "Isabel Costa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11148726?v=4",
+      "profile": "https://isabelcosta.github.io/",
+      "contributions": [
+        "maintenance"
+      ]
+    },
+    {
+      "login": "vj-codes",
+      "name": "Vaishnavi Joshi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60894542?v=4",
+      "profile": "https://github.com/vj-codes",
+      "contributions": [
+        "maintenance",
+        "design"
+      ]
+    },
+    {
+      "login": "epicadk",
+      "name": "Aditya Kurkure",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56596662?v=4",
+      "profile": "https://github.com/epicadk",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
+    },
+      "login": "devkapilbansal",
+      "name": "Kapil Bansal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42766576?v=4",
+      "profile": "https://github.com/devkapilbansal",
+      "contributions": [
+        "code",
+        "maintenance",
+        "test"
+      ]
+    },
+    {
+      "login": "gaurivn",
+      "name": "Gauri V. Nair",
+      "avatar_url": "https://avatars.githubusercontent.com/u/48416306?v=4",
+      "profile": "https://github.com/gaurivn",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
+    }
+  ],
+  "projectName": "mentorship-backend",
+  "projectOwner": "anitab-org",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}

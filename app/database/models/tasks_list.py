@@ -1,13 +1,13 @@
-from enum import unique, Enum
+from datetime import date
+from enum import Enum, unique
 
 from app.database.db_types.JsonCustomType import JsonCustomType
 from app.database.sqlalchemy_extension import db
-from datetime import date
 
 
 class TasksListModel(db.Model):
     """Model representation of a list of tasks.
-    
+
     Attributes:
         id: Id of the list of tasks.
         tasks: A list of tasks, using JSON format.
@@ -21,12 +21,12 @@ class TasksListModel(db.Model):
     tasks = db.Column(JsonCustomType)
     next_task_id = db.Column(db.Integer)
 
-    def __init__(self, tasks: 'TasksListModel' = None):
+    def __init__(self, tasks: "TasksListModel" = None):
         """Initializes tasks.
 
         Args:
             tasks: A list of tasks.
-        
+
         Raises:
             A Value Error if the task is not initialized.
         """
@@ -41,9 +41,11 @@ class TasksListModel(db.Model):
             else:
                 raise ValueError(TypeError)
 
-    def add_task(self, description: str, created_at: date, is_done=False, completed_at=None) -> None:
+    def add_task(
+        self, description: str, created_at: date, is_done=False, completed_at=None
+    ) -> None:
         """Adds a task to the list of tasks.
-        
+
         Args:
             description: A description of the task added.
             created_at: Date on which the task is created.
@@ -75,10 +77,15 @@ class TasksListModel(db.Model):
         self.tasks = new_list
         self.save_to_db()
 
-    def update_task(self, task_id: int, description: str = None, is_done: bool = None,
-                    completed_at: date = None) -> None:
+    def update_task(
+        self,
+        task_id: int,
+        description: str = None,
+        is_done: bool = None,
+        completed_at: date = None,
+    ) -> None:
         """Updates a task.
-        
+
         Args:
             task_id: Id of the task to be updated.
             description: A description of the task.
@@ -110,7 +117,7 @@ class TasksListModel(db.Model):
 
     def find_task_by_id(self, task_id: int):
         """Returns the task that has the specified id.
-        
+
         Args:
             task_id: Id of the task.
 
@@ -150,21 +157,17 @@ class TasksListModel(db.Model):
 
     def __repr__(self):
         """Creates a representation of an object.
-        
+
         Returns:
             A string representation of the task object.
         """
 
-        return "Task | id = %s; tasks = %s; next task id = %s" % (
-            self.id,
-            self.tasks,
-            self.next_task_id,
-        )
+        return f"Task | id = {self.id}; tasks = {self.tasks}; next task id = {self.next_task_id}"
 
     @classmethod
     def find_by_id(cls, _id: int):
         """Finds a task with the specified id.
-        
+
         Returns:
             The task with the specified id.
         """
@@ -185,7 +188,7 @@ class TasksListModel(db.Model):
 @unique
 class TasksFields(Enum):
     """Represents a task attributes' name.
-    
+
     Attributes:
         ID: Id of a task.
         DESCRIPTION: Description of a task.

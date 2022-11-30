@@ -1,4 +1,4 @@
-from flask_restplus import fields, Model
+from flask_restx import Model, fields
 
 
 def add_models_to_namespace(api_namespace):

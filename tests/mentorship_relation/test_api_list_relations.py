@@ -1,13 +1,14 @@
 import json
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from app.api.models.mentorship_relation import mentorship_request_response_body
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
-from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from tests.test_utils import get_test_request_header
@@ -19,10 +20,10 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver
     def setUp(self):
-        super(TestListMentorshipRelationsApi, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.past_end_date_example = self.now_datetime - timedelta(weeks=5)
         self.future_end_date_example = self.now_datetime + timedelta(weeks=5)
 
@@ -87,7 +88,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 marshal(self.past_mentorship_relation, mentorship_request_response_body)
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_pending_mentorship_relations(self):
@@ -103,7 +104,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 )
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_current_mentorship_relation(self):
@@ -117,7 +118,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 mentorship_request_response_body,
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_all_mentorship_relations(self):
@@ -133,7 +134,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 )
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     def test_list_current_mentorship_relation_sent_by_current_user(self):
@@ -147,7 +148,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 mentorship_request_response_body,
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
             self.assertFalse(self.future_accepted_mentorship_relation.sent_by_me)
 
@@ -162,7 +163,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 mentorship_request_response_body,
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
             self.assertTrue(self.future_accepted_mentorship_relation.sent_by_me)
 
@@ -171,7 +172,7 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
     def test_list_filter_mentorship_relations_empty(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "",
+                "/mentorship_relations?relation_state=",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = [
@@ -192,14 +193,14 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 ),
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     # When relation_state = 'accepted'.
     def test_list_filter_mentorship_relations_accepted(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "accepted",
+                "/mentorship_relations?relation_state=accepted",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = [
@@ -209,14 +210,14 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 )
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     # When relation_state = 'pending'.
     def test_list_filter_mentorship_relations_pending(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "pending",
+                "/mentorship_relations?relation_state=pending",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = [
@@ -229,19 +230,19 @@ class TestListMentorshipRelationsApi(MentorshipRelationBaseTestCase):
                 ),
             ]
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
     # When relation_state = 'invalid_param'.
     def test_list_filter_mentorship_relations_invalid(self):
         with self.client:
             response = self.client.get(
-                "/mentorship_relations?relation_state=%s" % "invalid_param",
+                "/mentorship_relations?relation_state=invalid_param",
                 headers=get_test_request_header(self.second_user.id),
             )
             expected_response = []
 
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.BAD_REQUEST, response.status_code)
             self.assertEqual(expected_response, json.loads(response.data))
 
 

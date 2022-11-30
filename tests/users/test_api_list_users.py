@@ -1,8 +1,9 @@
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from flask import json
-from flask_restplus import marshal
+from flask_restx import marshal
 
 from app import messages
 from app.api.models.user import public_user_api_model
@@ -12,13 +13,13 @@ from app.database.models.user import UserModel
 from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.base_test_case import BaseTestCase
-from tests.test_utils import get_test_request_header
 from tests.test_data import user1, user2, user3
+from tests.test_utils import get_test_request_header
 
 
 class TestListUsersApi(BaseTestCase):
     def setUp(self):
-        super(TestListUsersApi, self).setUp()
+        super().setUp()
 
         self.verified_user = UserModel(
             name=user1["name"] + "    Example",
@@ -62,8 +63,8 @@ class TestListUsersApi(BaseTestCase):
             self.other_user.id,
             self.other_user,
             self.verified_user,
-            datetime.now().timestamp(),
-            (datetime.now() + timedelta(weeks=5)).timestamp(),
+            datetime.utcnow().timestamp(),
+            (datetime.utcnow() + timedelta(weeks=5)).timestamp(),
             MentorshipRelationState.ACCEPTED,
             "notes",
             TasksListModel(),
@@ -75,7 +76,7 @@ class TestListUsersApi(BaseTestCase):
         expected_response = messages.AUTHORISATION_TOKEN_IS_MISSING
         actual_response = self.client.get("/users", follow_redirects=True)
 
-        self.assertEqual(401, actual_response.status_code)
+        self.assertEqual(HTTPStatus.UNAUTHORIZED, actual_response.status_code)
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_users_api_without_search_query_resource_auth(self):
@@ -89,7 +90,7 @@ class TestListUsersApi(BaseTestCase):
             "/users", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_users_api_with_a_search_query_resource_auth(self):
@@ -99,7 +100,7 @@ class TestListUsersApi(BaseTestCase):
             "/users?search=b", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_users_api_with_a_search_query_all_caps_resource_auth(self):
@@ -109,7 +110,7 @@ class TestListUsersApi(BaseTestCase):
             "/users?search=USERB", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_users_api_with_a_search_query_with_spaces_resource_auth(self):
@@ -121,19 +122,63 @@ class TestListUsersApi(BaseTestCase):
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_users_api_with_search_with_special_characters_resource_auth(self):
         auth_header = get_test_request_header(self.admin_user.id)
         expected_response = [marshal(self.second_user, public_user_api_model)]
         actual_response = self.client.get(
-            f"/users?search=s_t-r%24a%2Fn'ge",
+            "/users?search=s_t-r%24a%2Fn'ge",
             follow_redirects=True,
             headers=auth_header,
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_page_query_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [
+            marshal(self.verified_user, public_user_api_model),
+            marshal(self.other_user, public_user_api_model),
+            marshal(self.second_user, public_user_api_model),
+        ]
+        actual_response = self.client.get(
+            "/users?page=1", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_page_query_out_of_range_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = []
+        actual_response = self.client.get(
+            "/users?page=2", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_page_and_per_page_query_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users?page=1&per_page=1", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_partial_page_and_per_page_query_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.second_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users?page=2&per_page=2", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_users_api_resource_verified_users(self):
@@ -143,7 +188,57 @@ class TestListUsersApi(BaseTestCase):
             "/users/verified", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_page_query_resource_verified_users(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users/verified?page=1", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_page_query_out_of_range_resource_verified_users(
+        self,
+    ):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = []
+        actual_response = self.client.get(
+            "/users/verified?page=2", follow_redirects=True, headers=auth_header
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_page_and_per_page_query_resource_verified_users(
+        self,
+    ):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            "/users/verified?page=1&per_page=1",
+            follow_redirects=True,
+            headers=auth_header,
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_page_and_empty_per_page_query_resource_verified_users(
+        self,
+    ):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = []
+        actual_response = self.client.get(
+            "/users/verified?page=1&per_page=0",
+            follow_redirects=True,
+            headers=auth_header,
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_users_api_relation(self):
@@ -163,7 +258,19 @@ class TestListUsersApi(BaseTestCase):
             "/users", follow_redirects=True, headers=auth_header
         )
 
-        self.assertEqual(200, actual_response.status_code)
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+        self.assertEqual(expected_response, json.loads(actual_response.data))
+
+    def test_list_users_api_with_a_search_query_with_username_resource_auth(self):
+        auth_header = get_test_request_header(self.admin_user.id)
+        expected_response = [marshal(self.verified_user, public_user_api_model)]
+        actual_response = self.client.get(
+            f"/users?search={self.verified_user.username}",
+            follow_redirects=True,
+            headers=auth_header,
+        )
+
+        self.assertEqual(HTTPStatus.OK, actual_response.status_code)
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
 

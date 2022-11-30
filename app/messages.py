@@ -1,3 +1,10 @@
+from app.api.validations.user import (
+    PASSWORD_MAX_LENGTH,
+    PASSWORD_MIN_LENGTH,
+    USERNAME_MAX_LENGTH,
+    USERNAME_MIN_LENGTH,
+)
+
 # Invalid fields
 NAME_INPUT_BY_USER_IS_INVALID = {"message": "Your name is invalid."}
 EMAIL_INPUT_BY_USER_IS_INVALID = {"message": "Your email is invalid."}
@@ -8,6 +15,10 @@ USER_ID_IS_NOT_VALID = {"message": "User id is not valid."}
 FIELD_NEED_MENTORING_IS_NOT_VALID = {"message": "Field need_mentoring is" " not valid."}
 FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
     "message": "Field available_to_mentor" " is not valid."
+}
+INVALID_INPUT = {"message": "Invalid input."}
+PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH = {
+    "message": f"The password field has to be longer than {PASSWORD_MIN_LENGTH - 1} characters and shorter than {PASSWORD_MAX_LENGTH + 1} characters."
 }
 
 # Not found
@@ -44,6 +55,9 @@ NEW_PASSWORD_FIELD_IS_MISSING = {"message": "New password field is missing."}
 AUTHORISATION_TOKEN_IS_MISSING = {"message": "The authorization token is" " missing!"}
 DESCRIPTION_FIELD_IS_MISSING = {"message": "Description field is missing."}
 COMMENT_FIELD_IS_MISSING = {"message": "Comment field is missing."}
+USERNAME_HAS_INVALID_LENGTH = {
+    "message": f"The username field has to be longer than {USERNAME_MIN_LENGTH - 1} characters and shorter than {USERNAME_MAX_LENGTH + 1} characters."
+}
 
 # Admin
 USER_IS_ALREADY_AN_ADMIN = {"message": "User is already an Admin."}
@@ -91,7 +105,7 @@ TASK_COMMENT_WAS_NOT_CREATED_BY_YOU_DELETE = {
 
 # Update
 NO_DATA_FOR_UPDATING_PROFILE_WAS_SENT = {
-    "message": "No data for updating" "profile was sent."
+    "message": "No data for updating profile was sent."
 }
 
 # Relation constraints
@@ -143,7 +157,7 @@ USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS = {
     "message": "A user with that " "email already exists."
 }
 USER_IS_NOT_REGISTERED_IN_THE_SYSTEM = {
-    "message": "You are not registered in" "the system."
+    "message": "You are not registered in the system."
 }
 NAME_LENGTH_GREATER_THAN_MAX_LIMIT = {
     "message": "The {field_name} field has"
@@ -267,7 +281,13 @@ TASK_COMMENT_WAS_DELETED_SUCCESSFULLY = {
 LIST_TASK_COMMENTS_WITH_SUCCESS = {
     "message": "List task comments from a mentorship relation with success."
 }
+GENERAL_SUCCESS_MESSAGE = {"message": "Success."}
 
+SUCCESSFUL_REFRESH = {"message": "Successful refresh."}
+
+SUCCESSFUL_RESPONSE = {"message": "Successful response."}
+
+SUCCESSFUL_LOGIN = {"message": "Successful login"}
 # confimation
 ACCOUNT_ALREADY_CONFIRMED = {"message": "Account already confirmed."}
 USER_ALREADY_CONFIRMED_ACCOUNT = {"message": "You already confirm your email."}

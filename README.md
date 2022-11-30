@@ -1,12 +1,48 @@
 # Mentorship System (Backend)
 
-| Branch | [Travis](https://travis-ci.org/) | [Codacy](https://www.codacy.com/) | Server |
-| :---: | :---: | :---: | :---: |
-| [master](https://github.com/anitab-org/mentorship-backend/tree/master) | [![Build Status](https://travis-ci.org/systers/mentorship-backend.svg?branch=master)](https://travis-ci.org/anitab-org/mentorship-backend) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181ca06835045d1aea78fdd30fc37d9?branch=master)](https://www.codacy.com/app/systers/mentorship-backend) | [Production](http://systers-mentorship.eu-central-1.elasticbeanstalk.com/) |
-| [develop](https://github.com/anitab-org/mentorship-backend/tree/develop) | [![Build Status](https://travis-ci.org/systers/mentorship-backend.svg?branch=develop)](https://travis-ci.org/anitab-org/mentorship-backend) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5181ca06835045d1aea78fdd30fc37d9?branch=develop)](https://www.codacy.com/app/systers/mentorship-backend) | [Development](http://systers-mentorship-dev.eu-central-1.elasticbeanstalk.com/) |
+![Build Status](https://github.com/anitab-org/mentorship-backend/workflows/Run%20tests/badge.svg)
+[![codecov](https://codecov.io/gh/anitab-org/mentorship-backend/branch/develop/graph/badge.svg)](https://codecov.io/gh/anitab-org/mentorship-backend)
+[![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system)
+[![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
+[![Docs](https://img.shields.io/badge/documentation-mentorship--backend-blue.svg)](https://anitab-org.github.io/mentorship-backend)
 
-[Mentorship System](https://github.com/anitab-org/mentorship-backend) is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
+
+Mentorship System is an application that allows women in tech to mentor each other, on career development topics, through 1:1 relations for a certain period.
 This is the Backend REST API for the Mentorship System.
+
+This API is being used by 3 frontend projects currently being developed:
+- android: [anitab-org/mentorship-android](https://github.com/anitab-org/mentorship-android)
+- iOS: [anitab-org/mentorship-ios](https://github.com/anitab-org/mentorship-ios)
+- flutter: [anitab-org/mentorship-flutter](https://github.com/anitab-org/mentorship-flutter)
+
+**Table of Contents**
+
+- [Features](#Features)
+- [Setup and run](#setup-and-run)
+    - [Run app in Windows](#run-app-in-Windows)
+    - [Run app in Linux](#run-app-in-Linux)
+    - [Run with Docker](#run-with-docker)
+    - [Run tests](#run-tests)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Branches](#branches)
+- [Contact](#contact)
+- [License](#license)
+
+## Features
+
+- Login and register a new user
+- Create a user profile, view and edit user profiles
+- Change user password, refresh jwt tokens
+- Create relation between two users for a fixed period of time
+- Both mentor and mentee in a relation can create tasks
+- Assign and remove admin roles to users and list all admins
+- List all the relationships of a given user
+- List details of current, past and pending mentorship relations
+- Create a new task in a mentorship relation if the specified user is already involved in it.
+- Retrieve and delete tasks from mentorship relation
+- Task comment functionalities like create a task comment, get task comments using a task id.
+- Get statistics of a user like Pending Requests, Accepted Requests, Rejected Requests, Completed Relations, Cancelled Relations and upto 3 recent achievements
 
 ## Setup and run
 
@@ -15,25 +51,32 @@ To setup the project locally read these wiki pages and follow the instructions:
  - [Fork, Clone and Remote](https://github.com/anitab-org/mentorship-backend/wiki/Fork%2C-Clone-%26-Remote)
  - [Export Environment Variables](docs/environment-variables.md)
 
-### Run app
+### Run app in Windows
 
 The project runs on Python 3.
 
 1. Create a virtual environment:
-`virtualenv venv --python=python3`
+```
+virtualenv venv --python=python3
+```
 
 2. Activate the virtual environment:
-`source ./venv/bin/activate`
-
-`source ./venv/bin/activate` may produce errors (no such directory errors) for Windows users who use Git Bash, because on Windows machines, virtual environments do not have the bin folder under venv. Instead, run the command `source ./venv/Scripts/activate`. This command only works on Git Bash on Windows machines. For Windows Command Line Users, run `.\env\Scripts\activate` instead. This command is for users running the program on Windows CMD.
-
+For Git Bash Users:
+```
+source ./venv/Scripts/activate
+```
+For Windows Command Line Users:
+```
+venv\Scripts\activate
+```
 
 3. Install all the dependencies in `requirements.txt` file:
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables
-or
-make sure you exported the following [environment variables](docs/environment-variables.md):
+or make sure you exported the following [environment variables](docs/environment-variables.md):
 
 ```
 export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
@@ -43,7 +86,7 @@ export MAIL_DEFAULT_SENDER=<mail-default-sender>
 export MAIL_SERVER=<mail-server>
 export APP_MAIL_USERNAME=<app-mail-username>
 export APP_MAIL_PASSWORD=<app-mail-password>
-export MOCK_EMAIL = <True-or-False>
+export MOCK_EMAIL=<True-or-False>
 ```
 
 If you're testing any environment other than "local", then you have to also set these other variables:
@@ -56,15 +99,82 @@ export DB_NAME=<database_name>
 ```
 
 5. Run the app:
-`python run.py`
+```
+python run.py
+```
 
-6. Navigate to http://localhost:5000 in your browser 
+6. Navigate to http://localhost:5000 in your browser
 
 7. When you are done using the app, deactivate the virtual environment:
-`deactivate`
+```
+deactivate
+```
+
+### Run app in Linux
+
+The project runs on Python 3.
+
+1. Create a virtual enviorntment:
+```
+virtualenv venv
+```
+
+2. Activate the virtual environment:
+```
+source venv/bin/activate
+```
+
+3. Install all the dependencies in `requirements.txt` file:
+```
+pip3 install -r requirements.txt
+```
+
+4. Make sure you create `.env` using `.env.template` and update the values of corresponding environment variables. Make sure you exported the following [environment variables](docs/environment-variables.md) if you didn't adapt `.env.template` in the `.env` file:
+
+```
+export FLASK_ENVIRONMENT_CONFIG=<local-or-dev-or-test-or-prod-or-stag>
+export SECRET_KEY=<your-secret-key>
+export SECURITY_PASSWORD_SALT=<your-security-password-salt>
+export MAIL_DEFAULT_SENDER=<mail-default-sender>
+export MAIL_SERVER=<mail-server>
+export APP_MAIL_USERNAME=<app-mail-username>
+export APP_MAIL_PASSWORD=<app-mail-password>
+export MOCK_EMAIL=<True-or-False>
+```
+
+If you're testing any environment other than "local", then you have to also set these other variables in the .env file.
+```
+export DB_TYPE=<database_type>
+export DB_USERNAME=<database_username>
+export DB_PASSWORD=<database_password>
+export DB_ENDPOINT=<database_endpoint>
+export DB_NAME=<database_name>
+```
+
+Use: `printenv` to print the environment variables and check all configurations.
+
+5. Run the app with `python run.py` or:
+```
+ export FLASK_APP=run.py
+ flask run
+```
+
+6. Navigate to http://localhost:5000 or the current server in which you are running(will be shown when app is running) in your browser.
+
+7. When you are done using the app, deactivate the virtual environment:
+```
+deactivate
+```
+
+or use:
+
+```
+source deactivate
+```
 
 ### Run with docker
-1. Make sure you exported the following [environment variables](docs/environment-variables.md) to '.env' file
+
+1. Make sure you exported the following [environment variables](docs/environment-variables.md) to `.env` file
 
 2. Build docker image
 ```
@@ -80,13 +190,107 @@ docker run --env "FLASK_APP=run.py" --publish 5000:5000 mentorship-backend:lates
 
 To run the unitests run the following command in the terminal (while the virtual environment is activated):
 
-`python -m unittest discover tests`
+```
+python -m unittest discover tests
+```
+
+### Auto-formatting with black
+
+We use [_Black_](https://github.com/psf/black) to format code automatically so that we don't have to worry about clean and
+readable code. To install _Black_:
+
+```
+pip install black
+```
+
+To run black:
+
+```
+black .
+```
+
+#### Sorting imports with isort
+
+We use [_isort_](https://pypi.org/project/isort/) to sort imports alphabetically, and automatically separated into
+sections and by type. To install _isort_:
+
+```
+pip install isort
+```
+
+To run isort:
+
+```
+isort . --profile=black
+```
+
+#### Automate auto-formatting tools with pre-commit
+
+We use [_pre-commit_](https://pre-commit.com/) to check formatting before every commit message. To install _pre-commit_:
+
+```
+pip install pre-commit
+```
+
+To set up the git hook scripts:
+
+```
+pre-commit install
+```
+
+## Documentation
+
+Documentation for the project is hosted [here](https://anitab-org.github.io/mentorship-backend/). We use Docusaurus for maintaining the documentation of the project.
+
+You can learn more about this project through the documentation in the [docs](./docs) folder and on [our Wiki](https://github.com/anitab-org/mentorship-backend/wiki).
+
+- **Language:** Python 3
+- **Framework:** [Flask](http://flask.pocoo.org/)
+- **Flask Extensions:** [Flask-RESTX](https://flask-restx.readthedocs.io/en/latest/), [Flask-SQLAlchemy](http://flask-sqlalchemy.pocoo.org), [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/latest/), [Flask-Mail](https://pythonhosted.org/Flask-Mail)
+
+Here are some links to documentation for this project:
+
+- [How to use Backend Swagger UI](https://github.com/anitab-org/mentorship-backend/wiki/Using-Backend-Swagger-UI) and [test PR guide](/docs/test-pr-guide.md) contains a few resources for you to understand how to use the Swagger user interface provided by this app.
+- [Features Overview](/docs/features.md) has a high level understanding of the features this application has.
+- [Future ideas for the project](https://github.com/anitab-org/mentorship-backend/wiki/Future-ideas).
+- [Troubleshoot guide](/docs/troubleshoots.md) contains common isssues other contributors may run into in their setup.
+- [Quality Assurance test cases](/docs/quality-assurance-test-cases.md) has test cases for each endpoint we have which you can use to learn about how each feature should work.
+- [CI/CD Process](/docs/ci_cd_process.md) which explains the processes and tools involved in deploying new code.
+- [Code Organisation](/docs/code_organization.md) which explains the code organisation and architecture within the repository.
+- [User Authentication](/docs/user_authentication.md) which is JSON Web Token (JWT) based and tells about the user authentication in the application.
+
+Understand more about our technical decisions made along with this project development in [Technical Decisions Wiki page](https://github.com/anitab-org/mentorship-backend/wiki/Technical-Decisions).
 
 ## Contributing
 
-Please read our [Contributing guidelines](https://github.com/anitab-org/mentorship-backend/blob/develop/.github/CONTRIBUTING.md), [Code of Conduct](http://systers.io/code-of-conduct) and [Reporting Guidelines](http://systers.io/reporting-guidelines)
+Please read our [Contributing guidelines](./.github/CONTRIBUTING.md), [Code of Conduct](./docs/code_of_conduct.md) and [Reporting Guidelines](./docs/reporting_guidelines.md)
 
-Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) while sending PRs.
+Please follow our [Commit Message Style Guide](https://github.com/anitab-org/mentorship-backend/wiki/Commit-Message-Style-Guide) and [Coding Standards](./docs/coding_standards.md) while sending PRs.
+
+### Contributors
+
+Thanks goes to these people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://isabelcosta.github.io/"><img src="https://avatars.githubusercontent.com/u/11148726?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Isabel Costa</b></sub></a><br /><a href="#maintenance-isabelcosta" title="Maintenance">🚧</a></td>
+    <td align="center"><a href="https://github.com/vj-codes"><img src="https://avatars.githubusercontent.com/u/60894542?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Vaishnavi Joshi</b></sub></a><br /><a href="#maintenance-vj-codes" title="Maintenance">🚧</a> <a href="#design-vj-codes" title="Design">🎨</a></td>
+    <td align="center"><a href="https://github.com/epicadk"><img src="https://avatars.githubusercontent.com/u/56596662?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aditya Kurkure</b></sub></a><br /><a href="https://github.com/anitab-org/mentorship-backend/commits?author=epicadk" title="Code">💻</a> <a href="#maintenance-epicadk" title="Maintenance">🚧</a> <a href="https://github.com/anitab-org/mentorship-backend/commits?author=epicadk" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/devkapilbansal"><img src="https://avatars.githubusercontent.com/u/42766576?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kapil Bansal</b></sub></a><br /><a href="https://github.com/anitab-org/mentorship-backend/commits?author=devkapilbansal" title="Code">💻</a> <a href="#maintenance-devkapilbansal" title="Maintenance">🚧</a> <a href="https://github.com/anitab-org/mentorship-backend/commits?author=devkapilbansal" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/gaurivn"><img src="https://avatars.githubusercontent.com/u/48416306?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gauri V. Nair</b></sub></a><br /><a href="https://github.com/anitab-org/mentorship-backend/commits?author=gaurivn" title="Code">💻</a> <a href="#maintenance-gaurivn" title="Maintenance">🚧</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
+Contributions of any kind welcome!
 
 ## Branches
 
@@ -94,10 +298,16 @@ The repository has the following permanent branches:
 
  * **master** This contains the code which has been released.
 
- * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch.
+ * **develop** This contains the latest code. All the contributing PRs must be sent to this branch. When we want to release the next version of the app, this branch is merged into the `master` branch. This is the branch that is used in the deployed version of the app on Heroku.
+
+ * **bit** This branch is for MS-backend version specific to [BridgeInTech](https://github.com/anitab-org/bridge-in-tech-backend) project. All the contributing PRs related to BIT-MS integration issue must be sent to this branch.<br>
+**IMPORTANT!!** If this is your first time setting up the BridgeInTech project, please <b>DO NOT RUN</b> the MS backend server from this branch <b>BEFORE</b> you run the BIT backend server. Failing to do this will mess up the postgres db schemas used in BIT project. More instruction on setting up the BridgeInTech project can be found [here](https://github.com/anitab-org/bridge-in-tech-backend/blob/develop/.github/ENV_SETUP_INSTRUCTION.md).
+
 
 ## Contact
 
 You can reach the maintainers and our community on [AnitaB.org Open Source Zulip](https://anitab-org.zulipchat.com/). If you are interested in contributing to the mentorship system, we have a dedicated stream for this project [#mentorship-system](https://anitab-org.zulipchat.com/#narrow/stream/222534-mentorship-system), where you can ask questions and interact with the community, join with us!
 
+## License
 
+Mentorship System is licensed under the GNU General Public License v3.0. Learn more about it in the [LICENSE](LICENSE) file.

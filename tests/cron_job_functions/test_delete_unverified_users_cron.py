@@ -1,5 +1,4 @@
 import time
-from datetime import datetime
 from unittest.mock import patch
 
 import config
@@ -12,7 +11,7 @@ from tests.test_data import user1, user2, user3
 
 class TestDeleteUnverifiedUsersCronFunction(BaseTestCase):
     def setUp(self):
-        super(TestDeleteUnverifiedUsersCronFunction, self).setUp()
+        super().setUp()
 
         self.verified_user = UserModel(
             name=user1["name"],

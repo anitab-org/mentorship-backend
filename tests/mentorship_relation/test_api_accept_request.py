@@ -1,12 +1,13 @@
 import json
 import unittest
-from unittest.mock import patch
 from datetime import datetime, timedelta
+from http import HTTPStatus
+from unittest.mock import patch
 
 from app import messages
+from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
 from app.database.sqlalchemy_extension import db
-from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
 from tests.test_utils import get_test_request_header
@@ -14,11 +15,11 @@ from tests.test_utils import get_test_request_header
 
 class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
     def setUp(self):
-        super(TestAcceptMentorshipRequestApi, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
 
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         # create new mentorship relation
@@ -48,11 +49,11 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.second_user.id),
             )
 
-            self.assertEqual(200, response.status_code)
+            self.assertEqual(HTTPStatus.OK, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.ACCEPTED, self.mentorship_relation.state
             )
@@ -86,10 +87,10 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )  # new
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.second_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.ACCEPTED, mentorship_relation_current.state
             )  # current
@@ -109,10 +110,10 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.first_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -131,10 +132,10 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         with self.client:
             # admin_user acts as uninvolved 3rd user
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=get_test_request_header(self.admin_user.id),
             )
-            self.assertEqual(400, response.status_code)
+            self.assertEqual(HTTPStatus.FORBIDDEN, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -151,9 +152,9 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
         )
         with self.client:
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept"
             )
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )
@@ -173,10 +174,10 @@ class TestAcceptMentorshipRequestApi(MentorshipRelationBaseTestCase):
                 self.second_user.id, token_expiration_delta=timedelta(seconds=-10)
             )
             response = self.client.put(
-                "/mentorship_relation/%s/accept" % self.mentorship_relation.id,
+                f"/mentorship_relation/{self.mentorship_relation.id}/accept",
                 headers=auth_header,
             )
-            self.assertEqual(401, response.status_code)
+            self.assertEqual(HTTPStatus.UNAUTHORIZED, response.status_code)
             self.assertEqual(
                 MentorshipRelationState.PENDING, self.mentorship_relation.state
             )

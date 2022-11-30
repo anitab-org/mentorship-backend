@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
 from app.database.models.mentorship_relation import MentorshipRelationModel
 from app.database.models.tasks_list import TasksListModel
+from app.database.sqlalchemy_extension import db
 from app.utils.enum_utils import MentorshipRelationState
 from tests.mentorship_relation.relation_base_setup import MentorshipRelationBaseTestCase
-from app.database.sqlalchemy_extension import db
-
 
 # TODO test when a user is in a current relation and tries to accept another relation
 # TODO test when a user tries to accept a relation where this user is not involved
@@ -19,10 +19,10 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver
     def setUp(self):
-        super(TestMentorshipRelationAcceptRequestDAO, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.end_date_example = self.now_datetime + timedelta(weeks=5)
 
         # create new mentorship relation
@@ -71,7 +71,8 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
         result = DAO.accept_request(self.first_user.id, 123)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, 404), result
+            (messages.MENTORSHIP_RELATION_REQUEST_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND),
+            result,
         )
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
@@ -82,7 +83,9 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.accept_request(self.first_user.id, self.mentorship_relation.id)
 
-        self.assertEqual((messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, 400), result)
+        self.assertEqual(
+            (messages.CANT_ACCEPT_MENTOR_REQ_SENT_BY_USER, HTTPStatus.FORBIDDEN), result
+        )
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
         )
@@ -93,7 +96,8 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, 200), result
+            (messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, HTTPStatus.OK),
+            result,
         )
         self.assertEqual(
             MentorshipRelationState.ACCEPTED, self.mentorship_relation.state
@@ -104,7 +108,7 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.accept_request(123, self.mentorship_relation.id)
 
-        self.assertEqual((messages.USER_DOES_NOT_EXIST, 404), result)
+        self.assertEqual((messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result)
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
         )
@@ -117,28 +121,36 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
 
         self.mentorship_relation.state = MentorshipRelationState.COMPLETED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
 
         self.mentorship_relation.state = MentorshipRelationState.CANCELLED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
 
         self.mentorship_relation.state = MentorshipRelationState.REJECTED
         db.session.add(self.mentorship_relation)
         db.session.commit()
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
-        self.assertEqual((messages.NOT_PENDING_STATE_RELATION, 400), result)
+        self.assertEqual(
+            (messages.NOT_PENDING_STATE_RELATION, HTTPStatus.FORBIDDEN), result
+        )
 
     def test_dao_mentor_user_already_in_relationship(self):
         DAO = MentorshipRelationDAO()
@@ -146,7 +158,8 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
         result2 = DAO.accept_request(self.first_user.id, self.mentorship_relation2.id)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, 200), result2
+            (messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, HTTPStatus.OK),
+            result2,
         )
         self.assertEqual(
             MentorshipRelationState.ACCEPTED, self.mentorship_relation2.state
@@ -154,7 +167,9 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
 
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
 
-        self.assertEqual((messages.MENTOR_ALREADY_IN_A_RELATION, 400), result)
+        self.assertEqual(
+            (messages.MENTOR_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST), result
+        )
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation.state
         )
@@ -165,7 +180,8 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
         result = DAO.accept_request(self.second_user.id, self.mentorship_relation.id)
 
         self.assertEqual(
-            (messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, 200), result
+            (messages.MENTORSHIP_RELATION_WAS_ACCEPTED_SUCCESSFULLY, HTTPStatus.OK),
+            result,
         )
         self.assertEqual(
             MentorshipRelationState.ACCEPTED, self.mentorship_relation.state
@@ -173,7 +189,9 @@ class TestMentorshipRelationAcceptRequestDAO(MentorshipRelationBaseTestCase):
 
         result3 = DAO.accept_request(self.third_user.id, self.mentorship_relation3.id)
 
-        self.assertEqual((messages.MENTEE_ALREADY_IN_A_RELATION, 400), result3)
+        self.assertEqual(
+            (messages.MENTEE_ALREADY_IN_A_RELATION, HTTPStatus.BAD_REQUEST), result3
+        )
         self.assertEqual(
             MentorshipRelationState.PENDING, self.mentorship_relation3.state
         )

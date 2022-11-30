@@ -8,7 +8,7 @@ from tests.base_test_case import BaseTestCase
 
 class TestTasksListModel(BaseTestCase):
     def setUp(self):
-        super(TestTasksListModel, self).setUp()
+        super().setUp()
 
         self.empty_tasks_list = TasksListModel()
         self.tasks_list_1 = TasksListModel()
@@ -16,7 +16,7 @@ class TestTasksListModel(BaseTestCase):
         db.session.add(self.tasks_list_1)
         db.session.commit()
 
-        self.now_timestamp = datetime.now().timestamp()
+        self.now_timestamp = datetime.utcnow().timestamp()
         self.test_description_1 = "test description number one"
         self.test_description_2 = "test description number two"
 

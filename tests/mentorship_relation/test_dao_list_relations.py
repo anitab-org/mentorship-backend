@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
+from http import HTTPStatus
 
 from app import messages
 from app.api.dao.mentorship_relation import MentorshipRelationDAO
@@ -14,10 +15,10 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
 
     # Setup consists of adding 2 users into the database
     def setUp(self):
-        super(TestListMentorshipRelationsDAO, self).setUp()
+        super().setUp()
 
         self.notes_example = "description of a good mentorship relation"
-        self.now_datetime = datetime.now()
+        self.now_datetime = datetime.utcnow()
         self.past_end_date_example = self.now_datetime - timedelta(weeks=5)
         self.future_end_date_example = self.now_datetime + timedelta(weeks=5)
 
@@ -85,7 +86,7 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         result = MentorshipRelationDAO.list_current_mentorship_relation(
             user_id=self.admin_user.id
         )
-        expected_response = (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, 200)
+        expected_response = (messages.NOT_IN_MENTORED_RELATION_CURRENTLY, HTTPStatus.OK)
 
         self.assertEqual(expected_response, result)
 
@@ -97,7 +98,7 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         expected_response = [self.future_pending_mentorship_relation]
 
         self.assertEqual(expected_response, result[0])
-        self.assertEqual(200, result[1])
+        self.assertEqual(HTTPStatus.OK, result[1])
 
 
 if __name__ == "__main__":
