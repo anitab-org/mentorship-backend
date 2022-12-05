@@ -230,5 +230,28 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
 
+    def test_update_same_username(self):
+            self.first_user = UserModel(**user1)
+            self.first_user.is_email_verified = True
+
+            db.session.add(self.first_user)
+            db.session.commit()
+
+            new_username = self.first_user.username
+            auth_header = get_test_request_header(self.first_user.id)
+            expected_response = messages.CURRENT_USERNAME_NO_FIELDS_UPDATED
+            actual_response = self.client.put(
+                "/user",
+                follow_redirects=True,
+                headers=auth_header,
+                data=json.dumps(dict(username=new_username)),
+                content_type="application/json",
+            )
+
+            self.assertEqual(HTTPStatus.OK, actual_response.status_code)
+            self.assertDictEqual(expected_response, json.loads(actual_response.data))
+            self.assertEqual(new_username, self.first_user.username)
+
+
 if __name__ == "__main__":
     unittest.main()

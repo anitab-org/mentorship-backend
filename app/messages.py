@@ -159,6 +159,9 @@ USER_USES_AN_EMAIL_ID_THAT_ALREADY_EXISTS = {
 USER_IS_NOT_REGISTERED_IN_THE_SYSTEM = {
     "message": "You are not registered in the system."
 }
+CURRENT_USERNAME_NO_FIELDS_UPDATED = {
+    "message": "Updated username is the same as current username. No fields have been updated."
+}
 NAME_LENGTH_GREATER_THAN_MAX_LIMIT = {
     "message": "The {field_name} field has"
     " to be shorter than {max_limit}"
