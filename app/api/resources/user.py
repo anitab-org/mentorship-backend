@@ -5,7 +5,6 @@ from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
     get_jwt_identity,
-    jwt_refresh_token_required,
     jwt_required,
 )
 from flask_restx import Namespace, Resource, marshal
@@ -323,7 +322,8 @@ class UserRegister(Resource):
         f"{messages.USERNAME_INPUT_BY_USER_IS_INVALID}\n"
         f"{messages.USER_INPUTS_SPACE_IN_PASSWORD}\n"
         f"{messages.USERNAME_HAS_INVALID_LENGTH}\n"
-        f"{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}",
+        f"{messages.PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH}\n"
+        f"{messages.INVALID_LENGTH_OF_USERNAME}"
     )
     @users_ns.response(
         HTTPStatus.CONFLICT.value,
@@ -420,35 +420,6 @@ class UserResendEmailConfirmation(Resource):
 
 
 @users_ns.route("refresh")
-class RefreshUser(Resource):
-    @classmethod
-    @jwt_refresh_token_required
-    @users_ns.doc("refresh")
-    @users_ns.response(
-        HTTPStatus.OK.value,
-        f"{messages.SUCCESSFUL_REFRESH}",
-        refresh_response_body_model,
-    )
-    @users_ns.response(
-        HTTPStatus.UNAUTHORIZED.value,
-        f"{messages.TOKEN_HAS_EXPIRED}\n"
-        f"{messages.TOKEN_IS_INVALID}\n"
-        f"{messages.AUTHORISATION_TOKEN_IS_MISSING}",
-    )
-    @users_ns.expect(refresh_auth_header_parser)
-    def post(cls):
-        """Refresh user's access
-
-        The return value is an access token.
-        The token is valid for 1 week.
-        """
-        user_id = get_jwt_identity()
-        access_token = create_access_token(identity=user_id)
-
-        return (
-            {"access_token": access_token},
-            HTTPStatus.OK,
-        )
 
 
 @users_ns.route("login")
