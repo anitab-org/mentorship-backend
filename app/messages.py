@@ -3,6 +3,8 @@ from app.api.validations.user import (
     PASSWORD_MIN_LENGTH,
     USERNAME_MAX_LENGTH,
     USERNAME_MIN_LENGTH,
+    NAME_MIN_LENGTH,
+    NAME_MAX_LENGTH
 )
 
 # Invalid fields
@@ -19,6 +21,9 @@ FIELD_AVAILABLE_TO_MENTOR_IS_INVALID = {
 INVALID_INPUT = {"message": "Invalid input."}
 PASSWORD_INPUT_BY_USER_HAS_INVALID_LENGTH = {
     "message": f"The password field has to be longer than {PASSWORD_MIN_LENGTH - 1} characters and shorter than {PASSWORD_MAX_LENGTH + 1} characters."
+}
+INVALID_LENGTH_OF_USERNAME = {
+    "message": f"The name field has to be longer than {NAME_MIN_LENGTH - 1} characters and shorter than {NAME_MAX_LENGTH + 1} characters."
 }
 
 # Not found
