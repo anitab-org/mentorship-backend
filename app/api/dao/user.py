@@ -227,6 +227,13 @@ class UserDAO:
 
             # username should be unique
             if user_with_same_username:
+                # If requested update username is current username of user, OK status, nothing updated
+                if user.username == username:
+                    return (
+                    messages.CURRENT_USERNAME_NO_FIELDS_UPDATED,
+                    HTTPStatus.OK,
+                    )
+                # Otherwise, error: cannot change username to existing one
                 return (
                     messages.USER_USES_A_USERNAME_THAT_ALREADY_EXISTS,
                     HTTPStatus.BAD_REQUEST,
