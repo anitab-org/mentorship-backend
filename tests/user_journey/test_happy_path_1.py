@@ -57,7 +57,6 @@ class TestHappyPath1(BaseTestCase):
         self.test_description = "A nice task description"
 
     def test_happy_path_1(self):
-
         mentor_auth_header = get_test_request_header(self.mentor.id)
         mentee_auth_header = get_test_request_header(self.mentee.id)
 

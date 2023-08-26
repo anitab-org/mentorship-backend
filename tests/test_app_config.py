@@ -36,7 +36,6 @@ class TestTestingConfig(TestCase):
         )
 
     def test_get_bd_uri_function(self):
-
         expected_result = "db_type_example://db_user_example:db_password_example@db_endpoint_example/db_name_example"
         actual_result = BaseConfig.build_db_uri(
             db_type_arg="db_type_example",

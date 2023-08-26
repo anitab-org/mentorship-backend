@@ -47,7 +47,6 @@ class TestDeleteTaskApi(TasksBaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_full_task_deletion_api(self):
-
         existent_task = self.tasks_list_1.find_task_by_id(2)
         self.assertIsNotNone(existent_task)
 

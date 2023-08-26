@@ -10,7 +10,6 @@ from tests.test_data import user1, user2, user4, user5
 
 
 class TasksBaseTestCase(BaseTestCase):
-
     # Setup consists of adding 2 users into the database
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver

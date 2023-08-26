@@ -74,7 +74,6 @@ class CreateTask(Resource):
 
     @staticmethod
     def is_valid_data(data):
-
         if "description" not in data:
             return messages.DESCRIPTION_FIELD_IS_MISSING
 

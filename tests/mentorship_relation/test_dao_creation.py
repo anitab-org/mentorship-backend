@@ -12,7 +12,6 @@ from tests.mentorship_relation.relation_base_setup import MentorshipRelationBase
 
 
 class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
-
     # Setup consists of adding 2 users into the database
     def setUp(self):
         super().setUp()
@@ -160,7 +159,6 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         self.assertIsNone(query_mentorship_relation)
 
     def test_dao_create_mentorship_relation_with_mentee_already_in_relation(self):
-
         self.mentorship_relation = MentorshipRelationModel(
             action_user_id=self.admin_user.id,
             mentor_user=self.admin_user,
@@ -196,7 +194,6 @@ class TestMentorshipRelationCreationDAO(MentorshipRelationBaseTestCase):
         self.assertTrue(1, len(query_mentorship_relations))
 
     def test_dao_create_mentorship_relation_with_mentor_already_in_relation(self):
-
         self.mentorship_relation = MentorshipRelationModel(
             action_user_id=self.admin_user.id,
             mentor_user=self.admin_user,

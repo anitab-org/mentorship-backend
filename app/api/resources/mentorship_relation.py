@@ -113,7 +113,6 @@ class SendRequest(Resource):
 
     @staticmethod
     def is_valid_data(data):
-
         # Verify if request body has required fields
         if "mentor_id" not in data:
             return messages.MENTOR_ID_FIELD_IS_MISSING

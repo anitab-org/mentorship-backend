@@ -39,7 +39,6 @@ class AdminDAO:
         new_admin_user = UserModel.find_by_id(new_admin_user_id)
 
         if new_admin_user:
-
             if new_admin_user.is_admin:
                 return messages.USER_IS_ALREADY_AN_ADMIN, HTTPStatus.BAD_REQUEST
 
@@ -82,7 +81,6 @@ class AdminDAO:
             return messages.USER_NOT_FOUND, HTTPStatus.NOT_FOUND
 
         if new_admin_user:
-
             if not new_admin_user.is_admin:
                 return messages.USER_IS_NOT_AN_ADMIN, HTTPStatus.BAD_REQUEST
 

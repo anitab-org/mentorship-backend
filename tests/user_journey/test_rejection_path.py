@@ -60,7 +60,6 @@ class TestRejectionPath(BaseTestCase):
         self.test_description = "A request for mentorship"
 
     def test_rejection_path(self):
-
         mentor_auth_header = get_test_request_header(self.mentor.id)
         mentee_auth_header = get_test_request_header(self.mentee.id)
 

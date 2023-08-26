@@ -69,7 +69,6 @@ class TestCreateTaskApi(TasksBaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_full_task_creation_api(self):
-
         non_existent_task = self.tasks_list_1.find_task_by_id(3)
         self.assertIsNone(non_existent_task)
 

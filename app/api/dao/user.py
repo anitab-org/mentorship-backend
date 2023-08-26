@@ -89,7 +89,6 @@ class UserDAO:
 
         # check if this user is the only admin
         if user.is_admin:
-
             admins_list_count = len(UserModel.get_all_admins())
             if admins_list_count <= UserDAO.MIN_NUMBER_OF_ADMINS:
                 return messages.USER_CANT_DELETE, HTTPStatus.BAD_REQUEST

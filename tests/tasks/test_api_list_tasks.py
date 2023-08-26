@@ -23,7 +23,6 @@ class TestListTasksApi(TasksBaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_first_mentorship_relation(self):
-
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = marshal(self.tasks_list_1.tasks, list_tasks_response_body)
         actual_response = self.client.get(
@@ -37,7 +36,6 @@ class TestListTasksApi(TasksBaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_second_mentorship_relation(self):
-
         auth_header = get_test_request_header(self.first_user.id)
         expected_response = marshal(self.tasks_list_2.tasks, list_tasks_response_body)
         actual_response = self.client.get(
@@ -50,7 +48,6 @@ class TestListTasksApi(TasksBaseTestCase):
         self.assertEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_w_user_not_belonging_to_mentorship_relation(self):
-
         auth_header = get_test_request_header(self.second_user.id)
         expected_response = messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION
         actual_response = self.client.get(
@@ -63,7 +60,6 @@ class TestListTasksApi(TasksBaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_list_tasks_api_mentorship_relation_without_tasks(self):
-
         auth_header = get_test_request_header(self.second_user.id)
         expected_response = []
         actual_response = self.client.get(

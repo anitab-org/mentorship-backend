@@ -12,7 +12,6 @@ from tests.mentorship_relation.relation_base_setup import MentorshipRelationBase
 
 
 class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
-
     # Setup consists of adding 2 users into the database
     def setUp(self):
         super().setUp()
@@ -63,7 +62,6 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         db.session.commit()
 
     def test_dao_list_past_mentorship_relations(self):
-
         result = MentorshipRelationDAO.list_past_mentorship_relations(
             user_id=self.first_user.id
         )
@@ -74,7 +72,6 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         self.assertEqual(expected_response, result[0])
 
     def test_dao_list_current_mentorship_relation(self):
-
         result = MentorshipRelationDAO.list_current_mentorship_relation(
             user_id=self.first_user.id
         )
@@ -91,7 +88,6 @@ class TestListMentorshipRelationsDAO(MentorshipRelationBaseTestCase):
         self.assertEqual(expected_response, result)
 
     def test_dao_list_pending_mentorship_relation(self):
-
         result = MentorshipRelationDAO.list_pending_mentorship_relations(
             user_id=self.first_user.id
         )

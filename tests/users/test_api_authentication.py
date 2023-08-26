@@ -15,7 +15,6 @@ from tests.test_utils import get_test_request_header
 
 
 class TestProtectedApi(BaseTestCase):
-
     # User 1 which has email verified
     def setUp(self):
         super().setUp()

@@ -22,7 +22,6 @@ class TestCompleteTaskApi(TasksBaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_complete_task_api(self):
-
         relation = MentorshipRelationModel.find_by_id(
             self.mentorship_relation_w_second_user.id
         )
