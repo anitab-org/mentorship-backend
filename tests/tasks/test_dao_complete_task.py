@@ -33,7 +33,6 @@ class TestCompleteTasksDao(TasksBaseTestCase):
         self.assertEqual(expected_response, actual_response)
 
     def test_achieve_not_existent_task(self):
-
         expected_response = messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
         actual_response = TaskDAO.complete_task(
             self.first_user.id, self.mentorship_relation_w_second_user.id, 123123

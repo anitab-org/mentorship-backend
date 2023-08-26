@@ -19,7 +19,6 @@ from tests.test_data import user1, user2
 
 
 class TestMentorshipRelationModel(BaseTestCase):
-
     # Setup consists of adding 2 users into the database
     def setUp(self):
         db.create_all()

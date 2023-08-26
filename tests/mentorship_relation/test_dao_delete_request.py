@@ -13,7 +13,6 @@ from tests.test_data import user1, user2
 
 
 class TestMentorshipRelationDeleteDAO(BaseTestCase):
-
     # Setup consists of adding 2 users into the database
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver
@@ -69,7 +68,6 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         db.session.commit()
 
     def test_dao_delete_non_existing_mentorship_request(self):
-
         result = MentorshipRelationDAO.delete_request(self.first_user.id, 123)
 
         self.assertEqual(
@@ -83,7 +81,6 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         )
 
     def test_dao_sender_does_not_exist(self):
-
         result = MentorshipRelationDAO.delete_request(123, self.mentorship_relation.id)
 
         self.assertEqual((messages.USER_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND), result)
@@ -94,7 +91,6 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         )
 
     def test_dao_receiver_tries_to_delete_mentorship_request(self):
-
         result = MentorshipRelationDAO.delete_request(
             self.second_user.id, self.mentorship_relation.id
         )
@@ -126,7 +122,6 @@ class TestMentorshipRelationDeleteDAO(BaseTestCase):
         )
 
     def test_dao_user_not_involved_tries_to_delete_mentorship_request(self):
-
         result = MentorshipRelationDAO.delete_request(
             self.admin_user.id, self.mentorship_relation.id
         )

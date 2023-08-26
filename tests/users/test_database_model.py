@@ -16,7 +16,6 @@ from tests.test_data import test_admin_user
 
 class TestAdminUserModel(BaseTestCase):
     def test_is_first_user_admin(self):
-
         user = UserModel.query.filter_by(email=test_admin_user["email"]).first()
         self.assertTrue(user is not None)
         self.assertTrue(user.id is not None)
@@ -31,7 +30,6 @@ class TestAdminUserModel(BaseTestCase):
         )
 
     def test_second_user_cannot_be_admin(self):
-
         user = UserModel(
             name="User1",
             email="user1@email.com",

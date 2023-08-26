@@ -24,7 +24,6 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_update_username_already_taken(self):
-
         self.first_user = UserModel(
             name=user1["name"],
             email=user1["email"],
@@ -51,7 +50,6 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertDictEqual(expected_response, json.loads(actual_response.data))
 
     def test_update_username_not_taken(self):
-
         self.first_user = UserModel(
             name=user1["name"],
             email=user1["email"],
@@ -80,7 +78,6 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertEqual(user1_new_username, self.first_user.username)
 
     def test_update_username_invalid_length(self):
-
         self.first_user = UserModel(
             name=user1["name"],
             email=user1["email"],
@@ -120,7 +117,6 @@ class TestUpdateUserApi(BaseTestCase):
         self.assertEqual(user1["username"], self.first_user.username)
 
     def test_update_availability_to_mentor_more_than_once(self):
-
         self.first_user = UserModel(
             name=user1["name"],
             email=user1["email"],
@@ -168,7 +164,6 @@ class TestUpdateUserApi(BaseTestCase):
         )
 
     def test_update_availability_to_be_mentee_to_false(self):
-
         self.first_user = UserModel(
             name=user1["name"],
             email=user1["email"],

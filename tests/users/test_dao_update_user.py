@@ -9,7 +9,6 @@ from tests.base_test_case import BaseTestCase
 
 class TestUpdateUserDao(BaseTestCase):
     def test_dao_update_user(self):
-
         self.assertIsNotNone(self.admin_user.name)
         self.assertIsNone(self.admin_user.bio)
         self.assertIsNone(self.admin_user.location)
@@ -50,7 +49,6 @@ class TestUpdateUserDao(BaseTestCase):
         self.assertEqual("good_photo_url", self.admin_user.photo_url)
 
     def test_update_fields_with_empty_data(self):
-
         name_before_update = self.admin_user.name
         self.assertIsNotNone(self.admin_user.name)
 
@@ -96,7 +94,6 @@ class TestUpdateUserDao(BaseTestCase):
         self.assertIsNone(self.admin_user.photo_url)
 
     def test_update_user_that_does_not_exist(self):
-
         user = UserModel.query.filter_by(id=2).first()
         self.assertIsNone(user)
 

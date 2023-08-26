@@ -8,7 +8,6 @@ from tests.tasks.tasks_base_setup import TasksBaseTestCase
 
 class TestDeleteTasksDao(TasksBaseTestCase):
     def test_delete_existent_task(self):
-
         expected_response = messages.TASK_WAS_DELETED_SUCCESSFULLY, HTTPStatus.OK
         first_task_id = 1
 
@@ -42,7 +41,6 @@ class TestDeleteTasksDao(TasksBaseTestCase):
         self.assertEqual(expected_response, actual_response)
 
     def test_delete_non_existent_task(self):
-
         expected_response = messages.TASK_DOES_NOT_EXIST, HTTPStatus.NOT_FOUND
         actual_response = TaskDAO.delete_task(
             self.first_user.id, self.mentorship_relation_w_second_user.id, 123123

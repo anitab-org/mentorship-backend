@@ -18,7 +18,6 @@ from tests.test_data import user1, user2
 
 
 class TestUserLoginApi(BaseTestCase):
-
     # Setup consists of adding 2 users into the database
     # User 1 does not have email verified
     # User 2 has email verified
@@ -47,7 +46,6 @@ class TestUserLoginApi(BaseTestCase):
 
     def test_user_login_invalid_credentials(self):
         with self.client:
-
             response = self.client.post(
                 "/login",
                 data=json.dumps(

@@ -13,7 +13,6 @@ from tests.test_utils import get_test_request_header
 
 
 class TestRejectMentorshipRequestApi(MentorshipRelationBaseTestCase):
-
     # Setup consists of adding 2 users into the database
     # User 1 is the mentorship relation requester = action user
     # User 2 is the receiver

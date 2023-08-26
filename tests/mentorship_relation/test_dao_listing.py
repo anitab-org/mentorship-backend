@@ -13,7 +13,6 @@ from tests.mentorship_relation.relation_base_setup import MentorshipRelationBase
 
 
 class TestMentorshipRelationListingDAO(MentorshipRelationBaseTestCase):
-
     # Setup consists of adding 2 users into the database
     def setUp(self):
         super().setUp()

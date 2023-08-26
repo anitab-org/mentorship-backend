@@ -13,7 +13,6 @@ from tests.test_utils import get_test_request_header
 
 
 class TestUserRefreshApi(BaseTestCase):
-
     # User 1 which has email verified
     def setUp(self):
         super().setUp()

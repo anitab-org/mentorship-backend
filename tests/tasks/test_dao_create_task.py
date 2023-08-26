@@ -9,7 +9,6 @@ from tests.tasks.tasks_base_setup import TasksBaseTestCase
 
 class TestListTasksDao(TasksBaseTestCase):
     def test_create_task(self):
-
         expected_response = (
             messages.TASK_WAS_CREATED_SUCCESSFULLY,
             HTTPStatus.CREATED,
@@ -31,7 +30,6 @@ class TestListTasksDao(TasksBaseTestCase):
         self.assertEqual(self.test_is_done, new_task.get("is_done"))
 
     def test_create_task_with_non_existing_mentorship_relation(self):
-
         expected_response = (
             messages.MENTORSHIP_RELATION_DOES_NOT_EXIST,
             HTTPStatus.NOT_FOUND,
@@ -46,7 +44,6 @@ class TestListTasksDao(TasksBaseTestCase):
         self.assertEqual(expected_response, actual_response)
 
     def test_create_task_with_mentorship_relation_non_accepted_state(self):
-
         expected_response = (
             messages.UNACCEPTED_STATE_RELATION,
             HTTPStatus.FORBIDDEN,
@@ -62,7 +59,6 @@ class TestListTasksDao(TasksBaseTestCase):
         self.assertEqual(expected_response, actual_response)
 
     def test_create_task_with_user_not_involved_in_mentorship(self):
-
         expected_response = (
             messages.USER_NOT_INVOLVED_IN_THIS_MENTOR_RELATION,
             HTTPStatus.FORBIDDEN,

@@ -16,7 +16,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_assign_new_admin_valid_user(self):
-
         dao = AdminDAO()
 
         user = UserModel(
@@ -44,7 +43,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_assign_new_admin_by_normal_user(self):
-
         dao = AdminDAO()
 
         user = UserModel(
@@ -73,7 +71,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_assign_admin_role_to_non_existing_user(self):
-
         dao = AdminDAO()
 
         data = dict(user_id=123)
@@ -89,7 +86,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_assign_admin_role_to_admin_user(self):
-
         dao = AdminDAO()
 
         user = UserModel(
@@ -122,7 +118,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_assign_admin_role_to_myself(self):
-
         dao = AdminDAO()
 
         user = UserModel(
@@ -155,7 +150,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_revoke_admin_role_to_valid_user(self):
-
         dao = AdminDAO()
 
         user = UserModel(
@@ -184,7 +178,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_revoke_admin_role_by_non_admin_user(self):
-
         dao = AdminDAO()
 
         user = UserModel(
@@ -211,7 +204,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_revoke_admin_role_to_non_existing_user(self):
-
         dao = AdminDAO()
 
         data = dict(user_id=123)
@@ -227,7 +219,6 @@ class TestAdminDao(BaseTestCase):
     """
 
     def test_dao_revoke_admin_role_to_non_admin_user(self):
-
         dao = AdminDAO()
 
         user = UserModel(

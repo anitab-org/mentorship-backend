@@ -23,7 +23,6 @@ class TestTasksListModel(BaseTestCase):
         self.tasks_list_1.add_task(self.test_description_1, self.now_timestamp)
 
     def test_tasks_list_creation(self):
-
         tasks_list_one = TasksListModel.query.filter_by(id=1).first()
 
         self.assertIsNotNone(tasks_list_one)
@@ -32,7 +31,6 @@ class TestTasksListModel(BaseTestCase):
         self.assertEqual(1, tasks_list_one.id)
 
     def test_add_task_to_tasks_list(self):
-
         tasks_list_one = TasksListModel.query.filter_by(id=1).first()
 
         self.assertEqual([], tasks_list_one.tasks)
@@ -62,7 +60,6 @@ class TestTasksListModel(BaseTestCase):
         self.assertEqual([expected_task_1, expected_task_2], tasks_list_one.tasks)
 
     def test_remove_task_from_tasks_list(self):
-
         tasks_list_one = TasksListModel.query.filter_by(id=1).first()
 
         self.assertEqual([], tasks_list_one.tasks)
@@ -84,7 +81,6 @@ class TestTasksListModel(BaseTestCase):
         self.assertEqual([], tasks_list_one.tasks)
 
     def test_remove_task_from_pre_filled_list(self):
-
         tasks_list_two = TasksListModel.query.filter_by(id=2).first()
 
         expected_task_1 = dict(
@@ -104,12 +100,10 @@ class TestTasksListModel(BaseTestCase):
         self.assertTrue(tasks_list_two.is_empty())
 
     def test_empty_tasks_list_function(self):
-
         tasks_list_one = TasksListModel.query.filter_by(id=1).first()
         self.assertTrue(tasks_list_one.is_empty())
 
     def test_find_task_by_id(self):
-
         tasks_list_one = TasksListModel.query.filter_by(id=1).first()
 
         expected_task_1 = dict(
@@ -142,7 +136,6 @@ class TestTasksListModel(BaseTestCase):
         self.assertIsNone(found_task_3)
 
     def test_update_task(self):
-
         tasks_list_one = TasksListModel.query.filter_by(id=2).first()
         self.assertIsNotNone(tasks_list_one)
 
