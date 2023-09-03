@@ -67,7 +67,7 @@ class CreateTask(Resource):
             return is_valid, HTTPStatus.BAD_REQUEST
 
         response = TaskDAO.create_task(
-            user_id=user_id, mentorship_relation_id=request_id, data=request_body
+            user_id=user_id, mentorship_relation_id=relation_id, data=request_body
         )
 
         return response
@@ -81,7 +81,7 @@ class CreateTask(Resource):
         return {}
 
 
-@task_ns.route("mentorship_relation/<int:request_id>/task/<int:task_id>")
+@task_ns.route("mentorship_relation/<int:relation_id>/task/<int:task_id>")
 class DeleteTask(Resource):
     @classmethod
     @jwt_required
